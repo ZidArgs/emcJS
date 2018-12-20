@@ -1,4 +1,4 @@
-import DeepSessionStorage from "SessionStorage.mjs"
+import DeepSessionStorage from "/storage/SessionStorage.mjs"
 
 var state = {};
 
