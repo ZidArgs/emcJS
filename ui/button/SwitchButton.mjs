@@ -20,11 +20,11 @@ const CUSTOM_CSS = [
     "}"
 ].join('');
 
-export default class StateButton extends HTMLElement {
+export default class DeepSwitchButton extends HTMLElement {
 
     constructor() {
         super();
-        var shadow = this.attachShadow({mode: 'closed'});
+        var shadow = this.attachShadow({mode: 'open'});
         var view = document.createElement('slot');
         view.setAttribute("name", "value");
         var style = document.createElement('style');
@@ -33,7 +33,7 @@ export default class StateButton extends HTMLElement {
         shadow.appendChild(view);
         this.addEventListener("click", this.next);
         this.addEventListener("contextmenu", this.prev);
-
+        
         // init
         if (!this.value) {
             let all = this.querySelectorAll("option");
@@ -77,10 +77,8 @@ export default class StateButton extends HTMLElement {
         let all = this.querySelectorAll("option");
         if (!!all.length) {
             let opt = this.querySelector(`option[value="${this.value}"]`);
-            if (!!opt) {
-                if (!!opt.nextElementSibling) {
-                    this.value = opt.nextElementSibling.value;
-                }
+            if (!!opt && !!opt.nextElementSibling) {
+                this.value = opt.nextElementSibling.value;
             } else {
                 this.value = all[0].value;
             }
@@ -93,12 +91,10 @@ export default class StateButton extends HTMLElement {
         let all = this.querySelectorAll("option");
         if (!!all.length) {
             let opt = this.querySelector(`option[value="${this.value}"]`);
-            if (!!opt) {
-                if (!!opt.previousElementSibling) {
-                    this.value = opt.previousElementSibling.value;
-                }
+            if (!!opt && !!opt.previousElementSibling) {
+                this.value = opt.previousElementSibling.value;
             } else {
-                this.value = all[0].value;
+                this.value = all[all.length-1].value;
             }
         }
         ev.preventDefault();
@@ -107,4 +103,4 @@ export default class StateButton extends HTMLElement {
 
 }
 
-customElements.define('deep-statebutton', StateButton);
+customElements.define('deep-switchbutton', DeepSwitchButton);

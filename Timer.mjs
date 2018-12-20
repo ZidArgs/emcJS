@@ -3,7 +3,7 @@ const TIME_MS_DIFF = 3600000;
 const time_stored = new WeakMap;
 const time_started = new WeakMap;
 
-export default class Timer {
+export default class DeepTimer {
 
     constructor() {
         time_stored.set(this, new Date(-TIME_MS_DIFF));
