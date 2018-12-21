@@ -1,40 +1,42 @@
-const CUSTOM_CSS = [
-    ":host{",
-        "display:inline-block;",
-        "width:20px;",
-        "height:20px;",
-        "cursor:pointer;",
-        "user-select:none;",
-    "}",
-    "slot{",
-        "width:100%;",
-        "height:100%;",
-    "}",
-    "::slotted(option){",
-        "width:100%;",
-        "height:100%;",
-        "background-repeat: no-repeat;",
-        "background-size: contain;",
-        "background-position: center;",
-        "background-origin: content-box;",
-    "}"
-].join('');
+const CUSTOM_CSS = `
+    :host {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        cursor: pointer;
+        user-select: none;
+    }
+    slot {
+        width: 100%;
+        height: 100%;
+    }
+    ::slotted(option) {
+        width: 100%;
+        height: 100%;
+        background-repeat: no-repeat;
+        background-size: contain;
+        background-position: center;
+        background-origin: content-box;
+    }
+`;
 
 export default class DeepSwitchButton extends HTMLElement {
 
     constructor() {
         super();
-        var shadow = this.attachShadow({mode: 'open'});
-        var view = document.createElement('slot');
-        view.setAttribute("name", "value");
-        var style = document.createElement('style');
-        style.textContent = CUSTOM_CSS;
-        shadow.appendChild(style);
-        shadow.appendChild(view);
+        /* host */
         this.addEventListener("click", this.next);
         this.addEventListener("contextmenu", this.prev);
-        
-        // init
+        this.attachShadow({mode: 'open'});
+        /* style */
+        var style = document.createElement('style');
+        style.textContent = CUSTOM_CSS;
+        this.shadowRoot.appendChild(style);
+        /* content */
+        var view = document.createElement('slot');
+        view.setAttribute("name", "value");
+        this.shadowRoot.appendChild(view);
+        /* init */
         if (!this.value) {
             let all = this.querySelectorAll("option");
             if (!!all.length) {

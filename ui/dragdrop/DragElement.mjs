@@ -1,17 +1,13 @@
-const CUSTOM_CSS = `
-    :host{
-        display:block;
-        width:50px;
-        height:20px;
-    }
-`;
+import UID from "../../UID.mjs";
 
-const CUSTOM_HTML = `
-<style>
-    ${CUSTOM_CSS}
-</style>
-<slot>
-</slot>
+const CUSTOM_CSS = `
+    :host {
+        display: inline-block;
+        cursor: grab;
+    }
+    :host:active {
+        cursor: grabbing;
+    }
 `;
 
 function dragElement(event) {
@@ -23,9 +19,17 @@ export default class DeepDragElement extends HTMLElement {
 
     constructor() {
         super();
-        var shadow = this.attachShadow({mode: 'open'});
-        shadow.innerHTML = CUSTOM_HTML;
+        /* host */
+        this.id = UID.generate("draggable");
+        this.setAttribute("draggable", true);
         this.ondragstart = dragElement.bind(this);
+        this.attachShadow({mode: 'open'});
+        /* style */
+        var style = document.createElement('style');
+        style.textContent = CUSTOM_CSS;
+        this.shadowRoot.appendChild(style);
+        /* content */
+        this.shadowRoot.appendChild(document.createElement('slot'));
     }
 
     get group() {
@@ -38,4 +42,4 @@ export default class DeepDragElement extends HTMLElement {
 
 }
 
-customElements.define('deep-dragelement', DeepDropTarget);
+customElements.define('deep-dragelement', DeepDragElement);

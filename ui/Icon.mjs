@@ -1,34 +1,32 @@
-const CUSTOM_CSS = [
-    ":host{",
-        "display:inline-block;",
-        "width:20px;",
-        "height:20px;",
-        "cursor:pointer;",
-        "user-select:none;",
-    "}",
-    "div{",
-        "width:100%;",
-        "height:100%;",
-        "background-repeat: no-repeat;",
-        "background-size: contain;",
-        "background-position: center;",
-        "background-origin: content-box;",
-    "}"
-].join('');
-
-const pView = new WeakMap;
+const CUSTOM_CSS = `
+    :host {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        user-select: none;
+    }
+    div {
+        width: 100%;
+        height: 100%;
+        background-repeat: no-repeat;
+        background-size: contain;
+        background-position: center;
+        background-origin: content-box;
+    }
+`;
 
 export default class DeepIcon extends HTMLElement {
 
     constructor() {
         super();
-        var shadow = this.attachShadow({mode: 'open'});
-        var view = document.createElement('div');
+        /* host */
+        this.attachShadow({mode: 'open'});
+        /* style */
         var style = document.createElement('style');
         style.textContent = CUSTOM_CSS;
-        shadow.appendChild(style);
-        shadow.appendChild(view);
-        pView.set(this, view);
+        this.shadowRoot.appendChild(style);
+        /* content */
+        this.shadowRoot.appendChild(document.createElement('div'));
     }
 
     get src() {
@@ -47,7 +45,7 @@ export default class DeepIcon extends HTMLElement {
         switch (name) {
             case 'src':
                 if (oldValue != newValue) {
-                    pView.get(this).style.backgroundImage = `url("${newValue}")`;
+                    this.shadowRoot.querySelector('div').style.backgroundImage = `url("${newValue}")`;
                 }
                 break;
         }
