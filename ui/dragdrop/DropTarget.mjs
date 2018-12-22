@@ -1,9 +1,19 @@
-const CUSTOM_CSS = `
-    :host {
-        display: block;
-        height: 100%;
-    }
-`;
+import DeepTemplate from "../../Template.mjs";
+
+const TPL = new DeepTemplate(`
+    <style>
+        * {
+            position: relative;
+            box-sizing: border-box;
+        }
+        :host {
+            display: block;
+            height: 100%;
+        }
+    </style>
+    <slot>
+    </slot>
+`);
 
 function dropElement(event) {
     var el = document.getElementById(event.dataTransfer.getData("id"));
@@ -29,17 +39,10 @@ export default class DeepDropTarget extends HTMLElement {
 
     constructor() {
         super();
-        /* host */
         this.ondrop = dropElement.bind(this);
         this.ondragover = allowDrop.bind(this);
         this.attachShadow({mode: 'open'});
-        /* style */
-        var style = document.createElement('style');
-        style.textContent = CUSTOM_CSS;
-        this.shadowRoot.appendChild(style);
-        /* content */
-        var view = document.createElement('slot');
-        this.shadowRoot.appendChild(view);
+        this.shadowRoot.appendChild(TPL.generate());
     }
 
     get group() {

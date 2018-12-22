@@ -1,32 +1,36 @@
-const CUSTOM_CSS = `
-    :host {
-        display: inline-block;
-        width: 20px;
-        height: 20px;
-        user-select: none;
-    }
-    div {
-        width: 100%;
-        height: 100%;
-        background-repeat: no-repeat;
-        background-size: contain;
-        background-position: center;
-        background-origin: content-box;
-    }
-`;
+import DeepTemplate from "../Template.mjs";
+
+const TPL = new DeepTemplate(`
+    <style>
+        * {
+            position: relative;
+            box-sizing: border-box;
+        }
+        :host {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            user-select: none;
+        }
+        div {
+            width: 100%;
+            height: 100%;
+            background-repeat: no-repeat;
+            background-size: contain;
+            background-position: center;
+            background-origin: content-box;
+        }
+    </style>
+    <div>
+    </div>
+`);
 
 export default class DeepIcon extends HTMLElement {
 
     constructor() {
         super();
-        /* host */
         this.attachShadow({mode: 'open'});
-        /* style */
-        var style = document.createElement('style');
-        style.textContent = CUSTOM_CSS;
-        this.shadowRoot.appendChild(style);
-        /* content */
-        this.shadowRoot.appendChild(document.createElement('div'));
+        this.shadowRoot.appendChild(TPL.generate());
     }
 
     get src() {

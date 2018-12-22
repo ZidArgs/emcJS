@@ -1,14 +1,23 @@
 import UID from "../../UID.mjs";
+import DeepTemplate from "../../Template.mjs";
 
-const CUSTOM_CSS = `
-    :host {
-        display: inline-block;
-        cursor: grab;
-    }
-    :host:active {
-        cursor: grabbing;
-    }
-`;
+const TPL = new DeepTemplate(`
+    <style>
+        * {
+            position: relative;
+            box-sizing: border-box;
+        }
+        :host {
+            display: inline-block;
+            cursor: grab;
+        }
+        :host:active {
+            cursor: grabbing;
+        }
+    </style>
+    <slot>
+    </slot>
+`);
 
 function dragElement(event) {
     event.dataTransfer.setData("group", event.target.group);
@@ -24,12 +33,7 @@ export default class DeepDragElement extends HTMLElement {
         this.setAttribute("draggable", true);
         this.ondragstart = dragElement.bind(this);
         this.attachShadow({mode: 'open'});
-        /* style */
-        var style = document.createElement('style');
-        style.textContent = CUSTOM_CSS;
-        this.shadowRoot.appendChild(style);
-        /* content */
-        this.shadowRoot.appendChild(document.createElement('slot'));
+        this.shadowRoot.appendChild(TPL.generate());
     }
 
     get group() {

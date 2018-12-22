@@ -1,41 +1,43 @@
-const CUSTOM_CSS = `
-    :host {
-        display: inline-block;
-        width: 20px;
-        height: 20px;
-        cursor: pointer;
-        user-select: none;
-    }
-    slot {
-        width: 100%;
-        height: 100%;
-    }
-    ::slotted(option) {
-        width: 100%;
-        height: 100%;
-        background-repeat: no-repeat;
-        background-size: contain;
-        background-position: center;
-        background-origin: content-box;
-    }
-`;
+import DeepTemplate from "../../Template.mjs";
+
+const TPL = new DeepTemplate(`
+    <style>
+        * {
+            position: relative;
+            box-sizing: border-box;
+        }
+        :host {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            user-select: none;
+        }
+        slot {
+            width: 100%;
+            height: 100%;
+        }
+        ::slotted(option) {
+            width: 100%;
+            height: 100%;
+            background-repeat: no-repeat;
+            background-size: contain;
+            background-position: center;
+            background-origin: content-box;
+        }
+    </style>
+    <slot name="value">
+    </slot>
+`);
 
 export default class DeepStateButton extends HTMLElement {
 
     constructor() {
         super();
-        /* host */
         this.addEventListener("click", this.next);
         this.addEventListener("contextmenu", this.prev);
         this.attachShadow({mode: 'open'});
-        /* style */
-        var style = document.createElement('style');
-        style.textContent = CUSTOM_CSS;
-        this.shadowRoot.appendChild(style);
-        /* content */
-        var view = document.createElement('slot');
-        view.setAttribute("name", "value");
-        this.shadowRoot.appendChild(view);
+        this.shadowRoot.appendChild(TPL.generate());
         /* init */
         if (!this.value) {
             let all = this.querySelectorAll("option");
