@@ -1,4 +1,4 @@
-import DeepTemplate from "../../Template.mjs";
+import DeepTemplate from "../../util/Template.mjs";
 
 const TPL = new DeepTemplate(`
     <style>

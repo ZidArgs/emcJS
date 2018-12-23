@@ -1,5 +1,5 @@
-import UID from "../../UID.mjs";
-import DeepTemplate from "../../Template.mjs";
+import UID from "../../util/UID.mjs";
+import DeepTemplate from "../../util/Template.mjs";
 
 const TPL = new DeepTemplate(`
     <style>

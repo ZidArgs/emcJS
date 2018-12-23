@@ -1,4 +1,4 @@
-import DeepLocalStorage from "/storage/LocalStorage.mjs"
+import DeepLocalStorage from "./LocalStorage.mjs"
 
 var state = {};
 

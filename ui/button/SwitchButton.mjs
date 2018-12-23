@@ -1,25 +1,4 @@
-const CUSTOM_CSS = `
-    :host {
-        display: inline-block;
-        width: 20px;
-        height: 20px;
-        cursor: pointer;
-        user-select: none;
-    }
-    slot {
-        width: 100%;
-        height: 100%;
-    }
-    ::slotted(option) {
-        width: 100%;
-        height: 100%;
-        background-repeat: no-repeat;
-        background-size: contain;
-        background-position: center;
-        background-origin: content-box;
-    }
-`;
-import DeepTemplate from "../../Template.mjs";
+import DeepTemplate from "../../util/Template.mjs";
 
 const TPL = new DeepTemplate(`
     <style>
