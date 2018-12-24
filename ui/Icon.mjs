@@ -1,6 +1,6 @@
-import DeepTemplate from "../util/Template.mjs";
+import Template from "../util/Template.mjs";
 
-const TPL = new DeepTemplate(`
+const TPL = new Template(`
     <style>
         * {
             position: relative;
@@ -19,6 +19,7 @@ const TPL = new DeepTemplate(`
             background-size: contain;
             background-position: center;
             background-origin: content-box;
+            pointer-events: none;
         }
     </style>
     <div>

@@ -1,6 +1,6 @@
-import DeepTemplate from "../../util/Template.mjs";
+import Template from "../../util/Template.mjs";
 
-const TPL = new DeepTemplate(`
+const TPL = new Template(`
     <style>
         * {
             position: relative;
@@ -17,7 +17,6 @@ const TPL = new DeepTemplate(`
 
 function dropElement(event) {
     var el = document.getElementById(event.dataTransfer.getData("id"));
-    console.log(el);
     if (!!el) {
         this.appendChild(el);
     }

@@ -1,7 +1,7 @@
 import UID from "../../util/UID.mjs";
-import DeepTemplate from "../../util/Template.mjs";
+import Template from "../../util/Template.mjs";
 
-const TPL = new DeepTemplate(`
+const TPL = new Template(`
     <style>
         * {
             position: relative;
@@ -11,17 +11,14 @@ const TPL = new DeepTemplate(`
             display: inline-block;
             cursor: grab;
         }
-        :host:active {
-            cursor: grabbing;
-        }
     </style>
     <slot>
     </slot>
 `);
 
 function dragElement(event) {
-    event.dataTransfer.setData("group", event.target.group);
-    event.dataTransfer.setData("id", event.target.id);
+    event.dataTransfer.setData("group", event.currentTarget.group || "");
+    event.dataTransfer.setData("id", event.currentTarget.id);
 }
 
 export default class DeepDragElement extends HTMLElement {
@@ -30,10 +27,10 @@ export default class DeepDragElement extends HTMLElement {
         super();
         /* host */
         this.id = UID.generate("draggable");
-        this.setAttribute("draggable", true);
-        this.ondragstart = dragElement.bind(this);
         this.attachShadow({mode: 'open'});
         this.shadowRoot.appendChild(TPL.generate());
+        this.setAttribute("draggable", true);
+        this.addEventListener("dragstart", dragElement);
     }
 
     get group() {

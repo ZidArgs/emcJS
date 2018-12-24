@@ -10,7 +10,7 @@ function getName(v) {
     return v.split('\0')[1];
 }
 
-class DeepLocalStorage {
+class LocalStorage {
 
     set(category, name, data) {
         localStorage.setItem(category+"\0"+name, JSON.stringify(data));
@@ -50,4 +50,4 @@ class DeepLocalStorage {
 
 }
 
-export default new DeepLocalStorage;
+export default new LocalStorage;

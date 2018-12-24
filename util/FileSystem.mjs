@@ -24,7 +24,7 @@ function loadOnload(resolve, e) {
     resolve(e.target.result);
 }
 
-class DeepFileSystem {
+class FileSystem {
 
     load() {
         return new Promise(loadPromise);
@@ -40,4 +40,4 @@ class DeepFileSystem {
 
 }
 
-export default new DeepFileSystem;
+export default new FileSystem;

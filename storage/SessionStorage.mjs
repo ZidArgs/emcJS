@@ -10,7 +10,7 @@ function getName(v) {
     return v.split('\0')[1];
 }
 
-class DeepSessionStorage {
+class SessionStorage {
 
     set(category, name, data) {
         sessionStorage.setItem(category+"\0"+name, JSON.stringify(data));
@@ -50,4 +50,4 @@ class DeepSessionStorage {
 
 }
 
-export default new DeepSessionStorage;
+export default new SessionStorage;

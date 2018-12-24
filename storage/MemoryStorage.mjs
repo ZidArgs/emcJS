@@ -1,6 +1,6 @@
 var storage = {};
 
-class DeepMemoryStorage {
+class MemoryStorage {
 
     set(category, name, data) {
         storage[category] = storage[category] || {};
@@ -45,4 +45,4 @@ class DeepMemoryStorage {
 
 }
 
-export default new DeepMemoryStorage;
+export default new MemoryStorage;

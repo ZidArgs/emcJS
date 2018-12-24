@@ -1,6 +1,6 @@
-import DeepTemplate from "../../util/Template.mjs";
+import Template from "../../util/Template.mjs";
 
-const TPL = new DeepTemplate(`
+const TPL = new Template(`
     <style>
         * {
             position: relative;

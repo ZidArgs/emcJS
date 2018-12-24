@@ -1,6 +1,6 @@
 const tpl = new WeakMap;
 
-export default class DeepTemplate {
+export default class Template {
 
     constructor(template) {
         if (template instanceof HTMLTemplateElement) {
