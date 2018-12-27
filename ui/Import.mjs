@@ -1,17 +1,4 @@
 import Logger from "../util/Logger.mjs";
-import Template from "../util/Template.mjs";
-
-const TPL = new Template(`
-    <style>
-        :host {
-            display: content;
-            position: relative;
-            box-sizing: border-box;
-        }
-    </style>
-    <div>
-    </div>
-`);
 
 const PARSER = new DOMParser();
 

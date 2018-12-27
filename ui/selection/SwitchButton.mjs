@@ -17,6 +17,9 @@ const TPL = new Template(`
             width: 100%;
             height: 100%;
         }
+        ::slotted(:not(option)) {
+            display: none;
+        }
         ::slotted(option) {
             width: 100%;
             height: 100%;
@@ -29,6 +32,7 @@ const TPL = new Template(`
     <slot name="value">
     </slot>
 `);
+
 export default class DeepSwitchButton extends HTMLElement {
 
     constructor() {
@@ -67,10 +71,14 @@ export default class DeepSwitchButton extends HTMLElement {
                     if (!!ol) {
                         ol.removeAttribute("slot");
                     }
-                }
-                let nl = this.querySelector(`option[value="${newValue}"]`);
-                if (!!nl) {
-                    nl.setAttribute("slot", "value");
+                    let nl = this.querySelector(`option[value="${newValue}"]`);
+                    if (!!nl) {
+                        nl.setAttribute("slot", "value");
+                    }
+                    var event = new Event('change');
+                    event.oldValue = oldValue;
+                    event.newValue = newValue;
+                    this.dispatchEvent(event);
                 }
                 break;
         }
