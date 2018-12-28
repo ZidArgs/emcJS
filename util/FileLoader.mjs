@@ -1,3 +1,5 @@
+import Logger from "./Logger.mjs";
+
 const LNBR_SEQ = /(?:\r\n|\n|\r)/g;
 const INI_GRP = /^\[(.+)\]$/;
 const INI_VAL = /^[^=]+=[^=]*$/;
@@ -57,10 +59,14 @@ class FileLoader {
                 }
                 if(INI_VAL.test(line)) {
                     var data = line.split("=");
+                    if (typeof res[act][data[0]] === "string") {
+                        Logger.warn(`${file} - duplicate key at line ${i}: ${line}`, "FileLoader");
+                    }
                     res[act][data[0]] = data[1];
                     continue;
                 }
-                throw new Error("parse error at line " + i + ": " + line);
+                Logger.error((new Error(`${file} - parse error at line ${i}: ${line}`)), "FileLoader");
+                break;
             }
             return res;
         });

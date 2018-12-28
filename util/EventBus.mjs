@@ -1,3 +1,5 @@
+import Logger from "./Logger.mjs";
+
 const subscriptions = new Map;
 const muted = new Set;
 let log = false;
@@ -16,7 +18,7 @@ class EventBus {
     }
 
     post(name, ...args) {
-        if (log) console.log(`[EVENT] ${name}(${args.join(', ')})`);
+        if (log) Logger.log(`${name} (${args.join(', ')})`, "EVENT");
         if (muted.has(name)) return;
         if (subscriptions.has(name)) {
             subscriptions.get(name).forEach(fn => fn(...args));
