@@ -43,10 +43,9 @@ class FileLoader {
             mode: 'cors',
             cache: 'default'
         })).then(r => r.text()).then(r => {
-            var
-                res = {},
-                act = "",
-                lines = ini.split(LNBR_SEQ);
+            let res = {"":{}};
+            let act = "";
+            let lines = r.split(LNBR_SEQ);
             for(let i = 0; i < lines.length; ++i) {
                 var line = lines[i];
                 if(line.startsWith(";") || !line.length) {

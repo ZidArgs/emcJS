@@ -55,7 +55,7 @@ class Logger {
                     target: `${!!msg.filename?msg.filename:"anonymous"} ${msg.lineno}:${msg.colno}`,
                     type: "SEVERE",
                     time: (new Date).toJSON().replace(TIME_FND, TIME_REP),
-                    message: `${msg.message}${!!error?"\n"+error.stack:""}`
+                    message: !!msg.error ? msg.error : msg.message
                 });
             } else {
                 write({
