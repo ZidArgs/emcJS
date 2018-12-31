@@ -58,7 +58,7 @@ const TPL = new Template(`
         }
         .text {
             display: block;
-            padding-bottom: 20px;
+            padding: 20px;
             word-wrap: break-word;
             resize: none;
         }
@@ -249,7 +249,7 @@ export default class DeepDialog extends HTMLElement {
         });
     }
     
-    static confirm(ttl, msg, ret) {
+    static confirm(ttl, msg) {
         return new Promise(function(resolve) {
             let d = new DeepDialog({
                 title: ttl,
@@ -270,7 +270,7 @@ export default class DeepDialog extends HTMLElement {
         });
     }
     
-    static prompt(ttl, msg, ret) {
+    static prompt(ttl, msg) {
         return new Promise(function(resolve) {
             let d = new DeepDialog({
                 title: ttl,
