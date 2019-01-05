@@ -108,18 +108,22 @@ export default class DeepDialog extends DeepWindow {
         let footer = this.shadowRoot.getElementById('footer');
 
         let sbm = this.shadowRoot.getElementById('submit');
-        if (!!options.submit && typeof options.submit === "string") {
-            sbm.innerHTML = options.submit;
-            sbm.setAttribute("title", options.submit);
+        if (!!options.submit) {
+            if (typeof options.submit === "string") {
+                sbm.innerHTML = options.submit;
+                sbm.setAttribute("title", options.submit);
+            }
             sbm.onclick = dialogSubmit.bind(this);
         } else {
             footer.removeChild(sbm);
         }
 
         let ccl = this.shadowRoot.getElementById('cancel');
-        if (!!options.cancel && typeof options.cancel === "string") {
-            ccl.innerHTML = options.cancel;
-            ccl.setAttribute("title", options.cancel);
+        if (!!options.cancel) {
+            if (typeof options.cancel === "string") {
+                ccl.innerHTML = options.cancel;
+                ccl.setAttribute("title", options.cancel);
+            }
             ccl.onclick = dialogCancel.bind(this);
         } else {
             footer.removeChild(ccl);

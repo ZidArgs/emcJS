@@ -226,6 +226,11 @@ export default class DeepSettingsWindow extends DeepWindow {
         }
         if (!!category) {
             this.active = category;
+        } else {
+            let ctg = this.shadowRoot.getElementById('categories').children;
+            if (!!ctg.length) {
+                this.active = ctg[0].getAttribute('target')
+            }
         }
     }
 
