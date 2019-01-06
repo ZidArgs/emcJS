@@ -344,12 +344,15 @@ export default class DeepSettingsWindow extends DeepWindow {
         this.shadowRoot.getElementById(`panel_${category}`).appendChild(el);
     }
 
-    addButton(category, label, ref, text = "") {
+    addButton(category, label, ref, text = "", callback) {
         let el = generateField(label);
         let input = document.createElement("button");
         input.className = "settings-button";
         input.dataset.ref = ref;
         input.innerHTML = text;
+        if (typeof callback == "function") {
+            input.onclick = callback;
+        }
         el.appendChild(input);
         this.shadowRoot.getElementById(`panel_${category}`).appendChild(el);
     }
