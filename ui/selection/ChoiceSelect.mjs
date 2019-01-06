@@ -18,6 +18,7 @@ const TPL = new Template(`
         }
         ::slotted(option) {
             display: inline-block;
+            min-height: auto;
             cursor: pointer;
         }
         ::slotted(option:not(.active)) {

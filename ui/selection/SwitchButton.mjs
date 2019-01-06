@@ -23,6 +23,7 @@ const TPL = new Template(`
         ::slotted(option) {
             width: 100%;
             height: 100%;
+            min-height: auto;
             background-repeat: no-repeat;
             background-size: contain;
             background-position: center;
