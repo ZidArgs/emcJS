@@ -1,4 +1,5 @@
 import DeepWindow from "./Window.mjs";
+import {createOption} from "./UIHelper.mjs";
 import Template from "../util/Template.mjs";
 
 const TPL = new Template(`
@@ -333,10 +334,7 @@ export default class DeepSettingsWindow extends DeepWindow {
         let input = document.createElement("select");
         input.className = "settings-input";
         for (let j in values) {
-            let option = document.createElement("option");
-            option.innerHTML = values[j];
-            option.setAttribute("value", j);
-            input.appendChild(option);
+            input.appendChild(createOption(j, values[j]));
         }
         input.value = def;
         input.dataset.ref = ref;

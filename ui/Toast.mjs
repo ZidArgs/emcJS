@@ -5,26 +5,24 @@ const TPL = new Template(`
     <style>
         :host {
             position: fixed;
-            display: inline-block;
+            display: flex;
+            justify-content: center;
             left: 0;
             right: 0;
-            margin: auto;
             bottom: 50px;
             cursor: pointer;
+            pointer-events: none;
         }
         #text {
             position: relative;
             box-sizing: border-box;
             disply: inline-block;
             padding: 20px;
-            box-shadow: 2px 2px 2px black;
+            box-shadow: 5px 5px 20px black;
             whitespace: pre;
             color: #000000;
             background-color: #ffffff;
-        }
-        #text.success {
-            color: #4f8a10;
-            background-color: #dff2bf;
+            pointer-events: all;
         }
         #text.info {
             color: #00529b;
