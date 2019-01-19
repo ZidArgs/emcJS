@@ -1,0 +1,12 @@
+- REST interface
+    - at least GET/POST
+    - predefine url, leave placeholders
+    - fill placeholders on send request
+
+- Storage-Model-System
+    - have a storage model containing fields and types
+
+- Types (self casting types)
+    - add types that autocast on value set
+
+- 
