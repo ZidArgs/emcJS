@@ -7,6 +7,9 @@
     - have a storage model containing fields and types
 
 - Types (self casting types)
-    - add types that autocast on value set
+    - integer
+    - float
+    - date
+    - ...
 
 - 

@@ -20,18 +20,15 @@ const TPL = new Template(`
             right: 0;
             bottom: 0;
             background-color: rgba(0, 0, 0, 0.3);
-            -webkit-box-align: start;
-                -ms-flex-align: start;
-                    align-items: flex-start;
-            -webkit-box-pack: center;
-                -ms-flex-pack: center;
-                    justify-content: center;
+            align-items: flex-start;
+            justify-content: center;
             backdrop-filter: blur(2px);
             -webkit-backdrop-filter: blur(2px);
             z-index: 1000000;
         }
         #window {
-            display: table;
+            display: flex;
+            flex-direction: column;
             width: 100%;
             max-width: 1000px;
             margin-top: 100px;
@@ -47,9 +44,7 @@ const TPL = new Template(`
         }
         #title {
             display: flex;
-            -webkit-box-align: center;
-               -ms-flex-align: center;
-                  align-items: center;
+            align-items: center;
             flex: 1;
             height: 30px;
             padding: 0 10px;
@@ -65,12 +60,8 @@ const TPL = new Template(`
             width: 40px;
             height: 30px;
             border: none;
-            -webkit-box-align: center;
-               -ms-flex-align: center;
-                  align-items: center;
-            -webkit-box-pack: center;
-               -ms-flex-pack: center;
-             justify-content: center;
+            align-items: center;
+            justify-content: center;
             cursor: pointer;
             -webkit-appearance: none;
             font-size: 1.2em;
@@ -88,8 +79,12 @@ const TPL = new Template(`
             overflow: auto;
         }
         :focus {
-            -webkit-box-shadow: #3b92ff 0 0px 6px 3px;
-                    box-shadow: #3b92ff 0 0px 6px 3px;
+            outline: none;
+            box-shadow: blue 0 0px 3px 4px;
+        }
+        #close:focus {
+            outline: none;
+            box-shadow: inset red 0 0px 3px 4px;
         }
     </style>
     <div id="focus_catcher_top" tabindex="0"></div>

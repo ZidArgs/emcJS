@@ -16,7 +16,6 @@ const TPL = new Template(`
         }
         #text {
             display: block;
-            padding: 20px;
             word-wrap: break-word;
             resize: none;
         }
@@ -52,9 +51,6 @@ const TPL = new Template(`
         #window {
             width: auto;
             min-width: 20vw;
-        }
-        #body {
-            padding: 20px;
         }
     </style>
     <div id="text">
