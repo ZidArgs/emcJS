@@ -1,4 +1,3 @@
-import DeepWindow from "./Window.mjs";
 import Template from "../util/Template.mjs";
 
 const TPL = new Template(`

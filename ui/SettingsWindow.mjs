@@ -137,7 +137,7 @@ function settingsSubmit() {
     let ev = new Event('submit');
     ev.data = data;
     this.dispatchEvent(ev);
-    document.body.removeChild(this);
+    this.close();
 }
 
 export default class DeepSettingsWindow extends DeepWindow {
@@ -174,7 +174,10 @@ export default class DeepSettingsWindow extends DeepWindow {
             ccl.innerHTML = options.cancel;
             ccl.setAttribute("title", options.cancel);
         }
-        ccl.onclick = () => this.close();
+        ccl.onclick = () => {
+            this.dispatchEvent(new Event('cancel'));
+            this.close();
+        }
     }
 
     get active() {

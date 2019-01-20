@@ -55,6 +55,17 @@ const TPL = new Template(`
             font-size: 1em;
             line-height: 1em;
         }
+        #body {
+            display: block;
+            padding: 5px;
+            min-height: 10vh;
+            max-height: 50vh;
+            overflow: auto;
+        }
+        :focus {
+            outline: none;
+            box-shadow: blue 0 0px 3px 4px;
+        }
         #close {
             display: flex;
             width: 40px;
@@ -70,17 +81,6 @@ const TPL = new Template(`
         #close:hover {
             color: white;
             background-color: red;
-        }
-        #body {
-            display: block;
-            padding: 5px;
-            min-height: 10vh;
-            max-height: 50vh;
-            overflow: auto;
-        }
-        :focus {
-            outline: none;
-            box-shadow: blue 0 0px 3px 4px;
         }
         #close:focus {
             outline: none;
