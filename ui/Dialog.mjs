@@ -92,14 +92,12 @@ export default class DeepDialog extends DeepWindow {
         let els = TPL.generate();
         let window = this.shadowRoot.getElementById('window');
         this.shadowRoot.insertBefore(els.children[0], this.shadowRoot.getElementById('focus_catcher_top'));
-        this.shadowRoot.getElementById('body').insertBefore(els.getElementById('text'), this.shadowRoot.getElementById('body').children[0]);
         window.appendChild(els.getElementById('footer'));
 
-        let text = this.shadowRoot.getElementById('text');
         if (!!options.text && typeof options.text === "string") {
+            let text = els.getElementById('text');
+            this.shadowRoot.getElementById('body').insertBefore(text, this.shadowRoot.getElementById('body').children[0]);
             text.innerHTML = options.text;
-        } else {
-            window.removeChild(text);
         }
         let footer = this.shadowRoot.getElementById('footer');
 
