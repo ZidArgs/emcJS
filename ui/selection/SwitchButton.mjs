@@ -60,6 +60,14 @@ export default class DeepSwitchButton extends HTMLElement {
         this.setAttribute('value', val);
     }
 
+    get readonly() {
+        return this.getAttribute('readonly');
+    }
+
+    set readonly(val) {
+        this.setAttribute('readonly', val);
+    }
+
     static get observedAttributes() {
         return ['value'];
     }
@@ -86,13 +94,15 @@ export default class DeepSwitchButton extends HTMLElement {
     }
 
     next(ev) {
-        let all = this.querySelectorAll("option");
-        if (!!all.length) {
-            let opt = this.querySelector(`option[value="${this.value}"]`);
-            if (!!opt && !!opt.nextElementSibling) {
-                this.value = opt.nextElementSibling.value;
-            } else {
-                this.value = all[0].value;
+        if (!this.readonly) {
+            let all = this.querySelectorAll("option");
+            if (!!all.length) {
+                let opt = this.querySelector(`option[value="${this.value}"]`);
+                if (!!opt && !!opt.nextElementSibling) {
+                    this.value = opt.nextElementSibling.value;
+                } else {
+                    this.value = all[0].value;
+                }
             }
         }
         ev.preventDefault();
@@ -100,13 +110,15 @@ export default class DeepSwitchButton extends HTMLElement {
     }
 
     prev(ev) {
-        let all = this.querySelectorAll("option");
-        if (!!all.length) {
-            let opt = this.querySelector(`option[value="${this.value}"]`);
-            if (!!opt && !!opt.previousElementSibling) {
-                this.value = opt.previousElementSibling.value;
-            } else {
-                this.value = all[all.length-1].value;
+        if (!this.readonly) {
+            let all = this.querySelectorAll("option");
+            if (!!all.length) {
+                let opt = this.querySelector(`option[value="${this.value}"]`);
+                if (!!opt && !!opt.previousElementSibling) {
+                    this.value = opt.previousElementSibling.value;
+                } else {
+                    this.value = all[all.length-1].value;
+                }
             }
         }
         ev.preventDefault();

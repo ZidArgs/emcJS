@@ -30,7 +30,9 @@ const TPL = new Template(`
 `);
 
 function chooseOption(event) {
-    this.value = event.target.value;
+    if (!this.readonly) {
+        this.value = event.target.value;
+    }
 }
 
 export default class DeepChoiceSelect extends HTMLElement {
@@ -56,6 +58,14 @@ export default class DeepChoiceSelect extends HTMLElement {
 
     set value(val) {
         this.setAttribute('value', val);
+    }
+
+    get readonly() {
+        return this.getAttribute('readonly');
+    }
+
+    set readonly(val) {
+        this.setAttribute('readonly', val);
     }
 
     static get observedAttributes() {
