@@ -116,22 +116,18 @@ function settingsSubmit() {
     let data = {};
     Array.from(this.shadowRoot.querySelectorAll('.panel[data-ref]')).forEach(i => {
         data[i.dataset.ref] = data[i.dataset.ref] || {};
-        Array.from(i.querySelectorAll('input[data-ref],select[data-ref]')).forEach(j => {
-            if (j.tagName === "SELECT") {
-                data[i.dataset.ref][j.dataset.ref] = j.value;
-            } else {
-                switch (j.type) {
-                    case 'checkbox':
-                        data[i.dataset.ref][j.dataset.ref] = j.checked;
-                        break;
-                    case 'number':
-                    case 'range':
-                        data[i.dataset.ref][j.dataset.ref] = parseFloat(j.value);
-                        break;
-                    default:
-                        data[i.dataset.ref][j.dataset.ref] = j.value;
-                        break;
-                }
+        Array.from(i.querySelectorAll('.settings-input[data-ref]')).forEach(j => {
+            switch (j.type) {
+                case 'checkbox':
+                    data[i.dataset.ref][j.dataset.ref] = j.checked;
+                    break;
+                case 'number':
+                case 'range':
+                    data[i.dataset.ref][j.dataset.ref] = parseFloat(j.value);
+                    break;
+                default:
+                    data[i.dataset.ref][j.dataset.ref] = j.value;
+                    break;
             }
         });
     });
