@@ -9,12 +9,11 @@ const TPL = new Template(`
         :host {
             display: block;
             user-select: none;
+            overflow: auto;
         }
         slot {
             display: block;
             width: 100%;
-            height: 100%;
-            overflow: auto;
         }
         ::slotted(:not(option)) {
             display: none;
@@ -28,10 +27,11 @@ const TPL = new Template(`
             opacity: 0.5;
         }
         ::slotted(option.active) {
-            background-color: #cccccc;
+            background-color: #b3d1ff;
         }
         ::slotted(option:hover) {
-            background-color: #a9e1ff;
+            background-color: #020088;
+            color: #ffffff;
         }
     </style>
     <slot id="container">
