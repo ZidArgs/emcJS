@@ -8,6 +8,7 @@ const TPL = new Template(`
         }
         :host {
             display: block;
+            min-width: 200px;
             user-select: none;
             overflow-x: hidden;
             overflow-y: auto;
