@@ -25,15 +25,31 @@ const TPL = new Template(`
             opacity: 0.5;
         }
     </style>
-    <slot>
+    <slot id="container">
     </slot>
 `);
 
 function chooseOption(event) {
     if (!this.readonly) {
-        this.value = event.target.value;
+        if (this.multimode == "true") {
+            let arr = [];
+            if (!!this.value && this.value.length > 0) {
+                arr = this.value.split(",");
+            }
+            let set = new Set(arr);
+            if (set.has(event.target.value)) {
+                set.delete(event.target.value);
+            } else {
+                set.add(event.target.value);
+            }
+            this.value = Array.from(set).join(",");
+        } else {
+            this.value = event.target.value;
+        }
     }
 }
+
+// TODO react on slotted change (maybe deselect or select new elements)
 
 export default class DeepChoiceSelect extends HTMLElement {
 
@@ -42,6 +58,9 @@ export default class DeepChoiceSelect extends HTMLElement {
         this.addEventListener("click", chooseOption.bind(this));
         this.attachShadow({mode: 'open'});
         this.shadowRoot.appendChild(TPL.generate());
+        this.shadowRoot.getElementById("container").addEventListener("slotchange", event => {
+            this.calculateItems();
+        });
         /* init */
         if (!this.value) {
             let all = this.querySelectorAll("option");
@@ -60,6 +79,14 @@ export default class DeepChoiceSelect extends HTMLElement {
         this.setAttribute('value', val);
     }
 
+    get multimode() {
+        return this.getAttribute('multimode');
+    }
+
+    set multimode(val) {
+        this.setAttribute('multimode', val);
+    }
+
     get readonly() {
         return this.getAttribute('readonly');
     }
@@ -69,27 +96,46 @@ export default class DeepChoiceSelect extends HTMLElement {
     }
 
     static get observedAttributes() {
-        return ['value'];
+        return ['value', 'multimode'];
     }
       
     attributeChangedCallback(name, oldValue, newValue) {
         switch (name) {
             case 'value':
                 if (oldValue != newValue) {
-                    let ol = this.querySelector(`option[value="${oldValue}"]`);
-                    if (!!ol) {
-                        ol.classList.remove("active");
-                    }
-                    let nl = this.querySelector(`option[value="${newValue}"]`);
-                    if (!!nl) {
-                        nl.classList.add("active");
-                    }
+                    this.calculateItems();
                     var event = new Event('change');
                     event.oldValue = oldValue;
                     event.newValue = newValue;
                     this.dispatchEvent(event);
                 }
                 break;
+            case 'multimode':
+                if (oldValue != newValue) {
+                    if (newValue != "true") {
+                        let arr = this.value.split(",");
+                        if (arr.length > 1) {
+                            this.value = arr[0];
+                        }
+                    }
+                }
+                break;
+        }
+    }
+    
+    calculateItems() {
+        this.querySelectorAll(`option[value]:not([value=""])`).forEach(el => {
+            if (!!el) {
+                el.classList.remove("active");
+            }
+        });
+        if (typeof this.value === "string" && this.value.length > 0) {
+            this.value.split(",").forEach(v => {
+                let el = this.querySelector(`option[value="${v}"]`);
+                if (!!el) {
+                    el.classList.add("active");
+                }
+            });
         }
     }
 

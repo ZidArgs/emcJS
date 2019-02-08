@@ -10,7 +10,8 @@
         <script type="module" src="ui/selection/ListSelect.mjs"></script>
     </head>
     <body>
-        <deep-listselect style="height: 80px;">
+
+        <deep-listselect id="select-1" multimode="true" style="height: 80px;">
             <option value="1">One</option>
             <option value="2">Two</option>
             <option value="3">Three</option>
@@ -20,5 +21,25 @@
             <option value="7">Seven</option>
             <option value="8">Eight</option>
         </deep-listselect>
+
+        <deep-listselect id="select-2" multimode="true" style="height: 80px;">
+        </deep-listselect>
+
+        <button id="button-1">move</button>
+        
+        <script>
+            let s1 = document.getElementById("select-1");
+            let s2 = document.getElementById("select-2");
+            document.getElementById("button-1").addEventListener("click", e => {
+                let v = s1.value;
+                if (!!v.length) {
+                    v = v.split(",");
+                    v.forEach(el => {
+                        s2.appendChild(s1.querySelector(`[value="${el}"]`));
+                    });
+                    s1.value = "";
+                }
+            });
+        </script>
     </body>
 </html>
