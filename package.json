@@ -1,0 +1,17 @@
+{
+  "name": "deepjs-modules",
+  "version": "0.0.6",
+  "description": "Modular JS API",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@bitbucket.org/2deep4real/deepjs.git"
+  },
+  "author": "Denis Peters (2deep4real)",
+  "license": "MIT",
+  "homepage": "https://bitbucket.org/2deep4real/deepjs#readme",
+  "dependencies": {}
+}
