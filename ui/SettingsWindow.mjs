@@ -1,6 +1,7 @@
 import DeepWindow from "./Window.mjs";
 import {createOption} from "./UIHelper.mjs";
 import Template from "../util/Template.mjs";
+import "./selection/ListSelect.mjs";
 
 const TPL = new Template(`
     <style>
@@ -341,6 +342,20 @@ export default class DeepSettingsWindow extends DeepWindow {
         }
         input.value = def;
         input.dataset.ref = ref;
+        el.appendChild(input);
+        this.shadowRoot.getElementById(`panel_${category}`).appendChild(el);
+    }
+
+    addListSelectInput(category, label, ref, def, multimode, values) {
+        let el = generateField(label);
+        let input = document.createElement("deep-listselect");
+        input.className = "settings-input";
+        input.value = def;
+        input.multimode = multimode;
+        input.dataset.ref = ref;
+        for (let j in values) {
+            input.appendChild(createOption(j, values[j]));
+        }
         el.appendChild(input);
         this.shadowRoot.getElementById(`panel_${category}`).appendChild(el);
     }
