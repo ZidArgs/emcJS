@@ -79,6 +79,10 @@ const TPL = new Template(`
         input[type="checkbox"] {
             margin-right: 10px;
         }
+        deep-listselect {
+            flex: 1;
+            max-height: 150px;
+        }
         .option-text {
             display: inline-block;
             flex-basis: 500px;
