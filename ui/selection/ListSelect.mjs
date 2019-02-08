@@ -9,7 +9,8 @@ const TPL = new Template(`
         :host {
             display: block;
             user-select: none;
-            overflow: auto;
+            overflow-x: hidden;
+            overflow-y: auto;
         }
         slot {
             display: block;
@@ -22,6 +23,8 @@ const TPL = new Template(`
             display: block;
             min-height: auto;
             cursor: pointer;
+            white-space: normal;
+            margin: 5px 2px;
         }
         ::slotted(option:not(.active)) {
             opacity: 0.5;

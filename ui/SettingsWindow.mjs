@@ -83,6 +83,9 @@ const TPL = new Template(`
             flex: 1;
             max-height: 150px;
         }
+        .settings-input {
+            width: 50%;
+        }
         .option-text {
             display: inline-block;
             flex-basis: 500px;
