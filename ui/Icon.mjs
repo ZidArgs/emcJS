@@ -10,6 +10,8 @@ const TPL = new Template(`
             display: inline-block;
             width: 20px;
             height: 20px;
+            -webkit-user-select: none;
+            -moz-user-select: none;
             user-select: none;
         }
         div {

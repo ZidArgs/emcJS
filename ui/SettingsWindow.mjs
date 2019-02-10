@@ -90,6 +90,8 @@ const TPL = new Template(`
             flex-basis: 500px;
             flex-shrink: 1;
             margin-right: 10px;
+            -webkit-user-select: none;
+            -moz-user-select: none;
             user-select: none;
         }
     </style>

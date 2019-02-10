@@ -11,6 +11,8 @@ const TPL = new Template(`
             width: 20px;
             height: 20px;
             cursor: pointer;
+            -webkit-user-select: none;
+            -moz-user-select: none;
             user-select: none;
         }
         slot {

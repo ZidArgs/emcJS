@@ -7,6 +7,8 @@ const TPL = new Template(`
             box-sizing: border-box;
         }
         :host {
+            -webkit-user-select: none;
+            -moz-user-select: none;
             user-select: none;
         }
         slot {
