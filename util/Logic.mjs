@@ -3,6 +3,10 @@ class Logic {
     checkLogic(logic, custom) {
         if (!logic || logic == null || typeof logic !== "object") return true;
         switch(logic.type) {
+            case "false":
+                return false;
+            case "true":
+                return true;
             case "and":
                 if (!logic.el.length) return true;
                 for (let i = 0; i < logic.el.length; ++i) {
