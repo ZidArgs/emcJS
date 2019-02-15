@@ -26,7 +26,7 @@ export default class AbstractType {
     }
 
     toJSON() {
-        return JSON.stringify(this.value);
+        return this.value;
     }
 
     static format() {
