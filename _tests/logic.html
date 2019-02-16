@@ -1,0 +1,78 @@
+<html>
+    <head>
+        <title>deepJS sandbox</title>
+        <meta charset="UTF-8">
+        <meta name="description" content="Test for deepJS components">
+        <meta name="robots" content="nofollow">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+        <meta name="theme-color" content="#000000">
+
+        <script type="module" src="/ui/logic/LogicEditorBoard.mjs"></script>
+
+        <script type="module" src="/ui/logic/elements/literal/LogicTrue.mjs"></script>
+        <script type="module" src="/ui/logic/elements/literal/LogicFalse.mjs"></script>
+        <script type="module" src="/ui/logic/elements/operator/LogicAnd.mjs"></script>
+        <script type="module" src="/ui/logic/elements/operator/LogicOr.mjs"></script>
+        <script type="module" src="/ui/logic/elements/operator/LogicNot.mjs"></script>
+        <script type="module" src="/ui/logic/elements/operator/LogicNand.mjs"></script>
+        <script type="module" src="/ui/logic/elements/operator/LogicNor.mjs"></script>
+        <script type="module" src="/ui/logic/elements/operator/LogicXor.mjs"></script>
+        <script type="module" src="/ui/logic/elements/restrictor/LogicMin.mjs"></script>
+        <script type="module" src="/ui/logic/elements/restrictor/LogicMax.mjs"></script>
+
+        <style>
+            body {
+                display: flex;
+                margin: 0;
+                height: 100vh;
+                width: 100vw;
+            }
+            #content {
+                display: flex;
+                margin: 10px;
+                flex: 1;
+            }
+            #logic-board {
+                flex: 1;
+                margin: 10px;
+            }
+            #logic-operators {
+                display: flex;
+                align-items: flex-start;
+                justify-content: flex-start;
+                align-content: flex-start;
+                justify-items: flex-start;
+                flex-wrap: wrap;
+                margin: 10px;
+                width: 500px;
+                border: solid 1px black;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="content">
+            <deep-logiceditorboard id="logic-board"></deep-logiceditorboard>
+            <div id="logic-operators">
+                <deep-logic-true template></deep-logic-true>
+                <deep-logic-false template></deep-logic-false>
+        
+                <deep-logic-not template></deep-logic-not>
+                <deep-logic-and template></deep-logic-and>
+                <deep-logic-or template></deep-logic-or>
+                <deep-logic-nand template></deep-logic-nand>
+                <deep-logic-nor template></deep-logic-nor>
+                <deep-logic-xor template></deep-logic-xor>
+        
+                <deep-logic-min template></deep-logic-min>
+                <deep-logic-max template></deep-logic-max>
+        
+                <deep-logic-eq template></deep-logic-eq>
+                <deep-logic-neq template></deep-logic-neq>
+                <deep-logic-lt template></deep-logic-lt>
+                <deep-logic-gt template></deep-logic-gt>
+                <deep-logic-geq template></deep-logic-geq>
+                <deep-logic-leq template></deep-logic-leq>
+            </div>
+        </div>
+    </body>
+</html>

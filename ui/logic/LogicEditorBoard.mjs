@@ -7,48 +7,53 @@ const TPL = new Template(`
             box-sizing: border-box;
         }
         :host {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
+            display: block;
             -webkit-user-select: none;
             -moz-user-select: none;
             user-select: none;
+            border: solid 2px #bdbdbd;
+            background-color: #f2f2f2;
+            border-radius: 10px;
         }
-        div {
-            width: 100%;
-            height: 100%;
-            background-repeat: no-repeat;
-            background-size: contain;
-            background-position: center;
-            background-origin: content-box;
-            pointer-events: none;
+        .body {
+            display: block;
+            padding: 10px;
+            border-top-width: 1px;
+            border-top-style: solid;
+            border-color: var(--logic-color-border, black);
+        }
+        .placeholder {
+            display: table;
+            margin: 5px;
+            padding: 5px 20px;
+            background-color: lightgray;
+            border: 1px solid gray;
         }
     </style>
-    <div>
-        <span id="placeholder">...</span>
-    </div>
+    <slot id="child">
+        <span id="droptarget" class="placeholder">...</span>
+    </slot>
 `);
 
 function allowDrop(event) {
     event.preventDefault();
     event.stopPropagation();
+    return false;
 }
 
 function dropOnPlaceholder(event) {
-    event.preventDefault();
-    event.stopPropagation();
-    if (!!ev.dataTransfer) {
-        var id = ev.dataTransfer.getData("text");
+    if (!!event.dataTransfer) {
+        var id = event.dataTransfer.getData("logic-transfer-id");
         var el = document.getElementById(id);
         if (!!el) {
-            if (id.startsWith("logic_onboard_")) {
-                moveLogicEl(el, ev.target, ev.ctrlKey);
-            } else {
-                addLogicEl(el, ev.target);
-            }
-            exportLogic();
+            let ne = el.getElement(event.ctrlKey);
+            ne.removeAttribute("slot");
+            event.target.getRootNode().host.appendChild(ne);
         }
     }
+    event.preventDefault();
+    event.stopPropagation();
+    return false;
 }
 
 export default class LogicEditorBoard extends HTMLElement {
@@ -57,54 +62,18 @@ export default class LogicEditorBoard extends HTMLElement {
         super();
         this.attachShadow({mode: 'open'});
         this.shadowRoot.appendChild(TPL.generate());
-        let placeholder = this.shadowRoot.getElementById('placeholder');
-        ondrop="dropOnPlaceholder(event)"
-        ondragover="allowDrop(event)"
+        let target = this.shadowRoot.getElementById('droptarget');
+        target.ondragover = allowDrop;
+        target.ondrop = dropOnPlaceholder;
     }
 
-    get src() {
-        return this.getAttribute('src');
-    }
-
-    set src(val) {
-        this.setAttribute('src', val);
-    }
-
-    static get observedAttributes() {
-        return ['src'];
-    }
-      
-    attributeChangedCallback(name, oldValue, newValue) {
-        switch (name) {
-            case 'src':
-                if (oldValue != newValue) {
-                    this.shadowRoot.querySelector('div').style.backgroundImage = `url("${newValue}")`;
-                }
-                break;
+    getLogic() {
+        let el = this.children[0];
+        if (!!el) {
+            return el.toJSON();
         }
     }
 
 }
 
 customElements.define('deep-logiceditorboard', LogicEditorBoard);
-
-/*
-
-<div id="logic-and" class="logic-operator logic-and multiple-children" draggable="true">
-    <div class="operator-header">AND</div>
-    <span class="placeholder">...</span>
-</div>
-<div id="logic-or" class="logic-operator logic-or multiple-children" draggable="true">
-    <div class="operator-header">OR</div>
-    <span class="placeholder">...</span>
-</div>
-<div id="logic-not" class="logic-operator logic-not" draggable="true">
-    <div class="operator-header">NOT</div>
-    <span class="placeholder">...</span>
-</div>
-<div id="logic-min" class="logic-operator logic-min" draggable="true">
-    <div class="operator-header">MIN <input type="number" MIN="1" MAX="100" value="1" disabled></div>
-    <span class="placeholder">...</span>
-</div>
-
-*/
