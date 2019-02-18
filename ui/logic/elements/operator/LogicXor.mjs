@@ -55,20 +55,22 @@ export default class LogicXor extends DeepLogicAbstractElement {
     }
 
     toJSON() {
-        let el0 = this.children[0];
-        if (!!el0) {
-            el0 = el0.toJSON();
+        if (this.children.length > 0) {
+            let el0 = this.children[0];
+            if (!!el0) {
+                el0 = el0.toJSON();
+            }
+            let el1 = this.children[1];
+            if (!!el1) {
+                el1 = el1.toJSON();
+            }
+            return {
+                type: "operator",
+                el: "nand",
+                child0: el0,
+                child1: el1
+            };
         }
-        let el1 = this.children[0];
-        if (!!el1) {
-            el1 = el1.toJSON();
-        }
-        return {
-            type: "operator",
-            el: "nand",
-            child0: el0,
-            child1: el1
-        };
     }
 
 }

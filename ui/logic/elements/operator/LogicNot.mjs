@@ -49,15 +49,17 @@ export default class LogicNot extends DeepLogicAbstractElement {
     }
 
     toJSON() {
-        let el = this.children[0];
-        if (!!el) {
-            el = el.toJSON();
+        if (this.children.length > 0) {
+            let el = this.children[0];
+            if (!!el) {
+                el = el.toJSON();
+            }
+            return {
+                type: "operator",
+                el: "not",
+                child: el
+            };
         }
-        return {
-            type: "operator",
-            el: "not",
-            child: el
-        };
     }
 
 }

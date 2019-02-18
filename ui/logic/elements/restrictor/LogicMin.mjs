@@ -49,16 +49,18 @@ export default class LogicMin extends DeepLogicAbstractElement {
     }
 
     toJSON() {
-        let el = this.children[0];
-        if (!!el) {
-            el = el.toJSON();
+        if (this.children.length > 0) {
+            let el = this.children[0];
+            if (!!el) {
+                el = el.toJSON();
+            }
+            return {
+                type: "restrictor",
+                el: "min",
+                child: el,
+                min: 0
+            };
         }
-        return {
-            type: "restrictor",
-            el: "min",
-            child: el,
-            min: 0
-        };
     }
 
 }

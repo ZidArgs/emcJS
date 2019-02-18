@@ -51,8 +51,17 @@ const TPL = new Template(`
             border: 1px solid gray;
             font-weight: bold;
         }
+        :host(:not([template])) .placeholder,
+        :host([template="false"]) .placeholder {
+            cursor: pointer;
+        }
+        :host([readonly]:not([readonly="false"])) .placeholder {
+            display: none;
+        }
     </style>
 `);
+
+// TODO add on placeholder click dialog to append logic elements
 
 export default class DeepAbstractLogicElement extends HTMLElement {
 
@@ -61,7 +70,7 @@ export default class DeepAbstractLogicElement extends HTMLElement {
         this.attachShadow({mode: 'open'});
         this.shadowRoot.appendChild(TPL.generate());
         this.setAttribute("draggable", "true");
-        this.setAttribute("id", UID.generate("logic-element"))
+        this.setAttribute("id", UID.generate("logic-element"));
         this.ondragstart = function(event) {
             event.dataTransfer.setData("logic-transfer-id", event.target.id);
         }
@@ -77,6 +86,10 @@ export default class DeepAbstractLogicElement extends HTMLElement {
         }
     }
 
+    visualizeValue() {
+        // TODO ask children for value and show in element
+    }
+
     get template() {
         return this.getAttribute('template');
     }
@@ -85,12 +98,38 @@ export default class DeepAbstractLogicElement extends HTMLElement {
         this.setAttribute('template', val);
     }
 
+    get readonly() {
+        return this.getAttribute('readonly');
+    }
+
+    set readonly(val) {
+        this.setAttribute('readonly', val);
+    }
+
+    static get observedAttributes() {
+        return ['readonly'];
+    }
+      
+    attributeChangedCallback(name, oldValue, newValue) {
+        switch (name) {
+            case 'readonly':
+                if (oldValue != newValue) {
+                    if (newValue == "false") {
+                        this.setAttribute("draggable", "true");
+                    } else {
+                        this.removeAttribute("draggable");
+                    }
+                }
+                break;
+        }
+    }
+
     toJSON() {
         throw new TypeError("can not call abstract method");
     }
     
     appendChild(el) {
-        if (typeof this.template != "string" || this.template == "false") {
+        if (el instanceof DeepAbstractLogicElement && (typeof this.template != "string" || this.template == "false")) {
             return super.appendChild(el);
         }
     }
