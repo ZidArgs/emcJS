@@ -49,6 +49,7 @@ const TPL = new Template(`
             padding: 5px 20px;
             background-color: lightgray;
             border: 1px solid gray;
+            font-weight: bold;
         }
     </style>
 `);
@@ -68,7 +69,7 @@ export default class DeepAbstractLogicElement extends HTMLElement {
 
     getElement(forceCopy = false) {
         if (!!forceCopy || (typeof this.template == "string" && this.template != "false")) {
-            let el = this.cloneNode();
+            let el = this.cloneNode(true);
             el.removeAttribute('template');
             return el;
         } else {
@@ -82,6 +83,16 @@ export default class DeepAbstractLogicElement extends HTMLElement {
 
     set template(val) {
         this.setAttribute('template', val);
+    }
+
+    toJSON() {
+        throw new TypeError("can not call abstract method");
+    }
+    
+    appendChild(el) {
+        if (typeof this.template != "string" || this.template == "false") {
+            return super.appendChild(el);
+        }
     }
 
 }

@@ -28,6 +28,7 @@ const TPL = new Template(`
             padding: 5px 20px;
             background-color: lightgray;
             border: 1px solid gray;
+            font-weight: bold;
         }
     </style>
     <slot id="child">

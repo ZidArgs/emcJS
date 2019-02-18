@@ -30,9 +30,10 @@ function dropOnPlaceholder(event) {
         var id = event.dataTransfer.getData("logic-transfer-id");
         var el = document.getElementById(id);
         if (!!el) {
-            let ne = el.getElement(event.ctrlKey);
-            ne.setAttribute("slot", event.target.parentElement.name);
-            event.target.getRootNode().host.appendChild(ne);
+            let ne = event.target.getRootNode().host.appendChild(el.getElement(event.ctrlKey));
+            if (!!ne) {
+                ne.setAttribute("slot", event.target.parentElement.name);
+            }
         }
     }
     event.preventDefault();
