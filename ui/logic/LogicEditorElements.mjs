@@ -8,6 +8,7 @@ const TPL = new Template(`
         }
         :host {
             display: block;
+            padding: 5px;
             -webkit-user-select: none;
             -moz-user-select: none;
             user-select: none;
@@ -15,6 +16,12 @@ const TPL = new Template(`
             background-color: #222;
             border-color: #777;
             border-radius: 10px;
+        }
+        slot {
+            display: block;
+            height: 100%;
+            overflow-y: auto;
+            overflow-x: hidden;
         }
     </style>
     <slot></slot>

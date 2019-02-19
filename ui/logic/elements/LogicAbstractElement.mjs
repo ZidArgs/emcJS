@@ -50,10 +50,10 @@ const TPL = new Template(`
             background-color: lightgray;
             border: 1px solid gray;
             font-weight: bold;
-        }
-        :host(:not([template])) .placeholder,
-        :host([template="false"]) .placeholder {
             cursor: pointer;
+        }
+        :host([template]:not([template="false"])) .placeholder {
+            cursor: default;
         }
         :host([readonly]:not([readonly="false"])) .placeholder {
             display: none;
@@ -69,7 +69,7 @@ function dragStart(event) {
 
 const ID = new WeakMap();
 
-export default class DeepAbstractLogicElement extends HTMLElement {
+export default class DeepLogicAbstractElement extends HTMLElement {
 
     constructor() {
         super();
@@ -79,7 +79,9 @@ export default class DeepAbstractLogicElement extends HTMLElement {
     }
 
     connectedCallback() {
-        this.setAttribute("draggable", "true"); // TODO readonly
+        if (this.readonly === null || this.readonly == "false") {
+            this.setAttribute("draggable", "true");
+        }
         this.id = ID.get(this);
         this.addEventListener("dragstart", dragStart);
     }
@@ -128,7 +130,7 @@ export default class DeepAbstractLogicElement extends HTMLElement {
         switch (name) {
             case 'readonly':
                 if (oldValue != newValue) {
-                    if (newValue == "false") {
+                    if (newValue === null || newValue == "false") {
                         this.setAttribute("draggable", "true");
                     } else {
                         this.removeAttribute("draggable");
@@ -143,9 +145,18 @@ export default class DeepAbstractLogicElement extends HTMLElement {
     }
     
     appendChild(el) {
-        if (el instanceof DeepAbstractLogicElement && (typeof this.template != "string" || this.template == "false")) {
+        if (el instanceof DeepLogicAbstractElement && (typeof this.template != "string" || this.template == "false")) {
             return super.appendChild(el);
         }
     }
 
+}
+
+DeepLogicAbstractElement.allowDrop = function allowDrop(event) {
+    let el = event.target.getRootNode().host;
+    if (el.readonly === null || el.readonly == "false") {
+        event.preventDefault();
+        event.stopPropagation();
+        return false;
+    }
 }

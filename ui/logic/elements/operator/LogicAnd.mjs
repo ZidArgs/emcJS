@@ -15,12 +15,6 @@ const TPL = new Template(`
     </div>
 `);
 
-function allowDrop(event) {
-    event.preventDefault();
-    event.stopPropagation();
-    return false;
-}
-
 function dropOnPlaceholder(event) {
     if (!!event.dataTransfer) {
         var id = event.dataTransfer.getData("logic-transfer-id");
@@ -43,7 +37,7 @@ export default class LogicAnd extends DeepLogicAbstractElement {
         super();
         this.shadowRoot.appendChild(TPL.generate());
         let target = this.shadowRoot.getElementById("droptarget");
-        target.ondragover = allowDrop;
+        target.ondragover = DeepLogicAbstractElement.allowDrop;
         target.ondrop = dropOnPlaceholder;
     }
 

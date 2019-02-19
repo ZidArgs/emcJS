@@ -4,11 +4,11 @@ import DeepLogicAbstractElement from "../LogicAbstractElement.mjs";
 const TPL = new Template(`
     <style>
         :host {
-            --logic-color-back: aqua;
-            --logic-color-border: #009999;
+            --logic-color-back: #00aacc;
+            --logic-color-border: #003377;
         }
     </style>
-    <div class="header">XOR</div>
+    <div class="header">&gt;=</div>
     <div class="body">
         <slot id="child0" name="slot0">
             <span id="droptarget0" class="placeholder">...</span>
@@ -41,7 +41,7 @@ function dropOnPlaceholder(event) {
     return false;
 }
 
-export default class LogicXor extends DeepLogicAbstractElement {
+export default class LogicGTE extends DeepLogicAbstractElement {
 
     constructor() {
         super();
@@ -65,7 +65,7 @@ export default class LogicXor extends DeepLogicAbstractElement {
                 el1 = el1.toJSON();
             }
             return {
-                type: "xor",
+                type: "gte",
                 child0: el0,
                 child1: el1
             };
@@ -74,4 +74,4 @@ export default class LogicXor extends DeepLogicAbstractElement {
 
 }
 
-customElements.define('deep-logic-xor', LogicXor);
+customElements.define('deep-logic-gte', LogicGTE);
