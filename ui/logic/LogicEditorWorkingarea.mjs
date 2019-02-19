@@ -8,14 +8,14 @@ const TPL = new Template(`
             box-sizing: border-box;
         }
         :host {
-            display: block;
+            display: flex;
             -webkit-user-select: none;
             -moz-user-select: none;
             user-select: none;
             border: solid 2px;
             background-color: #222;
             border-color: #777;
-            border-radius: 10px;
+            overflow: hidden;
         }
         .placeholder {
             display: table;
@@ -24,6 +24,12 @@ const TPL = new Template(`
             background-color: lightgray;
             border: 1px solid gray;
             font-weight: bold;
+        }
+        slot {
+            display: block;
+            flex: 1;
+            overflow-y: auto;
+            overflow-x: hidden;
         }
     </style>
     <slot id="child">
@@ -62,6 +68,13 @@ export default class LogicEditorWorkingarea extends HTMLElement {
         let target = this.shadowRoot.getElementById('droptarget');
         target.ondragover = allowDrop;
         target.ondrop = dropOnPlaceholder;
+    }
+
+    visualizeValue() {
+        let el = this.children[0];
+        if (!!el) {
+            el.visualizeValue();
+        }
     }
 
     getLogic() {

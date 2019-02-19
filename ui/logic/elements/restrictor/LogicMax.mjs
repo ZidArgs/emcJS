@@ -8,7 +8,7 @@ const TPL = new Template(`
             --logic-color-border: #aa0022;
         }
     </style>
-    <div class="header">MAX <input type="number" value="0" /></div>
+    <div class="header">MAX <input id="input" type="number" value="0" /></div>
     <div class="body">
         <slot id="children">
             <span id="droptarget" class="placeholder">...</span>
@@ -16,36 +16,25 @@ const TPL = new Template(`
     </div>
 `);
 
-function allowDrop(event) {
-    event.preventDefault();
-    event.stopPropagation();
-    return false;
-}
-
-function dropOnPlaceholder(event) {
-    if (!!event.dataTransfer) {
-        var id = event.dataTransfer.getData("logic-transfer-id");
-        var el = document.getElementById(id);
-        if (!!el) {
-            let ne = event.target.getRootNode().host.appendChild(el.getElement(event.ctrlKey));
-            if (!!ne) {
-                ne.removeAttribute("slot");
-            }
-        }
-    }
-    event.preventDefault();
-    event.stopPropagation();
-    return false;
-}
-
 export default class LogicMax extends DeepLogicAbstractElement {
 
     constructor() {
         super();
         this.shadowRoot.appendChild(TPL.generate());
         let target = this.shadowRoot.getElementById("droptarget");
-        target.ondragover = allowDrop;
-        target.ondrop = dropOnPlaceholder;
+        target.ondragover = DeepLogicAbstractElement.allowDrop;
+        target.ondrop = DeepLogicAbstractElement.dropOnPlaceholder;
+    }
+
+    visualizeValue() {
+        if (this.children.length > 0) {
+            let value = this.children[0].visualizeValue();
+            if (typeof value != "undefined") {
+                this.shadowRoot.querySelector(".header").dataset.value = value <= this.shadowRoot.getElementById("input").value;
+                return !value;
+            }
+        }
+        this.shadowRoot.querySelector(".header").dataset.value = "";
     }
 
     toJSON() {
@@ -57,7 +46,7 @@ export default class LogicMax extends DeepLogicAbstractElement {
             return {
                 type: "max",
                 child: el,
-                value: 0
+                value: this.shadowRoot.getElementById("input").value
             };
         }
     }

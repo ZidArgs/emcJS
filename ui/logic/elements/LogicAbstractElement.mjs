@@ -36,6 +36,22 @@ const TPL = new Template(`
             text-align: right;
             margin: 0 5px;
         }
+        .header[data-value]:before {
+            display: block;
+            width: 10px;
+            height: 10px;
+            margin-right: 5px;
+            border-radius: 50%;
+            border: solid 2px black;
+            background-color: yellow;
+            content: " ";
+        }
+        .header[data-value="true"]:before {
+            background-color: green;
+        }
+        .header[data-value="false"]:before {
+            background-color: red;
+        }
         .body {
             display: block;
             padding: 5px;
@@ -103,7 +119,17 @@ export default class DeepLogicAbstractElement extends HTMLElement {
     }
 
     visualizeValue() {
-        // TODO ask children for value and show in element
+        throw new TypeError("can not call abstract method");
+    }
+
+    toJSON() {
+        throw new TypeError("can not call abstract method");
+    }
+    
+    appendChild(el) {
+        if (el instanceof DeepLogicAbstractElement && (typeof this.template != "string" || this.template == "false")) {
+            return super.appendChild(el);
+        }
     }
 
     get template() {
@@ -140,16 +166,6 @@ export default class DeepLogicAbstractElement extends HTMLElement {
         }
     }
 
-    toJSON() {
-        throw new TypeError("can not call abstract method");
-    }
-    
-    appendChild(el) {
-        if (el instanceof DeepLogicAbstractElement && (typeof this.template != "string" || this.template == "false")) {
-            return super.appendChild(el);
-        }
-    }
-
 }
 
 DeepLogicAbstractElement.allowDrop = function allowDrop(event) {
@@ -159,4 +175,25 @@ DeepLogicAbstractElement.allowDrop = function allowDrop(event) {
         event.stopPropagation();
         return false;
     }
+}
+
+DeepLogicAbstractElement.dropOnPlaceholder = function dropOnPlaceholder(event) {
+    if (!!event.dataTransfer) {
+        var id = event.dataTransfer.getData("logic-transfer-id");
+        var el = document.getElementById(id);
+        if (!!el) {
+            let ne = event.target.getRootNode().host.appendChild(el.getElement(event.ctrlKey));
+            if (!!ne) {
+                let slot = event.target.parentNode;
+                if (slot instanceof HTMLSlotElement && slot.name != null) {
+                    ne.setAttribute("slot", slot.name);
+                } else {
+                    ne.removeAttribute("slot");
+                }
+            }
+        }
+    }
+    event.preventDefault();
+    event.stopPropagation();
+    return false;
 }

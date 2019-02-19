@@ -15,22 +15,6 @@ const TPL = new Template(`
     </div>
 `);
 
-function dropOnPlaceholder(event) {
-    if (!!event.dataTransfer) {
-        var id = event.dataTransfer.getData("logic-transfer-id");
-        var el = document.getElementById(id);
-        if (!!el) {
-            let ne = event.target.getRootNode().host.appendChild(el.getElement(event.ctrlKey));
-            if (!!ne) {
-                ne.removeAttribute("slot");
-            }
-        }
-    }
-    event.preventDefault();
-    event.stopPropagation();
-    return false;
-}
-
 export default class LogicAnd extends DeepLogicAbstractElement {
 
     constructor() {
@@ -38,7 +22,24 @@ export default class LogicAnd extends DeepLogicAbstractElement {
         this.shadowRoot.appendChild(TPL.generate());
         let target = this.shadowRoot.getElementById("droptarget");
         target.ondragover = DeepLogicAbstractElement.allowDrop;
-        target.ondrop = dropOnPlaceholder;
+        target.ondrop = DeepLogicAbstractElement.dropOnPlaceholder;
+    }
+
+    visualizeValue() {
+        if (this.children.length > 0) {
+            let values = Array.from(this.children).map(el => {
+                return el.visualizeValue();
+            });
+            if (values.some(v => v === false)) {
+                this.shadowRoot.querySelector(".header").dataset.value = "false";
+                return false;
+            }
+            if (values.some(v => v === true)) {
+                this.shadowRoot.querySelector(".header").dataset.value = "true";
+                return true;
+            }
+        }
+        this.shadowRoot.querySelector(".header").dataset.value = "";
     }
 
     toJSON() {

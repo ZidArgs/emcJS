@@ -8,14 +8,15 @@ const TPL = new Template(`
             box-sizing: border-box;
         }
         :host {
-            display: block;
+            display: flex;
+            padding: 5px;
             -webkit-user-select: none;
             -moz-user-select: none;
             user-select: none;
             border: solid 2px;
             background-color: #222;
             border-color: #777;
-            border-radius: 10px;
+            overflow: hidden;
         }
         .placeholder {
             display: table;
@@ -25,9 +26,17 @@ const TPL = new Template(`
             border: 1px solid gray;
             font-weight: bold;
         }
+        #container {
+            display: block;
+            flex: 1;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
     </style>
-    <slot id="children"></slot>
-    <span id="droptarget" class="placeholder">...</span>
+    <div id="container">
+        <slot id="children"></slot>
+        <span id="droptarget" class="placeholder">...</span>
+    </div>
 `);
 
 function allowDrop(event) {

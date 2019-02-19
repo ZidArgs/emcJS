@@ -18,6 +18,11 @@ export default class DeepLogicFalse extends DeepLogicAbstractElement {
         this.shadowRoot.appendChild(TPL.generate());
     }
 
+    visualizeValue() {
+        this.shadowRoot.querySelector(".header").dataset.value = "false";
+        return false;
+    }
+
     toJSON() {
         return {
             type: "false",

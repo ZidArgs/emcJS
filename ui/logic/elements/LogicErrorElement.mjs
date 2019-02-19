@@ -23,6 +23,8 @@ export default class DeepLogicTrue extends DeepLogicAbstractElement {
         return this;
     }
 
+    visualizeValue() {}
+
     toJSON() {}
 
 }

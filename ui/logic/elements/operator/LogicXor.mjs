@@ -19,28 +19,6 @@ const TPL = new Template(`
     </div>
 `);
 
-function allowDrop(event) {
-    event.preventDefault();
-    event.stopPropagation();
-    return false;
-}
-
-function dropOnPlaceholder(event) {
-    if (!!event.dataTransfer) {
-        var id = event.dataTransfer.getData("logic-transfer-id");
-        var el = document.getElementById(id);
-        if (!!el) {
-            let ne = event.target.getRootNode().host.appendChild(el.getElement(event.ctrlKey));
-            if (!!ne) {
-                ne.setAttribute("slot", event.target.parentElement.name);
-            }
-        }
-    }
-    event.preventDefault();
-    event.stopPropagation();
-    return false;
-}
-
 export default class LogicXor extends DeepLogicAbstractElement {
 
     constructor() {
@@ -48,10 +26,22 @@ export default class LogicXor extends DeepLogicAbstractElement {
         this.shadowRoot.appendChild(TPL.generate());
         let target0 = this.shadowRoot.getElementById("droptarget0");
         let target1 = this.shadowRoot.getElementById("droptarget1");
-        target0.ondragover = allowDrop;
-        target1.ondragover = allowDrop;
-        target0.ondrop = dropOnPlaceholder;
-        target1.ondrop = dropOnPlaceholder;
+        target0.ondragover = DeepLogicAbstractElement.allowDrop;
+        target1.ondragover = DeepLogicAbstractElement.allowDrop;
+        target0.ondrop = DeepLogicAbstractElement.dropOnPlaceholder;
+        target1.ondrop = DeepLogicAbstractElement.dropOnPlaceholder;
+    }
+
+    visualizeValue() {
+        if (this.children.length > 0) {
+            let v1 = this.children[0].visualizeValue();
+            let v2 = this.children[1].visualizeValue();
+            if (typeof v1 != "undefined" && typeof v2 != "undefined") {
+                this.shadowRoot.querySelector(".header").dataset.value = v1 != v2;
+                return v1 != v2;
+            }
+        }
+        this.shadowRoot.querySelector(".header").dataset.value = "";
     }
 
     toJSON() {

@@ -18,6 +18,11 @@ export default class DeepLogicTrue extends DeepLogicAbstractElement {
         this.shadowRoot.appendChild(TPL.generate());
     }
 
+    visualizeValue() {
+        this.shadowRoot.querySelector(".header").dataset.value = "true";
+        return true;
+    }
+
     toJSON() {
         return {
             type: "true",

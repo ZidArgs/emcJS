@@ -15,7 +15,6 @@ const TPL = new Template(`
             border: solid 2px;
             background-color: #222;
             border-color: #777;
-            border-radius: 10px;
         }
     </style>
 `);

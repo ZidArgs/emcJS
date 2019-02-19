@@ -16,36 +16,25 @@ const TPL = new Template(`
     </div>
 `);
 
-function allowDrop(event) {
-    event.preventDefault();
-    event.stopPropagation();
-    return false;
-}
-
-function dropOnPlaceholder(event) {
-    if (!!event.dataTransfer) {
-        var id = event.dataTransfer.getData("logic-transfer-id");
-        var el = document.getElementById(id);
-        if (!!el) {
-            let ne = event.target.getRootNode().host.appendChild(el.getElement(event.ctrlKey));
-            if (!!ne) {
-                ne.removeAttribute("slot");
-            }
-        }
-    }
-    event.preventDefault();
-    event.stopPropagation();
-    return false;
-}
-
 export default class LogicNot extends DeepLogicAbstractElement {
 
     constructor() {
         super();
         this.shadowRoot.appendChild(TPL.generate());
         let target = this.shadowRoot.getElementById("droptarget");
-        target.ondragover = allowDrop;
-        target.ondrop = dropOnPlaceholder;
+        target.ondragover = DeepLogicAbstractElement.allowDrop;
+        target.ondrop = DeepLogicAbstractElement.dropOnPlaceholder;
+    }
+
+    visualizeValue() {
+        if (this.children.length > 0) {
+            let value = this.children[0].visualizeValue();
+            if (typeof value != "undefined") {
+                this.shadowRoot.querySelector(".header").dataset.value = !value;
+                return !value;
+            }
+        }
+        this.shadowRoot.querySelector(".header").dataset.value = "";
     }
 
     toJSON() {

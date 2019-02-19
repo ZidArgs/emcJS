@@ -7,7 +7,7 @@ const TPL = new Template(`
             box-sizing: border-box;
         }
         :host {
-            display: block;
+            display: flex;
             padding: 5px;
             -webkit-user-select: none;
             -moz-user-select: none;
@@ -15,11 +15,11 @@ const TPL = new Template(`
             border: solid 2px;
             background-color: #222;
             border-color: #777;
-            border-radius: 10px;
+            overflow: hidden;
         }
         slot {
             display: block;
-            height: 100%;
+            flex: 1;
             overflow-y: auto;
             overflow-x: hidden;
         }
