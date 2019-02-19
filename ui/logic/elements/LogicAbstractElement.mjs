@@ -11,7 +11,7 @@ const TPL = new Template(`
             display: table;
             margin: 5px;
             user-select: none;
-            border-radius: 2px;
+            border-radius: 5px;
             cursor: move;
             font-family: Arial, sans-serif;
             background-color: var(--logic-color-back, white);
@@ -29,12 +29,6 @@ const TPL = new Template(`
             padding: 5px;
             color: var(--logic-color-text, black);
             user-select: none;
-        }
-        .header input {
-            width: 100px;
-            height: 25px;
-            text-align: right;
-            margin: 0 5px;
         }
         .header[data-value]:before {
             display: block;
@@ -58,6 +52,12 @@ const TPL = new Template(`
             border-top-width: 1px;
             border-top-style: solid;
             border-color: var(--logic-color-border, black);
+        }
+        .body input {
+            width: 100px;
+            height: 25px;
+            text-align: right;
+            margin: 0 5px;
         }
         .placeholder {
             display: table;

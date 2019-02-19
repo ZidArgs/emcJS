@@ -53,15 +53,11 @@
             import "/ui/logic/LogicEditorTrashcan.mjs";
             import "/ui/logic/LogicEditorWorkingarea.mjs";
             import "/ui/logic/elements/literal/LogicTrue.mjs";
-            import "/ui/logic/elements/literal/LogicFalse.mjs";
             import "/ui/logic/elements/operator/LogicAnd.mjs";
             import "/ui/logic/elements/operator/LogicOr.mjs";
             import "/ui/logic/elements/operator/LogicNot.mjs";
-            import "/ui/logic/elements/operator/LogicNand.mjs";
-            import "/ui/logic/elements/operator/LogicNor.mjs";
-            import "/ui/logic/elements/operator/LogicXor.mjs";
             import "/ui/logic/elements/restrictor/LogicMin.mjs";
-            import "/ui/logic/elements/restrictor/LogicMax.mjs";
+            import "./LogicItem.mjs";
         </script>
     </head>
     <body>
@@ -72,17 +68,14 @@
             <deep-logiceditor-trashcan id="trashcan"></deep-logiceditor-trashcan>
             <deep-logiceditor-elements id="elements">
                 <deep-logic-true template></deep-logic-true>
-                <deep-logic-false template></deep-logic-false>
         
                 <deep-logic-not template></deep-logic-not>
                 <deep-logic-and template></deep-logic-and>
                 <deep-logic-or template></deep-logic-or>
-                <deep-logic-nand template></deep-logic-nand>
-                <deep-logic-nor template></deep-logic-nor>
-                <deep-logic-xor template></deep-logic-xor>
         
                 <deep-logic-min template></deep-logic-min>
-                <deep-logic-max template></deep-logic-max>
+                
+                <deep-logic-item ref="hoverboots" template></deep-logic-item>
             </deep-logiceditor-elements>
         </div>
     </body>

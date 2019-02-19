@@ -8,8 +8,9 @@ const TPL = new Template(`
             --logic-color-border: #aa0022;
         }
     </style>
-    <div class="header">MAX <input id="input" type="number" value="0" /></div>
+    <div class="header">MAX</div>
     <div class="body">
+        <input id="input" type="number" value="0" />
         <slot id="children">
             <span id="droptarget" class="placeholder">...</span>
         </slot>
