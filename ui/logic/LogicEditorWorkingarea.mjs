@@ -1,4 +1,5 @@
 import Template from "../../util/Template.mjs";
+import DeepLogicAbstractElement from "./elements/LogicAbstractElement.mjs";
 
 const TPL = new Template(`
     <style>
@@ -11,16 +12,10 @@ const TPL = new Template(`
             -webkit-user-select: none;
             -moz-user-select: none;
             user-select: none;
-            border: solid 2px #bdbdbd;
-            background-color: #f2f2f2;
+            border: solid 2px;
+            background-color: #222;
+            border-color: #777;
             border-radius: 10px;
-        }
-        .body {
-            display: block;
-            padding: 10px;
-            border-top-width: 1px;
-            border-top-style: solid;
-            border-color: var(--logic-color-border, black);
         }
         .placeholder {
             display: table;
@@ -47,9 +42,10 @@ function dropOnPlaceholder(event) {
         var id = event.dataTransfer.getData("logic-transfer-id");
         var el = document.getElementById(id);
         if (!!el) {
-            let ne = el.getElement(event.ctrlKey);
-            ne.removeAttribute("slot");
-            event.target.getRootNode().host.appendChild(ne);
+            let ne = event.target.getRootNode().host.appendChild(el.getElement(event.ctrlKey));
+            if (!!ne) {
+                ne.removeAttribute("slot");
+            }
         }
     }
     event.preventDefault();
@@ -57,7 +53,7 @@ function dropOnPlaceholder(event) {
     return false;
 }
 
-export default class LogicEditorBoard extends HTMLElement {
+export default class LogicEditorWorkingarea extends HTMLElement {
 
     constructor() {
         super();
@@ -74,7 +70,13 @@ export default class LogicEditorBoard extends HTMLElement {
             return el.toJSON();
         }
     }
+    
+    appendChild(el) {
+        if (el instanceof DeepLogicAbstractElement && (typeof this.template != "string" || this.template == "false")) {
+            return super.appendChild(el);
+        }
+    }
 
 }
 
-customElements.define('deep-logiceditorboard', LogicEditorBoard);
+customElements.define('deep-logiceditor-workingarea', LogicEditorWorkingarea);

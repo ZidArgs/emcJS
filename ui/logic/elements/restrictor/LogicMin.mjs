@@ -55,10 +55,9 @@ export default class LogicMin extends DeepLogicAbstractElement {
                 el = el.toJSON();
             }
             return {
-                type: "restrictor",
-                el: "min",
+                type: "min",
                 child: el,
-                min: 0
+                value: 0
             };
         }
     }

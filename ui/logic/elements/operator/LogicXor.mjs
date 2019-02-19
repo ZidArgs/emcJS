@@ -65,8 +65,7 @@ export default class LogicXor extends DeepLogicAbstractElement {
                 el1 = el1.toJSON();
             }
             return {
-                type: "operator",
-                el: "nand",
+                type: "nand",
                 child0: el0,
                 child1: el1
             };

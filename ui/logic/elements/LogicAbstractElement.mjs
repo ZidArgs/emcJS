@@ -61,7 +61,13 @@ const TPL = new Template(`
     </style>
 `);
 
+function dragStart(event) {
+    event.dataTransfer.setData("logic-transfer-id", event.target.id);
+}
+
 // TODO add on placeholder click dialog to append logic elements
+
+const ID = new WeakMap();
 
 export default class DeepAbstractLogicElement extends HTMLElement {
 
@@ -69,11 +75,19 @@ export default class DeepAbstractLogicElement extends HTMLElement {
         super();
         this.attachShadow({mode: 'open'});
         this.shadowRoot.appendChild(TPL.generate());
-        this.setAttribute("draggable", "true");
-        this.setAttribute("id", UID.generate("logic-element"));
-        this.ondragstart = function(event) {
-            event.dataTransfer.setData("logic-transfer-id", event.target.id);
-        }
+        ID.set(this, UID.generate("logic-element"));
+    }
+
+    connectedCallback() {
+        this.setAttribute("draggable", "true"); // TODO readonly
+        this.id = ID.get(this);
+        this.addEventListener("dragstart", dragStart);
+    }
+
+    disconnectedCallback() {
+        this.removeAttribute("draggable");
+        this.removeAttribute("id");
+        this.removeEventListener("dragstart", dragStart);
     }
 
     getElement(forceCopy = false) {

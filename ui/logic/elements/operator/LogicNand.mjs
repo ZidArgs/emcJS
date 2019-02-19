@@ -50,8 +50,7 @@ export default class LogicNand extends DeepLogicAbstractElement {
     toJSON() {
         if (this.children.length > 0) {
             return {
-                type: "operator",
-                el: "nand",
+                type: "nand",
                 children: Array.from(this.children).map(e => e.toJSON())
             };
         }

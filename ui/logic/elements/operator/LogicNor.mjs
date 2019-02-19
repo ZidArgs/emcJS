@@ -50,8 +50,7 @@ export default class LogicNor extends DeepLogicAbstractElement {
     toJSON() {
         if (this.children.length > 0) {
             return {
-                type: "operator",
-                el: "nor",
+                type: "nor",
                 children: Array.from(this.children).map(e => e.toJSON())
             };
         }

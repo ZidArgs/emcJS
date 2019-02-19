@@ -50,8 +50,7 @@ export default class LogicOr extends DeepLogicAbstractElement {
     toJSON() {
         if (this.children.length > 0) {
             return {
-                type: "operator",
-                el: "or",
+                type: "or",
                 children: Array.from(this.children).map(e => e.toJSON())
             };
         }

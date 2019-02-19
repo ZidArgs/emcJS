@@ -20,8 +20,7 @@ export default class DeepLogicFalse extends DeepLogicAbstractElement {
 
     toJSON() {
         return {
-            type: "literal",
-            el: "false",
+            type: "false",
             value: false
         };
     }

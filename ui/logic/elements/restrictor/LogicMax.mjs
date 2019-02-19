@@ -55,10 +55,9 @@ export default class LogicMax extends DeepLogicAbstractElement {
                 el = el.toJSON();
             }
             return {
-                type: "restrictor",
-                el: "max",
+                type: "max",
                 child: el,
-                max: 0
+                value: 0
             };
         }
     }

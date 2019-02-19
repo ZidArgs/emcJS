@@ -55,8 +55,7 @@ export default class LogicNot extends DeepLogicAbstractElement {
                 el = el.toJSON();
             }
             return {
-                type: "operator",
-                el: "not",
+                type: "not",
                 child: el
             };
         }

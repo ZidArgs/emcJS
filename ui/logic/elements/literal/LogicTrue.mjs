@@ -20,8 +20,7 @@ export default class DeepLogicTrue extends DeepLogicAbstractElement {
 
     toJSON() {
         return {
-            type: "literal",
-            el: "true",
+            type: "true",
             value: true
         };
     }
