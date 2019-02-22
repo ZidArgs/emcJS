@@ -83,6 +83,10 @@ export default class LogicEditorWorkingarea extends HTMLElement {
             return el.toJSON();
         }
     }
+
+    loadLogic() { // TODO
+        console.log("not yet implemented");
+    }
     
     appendChild(el) {
         if (el instanceof DeepLogicAbstractElement && (typeof this.template != "string" || this.template == "false")) {
