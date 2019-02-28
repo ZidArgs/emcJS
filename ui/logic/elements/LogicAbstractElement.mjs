@@ -84,6 +84,7 @@ function dragStart(event) {
 // TODO add on placeholder click dialog to append logic elements
 
 const ID = new WeakMap();
+const REG = new Map();
 
 export default class DeepLogicAbstractElement extends HTMLElement {
 
@@ -163,6 +164,19 @@ export default class DeepLogicAbstractElement extends HTMLElement {
                     }
                 }
                 break;
+        }
+    }
+
+    static registerReference(ref, clazz) {
+        if (REG.has(ref)) {
+            throw new Error("can not register logic class twice");
+        }
+        REG.set(ref, clazz);
+    }
+
+    static getReference(ref) {
+        if (REG.has(ref)) {
+            return REG.get(ref);
         }
     }
 

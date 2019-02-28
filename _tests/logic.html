@@ -33,9 +33,9 @@
                 grid-row-gap: 5px;
             }
             #logics {
+                position: relative;
                 grid-area: logics;
-                border: solid 2px;
-                background-color: #222;
+                border: solid 2px #222;
                 border-color: #777;
             }
             #workingarea {
@@ -58,13 +58,14 @@
                 margin: 5px;
                 border-radius: 10px;
                 cursor: pointer;
+                overflow: hidden;
             }
         </style>
         <script type="module" src="app.mjs"></script>
     </head>
     <body>
         <div id="logic-board">
-            <div id="logics"></div>
+            <deep-panel caption="logics" id="logics"></deep-panel>
             <deep-logiceditor-workingarea id="workingarea"></deep-logiceditor-workingarea>
             <deep-logiceditor-clipboard id="clipboard"></deep-logiceditor-clipboard>
             <deep-logiceditor-trashcan id="trashcan"></deep-logiceditor-trashcan>

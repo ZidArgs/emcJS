@@ -84,8 +84,10 @@ export default class LogicEditorWorkingarea extends HTMLElement {
         }
     }
 
-    loadLogic() { // TODO
+    loadLogic(logic) { // TODO
         console.log("not yet implemented");
+        debugger;
+        
     }
     
     appendChild(el) {
@@ -97,3 +99,9 @@ export default class LogicEditorWorkingarea extends HTMLElement {
 }
 
 customElements.define('deep-logiceditor-workingarea', LogicEditorWorkingarea);
+
+function loadLogicRecursive(target, subtree) {
+    for (let i of subtree) {
+        
+    }
+}
