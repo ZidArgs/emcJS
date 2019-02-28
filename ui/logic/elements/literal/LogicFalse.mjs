@@ -30,6 +30,9 @@ export default class DeepLogicFalse extends DeepLogicAbstractElement {
         };
     }
 
+    loadLogic(logic) {}
+
 }
 
+DeepLogicAbstractElement.registerReference("false", DeepLogicFalse);
 customElements.define('deep-logic-false', DeepLogicFalse);

@@ -16,7 +16,7 @@ const TPL = new Template(`
     </div>
 `);
 
-export default class LogicNot extends DeepLogicAbstractElement {
+export default class DeepLogicNot extends DeepLogicAbstractElement {
 
     constructor() {
         super();
@@ -45,11 +45,20 @@ export default class LogicNot extends DeepLogicAbstractElement {
             }
             return {
                 type: "not",
-                child: el
+                el: el
             };
+        }
+    }
+
+    loadLogic(logic) {
+        if (!!logic) {
+            let el = new (DeepLogicAbstractElement.getReference(logic.el.type));
+            el.loadLogic(logic.el);
+            this.appendChild(el);
         }
     }
 
 }
 
-customElements.define('deep-logic-not', LogicNot);
+DeepLogicAbstractElement.registerReference("not", DeepLogicNot);
+customElements.define('deep-logic-not', DeepLogicNot);

@@ -15,7 +15,7 @@ const TPL = new Template(`
     </div>
 `);
 
-export default class LogicNor extends DeepLogicAbstractElement {
+export default class DeepLogicNor extends DeepLogicAbstractElement {
 
     constructor() {
         super();
@@ -46,11 +46,22 @@ export default class LogicNor extends DeepLogicAbstractElement {
         if (this.children.length > 0) {
             return {
                 type: "nor",
-                children: Array.from(this.children).map(e => e.toJSON())
+                el: Array.from(this.children).map(e => e.toJSON())
             };
+        }
+    }
+
+    loadLogic(logic) {
+        if (!!logic) {
+            logic.el.forEach(ch => {
+                let el = new (DeepLogicAbstractElement.getReference(ch.type));
+                el.loadLogic(ch);
+                this.appendChild(el);
+            });
         }
     }
 
 }
 
-customElements.define('deep-logic-nor', LogicNor);
+DeepLogicAbstractElement.registerReference("nor", DeepLogicNor);
+customElements.define('deep-logic-nor', DeepLogicNor);

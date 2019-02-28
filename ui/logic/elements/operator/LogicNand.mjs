@@ -15,7 +15,7 @@ const TPL = new Template(`
     </div>
 `);
 
-export default class LogicNand extends DeepLogicAbstractElement {
+export default class DeepLogicNand extends DeepLogicAbstractElement {
 
     constructor() {
         super();
@@ -46,11 +46,22 @@ export default class LogicNand extends DeepLogicAbstractElement {
         if (this.children.length > 0) {
             return {
                 type: "nand",
-                children: Array.from(this.children).map(e => e.toJSON())
+                el: Array.from(this.children).map(e => e.toJSON())
             };
+        }
+    }
+
+    loadLogic(logic) {
+        if (!!logic) {
+            logic.el.forEach(ch => {
+                let el = new (DeepLogicAbstractElement.getReference(ch.type));
+                el.loadLogic(ch);
+                this.appendChild(el);
+            });
         }
     }
 
 }
 
-customElements.define('deep-logic-nand', LogicNand);
+DeepLogicAbstractElement.registerReference("nand", DeepLogicNand);
+customElements.define('deep-logic-nand', DeepLogicNand);

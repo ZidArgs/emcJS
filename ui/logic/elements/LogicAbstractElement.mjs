@@ -126,6 +126,10 @@ export default class DeepLogicAbstractElement extends HTMLElement {
     toJSON() {
         throw new TypeError("can not call abstract method");
     }
+
+    loadLogic() {
+        throw new TypeError("can not call abstract method");
+    }
     
     appendChild(el) {
         if (el instanceof DeepLogicAbstractElement && (typeof this.template != "string" || this.template == "false")) {
@@ -178,6 +182,7 @@ export default class DeepLogicAbstractElement extends HTMLElement {
         if (REG.has(ref)) {
             return REG.get(ref);
         }
+        return DeepLogicError;
     }
 
 }
@@ -211,3 +216,39 @@ DeepLogicAbstractElement.dropOnPlaceholder = function dropOnPlaceholder(event) {
     event.stopPropagation();
     return false;
 }
+
+/**
+ * for undefined references
+ */
+const TPL_E = new Template(`
+    <style>
+        :host {
+            --logic-color-back: #ff0000;
+            --logic-color-border: #770000;
+            --logic-color-text: #ffffff;
+        }
+    </style>
+    <div class="header">ERROR: REFERENCE NOT FOUND</div>
+`);
+
+class DeepLogicError extends DeepLogicAbstractElement {
+
+    constructor() {
+        super();
+        this.shadowRoot.appendChild(TPL_E.generate());
+    }
+
+    getElement() {
+        return this;
+    }
+
+    visualizeValue() {}
+
+    toJSON() {}
+
+    loadLogic(logic) {}
+
+}
+
+DeepLogicAbstractElement.registerReference("error", DeepLogicError);
+customElements.define('deep-logic-error', DeepLogicError);

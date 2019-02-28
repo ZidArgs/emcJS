@@ -17,7 +17,7 @@ const TPL = new Template(`
     </div>
 `);
 
-export default class LogicMax extends DeepLogicAbstractElement {
+export default class DeepLogicMax extends DeepLogicAbstractElement {
 
     constructor() {
         super();
@@ -46,12 +46,22 @@ export default class LogicMax extends DeepLogicAbstractElement {
             }
             return {
                 type: "max",
-                child: el,
+                el: el,
                 value: this.shadowRoot.getElementById("input").value
             };
         }
     }
 
+    loadLogic(logic) {
+        if (!!logic) {
+            let el = new (DeepLogicAbstractElement.getReference(logic.el.type));
+            el.loadLogic(logic.el);
+            this.appendChild(el);
+            this.shadowRoot.getElementById("input").value = logic.value;
+        }
+    }
+
 }
 
-customElements.define('deep-logic-max', LogicMax);
+DeepLogicAbstractElement.registerReference("max", DeepLogicMax);
+customElements.define('deep-logic-max', DeepLogicMax);

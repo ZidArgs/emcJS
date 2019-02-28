@@ -30,6 +30,9 @@ export default class DeepLogicTrue extends DeepLogicAbstractElement {
         };
     }
 
+    loadLogic(logic) {}
+
 }
 
+DeepLogicAbstractElement.registerReference("true", DeepLogicTrue);
 customElements.define('deep-logic-true', DeepLogicTrue);

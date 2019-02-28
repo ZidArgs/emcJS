@@ -19,7 +19,7 @@ const TPL = new Template(`
     </div>
 `);
 
-export default class LogicXor extends DeepLogicAbstractElement {
+export default class DeepLogicXor extends DeepLogicAbstractElement {
 
     constructor() {
         super();
@@ -56,12 +56,24 @@ export default class LogicXor extends DeepLogicAbstractElement {
             }
             return {
                 type: "xor",
-                child0: el0,
-                child1: el1
+                el0: el0,
+                el1: el1
             };
+        }
+    }
+
+    loadLogic(logic) {
+        if (!!logic) {
+            let el0 = new (DeepLogicAbstractElement.getReference(logic.el0.type));
+            el0.loadLogic(logic.el0);
+            this.appendChild(el0);
+            let el1 = new (DeepLogicAbstractElement.getReference(logic.el1.type));
+            el1.loadLogic(logic.el1);
+            this.appendChild(el1);
         }
     }
 
 }
 
-customElements.define('deep-logic-xor', LogicXor);
+DeepLogicAbstractElement.registerReference("xor", DeepLogicXor);
+customElements.define('deep-logic-xor', DeepLogicXor);
