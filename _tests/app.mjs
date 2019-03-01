@@ -11,20 +11,38 @@ import "/ui/logic/elements/restrictor/LogicMin.mjs";
 import "/ui/Panel.mjs";
 import "/ui/CollapsePanel.mjs";
 import "./LogicItem.mjs";
+import "./LogicMixin.mjs";
+import "./LogicOption.mjs";
+import "./LogicSkip.mjs";
+import "./LogicFilter.mjs";
 
 import GlobalData from "../storage/GlobalData.mjs";
 
 (async function main() {
     await loadData();
-    let logic = document.getElementById("logics");
+    let logicEl = document.getElementById("logics");
     let workingarea = document.getElementById("workingarea");
     
     let locations = GlobalData.get("locations");
+    let logic = GlobalData.get("logic");
 
-    logic.appendChild(createCategory(locations, "chests_v"));
-    logic.appendChild(createCategory(locations, "chests_mq"));
-    logic.appendChild(createCategory(locations, "skulltulas_v"));
-    logic.appendChild(createCategory(locations, "skulltulas_mq"));
+    logicEl.appendChild(createCategory(locations, "chests_v"));
+    logicEl.appendChild(createCategory(locations, "chests_mq"));
+    logicEl.appendChild(createCategory(locations, "skulltulas_v"));
+    logicEl.appendChild(createCategory(locations, "skulltulas_mq"));
+
+    let cnt = document.createElement("deep-collapsepanel");
+    cnt.caption = "mixins";
+    for (let j in logic.mixins) {
+        let el = document.createElement("div");
+        el.dataset.ref = j;
+        el.className = "logic-location";
+        el.onclick = loadMixinLogic;
+        el.innerHTML = j;
+        el.title = j;
+        cnt.appendChild(el);
+    }
+    logicEl.appendChild(cnt);
 }());
 
 function createCategory(data, ref) {
@@ -39,7 +57,7 @@ function createCategory(data, ref) {
             let el = document.createElement("div");
             el.dataset.ref = j;
             el.className = "logic-location";
-            el.onclick = loadLogic;
+            el.onclick = ref.startsWith("chest") ? loadChestLogic : loadSkulltulaLogic;
             el.innerHTML = j;
             el.title = j;
             cnt.appendChild(el);
@@ -49,7 +67,17 @@ function createCategory(data, ref) {
     return ocnt;
 }
     
-function loadLogic(event) {
+function loadChestLogic(event) {
     let l = GlobalData.get("logic").chests[event.target.dataset.ref];
+    workingarea.loadLogic(l);
+}
+    
+function loadSkulltulaLogic(event) {
+    let l = GlobalData.get("logic").skulltulas[event.target.dataset.ref];
+    workingarea.loadLogic(l);
+}
+    
+function loadMixinLogic(event) {
+    let l = GlobalData.get("logic").mixins[event.target.dataset.ref];
     workingarea.loadLogic(l);
 }

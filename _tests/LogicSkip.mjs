@@ -8,11 +8,11 @@ const TPL = new Template(`
             --logic-color-border: lightgrey;
         }
     </style>
-    <div class="header">ITEM</div>
+    <div class="header">SKIP</div>
     <div id="ref" class="body"></div>
 `);
 
-export default class DeepLogicItem extends DeepLogicAbstractElement {
+export default class DeepLogicSkip extends DeepLogicAbstractElement {
 
     constructor() {
         super();
@@ -67,5 +67,5 @@ export default class DeepLogicItem extends DeepLogicAbstractElement {
 
 }
 
-DeepLogicAbstractElement.registerReference("item", DeepLogicItem);
-customElements.define('deep-logic-item', DeepLogicItem);
+DeepLogicAbstractElement.registerReference("skip", DeepLogicSkip);
+customElements.define('deep-logic-skip', DeepLogicSkip);

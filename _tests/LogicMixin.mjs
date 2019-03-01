@@ -8,11 +8,11 @@ const TPL = new Template(`
             --logic-color-border: lightgrey;
         }
     </style>
-    <div class="header">ITEM</div>
+    <div class="header">MIXIN</div>
     <div id="ref" class="body"></div>
 `);
 
-export default class DeepLogicItem extends DeepLogicAbstractElement {
+export default class DeepLogicMixin extends DeepLogicAbstractElement {
 
     constructor() {
         super();
@@ -67,5 +67,5 @@ export default class DeepLogicItem extends DeepLogicAbstractElement {
 
 }
 
-DeepLogicAbstractElement.registerReference("item", DeepLogicItem);
-customElements.define('deep-logic-item', DeepLogicItem);
+DeepLogicAbstractElement.registerReference("mixin", DeepLogicMixin);
+customElements.define('deep-logic-mixin', DeepLogicMixin);
