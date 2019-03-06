@@ -7,3 +7,5 @@ export default class DeepLogicFalse extends DeepLogicAbstractElement {
     update() {}
 
 }
+
+DeepLogicAbstractElement.registerReference("false", DeepLogicFalse);

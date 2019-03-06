@@ -173,7 +173,7 @@ export default class DeepLogicAbstractElement extends HTMLElement {
 
     static registerReference(ref, clazz) {
         if (REG.has(ref)) {
-            throw new Error("can not register logic class twice");
+            throw new Error(`reference ${ref} already exists`);
         }
         REG.set(ref, clazz);
     }

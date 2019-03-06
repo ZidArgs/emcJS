@@ -1,18 +1,13 @@
 import DeepLogicAbstractElement from "../LogicAbstractElement.mjs";
 
-const min = new WeakMap;
+const CHILD = new WeakMap;
 
-export default class DeepLogicMin extends DeepLogicAbstractElement {
-
-    minValue = Number.MIN_SAFE_INTEGER;
+export default class DeepLogicNot extends DeepLogicAbstractElement {
 
     update() {
         let newValue;
         if (CHILD.has(this)) {
-            let buf = +CHILD.get(this).value;
-            if (!isNaN(buf)) {
-                newValue = buf > minValue;
-            }
+            newValue = !CHILD.get(this).value;
         }
         if (newValue !== this.value) {
             this.value = newValue;
@@ -25,7 +20,6 @@ export default class DeepLogicMin extends DeepLogicAbstractElement {
             let el = new (DeepLogicAbstractElement.getReference(logic.el.type));
             el.loadLogic(logic.el);
             this.setChild(el);
-            this.minValue = logic.value;
         }
     }
     
@@ -38,4 +32,4 @@ export default class DeepLogicMin extends DeepLogicAbstractElement {
 
 }
 
-DeepLogicAbstractElement.registerReference("min", DeepLogicMin);
+DeepLogicAbstractElement.registerReference("not", DeepLogicNot);
