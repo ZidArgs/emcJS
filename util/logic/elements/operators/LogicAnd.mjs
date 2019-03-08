@@ -1,13 +1,17 @@
 import DeepLogicAbstractElement from "../LogicAbstractElement.mjs";
 
-const CHILDREN = new WeakMap;
-
-export default class DeepLogicNot extends DeepLogicAbstractElement {
+export default class DeepLogicAnd extends DeepLogicAbstractElement {
 
     update() {
         let newValue;
-        if (CHILDREN.has(this)) {
-            newValue = !!CHILDREN.get(this).value;
+        let ch = this.children;
+        for (let c in ch) {
+            if (typeof c.value != "undefined") {
+                newValue = !!c.value;
+                if (newValue === false) {
+                    break;
+                }
+            }
         }
         if (newValue !== this.value) {
             this.value = newValue;
@@ -19,17 +23,10 @@ export default class DeepLogicNot extends DeepLogicAbstractElement {
         if (!!logic) {
             let el = new (DeepLogicAbstractElement.getReference(logic.el.type));
             el.loadLogic(logic.el);
-            this.setChild(el);
-        }
-    }
-    
-    setChild(el) {
-        if (el instanceof DeepLogicAbstractElement) {
-            CHILDREN.set(this, el);
-            el.onupdate = () => this.update();
+            this.appendChild(el);
         }
     }
 
 }
 
-DeepLogicAbstractElement.registerReference("not", DeepLogicNot);
+DeepLogicAbstractElement.registerReference("and", DeepLogicAnd);

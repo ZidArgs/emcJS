@@ -8,11 +8,9 @@ export default class DeepLogicMin extends DeepLogicAbstractElement {
 
     update() {
         let newValue;
-        if (CHILD.has(this)) {
-            let buf = +CHILD.get(this).value;
-            if (!isNaN(buf)) {
-                newValue = buf > minValue;
-            }
+        let ch = this.children;
+        if (!!ch[0] && typeof ch[0].value != "undefined") {
+            newValue = (+ch[0].value) > minValue;
         }
         if (newValue !== this.value) {
             this.value = newValue;
@@ -24,15 +22,8 @@ export default class DeepLogicMin extends DeepLogicAbstractElement {
         if (!!logic) {
             let el = new (DeepLogicAbstractElement.getReference(logic.el.type));
             el.loadLogic(logic.el);
-            this.setChild(el);
+            this.appendChild(el);
             this.minValue = logic.value;
-        }
-    }
-    
-    setChild(el) {
-        if (el instanceof DeepLogicAbstractElement) {
-            CHILD.set(this, el);
-            el.onupdate = () => this.update();
         }
     }
 

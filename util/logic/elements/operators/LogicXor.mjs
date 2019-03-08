@@ -1,18 +1,26 @@
 import DeepLogicAbstractElement from "../LogicAbstractElement.mjs";
 
-const CHILD0 = new WeakMap;
-const CHILD1 = new WeakMap;
-
 export default class DeepLogicXor extends DeepLogicAbstractElement {
 
     update() {
+        let ch = this.children;
+        let b0, b1;
+        if (!!ch[0] && typeof ch[0].value != "undefined") {
+            b0 = !!ch[0].value;
+        }
+        if (!!ch[1] && typeof ch[1].value != "undefined") {
+            b1 = !!ch[1].value;
+        }
+
         let newValue;
-        if (CHILD0.has(this)) {
-            newValue = !!CHILD0.get(this).value;
+        if (typeof b0 == "undefined") {
+            newValue = b1;
+        } else if (typeof b1 == "undefined") {
+            newValue = b0;
+        } else {
+            newValue = (b0 != b1);
         }
-        if (CHILD1.has(this)) {
-            newValue = !!CHILD1.get(this).value;
-        }
+
         if (newValue !== this.value) {
             this.value = newValue;
             this.onupdate();
@@ -23,24 +31,10 @@ export default class DeepLogicXor extends DeepLogicAbstractElement {
         if (!!logic) {
             let el0 = new (DeepLogicAbstractElement.getReference(logic.el0.type));
             el0.loadLogic(logic.el0);
-            this.setChild0(el0);
+            this.appendChild(el0);
             let el1 = new (DeepLogicAbstractElement.getReference(logic.el1.type));
             el1.loadLogic(logic.el1);
-            this.setChild1(el1);
-        }
-    }
-    
-    setChild0(el) {
-        if (el instanceof DeepLogicAbstractElement) {
-            CHILD0.set(this, el);
-            el.onupdate = () => this.update();
-        }
-    }
-    
-    setChild1(el) {
-        if (el instanceof DeepLogicAbstractElement) {
-            CHILD1.set(this, el);
-            el.onupdate = () => this.update();
+            this.appendChild(el1);
         }
     }
 

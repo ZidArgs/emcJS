@@ -6,8 +6,9 @@ export default class DeepLogicNot extends DeepLogicAbstractElement {
 
     update() {
         let newValue;
-        if (CHILD.has(this)) {
-            newValue = !CHILD.get(this).value;
+        let ch = this.children;
+        if (!!ch[0]) {
+            newValue = !ch[0].value;
         }
         if (newValue !== this.value) {
             this.value = newValue;
@@ -19,14 +20,7 @@ export default class DeepLogicNot extends DeepLogicAbstractElement {
         if (!!logic) {
             let el = new (DeepLogicAbstractElement.getReference(logic.el.type));
             el.loadLogic(logic.el);
-            this.setChild(el);
-        }
-    }
-    
-    setChild(el) {
-        if (el instanceof DeepLogicAbstractElement) {
-            CHILD.set(this, el);
-            el.onupdate = () => this.update();
+            this.appendChild(el);
         }
     }
 
