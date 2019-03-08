@@ -26,15 +26,16 @@ export default class DeepLogicNot extends DeepLogicAbstractElement {
         target.ondrop = DeepLogicAbstractElement.dropOnPlaceholder;
     }
 
-    visualizeValue() {
-        if (this.children.length > 0) {
-            let value = this.children[0].visualizeValue();
+    update() {
+        let newValue;
+        let ch = this.children;
+        if (ch.length > 0) {
+            let value = ch[0].value;
             if (typeof value != "undefined") {
-                this.shadowRoot.querySelector(".header").dataset.value = !value;
-                return !value;
+                newValue = !value;
             }
         }
-        this.shadowRoot.querySelector(".header").dataset.value = "";
+        this.value = newValue;
     }
 
     toJSON() {

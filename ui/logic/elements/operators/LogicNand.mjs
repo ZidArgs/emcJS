@@ -42,6 +42,20 @@ export default class DeepLogicNand extends DeepLogicAbstractElement {
         this.shadowRoot.querySelector(".header").dataset.value = "";
     }
 
+    update() {
+        let newValue;
+        let ch = this.children;
+        for (let c of ch) {
+            if (typeof c.value != "undefined") {
+                newValue = !c.value;
+                if (newValue === false) {
+                    break;
+                }
+            }
+        }
+        this.value = newValue;
+    }
+
     toJSON() {
         if (this.children.length > 0) {
             return {

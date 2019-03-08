@@ -25,21 +25,18 @@ export default class DeepLogicAnd extends DeepLogicAbstractElement {
         target.ondrop = DeepLogicAbstractElement.dropOnPlaceholder;
     }
 
-    visualizeValue() {
-        if (this.children.length > 0) {
-            let values = Array.from(this.children).map(el => {
-                return el.visualizeValue();
-            });
-            if (values.some(v => v === false)) {
-                this.shadowRoot.querySelector(".header").dataset.value = "false";
-                return false;
-            }
-            if (values.some(v => v === true)) {
-                this.shadowRoot.querySelector(".header").dataset.value = "true";
-                return true;
+    update() {
+        let newValue;
+        let ch = this.children;
+        for (let c of ch) {
+            if (typeof c.value != "undefined") {
+                newValue = !!c.value;
+                if (newValue === false) {
+                    break;
+                }
             }
         }
-        this.shadowRoot.querySelector(".header").dataset.value = "";
+        this.value = newValue;
     }
 
     toJSON() {

@@ -1,4 +1,6 @@
 import loadData from "./loader.mjs";
+import FileLoader from "../util/FileLoader.mjs";
+import localState from "./LocalState.mjs";
 import "/ui/logic/LogicEditorClipboard.mjs";
 import "/ui/logic/LogicEditorElements.mjs";
 import "/ui/logic/LogicEditorTrashcan.mjs";
@@ -20,16 +22,49 @@ import GlobalData from "../storage/GlobalData.mjs";
 
 (async function main() {
     await loadData();
-    let logicEl = document.getElementById("logics");
-    let workingarea = document.getElementById("workingarea");
     
     let locations = GlobalData.get("locations");
+
+    let items = GlobalData.get("items");
+    let options = GlobalData.get("options");
+    let skips = GlobalData.get("skips");
+    let filter = GlobalData.get("filter");
+
     let logic = GlobalData.get("logic");
 
-    logicEl.appendChild(createCategory(locations, "chests_v"));
-    logicEl.appendChild(createCategory(locations, "chests_mq"));
-    logicEl.appendChild(createCategory(locations, "skulltulas_v"));
-    logicEl.appendChild(createCategory(locations, "skulltulas_mq"));
+    fillLogics(locations, logic);
+    fillOperators(items, options, skips, filter, logic);
+
+    
+    let data = await FileLoader.json(`database/save.json`);
+    localState.load(data);
+}());
+
+function fillOperators(items, options, skips, filter, logic) {
+    let container = document.getElementById("elements");
+
+    for (let j in items) {
+        let el = document.createElement("deep-logic-item");
+        el.ref = j;
+        el.template = "true";
+        container.appendChild(el);
+    }
+
+    for (let j in logic.mixins) {
+        let el = document.createElement("deep-logic-mixin");
+        el.ref = j;
+        el.template = "true";
+        container.appendChild(el);
+    }
+}
+
+function fillLogics(locations, logic) {
+    let container = document.getElementById("logics");
+
+    container.appendChild(createCategory(locations, "chests_v"));
+    container.appendChild(createCategory(locations, "chests_mq"));
+    container.appendChild(createCategory(locations, "skulltulas_v"));
+    container.appendChild(createCategory(locations, "skulltulas_mq"));
 
     let cnt = document.createElement("deep-collapsepanel");
     cnt.caption = "mixins";
@@ -42,8 +77,8 @@ import GlobalData from "../storage/GlobalData.mjs";
         el.title = j;
         cnt.appendChild(el);
     }
-    logicEl.appendChild(cnt);
-}());
+    container.appendChild(cnt);
+}
 
 function createCategory(data, ref) {
     let ocnt = document.createElement("deep-collapsepanel");

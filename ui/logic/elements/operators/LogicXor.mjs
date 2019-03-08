@@ -32,16 +32,17 @@ export default class DeepLogicXor extends DeepLogicAbstractElement {
         target1.ondrop = DeepLogicAbstractElement.dropOnPlaceholder;
     }
 
-    visualizeValue() {
-        if (this.children.length > 0) {
-            let v1 = this.children[0].visualizeValue();
-            let v2 = this.children[1].visualizeValue();
-            if (typeof v1 != "undefined" && typeof v2 != "undefined") {
-                this.shadowRoot.querySelector(".header").dataset.value = v1 != v2;
-                return v1 != v2;
+    update() {
+        let newValue;
+        let ch = this.children;
+        if (!!ch[0] && typeof ch[0].value != "undefined") {
+            if (!!ch[1] && typeof ch[1].value != "undefined") {
+                newValue = !!ch[0].value != !!ch[1].value;
+            } else {
+                newValue = !!ch[0].value;
             }
         }
-        this.shadowRoot.querySelector(".header").dataset.value = "";
+        this.value = newValue;
     }
 
     toJSON() {

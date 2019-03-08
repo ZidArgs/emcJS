@@ -9,7 +9,6 @@ const TPL = new Template(`
             position: relative;
             display: flex;
             flex-direction: column;
-            margin: 5px;
             border: solid 2px #777;
             overflow: hidden;
             -webkit-user-select: none;

@@ -25,17 +25,18 @@ export default class DeepLogicMin extends DeepLogicAbstractElement {
         let target = this.shadowRoot.getElementById("droptarget");
         target.ondragover = DeepLogicAbstractElement.allowDrop;
         target.ondrop = DeepLogicAbstractElement.dropOnPlaceholder;
+        this.shadowRoot.getElementById("input").addEventListener('change', (event) => {
+            this.update();
+        });
     }
 
-    visualizeValue() {
-        if (this.children.length > 0) {
-            let value = this.children[0].visualizeValue();
-            if (typeof value != "undefined") {
-                this.shadowRoot.querySelector(".header").dataset.value = value >= this.shadowRoot.getElementById("input").value;
-                return !value;
-            }
+    update() {
+        let newValue;
+        let ch = this.children;
+        if (!!ch[0] && typeof ch[0].value != "undefined") {
+            newValue = (+ch[0].value) >= this.shadowRoot.getElementById("input").value;
         }
-        this.shadowRoot.querySelector(".header").dataset.value = "";
+        this.value = newValue;
     }
 
     toJSON() {

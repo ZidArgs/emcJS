@@ -13,7 +13,7 @@ const TPL = new Template(`
             user-select: none;
             border-radius: 5px;
             cursor: move;
-            font-family: Arial, sans-serif;
+            font-family: monospace;
             background-color: var(--logic-color-back, white);
             border-width: 1px;
             border-style: solid;
@@ -30,21 +30,27 @@ const TPL = new Template(`
             color: var(--logic-color-text, black);
             user-select: none;
         }
-        .header[data-value]:before {
-            display: block;
-            width: 10px;
-            height: 10px;
+        :host([visualize]:not([visualize="false"])) .header:before {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 16px;
+            font-size: 15px;
+            line-height: 10px;
             margin-right: 5px;
-            border-radius: 50%;
+            border-radius: 10px;
             border: solid 2px black;
-            background-color: yellow;
-            content: " ";
+            background-color: #ecff85;
+            content: "UNDEF";
         }
-        .header[data-value="true"]:before {
-            background-color: green;
+        :host([visualize]:not([visualize="false"])[value="true"]) .header:before {
+            background-color: #85ff85;
+            content: "TRUE";
         }
-        .header[data-value="false"]:before {
-            background-color: red;
+        :host([visualize]:not([visualize="false"])[value="false"]) .header:before {
+            background-color: #ff8585;
+            content: "FALSE";
         }
         .body {
             display: block;
@@ -82,7 +88,6 @@ function dragStart(event) {
 }
 
 // TODO add on placeholder click dialog to append logic elements
-
 const ID = new WeakMap();
 const REG = new Map();
 
@@ -90,9 +95,19 @@ export default class DeepLogicAbstractElement extends HTMLElement {
 
     constructor() {
         super();
+        if (new.target === DeepLogicAbstractElement) {
+            throw new TypeError("can not construct abstract class");
+        }
         this.attachShadow({mode: 'open'});
         this.shadowRoot.appendChild(TPL.generate());
         ID.set(this, UID.generate("logic-element"));
+        // observe changes to dom and update on change
+        (new MutationObserver(() => {
+            this.update();
+        })).observe(this, {
+            childList: true,
+            subtree: false
+        });
     }
 
     connectedCallback() {
@@ -101,6 +116,12 @@ export default class DeepLogicAbstractElement extends HTMLElement {
         }
         this.id = ID.get(this);
         this.addEventListener("dragstart", dragStart);
+        if (this.parentElement.hasAttribute("visualize")) {
+            this.setAttribute("visualize", this.parentElement.getAttribute("visualize"));
+        } else {
+            this.removeAttribute("visualize");
+        }
+
     }
 
     disconnectedCallback() {
@@ -119,7 +140,7 @@ export default class DeepLogicAbstractElement extends HTMLElement {
         }
     }
 
-    visualizeValue() {
+    update() {
         throw new TypeError("can not call abstract method");
     }
 
@@ -145,6 +166,28 @@ export default class DeepLogicAbstractElement extends HTMLElement {
         this.setAttribute('template', val);
     }
 
+    get value() {
+        if (this.hasAttribute('value')) {
+            return JSON.parse(this.getAttribute('value'));
+        }
+    }
+
+    set value(val) {
+        if (typeof val == "undefined") {
+            this.removeAttribute('value');
+        } else {
+            this.setAttribute('value', JSON.stringify(val));
+        }
+    }
+
+    get visualize() {
+        return this.getAttribute('visualize');
+    }
+
+    set visualize(val) {
+        this.setAttribute('visualize', val);
+    }
+
     get readonly() {
         return this.getAttribute('readonly');
     }
@@ -154,7 +197,7 @@ export default class DeepLogicAbstractElement extends HTMLElement {
     }
 
     static get observedAttributes() {
-        return ['readonly'];
+        return ['readonly', 'value', 'visualize'];
     }
       
     attributeChangedCallback(name, oldValue, newValue) {
@@ -165,6 +208,20 @@ export default class DeepLogicAbstractElement extends HTMLElement {
                         this.setAttribute("draggable", "true");
                     } else {
                         this.removeAttribute("draggable");
+                    }
+                }
+                break;
+            case 'value':
+                if (oldValue != newValue) {
+                    if (this.parentElement instanceof DeepLogicAbstractElement) {
+                        this.parentElement.update();
+                    }
+                }
+                break;
+            case 'visualize':
+                if (oldValue != newValue) {
+                    for (let ch of this.children) {
+                        ch.visualize = newValue;
                     }
                 }
                 break;
@@ -241,6 +298,10 @@ class DeepLogicError extends DeepLogicAbstractElement {
     getElement() {
         return this;
     }
+
+    get value() {}
+
+    update() {}
 
     visualizeValue() {}
 

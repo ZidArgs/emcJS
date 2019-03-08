@@ -1,5 +1,6 @@
 import Template from "../util/Template.mjs";
 import DeepLogicAbstractElement from "../ui/logic/elements/LogicAbstractElement.mjs";
+import localState from "./LocalState.mjs";
 
 const TPL = new Template(`
     <style>
@@ -7,8 +8,17 @@ const TPL = new Template(`
             --logic-color-back: white;
             --logic-color-border: lightgrey;
         }
+        :host([visualize]:not([visualize="false"])[value]) .header:before {
+            background-color: #85ff85;
+            content: attr(data-value);
+        }
+        :host([visualize]:not([visualize="false"])[value="0"]) .header:before,
+        :host([visualize]:not([visualize="false"])[value="false"]) .header:before {
+            background-color: #ff8585;
+            content: "FALSE";
+        }
     </style>
-    <div class="header">ITEM</div>
+    <div id="head" class="header">ITEM</div>
     <div id="ref" class="body"></div>
 `);
 
@@ -19,22 +29,16 @@ export default class DeepLogicItem extends DeepLogicAbstractElement {
         this.shadowRoot.appendChild(TPL.generate());
     }
 
-    visualizeValue() {
-        // TODO get actual referenced value
-        this.shadowRoot.querySelector(".header").dataset.value = "";
+    update() {
+        this.value = localState.read("items", this.ref, false);
+        this.shadowRoot.getElementById("head").dataset.value = this.value;
     }
 
     toJSON() {
-        if (this.children.length > 0) {
-            let el = this.children[0];
-            if (!!el) {
-                el = el.toJSON();
-            }
-            return {
-                type: "item",
-                item: this.ref
-            };
-        }
+        return {
+            type: "item",
+            item: this.ref
+        };
     }
 
     get ref() {
@@ -54,6 +58,8 @@ export default class DeepLogicItem extends DeepLogicAbstractElement {
             case 'ref':
                 if (oldValue != newValue) {
                     this.shadowRoot.getElementById("ref").innerHTML = this.ref;
+                    this.value = localState.read("items", this.ref, false);
+                    this.shadowRoot.getElementById("head").dataset.value = this.value;
                 }
                 break;
         }

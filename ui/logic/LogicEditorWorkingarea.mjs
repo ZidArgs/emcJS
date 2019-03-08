@@ -70,13 +70,6 @@ export default class LogicEditorWorkingarea extends HTMLElement {
         target.ondrop = dropOnPlaceholder;
     }
 
-    visualizeValue() {
-        let el = this.children[0];
-        if (!!el) {
-            el.visualizeValue();
-        }
-    }
-
     getLogic() {
         let el = this.children[0];
         if (!!el) {
