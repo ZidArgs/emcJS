@@ -77,7 +77,7 @@ export default class LogicEditorWorkingarea extends HTMLElement {
         }
     }
 
-    loadLogic(logic) {
+    loadLogic(logic) { // FIXME why will this sometimes not be applied
         if (!!this.children.length) this.removeChild(this.children[0]);
         if (!!logic) {
             let el = new (DeepLogicAbstractElement.getReference(logic.type));

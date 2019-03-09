@@ -36,7 +36,7 @@ const TPL = new Template(`
             justify-content: center;
             width: 50px;
             height: 16px;
-            font-size: 15px;
+            font-size: 12px;
             line-height: 10px;
             margin-right: 5px;
             border-radius: 10px;
