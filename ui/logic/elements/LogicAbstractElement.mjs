@@ -90,6 +90,8 @@ function dragStart(event) {
 // TODO add on placeholder click dialog to append logic elements
 const ID = new WeakMap();
 const REG = new Map();
+const FN = new WeakMap();
+const DUMMY = function() {};
 
 export default class DeepLogicAbstractElement extends HTMLElement {
 
@@ -158,6 +160,17 @@ export default class DeepLogicAbstractElement extends HTMLElement {
         }
     }
 
+    get onupdate() {
+        if (FN.has(this)) {
+            return FN.get(this);
+        }
+        return DUMMY;
+    }
+
+    set onupdate(fn) {
+        FN.set(this, fn);
+    }
+
     get template() {
         return this.getAttribute('template');
     }
@@ -216,6 +229,7 @@ export default class DeepLogicAbstractElement extends HTMLElement {
                     if (this.parentElement instanceof DeepLogicAbstractElement) {
                         this.parentElement.update();
                     }
+                    this.onupdate(newValue);
                 }
                 break;
             case 'visualize':
@@ -240,6 +254,14 @@ export default class DeepLogicAbstractElement extends HTMLElement {
             return REG.get(ref);
         }
         return DeepLogicError;
+    }
+
+    static buildLogic(logic) {
+        if (!!logic) {
+            let el = new (DeepLogicAbstractElement.getReference(logic.type));
+            el.loadLogic(logic);
+            this.appendChild(el);
+        }
     }
 
 }
