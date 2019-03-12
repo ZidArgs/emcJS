@@ -52,7 +52,7 @@ export default class DeepLogicNot extends DeepLogicAbstractElement {
     }
 
     loadLogic(logic) {
-        if (!!logic) {
+        if (!!logic && !!logic.el) {
             let el = new (DeepLogicAbstractElement.getReference(logic.el.type));
             el.loadLogic(logic.el);
             this.appendChild(el);

@@ -66,7 +66,7 @@ export default class DeepLogicNand extends DeepLogicAbstractElement {
     }
 
     loadLogic(logic) {
-        if (!!logic) {
+        if (!!logic && Array.isArray(logic.el)) {
             logic.el.forEach(ch => {
                 let el = new (DeepLogicAbstractElement.getReference(ch.type));
                 el.loadLogic(ch);

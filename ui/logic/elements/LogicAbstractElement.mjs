@@ -44,11 +44,11 @@ const TPL = new Template(`
             background-color: #ecff85;
             content: "UNDEF";
         }
-        :host([visualize]:not([visualize="false"])[value="true"]) .header:before {
+        :host([visualize]:not([visualize="false"])[value="1"]) .header:before {
             background-color: #85ff85;
             content: "TRUE";
         }
-        :host([visualize]:not([visualize="false"])[value="false"]) .header:before {
+        :host([visualize]:not([visualize="false"])[value="0"]) .header:before {
             background-color: #ff8585;
             content: "FALSE";
         }
@@ -107,6 +107,8 @@ export default class DeepLogicAbstractElement extends HTMLElement {
         (new MutationObserver(() => {
             this.update();
         })).observe(this, {
+            attributes: false,
+            characterData: false,
             childList: true,
             subtree: false
         });
@@ -180,16 +182,17 @@ export default class DeepLogicAbstractElement extends HTMLElement {
     }
 
     get value() {
-        if (this.hasAttribute('value')) {
-            return JSON.parse(this.getAttribute('value'));
-        }
+        let val = this.getAttribute('value');
+        let buf = parseInt(val);
+        return isNaN(buf) ? 0 : buf;
     }
 
     set value(val) {
-        if (typeof val == "undefined") {
-            this.removeAttribute('value');
+        if (typeof val == "boolean") {
+            this.setAttribute('value', +val);
         } else {
-            this.setAttribute('value', JSON.stringify(val));
+            let buf = parseInt(val);
+            this.setAttribute('value', isNaN(buf) ? 0 : buf);
         }
     }
 
@@ -260,7 +263,7 @@ export default class DeepLogicAbstractElement extends HTMLElement {
         if (!!logic) {
             let el = new (DeepLogicAbstractElement.getReference(logic.type));
             el.loadLogic(logic);
-            this.appendChild(el);
+            return el;
         }
     }
 

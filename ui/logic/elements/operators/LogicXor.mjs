@@ -65,12 +65,16 @@ export default class DeepLogicXor extends DeepLogicAbstractElement {
 
     loadLogic(logic) {
         if (!!logic) {
-            let el0 = new (DeepLogicAbstractElement.getReference(logic.el0.type));
-            el0.loadLogic(logic.el0);
-            this.appendChild(el0);
-            let el1 = new (DeepLogicAbstractElement.getReference(logic.el1.type));
-            el1.loadLogic(logic.el1);
-            this.appendChild(el1);
+            if (!!logic.el0) {
+                let el0 = new (DeepLogicAbstractElement.getReference(logic.el0.type));
+                el0.loadLogic(logic.el0);
+                this.appendChild(el0);
+            }
+            if (!!logic.el1) {
+                let el1 = new (DeepLogicAbstractElement.getReference(logic.el1.type));
+                el1.loadLogic(logic.el1);
+                this.appendChild(el1);
+            }
         }
     }
 
