@@ -1,0 +1,21 @@
+<html>
+    <head>
+        <script type="module" src="test.mjs"></script>
+    </head>
+    <body>
+        <c-test id="test1"></c-test>
+        <c-test id="test2" value="Test2"></c-test>
+        <script>
+            setTimeout(() => {
+                let a = document.getElementById('test1');
+                a.value = "Test1";
+                console.log(a.value);
+                console.log(a.getValue());
+
+                let b = document.getElementById('test2');
+                console.log(b.value);
+                console.log(b.getValue());
+            }, 10000);
+        </script>
+    </body>
+</html>
