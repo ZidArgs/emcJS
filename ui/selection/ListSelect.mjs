@@ -23,8 +23,10 @@ const TPL = new Template(`
             display: none;
         }
         ::slotted(option) {
-            display: block;
-            min-height: auto;
+            display: flex;
+            align-items: center;
+            min-height: 30px;
+            padding: 5px;
             cursor: pointer;
             white-space: normal;
             margin: 5px 2px;

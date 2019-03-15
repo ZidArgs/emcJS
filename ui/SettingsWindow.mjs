@@ -80,7 +80,7 @@ const TPL = new Template(`
             margin-right: 10px;
         }
         deep-listselect {
-            max-height: 150px;
+            max-height: 300px;
         }
         .settings-input {
             width: 50%;
