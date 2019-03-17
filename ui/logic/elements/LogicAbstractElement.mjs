@@ -120,12 +120,6 @@ export default class DeepLogicAbstractElement extends HTMLElement {
         }
         this.id = ID.get(this);
         this.addEventListener("dragstart", dragStart);
-        if (this.parentElement.hasAttribute("visualize")) {
-            this.setAttribute("visualize", this.parentElement.getAttribute("visualize"));
-        } else {
-            this.removeAttribute("visualize");
-        }
-
     }
 
     disconnectedCallback() {
@@ -158,7 +152,20 @@ export default class DeepLogicAbstractElement extends HTMLElement {
     
     appendChild(el) {
         if (el instanceof DeepLogicAbstractElement && (typeof this.template != "string" || this.template == "false")) {
-            return super.appendChild(el);
+            let r = super.appendChild(el);
+
+            if (this.hasAttribute("visualize")) {
+                r.setAttribute("visualize", this.getAttribute("visualize"));
+            } else {
+                r.removeAttribute("visualize");
+            }
+            if (this.hasAttribute("readonly")) {
+                r.setAttribute("readonly", this.getAttribute("readonly"));
+            } else {
+                r.removeAttribute("readonly");
+            }
+
+            return r;
         }
     }
 
@@ -224,6 +231,9 @@ export default class DeepLogicAbstractElement extends HTMLElement {
                         this.setAttribute("draggable", "true");
                     } else {
                         this.removeAttribute("draggable");
+                    }
+                    for (let ch of this.children) {
+                        ch.readonly = newValue;
                     }
                 }
                 break;
@@ -336,5 +346,4 @@ class DeepLogicError extends DeepLogicAbstractElement {
 
 }
 
-DeepLogicAbstractElement.registerReference("error", DeepLogicError);
 customElements.define('deep-logic-error', DeepLogicError);
