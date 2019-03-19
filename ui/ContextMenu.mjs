@@ -44,8 +44,6 @@ const TPL = new Template(`
             height: 2px;
             background: #000000;
         }
-        ::slotted(splitter::after) {
-        }
     </style>
     <slot id="menu">
     </slot>

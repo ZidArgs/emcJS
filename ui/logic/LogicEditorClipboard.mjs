@@ -22,6 +22,7 @@ const TPL = new Template(`
             display: table;
             margin: 5px;
             padding: 5px 20px;
+            color: black;
             background-color: lightgray;
             border: 1px solid gray;
             font-weight: bold;

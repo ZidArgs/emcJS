@@ -17,6 +17,7 @@ const TPL = new Template(`
             background-color: var(--logic-color-back, white);
             border-width: 1px;
             border-style: solid;
+            color: var(--logic-color-text, black);
             border-color: var(--logic-color-border, black);
             -webkit-user-select: none;
             user-select: none;
@@ -27,7 +28,6 @@ const TPL = new Template(`
             justify-content: flex-start;
             height: 35px;
             padding: 5px;
-            color: var(--logic-color-text, black);
             user-select: none;
         }
         :host([visualize]:not([visualize="false"])) .header:before {
@@ -195,6 +195,7 @@ export default class DeepLogicAbstractElement extends HTMLElement {
     }
 
     set value(val) {
+        let buf = 0;
         if (typeof val == "boolean") {
             this.setAttribute('value', +val);
         } else {
