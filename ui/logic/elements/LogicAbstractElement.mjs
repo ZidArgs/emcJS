@@ -74,7 +74,7 @@ const TPL = new Template(`
             font-weight: bold;
             cursor: pointer;
         }
-        :host([template]:not([template="false"])) .placeholder {
+        :host([readonly]:not([readonly="false"])) {
             cursor: default;
         }
         :host([readonly]:not([readonly="false"])) .placeholder {
