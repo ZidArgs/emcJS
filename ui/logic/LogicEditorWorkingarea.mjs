@@ -9,6 +9,7 @@ const TPL = new Template(`
         }
         :host {
             display: flex;
+            flex-direction: column;
             -webkit-user-select: none;
             -moz-user-select: none;
             user-select: none;
@@ -26,6 +27,17 @@ const TPL = new Template(`
             border: 1px solid gray;
             font-weight: bold;
         }
+        #title-container {
+            display: flex;
+            top: 0;
+            padding: 8px;
+            background-color: #777;
+            color: #fff;
+        }
+        #title {
+            display: inline-flex;
+            flex: 1;
+        }
         slot {
             display: block;
             flex: 1;
@@ -33,6 +45,12 @@ const TPL = new Template(`
             overflow-x: hidden;
         }
     </style>
+    <div id="title-container">
+        <span id="title"></span>
+        <span id="save" class="button lsf">save</span>
+        <span id="load" class="button lsf">upload</span>
+        <span id="clear" class="button lsf">delete</span>
+    </div>
     <slot id="child">
         <span id="droptarget" class="placeholder">...</span>
     </slot>
@@ -90,6 +108,28 @@ export default class LogicEditorWorkingarea extends HTMLElement {
     appendChild(el) {
         if (el instanceof DeepLogicAbstractElement && (typeof this.template != "string" || this.template == "false")) {
             return super.appendChild(el);
+        }
+    }
+
+    get caption() {
+        return this.getAttribute('caption');
+    }
+
+    set caption(val) {
+        this.setAttribute('caption', val);
+    }
+
+    static get observedAttributes() {
+        return ['caption'];
+    }
+      
+    attributeChangedCallback(name, oldValue, newValue) {
+        switch (name) {
+            case 'caption':
+                if (oldValue != newValue) {
+                    this.shadowRoot.getElementById('title').innerHTML = newValue;
+                }
+                break;
         }
     }
 
