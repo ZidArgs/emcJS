@@ -29,14 +29,30 @@ const TPL = new Template(`
         }
         #title-container {
             display: flex;
+            align-items: center;
             top: 0;
-            padding: 8px;
+            padding: 0 8px;
             background-color: #777;
             color: #fff;
         }
         #title {
             display: inline-flex;
             flex: 1;
+            padding: 8px 0;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+        }
+        .button {
+            padding: 2px;
+            margin-left: 5px;
+            background: white;
+            color: black;
+            cursor: pointer;
+        }
+        .button:hover {
+            background: black;
+            color: white;
         }
         slot {
             display: block;
@@ -47,14 +63,16 @@ const TPL = new Template(`
     </style>
     <div id="title-container">
         <span id="title"></span>
-        <span id="save" class="button lsf">save</span>
-        <span id="load" class="button lsf">upload</span>
-        <span id="clear" class="button lsf">delete</span>
+        <span id="save" class="button">save</span>
+        <span id="load" class="button">load</span>
+        <span id="clear" class="button">delete</span>
     </div>
     <slot id="child">
         <span id="droptarget" class="placeholder">...</span>
     </slot>
 `);
+
+const DUMMY = function() {};
 
 function allowDrop(event) {
     event.preventDefault();
@@ -87,6 +105,15 @@ export default class LogicEditorWorkingarea extends HTMLElement {
         let target = this.shadowRoot.getElementById('droptarget');
         target.ondragover = allowDrop;
         target.ondrop = dropOnPlaceholder;
+        this.shadowRoot.getElementById('save').addEventListener('click', function(event) {
+            this.dispatchEvent(new Event('save'));
+        }.bind(this));
+        this.shadowRoot.getElementById('load').addEventListener('click', function(event) {
+            this.dispatchEvent(new Event('load'));
+        }.bind(this));
+        this.shadowRoot.getElementById('clear').addEventListener('click', function(event) {
+            this.dispatchEvent(new Event('clear'));
+        }.bind(this));
     }
 
     getLogic() {
@@ -96,7 +123,7 @@ export default class LogicEditorWorkingarea extends HTMLElement {
         }
     }
 
-    loadLogic(logic) { // FIXME why will this sometimes not be applied
+    loadLogic(logic) {
         if (!!this.children.length) this.removeChild(this.children[0]);
         if (!!logic) {
             let el = new (DeepLogicAbstractElement.getReference(logic.type));

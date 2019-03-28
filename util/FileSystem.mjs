@@ -13,14 +13,23 @@ ul.style.visibility = "hidden !important";
 
 class FileSystem {
 
-    load() {
+    load(extensions) {
         return new Promise((resolve, reject) => {
-            ul.onchange = e => {
+            if (typeof extensions == "string") {
+                ul.setAttribute("accept", extensions);
+            }
+            if (Array.isArray(extensions)) {
+                ul.setAttribute("accept", extensions.join(","));
+            }
+            ul.onchange = function(event) {
                 let reader = new FileReader();
-                reader.onload = e => resolve(e.target.result);
+                reader.onload = function(e) {
+                    resolve(convertData(e.target.result));
+                };
                 reader.onabort = resolve;
                 reader.onerror = reject;
-                reader.readAsDataURL(e.files[0]);
+                reader.readAsDataURL(event.target.files[0]);
+                ul.removeAttribute("accept");
             };
             ul.onerror = reject;
             ul.click();
@@ -40,3 +49,18 @@ class FileSystem {
 }
 
 export default new FileSystem;
+
+function convertData(dataUrl) {
+    let pos = dataUrl.indexOf(',') + 1;
+    let mime = dataUrl.slice(5, pos-8);
+    let res = dataUrl.slice(pos);
+    switch(mime) {
+        case "application/json":
+            res = JSON.parse(atob(res));
+        break;
+    }
+    return {
+        mime: mime,
+        data: res
+    };
+}
