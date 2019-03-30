@@ -30,8 +30,8 @@ export default class DeepLogicOr extends DeepLogicAbstractElement {
         let ch = this.children;
         for (let c of ch) {
             if (typeof c.value != "undefined") {
-                newValue = !!c.value;
-                if (newValue === true) {
+                newValue = +!!c.value;
+                if (!!newValue) {
                     break;
                 }
             }
@@ -51,9 +51,11 @@ export default class DeepLogicOr extends DeepLogicAbstractElement {
     loadLogic(logic) {
         if (!!logic && Array.isArray(logic.el)) {
             logic.el.forEach(ch => {
-                let el = new (DeepLogicAbstractElement.getReference(ch.type));
-                el.loadLogic(ch);
-                this.appendChild(el);
+                if (!!ch) {
+                    let el = new (DeepLogicAbstractElement.getReference(ch.type));
+                    el.loadLogic(ch);
+                    this.appendChild(el);
+                }
             });
         }
     }

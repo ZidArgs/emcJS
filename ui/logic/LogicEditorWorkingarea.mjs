@@ -72,8 +72,6 @@ const TPL = new Template(`
     </slot>
 `);
 
-const DUMMY = function() {};
-
 function allowDrop(event) {
     event.preventDefault();
     event.stopPropagation();

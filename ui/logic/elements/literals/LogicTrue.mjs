@@ -16,16 +16,18 @@ export default class DeepLogicTrue extends DeepLogicAbstractElement {
     constructor() {
         super();
         this.shadowRoot.appendChild(TPL.generate());
-        this.setAttribute('value', "true");
+        this.setAttribute('value', "1");
     }
 
     update() {}
 
     get value() {
-        return true;
+        return 1;
     }
 
-    set value(val) {}
+    set value(val) {
+        this.setAttribute('value', "1");
+    }
 
     toJSON() {
         return {

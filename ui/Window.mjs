@@ -113,13 +113,13 @@ export default class DeepWindow extends HTMLElement {
 
     constructor(title = "", close = "close") {
         super();
-        this.onkeydown = function(ev) {
-            var key = ev.which || ev.keyCode;
+        this.onkeydown = function(event) {
+            var key = event.which || event.keyCode;
             if (key == 27) {
-                windowClose.call(this);
+                this.close();
             }
-            ev.stopPropagation();
-        };
+            event.stopPropagation();
+        }.bind(this);
         this.attachShadow({mode: 'open'});
         this.shadowRoot.appendChild(TPL.generate());
 
@@ -131,9 +131,9 @@ export default class DeepWindow extends HTMLElement {
         if (!!close && typeof close === "string") {
             cls.setAttribute("title", close);
         }
-        cls.onclick = () => this.close();
-        this.shadowRoot.getElementById('focus_catcher_top').onfocus = () => this.focusLast();
-        this.shadowRoot.getElementById('focus_catcher_bottom').onfocus = () => this.focusFirst();
+        cls.onclick = this.close.bind(this);
+        this.shadowRoot.getElementById('focus_catcher_top').onfocus = this.focusLast.bind(this);
+        this.shadowRoot.getElementById('focus_catcher_bottom').onfocus = this.focusFirst.bind(this);
     }
 
     show() {

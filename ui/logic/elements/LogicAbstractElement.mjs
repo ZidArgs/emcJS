@@ -90,8 +90,6 @@ function dragStart(event) {
 // TODO add on placeholder click dialog to append logic elements
 const ID = new WeakMap();
 const REG = new Map();
-const FN = new WeakMap();
-const DUMMY = function() {};
 
 export default class DeepLogicAbstractElement extends HTMLElement {
 
@@ -169,17 +167,6 @@ export default class DeepLogicAbstractElement extends HTMLElement {
         }
     }
 
-    get onupdate() {
-        if (FN.has(this)) {
-            return FN.get(this);
-        }
-        return DUMMY;
-    }
-
-    set onupdate(fn) {
-        FN.set(this, fn);
-    }
-
     get template() {
         return this.getAttribute('template');
     }
@@ -190,17 +177,19 @@ export default class DeepLogicAbstractElement extends HTMLElement {
 
     get value() {
         let val = this.getAttribute('value');
-        let buf = parseInt(val);
-        return isNaN(buf) ? 0 : buf;
+        if (val == null) {
+            return undefined;
+        }
+        return parseInt(val) || 0;
     }
 
     set value(val) {
-        let buf = 0;
-        if (typeof val == "boolean") {
+        if (typeof val == "undefined") {
+            this.removeAttribute('value');
+        } else if (typeof val == "boolean") {
             this.setAttribute('value', +val);
         } else {
-            let buf = parseInt(val);
-            this.setAttribute('value', isNaN(buf) ? 0 : buf);
+            this.setAttribute('value', parseInt(val) || 0);
         }
     }
 
@@ -243,7 +232,9 @@ export default class DeepLogicAbstractElement extends HTMLElement {
                     if (this.parentElement instanceof DeepLogicAbstractElement) {
                         this.parentElement.update();
                     }
-                    this.onupdate(newValue);
+                    let event = new Event('update');
+                    event.value = this.value;
+                    this.dispatchEvent(event);
                 }
                 break;
             case 'visualize':

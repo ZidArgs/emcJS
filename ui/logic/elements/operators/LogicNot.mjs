@@ -32,7 +32,7 @@ export default class DeepLogicNot extends DeepLogicAbstractElement {
         if (ch.length > 0) {
             let value = ch[0].value;
             if (typeof value != "undefined") {
-                newValue = !value;
+                newValue = +!value;
             }
         }
         this.value = newValue;

@@ -34,7 +34,7 @@ export default class DeepLogicMin extends DeepLogicAbstractElement {
         let newValue;
         let ch = this.children;
         if (!!ch[0] && typeof ch[0].value != "undefined") {
-            newValue = (+ch[0].value) >= this.shadowRoot.getElementById("input").value;
+            newValue = +((+ch[0].value) >= this.shadowRoot.getElementById("input").value);
         }
         this.value = newValue;
     }

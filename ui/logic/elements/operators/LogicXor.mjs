@@ -37,9 +37,9 @@ export default class DeepLogicXor extends DeepLogicAbstractElement {
         let ch = this.children;
         if (!!ch[0] && typeof ch[0].value != "undefined") {
             if (!!ch[1] && typeof ch[1].value != "undefined") {
-                newValue = !!ch[0].value != !!ch[1].value;
+                newValue = +(!!ch[0].value != !!ch[1].value);
             } else {
-                newValue = !!ch[0].value;
+                newValue = +!!ch[0].value;
             }
         }
         this.value = newValue;
