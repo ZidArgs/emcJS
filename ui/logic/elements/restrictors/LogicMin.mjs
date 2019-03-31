@@ -61,6 +61,22 @@ export default class DeepLogicMin extends DeepLogicAbstractElement {
             this.shadowRoot.getElementById("input").value = logic.value;
         }
     }
+      
+    attributeChangedCallback(name, oldValue, newValue) {
+        super.attributeChangedCallback(name, oldValue, newValue);
+        switch (name) {
+            case 'readonly':
+                if (oldValue != newValue) {
+                    let input = this.shadowRoot.getElementById('input');
+                    if (newValue != null) {
+                        input.setAttribute("disabled", newValue);
+                    } else {
+                        input.removeAttribute("disabled");
+                    }
+                }
+                break;
+        }
+    }
 
 }
 
