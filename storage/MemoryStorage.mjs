@@ -1,48 +1,44 @@
-var storage = {};
+const STORAGE = {};
 
-class MemoryStorage {
+class MemorySTORAGE {
 
     set(category, name, data) {
-        storage[category] = storage[category] || {};
-        storage[category][name] = data;
+        STORAGE[category] = STORAGE[category] || {};
+        STORAGE[category][name] = data;
     }
 
 
     get(category, name, def = null) {
-        try {
-            return storage[category][name];
-        } catch(e) {
+        if (!!STORAGE[category] && !!STORAGE[category][name]) {
+            return STORAGE[category][name];
+        } else {
             return def;
         }
     }
 
     has(category, name) {
-        return !!storage[category] && storage[category].hasOwnProperty(name);
+        return !!STORAGE[category] && STORAGE[category].hasOwnProperty(name);
     }
 
     remove(category, name) {
-        try {
-            delete storage[category][name];
-            if (!Object.keys(storage[category]).length) {
-                delete storage[category];
+        if (!!STORAGE[category] && !!STORAGE[category][name]) {
+            delete STORAGE[category][name];
+            if (!Object.keys(STORAGE[category]).length) {
+                delete STORAGE[category];
             }
-        } catch(e) {
-            return;
         }
     }
 
     categories() {
-        return Object.keys(storage);
+        return Object.keys(STORAGE);
     }
 
     names(category) {
-        try {
-            Object.keys(storage[category])
-        } catch(e) {
-            return;
+        if (!!STORAGE[category]) {
+            return Object.keys(STORAGE[category]);
         }
     }
 
 }
 
-export default new MemoryStorage;
+export default new MemorySTORAGE;

@@ -18,13 +18,9 @@ class SessionStorage {
 
 
     get(category, name, def = null) {
-        try {
-            var res = sessionStorage.getItem(category+"\0"+name);
-            if (!res || res == null) return def;
-            return JSON.parse(res);
-        } catch(e) {
-            return def;
-        }
+        var res = sessionStorage.getItem(category+"\0"+name);
+        if (!res || res == null) return def;
+        return JSON.parse(res);
     }
 
     has(category, name) {

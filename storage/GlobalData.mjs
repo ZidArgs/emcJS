@@ -1,38 +1,31 @@
-var storage = {};
+const STORAGE = {};
 
 class GlobalData {
 
     set(name, data) {
-        storage[name] = data;
+        STORAGE[name] = data;
     }
 
 
     get(name, def = null) {
-        try {
-            return storage[name];
-        } catch(e) {
-            return def;
+        if (!!STORAGE[name]) {
+            return STORAGE[name];
         }
+        return def;
     }
 
     has(name) {
-        return storage.hasOwnProperty(name);
+        return STORAGE.hasOwnProperty(name);
     }
 
     remove(name) {
-        try {
-            delete storage[name];
-        } catch(e) {
-            return;
+        if (!!STORAGE[name]) {
+            delete STORAGE[name];
         }
     }
 
     names() {
-        try {
-            Object.keys(storage)
-        } catch(e) {
-            return;
-        }
+        return Object.keys(STORAGE);
     }
 
 }

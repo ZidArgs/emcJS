@@ -1,26 +1,31 @@
-const tpl = new WeakMap;
+const TEMPLATE = new WeakMap;
 const PARSER = new DOMParser;
 
 export default class Template {
 
     constructor(template) {
+        let buf;
         if (template instanceof HTMLTemplateElement) {
-            tpl.set(this, template);
+            TEMPLATE.set(this, template);
+            buf = template;
         } else if (template instanceof HTMLElement) {
             var buf = document.createElement('template');
             buf.appendChild(template);
-            tpl.set(this, buf);
+            TEMPLATE.set(this, buf);
         } else {
             var buf = document.createElement('template');
             if (typeof template === "string") {
                 buf.innerHTML = template;
             }
-            tpl.set(this, buf);
+            TEMPLATE.set(this, buf);
+        }
+        if (!!window.ShadyCSS) {
+            window.ShadyCSS.prepareTemplate(buf, 'awesome-button');
         }
     }
 
     generate() {
-        return document.importNode(tpl.get(this).content, true);
+        return document.importNode(TEMPLATE.get(this).content, true);
     }
 
     static generate(template) {

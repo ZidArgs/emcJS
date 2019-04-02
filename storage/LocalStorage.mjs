@@ -18,13 +18,9 @@ class LocalStorage {
 
 
     get(category, name, def = null) {
-        try {
-            var res = localStorage.getItem(category+"\0"+name);
-            if (!res || res == null) return def;
-            return JSON.parse(res);
-        } catch(e) {
-            return def;
-        }
+        var res = localStorage.getItem(category+"\0"+name);
+        if (!res || res == null) return def;
+        return JSON.parse(res);
     }
 
     has(category, name) {
