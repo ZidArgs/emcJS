@@ -14,5 +14,6 @@ export { default as Tooltip } from './Tooltip.mjs';
 export { default as UIHelper } from './UIHelper.mjs';
 export { default as Window } from './Window.mjs';
 export { default as dragdrop } from './dragdrop';
+export { default as logic } from './logic';
 export { default as selection } from './selection';
 
