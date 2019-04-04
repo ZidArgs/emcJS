@@ -1,20 +1,18 @@
 const PARSER = new DOMParser();
 
-function getFile(url) {
-    return fetch(url)
-        .then(function(r) {
-            if (r.status < 200 || r.status >= 300) {
-                throw new Error(`error loading file "${url}" - status: ${r.status}`);
-            }
-            return r;
-        });
+async function getFile(url) {
+    let r = await fetch(url);
+    if (r.status < 200 || r.status >= 300) {
+        throw new Error(`error loading file "${url}" - status: ${r.status}`);
+    }
+    return r;
 }
 
 function importHTML(url) {
     return getFile(url)
-            .then(r => r.text())
-            .then(r => PARSER.parseFromString(r, "text/html"))
-            .then(r => r.body.childNodes);
+        .then(r => r.text())
+        .then(r => PARSER.parseFromString(r, "text/html"))
+        .then(r => r.body.childNodes);
 }
 
 function importImage(url) {
