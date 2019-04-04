@@ -1,5 +1,3 @@
-import DeepWindow from "./Window.mjs";
-import {createOption} from "./UIHelper.mjs";
 import Template from "../util/Template.mjs";
 import "./selection/ListSelect.mjs";
 

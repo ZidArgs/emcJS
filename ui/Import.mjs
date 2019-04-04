@@ -1,5 +1,4 @@
-import Logger from "../util/Logger.mjs";
-
+import {importHTML, importStyle, importModule} from "../util/ImportResources.mjs";
 import Template from "../util/Template.mjs";
 
 const TPL = new Template(`
@@ -18,7 +17,11 @@ const TPL = new Template(`
     </slot>
 `);
 
-const PARSER = new DOMParser();
+function appendHTML(r) {
+    while (r.length > 0) {
+        this.appendChild(r[0]);
+    }
+}
 
 export default class DeepImport extends HTMLElement {
 
@@ -54,32 +57,17 @@ export default class DeepImport extends HTMLElement {
         switch (name) {
             case 'style':
                 if (oldValue != newValue) {
-                    let t = document.createElement("link");
-                    t.href = newValue;
-                    t.rel = "stylesheet";
-                    t.type = "text/css";
-                    document.head.appendChild(t);
+                    importStyle(newValue);
                 }
                 break;
             case 'html':
                 if (oldValue != newValue) {
-                    fetch(newValue)
-                        	.then(r => r.text())
-                            .then(r => PARSER.parseFromString(r, "text/html"))
-                            .then(r => {
-                                while (r.body.childNodes.length > 0) {
-                                    this.appendChild(r.body.childNodes[0]);
-                                }
-                            })
-                            .catch(e => Logger.error(e));
+                    importHTML(newValue).then(appendHTML.bind(this));
                 }
                 break;
             case 'module':
                 if (oldValue != newValue) {
-                    let t = document.createElement("script");
-                    t.src = newValue;
-                    t.type = "module";
-                    document.head.appendChild(t);
+                    importModule(newValue);
                 }
                 break;
         }
