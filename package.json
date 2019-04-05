@@ -1,11 +1,10 @@
 {
   "name": "deepjs-modules",
-  "version": "0.0.12",
+  "version": "0.0.13",
   "description": "Modular JS API",
   "main": "index.js",
   "scripts": {
-    "index": "create-index ./ -r -x mjs",
-    "release": "create-index ./ -r -x mjs && npm publish"
+    "index": "create-index ./ -r -x mjs"
   },
   "repository": {
     "type": "git",

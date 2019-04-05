@@ -199,19 +199,21 @@ export default class DeepSettingsWindow extends DeepWindow {
     
     attributeChangedCallback(name, oldValue, newValue) {
         if (oldValue != newValue) {
-            let ol = this.shadowRoot.getElementById(`panel_${oldValue}`);
-            if (!!ol) {
-                ol.classList.remove("active");
-            }
-            let ob = this.shadowRoot.querySelector(`[target="${oldValue}"`);
-            if (!!ob) {
-                ob.classList.remove("active");
+            if (!!oldValue) {
+                let ol = this.shadowRoot.getElementById(`panel_${oldValue}`);
+                if (!!ol) {
+                    ol.classList.remove("active");
+                }
+                let ob = this.shadowRoot.querySelector(`[target="${oldValue}"]`);
+                if (!!ob) {
+                    ob.classList.remove("active");
+                }
             }
             let nl = this.shadowRoot.getElementById(`panel_${newValue}`);
             if (!!nl) {
                 nl.classList.add("active");
             }
-            let nb = this.shadowRoot.querySelector(`[target="${newValue}"`);
+            let nb = this.shadowRoot.querySelector(`[target="${newValue}"]`);
             if (!!nb) {
                 nb.classList.add("active");
             }

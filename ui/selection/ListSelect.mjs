@@ -19,10 +19,10 @@ const TPL = new Template(`
             display: block;
             width: 100%;
         }
-        ::slotted(:not(option)) {
+        ::slotted(:not([value])) {
             display: none;
         }
-        ::slotted(option) {
+        ::slotted([value]) {
             display: flex;
             align-items: center;
             min-height: 30px;
@@ -31,13 +31,13 @@ const TPL = new Template(`
             white-space: normal;
             margin: 5px 2px;
         }
-        ::slotted(option:not(.active)) {
+        ::slotted([value]:not(.active)) {
             opacity: 0.5;
         }
-        ::slotted(option.active) {
+        ::slotted([value].active) {
             background-color: #b3d1ff;
         }
-        ::slotted(option:hover) {
+        ::slotted([value]:hover) {
             background-color: #020088;
             color: #ffffff;
         }
@@ -48,20 +48,21 @@ const TPL = new Template(`
 
 function clickOption(event) {
     if (!this.readonly) {
+        let value = event.target.getAttribute("value");
         if (this.multimode == "true") {
             let arr = [];
             if (!!this.value && this.value.length > 0) {
                 arr = this.value.split(",");
             }
             let set = new Set(arr);
-            if (set.has(event.target.value)) {
-                set.delete(event.target.value);
+            if (set.has(value)) {
+                set.delete(value);
             } else {
-                set.add(event.target.value);
+                set.add(value);
             }
             this.value = Array.from(set).join(",");
         } else {
-            this.value = event.target.value;
+            this.value = value;
         }
     }
 }
@@ -76,12 +77,13 @@ export default class DeepListSelect extends HTMLElement {
         this.shadowRoot.getElementById("container").addEventListener("slotchange", event => {
             this.calculateItems();
         });
-        /* init */
+    }
+
+    connectedCallback() {
         if (!this.value) {
-            let all = this.querySelectorAll("option");
+            let all = this.querySelectorAll("[value]");
             if (!!all.length) {
                 this.value = all[0].value;
-                all[0].classList.add("active");
             }
         }
     }
@@ -139,14 +141,14 @@ export default class DeepListSelect extends HTMLElement {
     }
     
     calculateItems() {
-        this.querySelectorAll(`option[value]:not([value=""])`).forEach(el => {
+        this.querySelectorAll(`[value]:not([value=""])`).forEach(el => {
             if (!!el) {
                 el.classList.remove("active");
             }
         });
         if (typeof this.value === "string" && this.value.length > 0) {
             this.value.split(",").forEach(v => {
-                let el = this.querySelector(`option[value="${v}"]`);
+                let el = this.querySelector(`[value="${v}"]`);
                 if (!!el) {
                     el.classList.add("active");
                 }

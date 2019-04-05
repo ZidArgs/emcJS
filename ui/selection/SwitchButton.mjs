@@ -19,10 +19,10 @@ const TPL = new Template(`
             width: 100%;
             height: 100%;
         }
-        ::slotted(:not(option)) {
+        ::slotted(:not([value])) {
             display: none;
         }
-        ::slotted(option) {
+        ::slotted([value]) {
             width: 100%;
             height: 100%;
             min-height: auto;
@@ -32,7 +32,7 @@ const TPL = new Template(`
             background-origin: content-box;
         }
     </style>
-    <slot name="value">
+    <slot id="slot" name="">
     </slot>
 `);
 
@@ -44,12 +44,13 @@ export default class DeepSwitchButton extends HTMLElement {
         this.addEventListener("contextmenu", this.prev);
         this.attachShadow({mode: 'open'});
         this.shadowRoot.appendChild(TPL.generate());
-        /* init */
+    }
+
+    connectedCallback() {
         if (!this.value) {
-            let all = this.querySelectorAll("option");
+            let all = this.querySelectorAll("[value]");
             if (!!all.length) {
                 this.value = all[0].value;
-                all[0].setAttribute("slot", "value");
             }
         }
     }
@@ -78,14 +79,7 @@ export default class DeepSwitchButton extends HTMLElement {
         switch (name) {
             case 'value':
                 if (oldValue != newValue) {
-                    let ol = this.querySelector(`option[value="${oldValue}"]`);
-                    if (!!ol) {
-                        ol.removeAttribute("slot");
-                    }
-                    let nl = this.querySelector(`option[value="${newValue}"]`);
-                    if (!!nl) {
-                        nl.setAttribute("slot", "value");
-                    }
+                    this.shadowRoot.getElementById("slot").setAttribute("name", newValue);
                     var event = new Event('change');
                     event.oldValue = oldValue;
                     event.newValue = newValue;
@@ -97,13 +91,13 @@ export default class DeepSwitchButton extends HTMLElement {
 
     next(ev) {
         if (!this.readonly) {
-            let all = this.querySelectorAll("option");
+            let all = this.querySelectorAll("[value]");
             if (!!all.length) {
-                let opt = this.querySelector(`option[value="${this.value}"]`);
+                let opt = this.querySelector(`[value="${this.value}"]`);
                 if (!!opt && !!opt.nextElementSibling) {
-                    this.value = opt.nextElementSibling.value;
+                    this.value = opt.nextElementSibling.getAttribute("value");
                 } else {
-                    this.value = all[0].value;
+                    this.value = all[0].getAttribute("value");
                 }
             }
         }
@@ -113,9 +107,9 @@ export default class DeepSwitchButton extends HTMLElement {
 
     prev(ev) {
         if (!this.readonly) {
-            let all = this.querySelectorAll("option");
+            let all = this.querySelectorAll("[value]");
             if (!!all.length) {
-                let opt = this.querySelector(`option[value="${this.value}"]`);
+                let opt = this.querySelector(`[value="${this.value}"]`);
                 if (!!opt && !!opt.previousElementSibling) {
                     this.value = opt.previousElementSibling.value;
                 } else {

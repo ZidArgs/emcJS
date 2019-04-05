@@ -15,15 +15,15 @@ const TPL = new Template(`
             width: 100%;
             height: 100%;
         }
-        ::slotted(:not(option)) {
+        ::slotted(:not([value])) {
             display: none;
         }
-        ::slotted(option) {
+        ::slotted([value]) {
             display: inline-block;
             min-height: auto;
             cursor: pointer;
         }
-        ::slotted(option:not(.active)) {
+        ::slotted([value]:not(.active)) {
             opacity: 0.5;
         }
     </style>
@@ -31,44 +31,44 @@ const TPL = new Template(`
     </slot>
 `);
 
-function chooseOption(event) {
+function clickOption(event) {
     if (!this.readonly) {
+        let value = event.target.getAttribute("value");
         if (this.multimode == "true") {
             let arr = [];
             if (!!this.value && this.value.length > 0) {
                 arr = this.value.split(",");
             }
             let set = new Set(arr);
-            if (set.has(event.target.value)) {
-                set.delete(event.target.value);
+            if (set.has(value)) {
+                set.delete(value);
             } else {
-                set.add(event.target.value);
+                set.add(value);
             }
             this.value = Array.from(set).join(",");
         } else {
-            this.value = event.target.value;
+            this.value = value;
         }
     }
 }
-
-// TODO react on slotted change (maybe deselect or select new elements)
 
 export default class DeepChoiceSelect extends HTMLElement {
 
     constructor() {
         super();
-        this.addEventListener("click", chooseOption.bind(this));
+        this.addEventListener("click", clickOption.bind(this));
         this.attachShadow({mode: 'open'});
         this.shadowRoot.appendChild(TPL.generate());
         this.shadowRoot.getElementById("container").addEventListener("slotchange", event => {
             this.calculateItems();
         });
-        /* init */
+    }
+
+    connectedCallback() {
         if (!this.value) {
-            let all = this.querySelectorAll("option");
+            let all = this.querySelectorAll("[value]");
             if (!!all.length) {
                 this.value = all[0].value;
-                all[0].classList.add("active");
             }
         }
     }
@@ -126,14 +126,14 @@ export default class DeepChoiceSelect extends HTMLElement {
     }
     
     calculateItems() {
-        this.querySelectorAll(`option[value]:not([value=""])`).forEach(el => {
+        this.querySelectorAll(`[value]:not([value=""])`).forEach(el => {
             if (!!el) {
                 el.classList.remove("active");
             }
         });
         if (typeof this.value === "string" && this.value.length > 0) {
             this.value.split(",").forEach(v => {
-                let el = this.querySelector(`option[value="${v}"]`);
+                let el = this.querySelector(`[value="${v}"]`);
                 if (!!el) {
                     el.classList.add("active");
                 }
