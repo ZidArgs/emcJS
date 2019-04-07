@@ -25,11 +25,12 @@ let output = null;
 function write(data) {
     logs.push(data);
     if (!output) return;
-    let message = data.message;
-    if (message instanceof Error) {
-        message = message.stack;
-    } 
-    let msg = `[ ${data.type} | ${data.time} ] <${data.target}> ${message}`;
+    let msg;
+    if (data.message instanceof Error) {
+        msg = `[ ${data.type} | ${data.time} ] <${data.target}> ${data.message.message}\n${data.message.stack}`;
+    } else {
+        msg = `[ ${data.type} | ${data.time} ] <${data.target}>\n${data.message}`;
+    }
     if (output instanceof HTMLTextAreaElement) {
         output.value += msg+"\n";
         output.scrollTop = output.scrollHeight;

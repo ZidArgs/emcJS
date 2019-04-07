@@ -1,5 +1,4 @@
 import DeepWindow from "./Window.mjs";
-import {createOption} from "./UIHelper.mjs";
 import Template from "../util/Template.mjs";
 import "./selection/ListSelect.mjs";
 
@@ -360,7 +359,7 @@ export default class DeepSettingsWindow extends DeepWindow {
         input.multimode = multimode;
         input.dataset.ref = ref;
         for (let j in values) {
-            input.appendChild(createOption(j, values[j]));
+            input.appendChild(createDeepOption(j, values[j]));
         }
         el.appendChild(input);
         this.shadowRoot.getElementById(`panel_${category}`).appendChild(el);
@@ -391,4 +390,18 @@ function generateField(label) {
     text.className = "option-text";
     el.appendChild(text);
     return el;
+}
+
+function createOption(value, content) {
+    let opt = document.createElement('option');
+    opt.value = value;
+    opt.innerHTML = content;
+    return opt;
+}
+
+function createDeepOption(value, content) {
+    let opt = document.createElement('deep-option');
+    opt.value = value;
+    opt.innerHTML = content;
+    return opt;
 }

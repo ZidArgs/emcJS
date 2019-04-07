@@ -1,4 +1,5 @@
 import Template from "../../util/Template.mjs";
+import "./Option.mjs";
 
 const TPL = new Template(`
     <style>

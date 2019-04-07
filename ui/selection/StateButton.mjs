@@ -1,4 +1,5 @@
 import Template from "../../util/Template.mjs";
+import "./Option.mjs";
 
 const TPL = new Template(`
     <style>
@@ -19,8 +20,9 @@ const TPL = new Template(`
             width: 100%;
             height: 100%;
         }
-        ::slotted(:not([value])) {
-            display: none;
+        ::slotted(:not([value])),
+        ::slotted([value]:not(.active)) {
+            display: none !important;
         }
         ::slotted([value]) {
             width: 100%;
@@ -32,7 +34,7 @@ const TPL = new Template(`
             background-origin: content-box;
         }
     </style>
-    <slot id="slot" name="">
+    <slot>
     </slot>
 `);
 
@@ -79,7 +81,14 @@ export default class DeepStateButton extends HTMLElement {
         switch (name) {
             case 'value':
                 if (oldValue != newValue) {
-                    this.shadowRoot.getElementById("slot").setAttribute("name", newValue);
+                    let oe = this.querySelector(`.active`);
+                    if (!!oe) {
+                        oe.classList.remove("active");
+                    }
+                    let ne = this.querySelector(`[value="${newValue}"]`);
+                    if (!!ne) {
+                        ne.classList.add("active");
+                    }
                     var event = new Event('change');
                     event.oldValue = oldValue;
                     event.newValue = newValue;

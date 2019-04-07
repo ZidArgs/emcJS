@@ -11,7 +11,6 @@ export { default as PopOver } from './PopOver.mjs';
 export { default as SettingsWindow } from './SettingsWindow.mjs';
 export { default as Toast } from './Toast.mjs';
 export { default as Tooltip } from './Tooltip.mjs';
-export { default as UIHelper } from './UIHelper.mjs';
 export { default as Window } from './Window.mjs';
 export { default as dragdrop } from './dragdrop';
 export { default as logic } from './logic';

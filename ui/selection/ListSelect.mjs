@@ -1,4 +1,5 @@
 import Template from "../../util/Template.mjs";
+import "./Option.mjs";
 
 const TPL = new Template(`
     <style>
@@ -19,6 +20,7 @@ const TPL = new Template(`
             display: block;
             width: 100%;
         }
+        ::slotted(:not()),
         ::slotted(:not([value])) {
             display: none;
         }
@@ -32,14 +34,20 @@ const TPL = new Template(`
             margin: 5px 2px;
         }
         ::slotted([value]:not(.active)) {
-            opacity: 0.5;
+            color: #000000;
+            background-color: #ffffff;
         }
         ::slotted([value].active) {
-            background-color: #b3d1ff;
+            color: #ffffff;
+            background-color: #000000;
         }
         ::slotted([value]:hover) {
-            background-color: #020088;
+            color: #000000;
+            background-color: #cccccc;
+        }
+        ::slotted([value].active:hover) {
             color: #ffffff;
+            background-color: #555555;
         }
     </style>
     <slot id="container">
@@ -81,10 +89,7 @@ export default class DeepListSelect extends HTMLElement {
 
     connectedCallback() {
         if (!this.value) {
-            let all = this.querySelectorAll("[value]");
-            if (!!all.length) {
-                this.value = all[0].value;
-            }
+            this.value = "";
         }
     }
 
