@@ -1,16 +1,16 @@
-const STORAGE = {};
+let STORAGE = {};
 
 class MemorySTORAGE {
 
     set(category, name, data) {
         STORAGE[category] = STORAGE[category] || {};
-        STORAGE[category][name] = data;
+        STORAGE[category][name] = JSON.stringify(data);
     }
 
 
     get(category, name, def = null) {
         if (!!STORAGE[category] && !!STORAGE[category][name]) {
-            return STORAGE[category][name];
+            return JSON.parse(STORAGE[category][name]);
         } else {
             return def;
         }
@@ -29,6 +29,10 @@ class MemorySTORAGE {
         }
     }
 
+    purge() {
+        STORAGE = {};
+    }
+
     categories() {
         return Object.keys(STORAGE);
     }
@@ -36,6 +40,19 @@ class MemorySTORAGE {
     names(category) {
         if (!!STORAGE[category]) {
             return Object.keys(STORAGE[category]);
+        }
+        return [];
+    }
+
+    toObject() {
+        let res = {};
+        for (let i in STORAGE) {
+            if (!res[i]) {
+                res[i] = {};
+            }
+            for (let j in STORAGE[i]) {
+                res[i][j] = JSON.parse(STORAGE[i][j]);
+            }
         }
     }
 

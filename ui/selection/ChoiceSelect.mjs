@@ -107,7 +107,7 @@ export default class DeepChoiceSelect extends HTMLElement {
             case 'value':
                 if (oldValue != newValue) {
                     this.calculateItems();
-                    var event = new Event('change');
+                    let event = new Event('change');
                     event.oldValue = oldValue;
                     event.newValue = newValue;
                     this.dispatchEvent(event);

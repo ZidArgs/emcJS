@@ -89,7 +89,7 @@ export default class DeepStateButton extends HTMLElement {
                     if (!!ne) {
                         ne.classList.add("active");
                     }
-                    var event = new Event('change');
+                    let event = new Event('change');
                     event.oldValue = oldValue;
                     event.newValue = newValue;
                     this.dispatchEvent(event);

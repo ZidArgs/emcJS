@@ -16,7 +16,7 @@ const TPL = new Template(`
 `);
 
 function dropElement(event) {
-    var el = document.getElementById(event.dataTransfer.getData("id"));
+    let el = document.getElementById(event.dataTransfer.getData("id"));
     if (!!el) {
         this.appendChild(el);
     }

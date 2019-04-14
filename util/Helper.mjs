@@ -2,7 +2,7 @@ function arrayDiff(a, b) {
     if (!Array.isArray(a) ||!Array.isArray(b)) {
         throw new TypeError("only arrays are comparable");
     }
-    var c = new Set(b);
+    let c = new Set(b);
     return a.filter(d =>!c.has(d));
 }
   
@@ -17,7 +17,7 @@ function arrayIntersect(a, b) {
     if (!Array.isArray(a) ||!Array.isArray(b)) {
         throw new TypeError("only arrays are comparable");
     }
-    var c = new Set(b);
+    let c = new Set(b);
     return a.filter(d =>c.has(d));
 }
 

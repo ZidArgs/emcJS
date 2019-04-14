@@ -16,9 +16,8 @@ class LocalStorage {
         localStorage.setItem(category+"\0"+name, JSON.stringify(data));
     }
 
-
     get(category, name, def = null) {
-        var res = localStorage.getItem(category+"\0"+name);
+        let res = localStorage.getItem(category+"\0"+name);
         if (!res || res == null) return def;
         return JSON.parse(res);
     }
@@ -31,17 +30,34 @@ class LocalStorage {
         localStorage.removeItem(category+"\0"+name);
     }
 
+    purge() {
+        localStorage.clear();
+    }
+
     categories() {
-        var k = Object.keys(localStorage);
+        let k = Object.keys(localStorage);
         k = k.map(getCategory);
         return Array.from(new Set(k));
     }
 
     names(category) {
-        var k = Object.keys(localStorage);
+        let k = Object.keys(localStorage);
         k = k.filter(filterCategory.bind(this, category));
         k = k.map(getName);
         return Array.from(new Set(k));
+    }
+
+    toObject() {
+        let res = {};
+        let k = Object.keys(sessionStorage);
+        for (let i of k) {
+            let r = i.split("\0");
+            if (!res.hasOwnProperty(r[0])) {
+                res[r[0]] = {};
+            }
+            res[r[0]][r[1]] = JSON.parse(sessionStorage.getItem(i));
+        }
+        return res;
     }
 
 }

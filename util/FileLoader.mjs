@@ -47,7 +47,7 @@ class FileLoader {
             let act = "";
             let lines = r.split(LNBR_SEQ);
             for(let i = 0; i < lines.length; ++i) {
-                var line = lines[i];
+                let line = lines[i];
                 if(line.startsWith(";") || !line.length) {
                     continue;
                 }
@@ -57,7 +57,7 @@ class FileLoader {
                     continue;
                 }
                 if(INI_VAL.test(line)) {
-                    var data = line.split("=");
+                    let data = line.split("=");
                     if (typeof res[act][data[0]] === "string") {
                         Logger.warn(`${file} - duplicate key at line ${i}: ${line}`, "FileLoader");
                     }

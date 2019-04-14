@@ -1,4 +1,4 @@
-const STORAGE = {};
+let STORAGE = {};
 
 class GlobalData {
 
@@ -24,8 +24,16 @@ class GlobalData {
         }
     }
 
+    purge() {
+        STORAGE = {};
+    }
+
     names() {
         return Object.keys(STORAGE);
+    }
+
+    toObject() {
+        return Object.assign({}, STORAGE);
     }
 
 }

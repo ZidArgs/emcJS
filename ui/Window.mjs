@@ -114,7 +114,7 @@ export default class DeepWindow extends HTMLElement {
     constructor(title = "", close = "close") {
         super();
         this.onkeydown = function(event) {
-            var key = event.which || event.keyCode;
+            let key = event.which || event.keyCode;
             if (key == 27) {
                 this.close();
             }

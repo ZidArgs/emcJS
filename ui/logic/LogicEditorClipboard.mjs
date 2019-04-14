@@ -48,8 +48,8 @@ function allowDrop(event) {
 
 function dropOnPlaceholder(event) {
     if (!!event.dataTransfer) {
-        var id = event.dataTransfer.getData("logic-transfer-id");
-        var el = document.getElementById(id);
+        let id = event.dataTransfer.getData("logic-transfer-id");
+        let el = document.getElementById(id);
         if (!!el) {
             let ne = event.target.getRootNode().host.appendChild(el.getElement(event.ctrlKey));
             if (!!ne) {

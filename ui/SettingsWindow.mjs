@@ -383,9 +383,9 @@ export default class DeepSettingsWindow extends DeepWindow {
 customElements.define('deep-settingswindow', DeepSettingsWindow);
 
 function generateField(label) {
-    var el = document.createElement("label");
+    let el = document.createElement("label");
     el.className = "settings-option";
-    var text = document.createElement("span");
+    let text = document.createElement("span");
     text.innerHTML = label;
     text.className = "option-text";
     el.appendChild(text);

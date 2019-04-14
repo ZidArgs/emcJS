@@ -197,7 +197,7 @@ export default class DeepDialog extends DeepWindow {
                 submit: "YES",
                 cancel: "NO"
             });   
-            var el = document.createElement("input");
+            let el = document.createElement("input");
             el.style.width = "100%";
             el.style.padding = "5px";
             el.style.backgroundColor = "white";
