@@ -262,11 +262,16 @@ export default class DeepLogicAbstractElement extends HTMLElement {
     }
 
     static buildLogic(logic) {
-        if (!!logic) {
-            let el = new (DeepLogicAbstractElement.getReference(logic.type));
-            el.loadLogic(logic);
-            return el;
+        if (typeof logic == "object" && !!logic) {
+            if (Array.isArray(logic)) {
+                logic.forEach(DeepLogicAbstractElement.buildLogic);
+            } else {
+                let el = new (DeepLogicAbstractElement.getReference(logic.type));
+                el.loadLogic(logic);
+                return el;
+            }
         }
+        return new (DeepLogicAbstractElement.getReference(`${logic}`));
     }
 
 }
