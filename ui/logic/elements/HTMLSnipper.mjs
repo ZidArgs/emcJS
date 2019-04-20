@@ -28,7 +28,7 @@ class HTMLSnipper {
 
 export default new HTMLSnipper;
 
-function html2svg(foreignObject, width, height) {
+function html2svg(clonedNode, width, height) {
     const xmlns = 'http://www.w3.org/2000/svg';
     const svg = document.createElementNS(xmlns, 'svg');
     const foreignObject = document.createElementNS(xmlns, 'foreignObject');
