@@ -279,6 +279,7 @@ export default class DeepLogicAbstractElement extends HTMLElement {
 DeepLogicAbstractElement.allowDrop = function allowDrop(event) {
     let el = event.target.getRootNode().host;
     if (el.readonly === null || el.readonly == "false") {
+        // TODO check dataTransfer
         event.preventDefault();
         event.stopPropagation();
         return false;

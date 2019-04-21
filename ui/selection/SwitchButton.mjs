@@ -120,9 +120,9 @@ export default class DeepSwitchButton extends HTMLElement {
             if (!!all.length) {
                 let opt = this.querySelector(`[value="${this.value}"]`);
                 if (!!opt && !!opt.previousElementSibling) {
-                    this.value = opt.previousElementSibling.value;
+                    this.value = opt.previousElementSibling.getAttribute("value");
                 } else {
-                    this.value = all[all.length-1].value;
+                    this.value = all[all.length-1].getAttribute("value");
                 }
             }
         }

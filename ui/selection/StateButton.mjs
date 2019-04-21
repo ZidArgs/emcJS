@@ -105,10 +105,10 @@ export default class DeepStateButton extends HTMLElement {
                 let opt = this.querySelector(`[value="${this.value}"]`);
                 if (!!opt) {
                     if (!!opt.nextElementSibling) {
-                        this.value = opt.nextElementSibling.value;
+                        this.value = opt.nextElementSibling.getAttribute("value");
                     }
                 } else {
-                    this.value = all[0].value;
+                    this.value = all[0].getAttribute("value");
                 }
             }
         }
@@ -123,10 +123,10 @@ export default class DeepStateButton extends HTMLElement {
                 let opt = this.querySelector(`[value="${this.value}"]`);
                 if (!!opt) {
                     if (!!opt.previousElementSibling) {
-                        this.value = opt.previousElementSibling.value;
+                        this.value = opt.previousElementSibling.getAttribute("value");
                     }
                 } else {
-                    this.value = all[0].value;
+                    this.value = all[0].getAttribute("value");
                 }
             }
         }
