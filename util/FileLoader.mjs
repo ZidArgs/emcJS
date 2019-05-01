@@ -4,6 +4,14 @@ const LNBR_SEQ = /(?:\r\n|\n|\r)/g;
 const INI_GRP = /^\[(.+)\]$/;
 const INI_VAL = /^[^=]+=[^=]*$/;
 
+async function getFile(url) {
+    let r = await fetch(url);
+    if (r.status < 200 || r.status >= 300) {
+        throw new Error(`error loading file "${url}" - status: ${r.status}`);
+    }
+    return r;
+}
+
 class FileLoader {
 
     json(file) {
