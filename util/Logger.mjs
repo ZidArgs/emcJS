@@ -1,49 +1,75 @@
 const STYLES = {
     "SEVERE": {
-        "backgroundColor": "#860000",
+        "background": "#860000",
         "color": "#ffffff"
     },
     "ERROR": {
+        "background": "#222222",
         "color": "#ff3e3e"
     },
     "WARN": {
+        "background": "#222222",
         "color": "#ffff00"
     },
     "INFO": {
+        "background": "#222222",
         "color": "#00ceff"
     },
     "LOG": {
+        "background": "#222222",
         "color": "#00ff00"
     }
 };
 
+const CONSOLE_STYLES = {
+    "SEVERE": "background:#860000;color:#ffffff;",
+    "ERROR": "background:#ffffff;color:#ff0000;",
+    "WARN": "background:#ffffff;color:#dd5500;",
+    "INFO": "background:#ffffff;color:#0000ff;",
+    "LOG": "background:#ffffff;color:#008800;"
+};
+
 const TIME_FND = /(....)-(..)-(..)T(..:..:..\....)Z/;
 const TIME_REP = "$3.$2.$1-$4";
-const logs = [];
-let output = null;
+
+let output = new Set;
+let level = new Set(["ERROR", "WARN", "INFO", "LOG"]);
 
 function write(data) {
-    logs.push(data);
-    if (!output) return;
-    let msg;
-    if (data.message instanceof Error) {
-        msg = `[ ${data.type} | ${data.time} ] <${data.target}> ${data.message.message}\n${data.message.stack}`;
-    } else {
-        msg = `[ ${data.type} | ${data.time} ] <${data.target}>\n${data.message}`;
-    }
-    if (output instanceof HTMLTextAreaElement) {
-        output.value += msg+"\n";
-        output.scrollTop = output.scrollHeight;
-    } else if (output instanceof HTMLDivElement) {
-        let el = document.createElement('span');
-        if (STYLES.hasOwnProperty(data.type)) {
-            for (let i in STYLES[data.type]) {
-                el.style[i] = STYLES[data.type][i];
+    if (!!output.size && level.has(data.type)) {
+        Array.from(output).forEach(function(out) {
+            let msg;
+            if (data.message instanceof Error) {
+                msg = `[ ${data.type} | ${data.time} ] <${data.target}> ${data.message.message}\n${data.message.stack}`;
+            } else {
+                msg = `[ ${data.type} | ${data.time} ] <${data.target}>\n${data.message}`;
             }
+            if (out instanceof HTMLTextAreaElement) {
+                out.value += msg+"\n";
+                out.scrollTop = out.scrollHeight;
+            } else if (out instanceof HTMLDivElement) {
+                let el = document.createElement('span');
+                if (STYLES.hasOwnProperty(data.type)) {
+                    for (let i in STYLES[data.type]) {
+                        el.style[i] = STYLES[data.type][i];
+                    }
+                }
+                el.appendChild(document.createTextNode(msg));
+                out.appendChild(el);
+                out.scrollTop = out.scrollHeight;
+            } else if (out === console) {
+                out.log("%c%s%c", CONSOLE_STYLES[data.type] || "", msg, "");
+            }
+        });
+    }
+    if (data.type == "SEVERE" && (!level.has("SEVERE") || !output.has(console))) {
+        let msg;
+        if (data.message instanceof Error) {
+            msg = `[ ${data.type} | ${data.time} ] <${data.target}> ${data.message.message}\n${data.message.stack}`;
+        } else {
+            msg = `[ ${data.type} | ${data.time} ] <${data.target}>\n${data.message}`;
         }
-        el.appendChild(document.createTextNode(msg));
-        output.appendChild(el);
-        output.scrollTop = output.scrollHeight;
+        console.error(msg);
     }
 }
 
@@ -115,12 +141,20 @@ class Logger {
         });
     }
 
-    getLog(filter = ["ERROR", "WARN", "INFO", "LOG"]) {
-        return logs.filter(v => !!(filter.indexOf(v.type)+1));
+    addLevel(value) {
+        level.add(value);
     }
 
-    setOutput(el) {
-        output = el;
+    removeLevel(value) {
+        level.delete(value);
+    }
+
+    addOutput(value) {
+        output.add(value);
+    }
+
+    removeOutput(value) {
+        output.delete(value);
     }
 
 }
