@@ -43,14 +43,19 @@ class EventBus {
         }
     }
 
-    post(name, ...args) {
+    post(name, data = {}) {
         if (!MUTED.has(name)) {
-            if (log) Logger.log(`posted event "${name}" with values (${args.join(', ')})`, "EventBus");
             if (SUBS.has(name)) SUBS.get(name).forEach(function(fn) {
-                fn(...args);
+                fn({
+                    name: name,
+                    data: data
+                });
             });
             ALLS.forEach(function(fn) {
-                fn(name, ...args);
+                fn({
+                    name: name,
+                    data: data
+                });
             });
         } else {
             if (log) Logger.warn(`tried posting MUTED event "${name}" with values (${args.join(', ')})`, "EventBus");
@@ -62,7 +67,6 @@ class EventBus {
             name.forEach(n => this.mute(n));
         } else {
             if (MUTED.has(name)) return;
-            if (log) Logger.warn(`MUTED "${name}"`, "EventBus");
             MUTED.add(name);
         }
     }
@@ -72,13 +76,8 @@ class EventBus {
             name.forEach(n => this.unmute(n));
         } else {
             if (!MUTED.has(name)) return;
-            if (log) Logger.info(`unMUTED "${name}"`, "EventBus");
             MUTED.delete(name);
         }
-    }
-
-    logEvents(v) {
-        log = !!v;
     }
 
 }

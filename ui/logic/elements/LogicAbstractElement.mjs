@@ -1,5 +1,5 @@
 import Template from "../../../util/Template.mjs";
-import UID from "../../../util/UniqueID.mjs";
+import UGen from "../../../util/UniqueGenerator.mjs";
 
 const TPL = new Template(`
     <style>
@@ -100,7 +100,7 @@ export default class DeepLogicAbstractElement extends HTMLElement {
         }
         this.attachShadow({mode: 'open'});
         this.shadowRoot.appendChild(TPL.generate());
-        ID.set(this, UID.generate("logic-element"));
+        ID.set(this, UGen.appUID("logic-element"));
         // observe changes to dom and update on change
         (new MutationObserver(() => {
             this.update();
