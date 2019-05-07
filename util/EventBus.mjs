@@ -43,7 +43,7 @@ class EventBus {
         }
     }
 
-    post(name, data = {}) {
+    fire(name, data = {}) {
         if (!MUTED.has(name)) {
             if (SUBS.has(name)) SUBS.get(name).forEach(function(fn) {
                 fn({
