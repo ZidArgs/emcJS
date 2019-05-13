@@ -189,7 +189,7 @@ export default class DeepDialog extends DeepWindow {
         });
     }
     
-    static prompt(ttl, msg) {
+    static prompt(ttl, msg, def) {
         return new Promise(function(resolve) {
             let d = new DeepDialog({
                 title: ttl,
@@ -203,6 +203,9 @@ export default class DeepDialog extends DeepWindow {
             el.style.backgroundColor = "white";
             el.style.border = "solid 1px black";
             el.style.color = "black";
+            if (typeof def == "string") {
+                el.value = def;
+            }
             d.appendChild(el);
             d.onsubmit = function() {
                 resolve(el.value);
