@@ -118,6 +118,7 @@ export default class DeepLogicAbstractElement extends HTMLElement {
         }
         this.id = ID.get(this);
         this.addEventListener("dragstart", dragStart);
+        this.update();
     }
 
     disconnectedCallback() {

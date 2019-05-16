@@ -11,6 +11,7 @@ const TPL = new Template(`
             bottom: 50px;
             cursor: pointer;
             pointer-events: none;
+            z-index: 999999999;
         }
         #text {
             position: relative;

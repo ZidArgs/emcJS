@@ -23,6 +23,12 @@ export default class DeepLogicNor extends DeepLogicAbstractElement {
         let target = this.shadowRoot.getElementById("droptarget");
         target.ondragover = DeepLogicAbstractElement.allowDrop;
         target.ondrop = DeepLogicAbstractElement.dropOnPlaceholder;
+        target.onclick = function(event) {
+            let e = new Event('placeholderclicked');
+            e.name = event.target.name;
+            this.dispatchEvent(e);
+            event.stopPropagation();
+        }.bind(this);
     }
 
     update() {
@@ -46,6 +52,10 @@ export default class DeepLogicNor extends DeepLogicAbstractElement {
                 el: Array.from(this.children).map(e => e.toJSON())
             };
         }
+        return {
+            type: "nor",
+            el: []
+        };
     }
 
     loadLogic(logic) {

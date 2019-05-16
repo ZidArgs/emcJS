@@ -30,6 +30,12 @@ export default class DeepLogicXor extends DeepLogicAbstractElement {
         target1.ondragover = DeepLogicAbstractElement.allowDrop;
         target0.ondrop = DeepLogicAbstractElement.dropOnPlaceholder;
         target1.ondrop = DeepLogicAbstractElement.dropOnPlaceholder;
+        target1.onclick = target2.onclick = function(event) {
+            let e = new Event('placeholderclicked');
+            e.name = event.target.name;
+            this.dispatchEvent(e);
+            event.stopPropagation();
+        }.bind(this);
     }
 
     update() {
@@ -61,6 +67,11 @@ export default class DeepLogicXor extends DeepLogicAbstractElement {
                 el1: el1
             };
         }
+        return {
+            type: "xor",
+            el0: undefined,
+            el1: undefined
+        };
     }
 
     loadLogic(logic) {

@@ -25,6 +25,12 @@ export default class DeepLogicMax extends DeepLogicAbstractElement {
         let target = this.shadowRoot.getElementById("droptarget");
         target.ondragover = DeepLogicAbstractElement.allowDrop;
         target.ondrop = DeepLogicAbstractElement.dropOnPlaceholder;
+        target.onclick = function(event) {
+            let e = new Event('placeholderclicked');
+            e.name = event.target.name;
+            this.dispatchEvent(e);
+            event.stopPropagation();
+        }.bind(this);
         this.shadowRoot.getElementById("input").addEventListener('change', (event) => {
             this.update();
         });
@@ -51,6 +57,10 @@ export default class DeepLogicMax extends DeepLogicAbstractElement {
                 value: this.shadowRoot.getElementById("input").value
             };
         }
+        return {
+            type: "max",
+            el: undefined
+        };
     }
 
     loadLogic(logic) {

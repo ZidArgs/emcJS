@@ -94,6 +94,25 @@ function dropOnPlaceholder(event) {
     return false;
 }
 
+function observer(fn, mutations) {
+    mutations.forEach(function(mutation) {
+        for (var i = 0; i < mutation.addedNodes.length; i++) {
+            mutation.addedNodes[i].addEventListener("placeholderclicked", fn);
+        }
+        for (var i = 0; i < mutation.removedNodes.length; i++) {
+            mutation.removedNodes[i].removeEventListener("placeholderclicked", fn);
+        }
+    });
+}
+
+function onPlaceholderClicked(event) {
+    let e = new Event('placeholderclicked');
+    e.reciever = event.target;
+    e.name = event.name;
+    this.dispatchEvent(e);
+    event.stopPropagation();
+}
+
 export default class LogicEditorWorkingarea extends HTMLElement {
 
     constructor() {
@@ -112,6 +131,13 @@ export default class LogicEditorWorkingarea extends HTMLElement {
         this.shadowRoot.getElementById('clear').addEventListener('click', function(event) {
             this.dispatchEvent(new Event('clear'));
         }.bind(this));
+        let mutobs = new MutationObserver(observer.bind(this, onPlaceholderClicked.bind(this)));
+        mutobs.observe(this, {
+            attributes: false,
+            characterData: false,
+            childList: true,
+            subtree: true
+        });
     }
 
     getLogic() {
