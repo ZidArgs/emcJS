@@ -78,8 +78,8 @@ function write(data) {
                         el.style[i] = HTML_DEFAULT_UNSET[i];
                     }
                 }
-                el.appendChild(document.createTextNode(msg));
-                out.appendChild(el);
+                el.append(document.createTextNode(msg));
+                out.append(el);
                 out.scrollTop = out.scrollHeight;
             }
         });

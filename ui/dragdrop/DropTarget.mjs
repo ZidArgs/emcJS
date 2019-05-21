@@ -18,7 +18,7 @@ const TPL = new Template(`
 function dropElement(event) {
     let el = document.getElementById(event.dataTransfer.getData("id"));
     if (!!el) {
-        this.appendChild(el);
+        this.append(el);
     }
     event.preventDefault();
     event.stopPropagation();
@@ -41,7 +41,7 @@ export default class DeepDropTarget extends HTMLElement {
         this.ondrop = dropElement.bind(this);
         this.ondragover = allowDrop.bind(this);
         this.attachShadow({mode: 'open'});
-        this.shadowRoot.appendChild(TPL.generate());
+        this.shadowRoot.append(TPL.generate());
     }
 
     get group() {

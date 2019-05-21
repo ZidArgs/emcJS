@@ -40,10 +40,12 @@ const TPL = new Template(`
     <span id="text"></span>
 `);
 
+// TODO better toasting
+
 function showToast(text) {
     let el = document.createElement('div');
     el.attachShadow({mode: 'open'});
-    el.shadowRoot.appendChild(TPL.generate());
+    el.shadowRoot.append(TPL.generate());
     el.shadowRoot.getElementById('text').innerHTML = text;
     let t = setTimeout(function () {
         document.body.removeChild(el);
@@ -52,13 +54,13 @@ function showToast(text) {
         clearTimeout(t);
         document.body.removeChild(el);
     }
-    document.body.appendChild(el);
+    document.body.append(el);
 }
 
 function showSuccessToast(text) {
     let el = document.createElement('div');
     el.attachShadow({mode: 'open'});
-    el.shadowRoot.appendChild(TPL.generate());
+    el.shadowRoot.append(TPL.generate());
     let txt = el.shadowRoot.getElementById('text');
     txt.innerHTML = text;
     txt.className = "success";
@@ -69,13 +71,13 @@ function showSuccessToast(text) {
         clearTimeout(t);
         document.body.removeChild(el);
     }
-    document.body.appendChild(el);
+    document.body.append(el);
 }
 
 function showInfoToast(text) {
     let el = document.createElement('div');
     el.attachShadow({mode: 'open'});
-    el.shadowRoot.appendChild(TPL.generate());
+    el.shadowRoot.append(TPL.generate());
     let txt = el.shadowRoot.getElementById('text');
     txt.innerHTML = text;
     txt.className = "info";
@@ -86,13 +88,13 @@ function showInfoToast(text) {
         clearTimeout(t);
         document.body.removeChild(el);
     }
-    document.body.appendChild(el);
+    document.body.append(el);
 }
 
 function showWarnToast(text) {
     let el = document.createElement('div');
     el.attachShadow({mode: 'open'});
-    el.shadowRoot.appendChild(TPL.generate());
+    el.shadowRoot.append(TPL.generate());
     let txt = el.shadowRoot.getElementById('text');
     txt.innerHTML = text;
     txt.className = "warning";
@@ -103,13 +105,13 @@ function showWarnToast(text) {
         clearTimeout(t);
         document.body.removeChild(el);
     }
-    document.body.appendChild(el);
+    document.body.append(el);
 }
 
 function showErrorToast(text) {
     let el = document.createElement('div');
     el.attachShadow({mode: 'open'});
-    el.shadowRoot.appendChild(TPL.generate());
+    el.shadowRoot.append(TPL.generate());
     let txt = el.shadowRoot.getElementById('text');
     txt.innerHTML = text;
     txt.className = "error";
@@ -120,7 +122,7 @@ function showErrorToast(text) {
         clearTimeout(t);
         document.body.removeChild(el);
     }
-    document.body.appendChild(el);
+    document.body.append(el);
 }
 
 export {showToast, showSuccessToast, showInfoToast, showWarnToast, showErrorToast};

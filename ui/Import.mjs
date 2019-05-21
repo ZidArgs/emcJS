@@ -19,7 +19,7 @@ const TPL = new Template(`
 
 function appendHTML(r) {
     while (r.length > 0) {
-        this.appendChild(r[0]);
+        this.append(r[0]);
     }
 }
 

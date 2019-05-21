@@ -9,7 +9,7 @@ export default class Template {
         } else {
             let buf = document.createElement('template');
             if (template instanceof HTMLElement) {
-                buf.appendChild(template);
+                buf.append(template);
             } else if (typeof template === "string") {
                 buf.innerHTML = template;
             }

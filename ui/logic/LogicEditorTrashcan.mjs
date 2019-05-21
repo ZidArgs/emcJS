@@ -43,7 +43,7 @@ export default class LogicEditorTrashcan extends HTMLElement {
     constructor() {
         super();
         this.attachShadow({mode: 'open'});
-        this.shadowRoot.appendChild(TPL.generate());
+        this.shadowRoot.append(TPL.generate());
         this.ondragover = allowDrop;
         this.ondrop = dropOnPlaceholder;
     }

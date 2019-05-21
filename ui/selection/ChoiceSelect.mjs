@@ -59,7 +59,7 @@ export default class DeepChoiceSelect extends HTMLElement {
         super();
         this.addEventListener("click", clickOption.bind(this));
         this.attachShadow({mode: 'open'});
-        this.shadowRoot.appendChild(TPL.generate());
+        this.shadowRoot.append(TPL.generate());
         this.shadowRoot.getElementById("container").addEventListener("slotchange", event => {
             this.calculateItems();
         });

@@ -25,7 +25,7 @@ export default class DeepOption extends HTMLElement {
     constructor() {
         super();
         this.attachShadow({mode: 'open'});
-        this.shadowRoot.appendChild(TPL.generate());
+        this.shadowRoot.append(TPL.generate());
     }
 
     get value() {
@@ -40,7 +40,7 @@ export default class DeepOption extends HTMLElement {
         let opt = document.createElement('deep-option');
         opt.setAttribute('value', value);
         if (content instanceof HTMLElement) {
-            opt.appendChild(content);
+            opt.append(content);
         } else {
             opt.innerHTML = content;
         }

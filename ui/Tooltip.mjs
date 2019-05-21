@@ -119,7 +119,7 @@ export default class DeepTooltip extends HTMLElement {
     constructor() {
         super();
         this.attachShadow({mode: 'open'});
-        this.shadowRoot.appendChild(TPL.generate());
+        this.shadowRoot.append(TPL.generate());
     }
 
     get position() {

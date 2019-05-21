@@ -83,7 +83,7 @@ function dropOnPlaceholder(event) {
         let id = event.dataTransfer.getData("logic-transfer-id");
         let el = document.getElementById(id);
         if (!!el) {
-            let ne = event.target.getRootNode().host.appendChild(el.getElement(event.ctrlKey));
+            let ne = event.target.getRootNode().host.append(el.getElement(event.ctrlKey));
             if (!!ne) {
                 ne.removeAttribute("slot");
             }
@@ -118,7 +118,7 @@ export default class LogicEditorWorkingarea extends HTMLElement {
     constructor() {
         super();
         this.attachShadow({mode: 'open'});
-        this.shadowRoot.appendChild(TPL.generate());
+        this.shadowRoot.append(TPL.generate());
         let target = this.shadowRoot.getElementById('droptarget');
         target.ondragover = allowDrop;
         target.ondrop = dropOnPlaceholder;
@@ -152,13 +152,13 @@ export default class LogicEditorWorkingarea extends HTMLElement {
         if (!!logic) {
             let el = new (DeepLogicAbstractElement.getReference(logic.type));
             el.loadLogic(logic);
-            this.appendChild(el);
+            this.append(el);
         }
     }
     
-    appendChild(el) {
+    append(el) {
         if (el instanceof DeepLogicAbstractElement && (typeof this.template != "string" || this.template == "false")) {
-            return super.appendChild(el);
+            return super.append(el);
         }
     }
 

@@ -20,7 +20,7 @@ export default class DeepLogicNot extends DeepLogicAbstractElement {
 
     constructor() {
         super();
-        this.shadowRoot.appendChild(TPL.generate());
+        this.shadowRoot.append(TPL.generate());
         let target = this.shadowRoot.getElementById("droptarget");
         target.ondragover = DeepLogicAbstractElement.allowDrop;
         target.ondrop = DeepLogicAbstractElement.dropOnPlaceholder;
@@ -65,7 +65,7 @@ export default class DeepLogicNot extends DeepLogicAbstractElement {
         if (!!logic && !!logic.el) {
             let el = new (DeepLogicAbstractElement.getReference(logic.el.type));
             el.loadLogic(logic.el);
-            this.appendChild(el);
+            this.append(el);
         }
     }
 

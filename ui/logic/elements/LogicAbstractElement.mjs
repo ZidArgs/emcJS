@@ -99,7 +99,7 @@ export default class DeepLogicAbstractElement extends HTMLElement {
             throw new TypeError("can not construct abstract class");
         }
         this.attachShadow({mode: 'open'});
-        this.shadowRoot.appendChild(TPL.generate());
+        this.shadowRoot.append(TPL.generate());
         ID.set(this, UGen.appUID("logic-element"));
         // observe changes to dom and update on change
         (new MutationObserver(() => {
@@ -148,10 +148,45 @@ export default class DeepLogicAbstractElement extends HTMLElement {
     loadLogic() {
         throw new TypeError("can not call abstract method");
     }
+
+    append(el) {
+        if (Array.isArray(el)) {
+            el.forEach(e => this.appendChild(e));
+        } else {
+            this.appendChild(el);
+        }
+    }
+
+    prepend(el) {
+        if (Array.isArray(el)) {
+            el.forEach(e => this.insertBefore(e, this.firstChild));
+        } else {
+            this.insertBefore(el, this.firstChild);
+        }
+    }
     
     appendChild(el) {
         if (el instanceof DeepLogicAbstractElement && (typeof this.template != "string" || this.template == "false")) {
             let r = super.appendChild(el);
+
+            if (this.hasAttribute("visualize")) {
+                r.setAttribute("visualize", this.getAttribute("visualize"));
+            } else {
+                r.removeAttribute("visualize");
+            }
+            if (this.hasAttribute("readonly")) {
+                r.setAttribute("readonly", this.getAttribute("readonly"));
+            } else {
+                r.removeAttribute("readonly");
+            }
+
+            return r;
+        }
+    }
+
+    insertBefore(el, ref) {
+        if (el instanceof DeepLogicAbstractElement && (typeof this.template != "string" || this.template == "false")) {
+            let r = super.insertBefore(el, ref);
 
             if (this.hasAttribute("visualize")) {
                 r.setAttribute("visualize", this.getAttribute("visualize"));
@@ -292,7 +327,7 @@ DeepLogicAbstractElement.dropOnPlaceholder = function dropOnPlaceholder(event) {
         let id = event.dataTransfer.getData("logic-transfer-id");
         let el = document.getElementById(id);
         if (!!el) {
-            let ne = event.target.getRootNode().host.appendChild(el.getElement(event.ctrlKey));
+            let ne = event.target.getRootNode().host.append(el.getElement(event.ctrlKey));
             if (!!ne) {
                 let slot = event.target.parentNode;
                 if (slot instanceof HTMLSlotElement && slot.name != null) {
@@ -326,7 +361,7 @@ class DeepLogicError extends DeepLogicAbstractElement {
 
     constructor() {
         super();
-        this.shadowRoot.appendChild(TPL_E.generate());
+        this.shadowRoot.append(TPL_E.generate());
     }
 
     getElement() {

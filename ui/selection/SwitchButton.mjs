@@ -45,7 +45,7 @@ export default class DeepSwitchButton extends HTMLElement {
         this.addEventListener("click", this.next);
         this.addEventListener("contextmenu", this.prev);
         this.attachShadow({mode: 'open'});
-        this.shadowRoot.appendChild(TPL.generate());
+        this.shadowRoot.append(TPL.generate());
     }
 
     connectedCallback() {

@@ -28,7 +28,7 @@ export default class DeepDragElement extends HTMLElement {
         /* host */
         this.id = UID.generate("draggable");
         this.attachShadow({mode: 'open'});
-        this.shadowRoot.appendChild(TPL.generate());
+        this.shadowRoot.append(TPL.generate());
         this.setAttribute("draggable", true);
         this.addEventListener("dragstart", dragElement);
     }

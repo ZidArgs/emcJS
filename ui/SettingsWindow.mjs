@@ -152,10 +152,10 @@ export default class DeepSettingsWindow extends DeepWindow {
         let window = this.shadowRoot.getElementById('window');
         this.shadowRoot.getElementById('body').innerHTML = "";
         this.shadowRoot.insertBefore(els.children[0], this.shadowRoot.getElementById('focus_catcher_top'));
-        this.shadowRoot.getElementById('body').appendChild(els.getElementById('panel_about'));
+        this.shadowRoot.getElementById('body').append(els.getElementById('panel_about'));
         let ctgrs = els.getElementById('categories');
         window.insertBefore(ctgrs, this.shadowRoot.getElementById('body'));
-        window.appendChild(els.getElementById('footer'));
+        window.append(els.getElementById('footer'));
 
         ctgrs.onclick = (event) => {
             let t = event.target.getAttribute('target');
@@ -273,7 +273,7 @@ export default class DeepSettingsWindow extends DeepWindow {
         pnl.className = "panel";
         pnl.id = `panel_${id}`;
         pnl.dataset.ref = id;
-        this.shadowRoot.getElementById('body').appendChild(pnl);
+        this.shadowRoot.getElementById('body').append(pnl);
         let cb = document.createElement('div');
         cb.className = "category";
         cb.setAttribute('target', id);
@@ -289,8 +289,8 @@ export default class DeepSettingsWindow extends DeepWindow {
         input.setAttribute("type", "text");
         input.value = def;
         input.dataset.ref = ref;
-        el.appendChild(input);
-        this.shadowRoot.getElementById(`panel_${category}`).appendChild(el);
+        el.append(input);
+        this.shadowRoot.getElementById(`panel_${category}`).append(el);
     }
 
     addNumberInput(category, label, ref, def, min, max) {
@@ -306,8 +306,8 @@ export default class DeepSettingsWindow extends DeepWindow {
             input.setAttribute("max", max);
         }
         input.dataset.ref = ref;
-        el.appendChild(input);
-        this.shadowRoot.getElementById(`panel_${category}`).appendChild(el);
+        el.append(input);
+        this.shadowRoot.getElementById(`panel_${category}`).append(el);
     }
 
     addRangeInput(category, label, ref, def, min, max) {
@@ -323,8 +323,8 @@ export default class DeepSettingsWindow extends DeepWindow {
             input.setAttribute("max", max);
         }
         input.dataset.ref = ref;
-        el.appendChild(input);
-        this.shadowRoot.getElementById(`panel_${category}`).appendChild(el);
+        el.append(input);
+        this.shadowRoot.getElementById(`panel_${category}`).append(el);
     }
 
     addCheckInput(category, label, ref, def) {
@@ -334,8 +334,8 @@ export default class DeepSettingsWindow extends DeepWindow {
         input.setAttribute("type", "checkbox");
         input.checked = !!def;
         input.dataset.ref = ref;
-        el.appendChild(input);
-        this.shadowRoot.getElementById(`panel_${category}`).appendChild(el);
+        el.append(input);
+        this.shadowRoot.getElementById(`panel_${category}`).append(el);
     }
 
     addChoiceInput(category, label, ref, def, values) {
@@ -343,12 +343,12 @@ export default class DeepSettingsWindow extends DeepWindow {
         let input = document.createElement("select");
         input.className = "settings-input";
         for (let j in values) {
-            input.appendChild(createOption(j, values[j]));
+            input.append(createOption(j, values[j]));
         }
         input.value = def;
         input.dataset.ref = ref;
-        el.appendChild(input);
-        this.shadowRoot.getElementById(`panel_${category}`).appendChild(el);
+        el.append(input);
+        this.shadowRoot.getElementById(`panel_${category}`).append(el);
     }
 
     addListSelectInput(category, label, ref, def, multimode, values) {
@@ -359,10 +359,10 @@ export default class DeepSettingsWindow extends DeepWindow {
         input.multimode = multimode;
         input.dataset.ref = ref;
         for (let j in values) {
-            input.appendChild(createDeepOption(j, values[j]));
+            input.append(createDeepOption(j, values[j]));
         }
-        el.appendChild(input);
-        this.shadowRoot.getElementById(`panel_${category}`).appendChild(el);
+        el.append(input);
+        this.shadowRoot.getElementById(`panel_${category}`).append(el);
     }
 
     addButton(category, label, ref, text = "", callback) {
@@ -374,8 +374,8 @@ export default class DeepSettingsWindow extends DeepWindow {
         if (typeof callback == "function") {
             input.onclick = callback;
         }
-        el.appendChild(input);
-        this.shadowRoot.getElementById(`panel_${category}`).appendChild(el);
+        el.append(input);
+        this.shadowRoot.getElementById(`panel_${category}`).append(el);
     }
 
 }
@@ -388,7 +388,7 @@ function generateField(label) {
     let text = document.createElement("span");
     text.innerHTML = label;
     text.className = "option-text";
-    el.appendChild(text);
+    el.append(text);
     return el;
 }
 

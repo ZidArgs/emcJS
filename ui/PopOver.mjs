@@ -50,7 +50,7 @@ const TPL = new Template(`
 function showPopover(text = "", onclick) {
     let el = document.createElement('div');
     el.attachShadow({mode: 'open'});
-    el.shadowRoot.appendChild(TPL.generate());
+    el.shadowRoot.append(TPL.generate());
     el.shadowRoot.getElementById('text').innerHTML = text;
     let t = setTimeout(function () {
         document.body.removeChild(el);
@@ -66,7 +66,7 @@ function showPopover(text = "", onclick) {
         document.body.removeChild(el);
         ev.stopPropagation();
     }
-    document.body.appendChild(el);
+    document.body.append(el);
 }
 
 export {showPopover};

@@ -121,7 +121,7 @@ export default class DeepWindow extends HTMLElement {
             event.stopPropagation();
         }.bind(this);
         this.attachShadow({mode: 'open'});
-        this.shadowRoot.appendChild(TPL.generate());
+        this.shadowRoot.append(TPL.generate());
 
         let ttl = this.shadowRoot.getElementById('title');
         if (!!title && typeof title === "string") {
@@ -137,7 +137,7 @@ export default class DeepWindow extends HTMLElement {
     }
 
     show() {
-        document.body.appendChild(this);
+        document.body.append(this);
         this.initialFocus();
     }
 

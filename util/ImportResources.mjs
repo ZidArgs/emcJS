@@ -29,7 +29,7 @@ function importImage(url) {
             })
         };
         t.src = url;
-        document.head.appendChild(t);
+        document.head.append(t);
     });
 }
 
@@ -49,7 +49,7 @@ function importStyle(url) {
             })
         };
         t.href = url;
-        document.head.appendChild(t);
+        document.head.append(t);
     });
 }
 
@@ -68,7 +68,7 @@ function importScript(url) {
             })
         };
         t.src = url;
-        document.head.appendChild(t);
+        document.head.append(t);
     });
 }
 
@@ -87,7 +87,7 @@ function importModule(url) {
             })
         };
         t.src = url;
-        document.head.appendChild(t);
+        document.head.append(t);
     });
 }
 

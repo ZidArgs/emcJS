@@ -42,8 +42,8 @@ function html2svg(clonedNode, width, height) {
     foreignObject.setAttributeNS('', 'y', '0');
     foreignObject.setAttributeNS('', 'externalResourcesRequired', 'true');
 
-    svg.appendChild(foreignObject);
-    foreignObject.appendChild(clonedNode);
+    svg.append(foreignObject);
+    foreignObject.append(clonedNode);
 
     let html = encodeURIComponent(SERIALIZER.serializeToString(svg));
     return `data:image/svg+xml;charset=utf-8,${html}`;
@@ -69,7 +69,7 @@ function html2svg(clonedNode, width, height) {
     tempImg.addEventListener('load', onTempImageLoad);
 
     tempImg.style.border = "solid 10px red";
-    document.body.appendChild(tempImg);
+    document.body.append(tempImg);
 
     function onTempImageLoad(e){
         ctx.drawImage(e.target, 0, 0);
@@ -89,8 +89,8 @@ function html2svg(clonedNode, width, height) {
         foreignObject.setAttributeNS('', 'y', '0');
         foreignObject.setAttributeNS('', 'externalResourcesRequired', 'true');
 
-        svg.appendChild(foreignObject);
-        foreignObject.appendChild(clonedNode);
+        svg.append(foreignObject);
+        foreignObject.append(clonedNode);
 
         let html = encodeURIComponent(SERIALIZER.serializeToString(svg));
         return `data:image/svg+xml;charset=utf-8,${html}`;

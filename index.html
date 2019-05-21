@@ -35,7 +35,7 @@
                 if (!!v.length) {
                     v = v.split(",");
                     v.forEach(el => {
-                        s2.appendChild(s1.querySelector(`[value="${el}"]`));
+                        s2.append(s1.querySelector(`[value="${el}"]`));
                     });
                     s1.value = "";
                 }

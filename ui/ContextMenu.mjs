@@ -58,7 +58,7 @@ export default class DeepContextMenu extends HTMLElement {
     constructor() {
         super();
         this.attachShadow({mode: 'open'});
-        this.shadowRoot.appendChild(TPL.generate());
+        this.shadowRoot.append(TPL.generate());
         this.addEventListener("click", closeMenu.bind(this));
         this.shadowRoot.getElementById('menu').addEventListener("click", closeMenu.bind(this));
     }
