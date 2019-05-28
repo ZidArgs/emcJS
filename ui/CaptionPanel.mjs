@@ -34,7 +34,7 @@ const TPL = new Template(`
     <slot id="body"></slot>
 `);
 
-export default class DeepPanel extends HTMLElement {
+export default class DeepCaptionPanel extends HTMLElement {
 
     constructor() {
         super();
@@ -73,4 +73,4 @@ export default class DeepPanel extends HTMLElement {
 
 }
 
-customElements.define('deep-panel', DeepPanel);
+customElements.define('deep-captionpanel', DeepCaptionPanel);
