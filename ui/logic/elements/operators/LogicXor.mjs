@@ -18,6 +18,12 @@ const TPL = new Template(`
         </slot>
     </div>
 `);
+const SVG = new Template(`
+    <div class="logic-element" style="--logic-color-back: aqua; --logic-color-border: #009999;">
+        <div class="header">XOR</div>
+        <div class="body"></div>
+    </div>
+`);
 
 export default class DeepLogicXor extends DeepLogicAbstractElement {
 
@@ -87,6 +93,38 @@ export default class DeepLogicXor extends DeepLogicAbstractElement {
                 this.append(el1);
             }
         }
+    }
+
+    static getSVG(logic) {
+        let el = SVG.generate().children[0];
+        let cnt = el.querySelector(".body");
+        let hdr = el.querySelector(".header");
+        let newValue;
+        if (!!logic) {
+            if (!!logic.el0) {
+                let el0 = DeepLogicAbstractElement.getReference(logic.el0.type).getSVG(logic.el0);
+                if (typeof el0.dataset.value != "undefined") {
+                    newValue = !!parseInt(el.dataset.value);
+                }
+                cnt.append(el0);
+            }
+            if (!!logic.el1) {
+                let el1 = DeepLogicAbstractElement.getReference(logic.el1.type).getSVG(logic.el1);
+                if (typeof el1.dataset.value != "undefined") {
+                    if (typeof newValue != "undefined") {
+                        newValue = newValue ^ !!parseInt(el.dataset.value);
+                    } else {
+                        newValue = !!parseInt(el.dataset.value);
+                    }
+                }
+                cnt.append(el1);
+            }
+        }
+        if (typeof newValue != "undefined") {
+            el.dataset.value = +newValue;
+            hdr.dataset.value = +newValue;
+        }
+        return el;
     }
 
 }

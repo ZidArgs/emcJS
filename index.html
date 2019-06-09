@@ -3,43 +3,95 @@
         <title>deepJS sandbox</title>
         <meta charset="UTF-8">
         <meta name="description" content="Test for deepJS components">
-        <meta name="robots" content="nofollow">
+        <meta name="robots" content="none">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
         <meta name="theme-color" content="#000000">
-
-        <script type="module" src="ui/selection/ListSelect.mjs"></script>
     </head>
     <body>
-
-        <deep-listselect id="select-1" multimode="true" style="height: 80px;">
-            <option value="1">One</option>
-            <option value="2">Two</option>
-            <option value="3">Three</option>
-            <option value="4">Four</option>
-            <option value="5">Five</option>
-            <option value="6">Six</option>
-            <option value="7">Seven</option>
-            <option value="8">Eight</option>
-        </deep-listselect>
-
-        <deep-listselect id="select-2" multimode="true" style="height: 80px;">
-        </deep-listselect>
-
-        <button id="button-1">move</button>
-        
-        <script>
-            let s1 = document.getElementById("select-1");
-            let s2 = document.getElementById("select-2");
-            document.getElementById("button-1").addEventListener("click", e => {
-                let v = s1.value;
-                if (!!v.length) {
-                    v = v.split(",");
-                    v.forEach(el => {
-                        s2.append(s1.querySelector(`[value="${el}"]`));
-                    });
-                    s1.value = "";
+        <svg xmlns="http://www.w3.org/2000/svg">
+            <style>
+                .logic-element {
+                    position: relative;
+                    box-sizing: border-box;
+                    display: table;
+                    margin: 5px;
+                    border-radius: 5px;
+                    cursor: move;
+                    font-family: monospace;
+                    background-color: var(--logic-color-back, white);
+                    border-width: 1px;
+                    border-style: solid;
+                    color: var(--logic-color-text, black);
+                    border-color: var(--logic-color-border, black);
+                    -webkit-user-select: none;
+                    user-select: none;
                 }
-            });
-        </script>
+                .logic-element > .header {
+                    position: relative;
+                    box-sizing: border-box;
+                    display: flex;
+                    align-items: center;
+                    justify-content: flex-start;
+                    height: 35px;
+                    padding: 5px;
+                    user-select: none;
+                }
+                .logic-element > .header:before {
+                    position: relative;
+                    box-sizing: border-box;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    width: 50px;
+                    height: 16px;
+                    font-size: 12px;
+                    line-height: 10px;
+                    margin-right: 5px;
+                    border-radius: 10px;
+                    border: solid 2px black;
+                    background-color: #ecff85;
+                    content: "n/a";
+                }
+                .logic-element[value] > .header:before {
+                    background-color: #85ff85;
+                    content: attr(data-value);
+                }
+                .logic-element[value="0"] > .header:before {
+                    background-color: #ff8585;
+                }
+                .logic-element > .body {
+                    position: relative;
+                    box-sizing: border-box;
+                    display: block;
+                    padding: 5px;
+                    border-top-width: 1px;
+                    border-top-style: solid;
+                    border-color: var(--logic-color-border, black);
+                }
+                .logic-element.nobody > .body {
+                    display: none;
+                }
+                .logic-element > .body > .input {
+                    position: relative;
+                    box-sizing: border-box;
+                    width: 100px;
+                    height: 25px;
+                    text-align: right;
+                    margin: 0 5px;
+                }
+            </style>
+            <foreignobject xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" x="0" y="0">
+                <div class="logic-element">
+                    <div class="header">TEST</div>
+                    <div class="body">
+                        
+                        <div class="logic-element">
+                            <div class="header">TEST2</div>
+                            <div class="body"></div>
+                        </div>
+                    </div>
+                </div>
+            </foreignobject>
+        </svg>
     </body>
 </html>

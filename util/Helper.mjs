@@ -35,4 +35,21 @@ function deepEquals(a, b) {
 	return keys_a.every(i => b.hasOwnProperty(i) && deepEquals(a[i], b[i]));
 }
 
-export {arrayDiff, arraySymDiff, arrayIntersect, deepEquals};
+const CANVAS = document.createElement("canvas");
+const SERIALIZER = new XMLSerializer();
+function svg2png(svg) {
+    return new Promise(function(resolve, reject) {
+        CANVAS.setAttribute("width", svg.getAttribute("width"));
+        CANVAS.setAttribute("height", svg.getAttribute("height"));
+        let url = 'data:image/svg+xml;base64,' + btoa(SERIALIZER.serializeToString(svg));
+        let ctx = CANVAS.getContext("2d");
+        let img = new Image();
+        img.addEventListener("load", function() {
+            ctx.drawImage(img, 0, 0);
+            resolve(CANVAS.toDataURL("image/png"));
+        });
+        img.src = url;
+    });
+}
+
+export {arrayDiff, arraySymDiff, arrayIntersect, deepEquals, svg2png};

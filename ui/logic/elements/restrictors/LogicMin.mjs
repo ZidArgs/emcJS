@@ -16,6 +16,14 @@ const TPL = new Template(`
         </slot>
     </div>
 `);
+const SVG = new Template(`
+    <div class="logic-element" style="--logic-color-back: violet; --logic-color-border: darkmagenta;">
+        <div class="header">MIN</div>
+        <div class="body">
+            <div class="input" />
+        </div>
+    </div>
+`);
 
 export default class DeepLogicMin extends DeepLogicAbstractElement {
 
@@ -70,6 +78,27 @@ export default class DeepLogicMin extends DeepLogicAbstractElement {
             this.append(el);
             this.shadowRoot.getElementById("input").value = logic.value;
         }
+    }
+
+    static getSVG(logic) {
+        let el = SVG.generate().children[0];
+        let cnt = el.querySelector(".body");
+        let hdr = el.querySelector(".header");
+        let inp = el.querySelector(".input");
+        let newValue;
+        if (!!logic && !!logic.el) {
+            let el = DeepLogicAbstractElement.getReference(logic.el.type).getSVG(logic.el);
+            if (typeof el.dataset.value != "undefined") {
+                newValue = parseInt(el.dataset.value) >= logic.value;
+            }
+            cnt.append(el);
+            inp.innerHTML = logic.value;
+        }
+        if (typeof newValue != "undefined") {
+            el.dataset.value = +newValue;
+            hdr.dataset.value = +newValue;
+        }
+        return el;
     }
       
     attributeChangedCallback(name, oldValue, newValue) {

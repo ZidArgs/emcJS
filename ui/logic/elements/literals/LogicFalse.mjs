@@ -10,6 +10,11 @@ const TPL = new Template(`
     </style>
     <div class="header">FALSE</div>
 `);
+const SVG = new Template(`
+    <div class="logic-element" data-value="0" style="--logic-color-back: #ff5f5f; --logic-color-border: #650000;">
+        <div class="header" data-value="0">FALSE</div>
+    </div>
+`);
 
 export default class DeepLogicFalse extends DeepLogicAbstractElement {
 
@@ -37,6 +42,10 @@ export default class DeepLogicFalse extends DeepLogicAbstractElement {
     }
 
     loadLogic(logic) {}
+
+    static getSVG(logic) {
+        return SVG.generate().children[0];
+    }
 
 }
 

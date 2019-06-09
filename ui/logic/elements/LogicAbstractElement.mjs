@@ -42,15 +42,14 @@ const TPL = new Template(`
             border-radius: 10px;
             border: solid 2px black;
             background-color: #ecff85;
-            content: "UNDEF";
+            content: "n/a";
         }
-        :host([visualize]:not([visualize="false"])[value="1"]) .header:before {
+        :host([visualize]:not([visualize="false"])) .header[data-value]:before {
             background-color: #85ff85;
-            content: "TRUE";
+            content: attr(data-value);
         }
-        :host([visualize]:not([visualize="false"])[value="0"]) .header:before {
+        :host([visualize]:not([visualize="false"])) .header[data-value="0"]:before {
             background-color: #ff8585;
-            content: "FALSE";
         }
         .body {
             display: block;
@@ -81,6 +80,91 @@ const TPL = new Template(`
             display: none;
         }
     </style>
+`);
+
+const SVG = new Template(`
+    <svg xmlns="http://www.w3.org/2000/svg">
+        <style>
+            .logic-element {
+                position: relative;
+                box-sizing: border-box;
+                line-height: 1em;
+                display: table;
+                margin: 5px;
+                border-radius: 5px;
+                font-size: 14px;
+                background-color: var(--logic-color-back, white);
+                border-width: 1px;
+                border-style: solid;
+                color: var(--logic-color-text, black);
+                border-color: var(--logic-color-border, black);
+                -webkit-user-select: none;
+                user-select: none;
+            }
+            .logic-element > .header {
+                position: relative;
+                box-sizing: border-box;
+                line-height: 1em;
+                display: flex;
+                align-items: center;
+                justify-content: flex-start;
+                height: 35px;
+                padding: 5px;
+                user-select: none;
+            }
+            .logic-element > .header:before {
+                position: relative;
+                box-sizing: border-box;
+                line-height: 1em;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 50px;
+                height: 16px;
+                font-size: 12px;
+                line-height: 10px;
+                margin-right: 5px;
+                border-radius: 10px;
+                border: solid 2px black;
+                background-color: #ecff85;
+                content: "n/a";
+            }
+            .logic-element > .header[data-value]:before {
+                background-color: #85ff85;
+                content: attr(data-value);
+            }
+            .logic-element > .header[data-value="0"]:before {
+                background-color: #ff8585;
+            }
+            .logic-element > .body {
+                position: relative;
+                box-sizing: border-box;
+                line-height: 1em;
+                display: block;
+                padding: 5px;
+                border-top-width: 1px;
+                border-top-style: solid;
+                border-color: var(--logic-color-border, black);
+            }
+            .logic-element.nobody > .body {
+                display: none;
+            }
+            .logic-element > .body > .input {
+                position: relative;
+                box-sizing: border-box;
+                line-height: 1em;
+                width: 100px;
+                height: 25px;
+                text-align: right;
+                margin: 0 5px;
+                padding: 5px;
+                color: black;
+                background-color: white;
+            }
+        </style>
+        <foreignobject xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" x="0" y="0">
+        </foreignobject>
+    </svg>
 `);
 
 function dragStart(event) {
@@ -220,12 +304,16 @@ export default class DeepLogicAbstractElement extends HTMLElement {
     }
 
     set value(val) {
+        let hdr = this.shadowRoot.querySelector(".header");
         if (typeof val == "undefined") {
             this.removeAttribute('value');
+            if (!!hdr) delete hdr.dataset.value;
         } else if (typeof val == "boolean") {
             this.setAttribute('value', +val);
+            if (!!hdr) hdr.dataset.value = +val;
         } else {
             this.setAttribute('value', parseInt(val) || 0);
+            if (!!hdr) hdr.dataset.value = parseInt(val) || 0;
         }
     }
 
@@ -300,7 +388,7 @@ export default class DeepLogicAbstractElement extends HTMLElement {
     static buildLogic(logic) {
         if (typeof logic == "object" && !!logic) {
             if (Array.isArray(logic)) {
-                logic.forEach(DeepLogicAbstractElement.buildLogic);
+                return new DeepLogicError();
             } else {
                 let el = new (DeepLogicAbstractElement.getReference(logic.type));
                 el.loadLogic(logic);
@@ -310,38 +398,71 @@ export default class DeepLogicAbstractElement extends HTMLElement {
         return new (DeepLogicAbstractElement.getReference(`${logic}`));
     }
 
-}
+    static buildSVG(logic) {
+        let svg = SVG.generate().children[0];
+        let cnt = svg.querySelector('foreignobject');
+        svg.style.position = "absolute";
+        svg.style.top = "0";
+        svg.style.left = "0";
+        document.body.append(svg);
+        if (!!logic) {
+            let el = buildVisual(logic);
+            cnt.append(el);
+            svg.setAttributeNS('', 'width', `${el.clientWidth + 10}`);
+            svg.setAttributeNS('', 'height', `${el.clientHeight + 10}`);
+        }
+        svg.style.position = "";
+        svg.style.top = "";
+        svg.style.left = "";
+        document.body.removeChild(svg);
+        return svg;
+    }
 
-DeepLogicAbstractElement.allowDrop = function allowDrop(event) {
-    let el = event.target.getRootNode().host;
-    if (el.readonly === null || el.readonly == "false") {
-        // TODO check dataTransfer
+    static allowDrop(event) {
+        let el = event.target.getRootNode().host;
+        if (el.readonly === null || el.readonly == "false") {
+            // TODO check dataTransfer
+            event.preventDefault();
+            event.stopPropagation();
+            return false;
+        }
+    }
+
+    static dropOnPlaceholder(event) {
+        if (!!event.dataTransfer) {
+            let id = event.dataTransfer.getData("logic-transfer-id");
+            let el = document.getElementById(id);
+            if (!!el) {
+                let ne = event.target.getRootNode().host.append(el.getElement(event.ctrlKey));
+                if (!!ne) {
+                    let slot = event.target.parentNode;
+                    if (slot instanceof HTMLSlotElement && slot.name != null) {
+                        ne.setAttribute("slot", slot.name);
+                    } else {
+                        ne.removeAttribute("slot");
+                    }
+                }
+            }
+        }
         event.preventDefault();
         event.stopPropagation();
         return false;
     }
+
 }
 
-DeepLogicAbstractElement.dropOnPlaceholder = function dropOnPlaceholder(event) {
-    if (!!event.dataTransfer) {
-        let id = event.dataTransfer.getData("logic-transfer-id");
-        let el = document.getElementById(id);
-        if (!!el) {
-            let ne = event.target.getRootNode().host.append(el.getElement(event.ctrlKey));
-            if (!!ne) {
-                let slot = event.target.parentNode;
-                if (slot instanceof HTMLSlotElement && slot.name != null) {
-                    ne.setAttribute("slot", slot.name);
-                } else {
-                    ne.removeAttribute("slot");
-                }
-            }
+function buildVisual(logic) {
+    if (typeof logic == "object" && !!logic) {
+        if (Array.isArray(logic)) {
+            DeepLogicError.getSVG(logic);
+        } else {
+            return DeepLogicAbstractElement.getReference(logic.type).getSVG(logic);
         }
+    } else {
+        return DeepLogicAbstractElement.getReference(`${logic}`).getSVG(logic);
     }
-    event.preventDefault();
-    event.stopPropagation();
-    return false;
 }
+
 
 /**
  * for undefined references
@@ -355,6 +476,11 @@ const TPL_E = new Template(`
         }
     </style>
     <div class="header">ERROR: REFERENCE NOT FOUND</div>
+`);
+const SVG_E = new Template(`
+    <div class="logic-element" style="--logic-color-back: #ff0000; --logic-color-border: #770000; --logic-color-text: #ffffff;">
+        <div class="header">ERROR: REFERENCE NOT FOUND</div>
+    </div>
 `);
 
 class DeepLogicError extends DeepLogicAbstractElement {
@@ -375,6 +501,10 @@ class DeepLogicError extends DeepLogicAbstractElement {
     visualizeValue() {}
 
     toJSON() {}
+
+    static getSVG() {
+        return SVG_E.generate();
+    }
 
     loadLogic(logic) {}
 
