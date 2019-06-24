@@ -4,7 +4,7 @@ export default class DeepPanel extends HTMLElement {
 
     constructor() {
         super();
-        if (new.target === DeepLogicAbstractElement) {
+        if (new.target === DeepPanel) {
             throw new TypeError("can not construct abstract class");
         }
     }

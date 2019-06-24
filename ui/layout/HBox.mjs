@@ -5,13 +5,21 @@ const TPL = new Template(`
         :host {
             display: flex;
             flex-direction: row;
+            flex-grow: 1;
         }
-        :slotted {
+        ::slotted(*) {
             flex-grow: 0;
             flex-shrink: 0;
         }
-        :slotted(:last-child) {
+        ::slotted(:last-child) {
             flex-grow: 1;
+            flex-shrink: 1;
+        }
+        ::slotted(.panel) {
+            border-style: solid;
+            border-width: 2px;
+            border-color: var(--page-border-color, #ffffff);
+            overflow: hidden;
         }
     </style>
     <slot>
