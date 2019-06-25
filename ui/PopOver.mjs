@@ -10,6 +10,7 @@ const TPL = new Template(`
             top: 50px;
             cursor: pointer;
             pointer-events: none;
+            z-index: 999999999;
         }
         #text {
             position: relative;
@@ -54,7 +55,7 @@ function showPopover(text = "", onclick) {
     el.shadowRoot.getElementById('text').innerHTML = text;
     let t = setTimeout(function () {
         document.body.removeChild(el);
-    }, 10000);
+    }, 60000);
     el.onclick = function(ev) {
         clearTimeout(t);
         document.body.removeChild(el);
