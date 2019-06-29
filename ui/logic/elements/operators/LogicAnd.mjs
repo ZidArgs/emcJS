@@ -1,22 +1,26 @@
 import Template from "../../../../util/Template.mjs";
 import DeepLogicAbstractElement from "../LogicAbstractElement.mjs";
 
+const TPL_CAPTION = "AND";
+const TPL_BACKGROUND = "#ffffe0";
+const TPL_BORDER = "#ffa500";
+
 const TPL = new Template(`
     <style>
         :host {
-            --logic-color-back: lightyellow;
-            --logic-color-border: orange;
+            --logic-color-back: ${TPL_BACKGROUND};
+            --logic-color-border: ${TPL_BORDER};
         }
     </style>
-    <div class="header">AND</div>
+    <div class="header">${TPL_CAPTION}</div>
     <div class="body">
         <slot id="children"></slot>
         <span id="droptarget" class="placeholder">...</span>
     </div>
 `);
 const SVG = new Template(`
-    <div class="logic-element" style="--logic-color-back: lightyellow; --logic-color-border: orange;">
-        <div class="header">AND</div>
+    <div class="logic-element" style="--logic-color-back: ${TPL_BACKGROUND}; --logic-color-border: ${TPL_BORDER};">
+        <div class="header">${TPL_CAPTION}</div>
         <div class="body"></div>
     </div>
 `);

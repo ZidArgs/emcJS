@@ -1,14 +1,18 @@
 import Template from "../../../../util/Template.mjs";
 import DeepLogicAbstractElement from "../LogicAbstractElement.mjs";
 
+const TPL_CAPTION = "MAX";
+const TPL_BACKGROUND = "#ff1493";
+const TPL_BORDER = "#aa0022";
+
 const TPL = new Template(`
     <style>
         :host {
-            --logic-color-back: deeppink;
-            --logic-color-border: #aa0022;
+            --logic-color-back: ${TPL_BACKGROUND};
+            --logic-color-border: ${TPL_BORDER};
         }
     </style>
-    <div class="header">MAX</div>
+    <div class="header">${TPL_CAPTION}</div>
     <div class="body">
         <input id="input" type="number" value="0" />
         <slot id="children">
@@ -17,8 +21,8 @@ const TPL = new Template(`
     </div>
 `);
 const SVG = new Template(`
-    <div class="logic-element" style="--logic-color-back: deeppink; --logic-color-border: #aa0022;">
-        <div class="header">MAX</div>
+    <div class="logic-element" style="--logic-color-back: ${TPL_BACKGROUND}; --logic-color-border: ${TPL_BORDER};">
+        <div class="header">${TPL_CAPTION}</div>
         <div class="body">
             <div class="input" />
         </div>

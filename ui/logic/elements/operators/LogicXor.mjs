@@ -1,14 +1,18 @@
 import Template from "../../../../util/Template.mjs";
 import DeepLogicAbstractElement from "../LogicAbstractElement.mjs";
 
+const TPL_CAPTION = "XOR";
+const TPL_BACKGROUND = "#ffa500";
+const TPL_BORDER = "#774455";
+
 const TPL = new Template(`
     <style>
         :host {
-            --logic-color-back: aqua;
-            --logic-color-border: #009999;
+            --logic-color-back: ${TPL_BACKGROUND};
+            --logic-color-border: ${TPL_BORDER};
         }
     </style>
-    <div class="header">XOR</div>
+    <div class="header">${TPL_CAPTION}</div>
     <div class="body">
         <slot id="child0" name="slot0">
             <span id="droptarget0" class="placeholder">...</span>
@@ -19,8 +23,8 @@ const TPL = new Template(`
     </div>
 `);
 const SVG = new Template(`
-    <div class="logic-element" style="--logic-color-back: aqua; --logic-color-border: #009999;">
-        <div class="header">XOR</div>
+    <div class="logic-element" style="--logic-color-back: ${TPL_BACKGROUND}; --logic-color-border: ${TPL_BORDER};">
+        <div class="header">${TPL_CAPTION}</div>
         <div class="body"></div>
     </div>
 `);
@@ -36,7 +40,7 @@ export default class DeepLogicXor extends DeepLogicAbstractElement {
         target1.ondragover = DeepLogicAbstractElement.allowDrop;
         target0.ondrop = DeepLogicAbstractElement.dropOnPlaceholder;
         target1.ondrop = DeepLogicAbstractElement.dropOnPlaceholder;
-        target1.onclick = target2.onclick = function(event) {
+        target1.onclick = target0.onclick = function(event) {
             let e = new Event('placeholderclicked');
             e.name = event.target.name;
             this.dispatchEvent(e);

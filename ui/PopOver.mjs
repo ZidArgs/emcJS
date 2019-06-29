@@ -2,6 +2,10 @@ import Template from "../util/Template.mjs";
 
 const TPL = new Template(`
     <style>
+        @keyframes autoclose {
+            0% { width: calc(100% - 27px) }
+            100% { width: 0 }
+        }
         :host {
             position: fixed;
             display: flex;
@@ -43,31 +47,56 @@ const TPL = new Template(`
             color: white;
             background-color: red;
         }
+        #autoclose-wrapper {
+            position: absolute;
+            right: 22px;
+            top: 2px;
+            left: 5px;
+            height: 2px;
+        }
+        #autoclose {
+            position: absolute;
+            right: 22px;
+            top: 2px;
+            width: calc(100% - 27px);
+            height: 2px;
+            background: red;
+        }
     </style>
     <span id="text"></span>
     <button id="close" title="close">✖</button>
+    <div id="autoclose"></div>
 `);
 
-function showPopover(text = "", onclick) {
+function removeElement() {
+    document.body.removeChild(this);
+}
+
+function showPopover(text = "", time) {
     let el = document.createElement('div');
     el.attachShadow({mode: 'open'});
     el.shadowRoot.append(TPL.generate());
-    el.shadowRoot.getElementById('text').innerHTML = text;
-    let t = setTimeout(function () {
+    let textEl = el.shadowRoot.getElementById('text');
+    textEl.innerHTML = text;
+    let autocloseEL = el.shadowRoot.getElementById('autoclose');
+    let removeEl = removeElement.bind(el);
+    time = parseInt(time);
+    if (isNaN(time) || time < 5) {
+        time = 5;
+    }
+    autocloseEL.style.animation = `autoclose ${time}s linear 1`;
+    autocloseEL.addEventListener("animationend", removeEl);
+    textEl.onclick = function(ev) {
+        autocloseEL.removeEventListener("animationend", removeEl);
         document.body.removeChild(el);
-    }, 60000);
-    el.onclick = function(ev) {
-        clearTimeout(t);
-        document.body.removeChild(el);
-        if (typeof onclick == "function") onclick();
-        ev.stopPropagation();
     }
     el.shadowRoot.getElementById('close').onclick = function(ev) {
-        clearTimeout(t);
+        autocloseEL.removeEventListener("animationend", removeEl);
         document.body.removeChild(el);
         ev.stopPropagation();
     }
     document.body.append(el);
+    return el;
 }
 
 export {showPopover};

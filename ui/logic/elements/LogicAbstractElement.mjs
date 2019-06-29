@@ -14,7 +14,7 @@ const TPL = new Template(`
             border-radius: 5px;
             cursor: move;
             font-family: monospace;
-            background-color: var(--logic-color-back, white);
+            background: var(--logic-color-back, white);
             border-width: 1px;
             border-style: solid;
             color: var(--logic-color-text, black);
@@ -79,6 +79,12 @@ const TPL = new Template(`
         :host([readonly]:not([readonly="false"])) .placeholder {
             display: none;
         }
+        :host([readonly]:not([readonly="false"])) input,
+        :host([readonly]:not([readonly="false"])) select,
+        :host([template]:not([template="false"])) input,
+        :host([template]:not([template="false"])) select {
+            pointer-events: none;
+        }
     </style>
 `);
 
@@ -93,7 +99,7 @@ const SVG = new Template(`
                 margin: 5px;
                 border-radius: 5px;
                 font-size: 14px;
-                background-color: var(--logic-color-back, white);
+                background: var(--logic-color-back, white);
                 border-width: 1px;
                 border-style: solid;
                 color: var(--logic-color-text, black);
@@ -169,6 +175,7 @@ const SVG = new Template(`
 
 function dragStart(event) {
     event.dataTransfer.setData("logic-transfer-id", event.target.id);
+    event.dataTransfer.setData("Text", event.target.id);
 }
 
 // TODO add on placeholder click dialog to append logic elements
@@ -420,8 +427,8 @@ export default class DeepLogicAbstractElement extends HTMLElement {
 
     static allowDrop(event) {
         let el = event.target.getRootNode().host;
-        if (el.readonly === null || el.readonly == "false") {
-            // TODO check dataTransfer
+        if ((typeof el.readonly != "string" || el.readonly == "false")
+        &&  (typeof el.template != "string" || el.template == "false")) {
             event.preventDefault();
             event.stopPropagation();
             return false;
@@ -432,7 +439,7 @@ export default class DeepLogicAbstractElement extends HTMLElement {
         if (!!event.dataTransfer) {
             let id = event.dataTransfer.getData("logic-transfer-id");
             let el = document.getElementById(id);
-            if (!!el) {
+            if (!!el && el instanceof DeepLogicAbstractElement) {
                 let ne = event.target.getRootNode().host.append(el.getElement(event.ctrlKey));
                 if (!!ne) {
                     let slot = event.target.parentNode;

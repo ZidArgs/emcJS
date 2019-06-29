@@ -1,22 +1,28 @@
 import Template from "../../../../util/Template.mjs";
 import DeepLogicAbstractElement from "../LogicAbstractElement.mjs";
 
+const TPL_CAPTION = "NAND";
+const TPL_BG_0 = "#ffffe0";
+const TPL_BG_1 = "#ffdfe4";
+const TPL_BACKGROUND = `repeating-linear-gradient(145deg, ${TPL_BG_0}, ${TPL_BG_0} 20px, ${TPL_BG_1} 20px, ${TPL_BG_1} 40px)`;
+const TPL_BORDER = "#ffa500";
+
 const TPL = new Template(`
     <style>
         :host {
-            --logic-color-back: orange;
-            --logic-color-border: #aa7700;
+            --logic-color-back: ${TPL_BACKGROUND};
+            --logic-color-border: ${TPL_BORDER};
         }
     </style>
-    <div class="header">NAND</div>
+    <div class="header">${TPL_CAPTION}</div>
     <div class="body">
         <slot id="children"></slot>
         <span id="droptarget" class="placeholder">...</span>
     </div>
 `);
 const SVG = new Template(`
-    <div class="logic-element" style="--logic-color-back: orange; --logic-color-border: #aa7700;">
-        <div class="header">NAND</div>
+    <div class="logic-element" style="--logic-color-back: ${TPL_BACKGROUND}; --logic-color-border: ${TPL_BORDER};">
+        <div class="header">${TPL_CAPTION}</div>
         <div class="body"></div>
     </div>
 `);
