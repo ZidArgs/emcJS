@@ -20,7 +20,7 @@ export default class DeepPanel extends HTMLElement {
         if (REG.has(ref)) {
             return REG.get(ref);
         }
-        return DeepLogicError;
+        //return DeepPanelError;
     }
 
 }

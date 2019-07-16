@@ -2,10 +2,16 @@ import Template from "../../util/Template.js";
 
 const TPL = new Template(`
     <style>
+        * {
+            position: relative;
+            box-sizing: border-box;
+        }
         :host {
             display: flex;
             flex-direction: row;
             flex-grow: 1;
+            min-height: min-content;
+            min-width: min-content;
         }
         :host > ::slotted(*) {
             flex-grow: 0;

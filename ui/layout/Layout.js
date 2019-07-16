@@ -39,14 +39,14 @@ function getPanel(cache, name) {
 function loadLayout(cache, layout) {
     if (!!layout) {
         if (layout.type == "panel") {
-            let el = getPanel(cache, layout.name);
+            let el = document.createElement('div');
             el.classList.add("panel");
-            if (!!layout.autosize) {
-                el.classList.add("autosize");
-            }
+            // let ch = getPanel(cache, layout.name);
+            let ch = new (Panel.getReference(layout.name));
             for (let i in layout.options) {
-                el.setAttribute(i, layout.options[i]);
+                ch.setAttribute(i, layout.options[i]);
             }
+            el.append(ch);
             return el;
         } else {
             let el = document.createElement(`deep-${layout.type}`);
