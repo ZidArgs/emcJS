@@ -1,0 +1,19 @@
+class Path {
+
+    getAbsolute(current, path) {
+        current = current.replace(window.location.href, "/").split("/");
+        current.pop();
+        path = path.split("/");
+        for (let step of path) {
+            if (step == "..") {
+                current.pop();
+            } else if (step != ".") {
+                current.push(step);
+            }
+        }
+        return current.join("/");
+    }
+
+}
+
+export default new Path;

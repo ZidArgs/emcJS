@@ -1,8 +1,28 @@
+import Path from "./Path.js";
+
 const ALLS = new Set;
 const SUBS = new Map;
 const MUTED = new Set;
 
+const WORKER = (new SharedWorker(Path.getAbsolute(import.meta.url, "../EventWorker.js"), 'EventWorker')).port;
+
+function triggerEvent(data = {name:"",data:{}}) {
+    if (SUBS.has(data.name)) SUBS.get(data.name).forEach(function(fn) {
+        fn(data);
+    });
+    ALLS.forEach(function(fn) {
+        fn(data);
+    });
+}
+
 class EventBus {
+
+    constructor() {
+        WORKER.onmessage = function(e) {
+            triggerEvent(e.data);
+        }
+        WORKER.start();
+    }
 
     register(name, callback) {
         if (typeof name == "function") {
@@ -42,17 +62,13 @@ class EventBus {
 
     trigger(name, data = {}) {
         if (!MUTED.has(name)) {
-            if (SUBS.has(name)) SUBS.get(name).forEach(function(fn) {
-                fn({
-                    name: name,
-                    data: data
-                });
+            WORKER.postMessage({
+                name: name,
+                data: data
             });
-            ALLS.forEach(function(fn) {
-                fn({
-                    name: name,
-                    data: data
-                });
+            triggerEvent({
+                name: name,
+                data: data
             });
         }
     }
