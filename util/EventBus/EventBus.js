@@ -1,10 +1,10 @@
-import Path from "./Path.js";
+import EventBusAbstractModule from "./EventBusAbstractModule.js";
 
 const ALLS = new Set;
 const SUBS = new Map;
 const MUTED = new Set;
 
-const WORKER = (new SharedWorker(Path.getAbsolute(import.meta.url, "../EventWorker.js"), 'EventWorker')).port;
+const MODULES = new Set;
 
 function triggerEvent(data = {name:"",data:{}}) {
     if (SUBS.has(data.name)) SUBS.get(data.name).forEach(function(fn) {
@@ -17,11 +17,11 @@ function triggerEvent(data = {name:"",data:{}}) {
 
 class EventBus {
 
-    constructor() {
-        WORKER.onmessage = function(e) {
-            triggerEvent(e.data);
+    addModule(module) {
+        if (module instanceof EventBusAbstractModule) {
+            MODULES.add(module);
+            module.onmessage = triggerEvent;
         }
-        WORKER.start();
     }
 
     register(name, callback) {
@@ -62,14 +62,14 @@ class EventBus {
 
     trigger(name, data = {}) {
         if (!MUTED.has(name)) {
-            WORKER.postMessage({
+            let payload = {
                 name: name,
                 data: data
-            });
-            triggerEvent({
-                name: name,
-                data: data
-            });
+            };
+            for (let module of MODULES) {
+                module.trigger(payload);
+            }
+            triggerEvent(payload);
         }
     }
 

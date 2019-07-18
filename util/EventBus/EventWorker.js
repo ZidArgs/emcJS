@@ -1,7 +1,13 @@
 const PORTS = new Set;
+let MAIN = null;
 
 function handleConnect(event) {
-    let port = event.ports[0]; 
+    let port = event.ports[0];
+    if (MAIN == null) {
+        MAIN = port;
+    } else {
+        MAIN.postMessage({name:"new-instance",data:{}});
+    }
     PORTS.add(port);
     port.addEventListener('message', handleMessage.bind(port));
     port.start();
@@ -12,10 +18,10 @@ function handleDisconnect(event) {
 }
 
 function handleMessage(event) {
-    console.log(`[ShW] recieved: ${event.data}`)
+    let msg = event.data;
     for (let port of PORTS) {
         if (port == this) continue;
-        port.postMessage(event.data);
+        port.postMessage(msg);
     }
 }
 

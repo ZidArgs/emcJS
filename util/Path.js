@@ -1,7 +1,7 @@
 class Path {
 
     getAbsolute(current, path) {
-        current = current.replace(window.location.href, "/").split("/");
+        current = current.replace(window.location.origin, "").split("/");
         current.pop();
         path = path.split("/");
         for (let step of path) {
