@@ -74,6 +74,16 @@ export default class DeepContextMenu extends HTMLElement {
     show(posX, posY) {
         this.active = true;
         let menu = this.shadowRoot.getElementById('menu');
+        if (posX < 25) {
+            posX = 25;
+        } else if (menu.clientWidth + posX > window.innerWidth - 25) {
+            posX = window.innerWidth - menu.clientWidth - 25;
+        }
+        if (posY < 25) {
+            posY = 25;
+        } else if (menu.clientHeight + posY > window.innerHeight - 25) {
+            posY = window.innerHeight - menu.clientHeight - 25;
+        }
         menu.style.left = `${posX}px`;
         menu.style.top = `${posY}px`;
     }

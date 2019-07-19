@@ -15,6 +15,7 @@ const TPL = new Template(`
             min-height: auto;
             white-space: normal;
             padding: 0;
+            user-select: none;
         }
     </style>
     <slot></slot>
