@@ -68,11 +68,11 @@ function dragStart(event) {
 const ID = new WeakMap();
 const REG = new Map();
 
-export default class DeepLayoutAbstractElement extends HTMLElement {
+export default class LayoutAbstractElement extends HTMLElement {
 
     constructor() {
         super();
-        if (new.target === DeepLayoutAbstractElement) {
+        if (new.target === LayoutAbstractElement) {
             throw new TypeError("can not construct abstract class");
         }
         this.attachShadow({mode: 'open'});
@@ -123,14 +123,14 @@ export default class DeepLayoutAbstractElement extends HTMLElement {
     }
     
     appendChild(el) {
-        if (el instanceof DeepLayoutAbstractElement && (typeof this.template != "string" || this.template == "false")) {
+        if (el instanceof LayoutAbstractElement && (typeof this.template != "string" || this.template == "false")) {
             let r = super.appendChild(el);
             return r;
         }
     }
 
     insertBefore(el, ref) {
-        if (el instanceof DeepLayoutAbstractElement && (typeof this.template != "string" || this.template == "false")) {
+        if (el instanceof LayoutAbstractElement && (typeof this.template != "string" || this.template == "false")) {
             let r = super.insertBefore(el, ref);
             return r;
         }
@@ -155,20 +155,20 @@ export default class DeepLayoutAbstractElement extends HTMLElement {
         if (REG.has(ref)) {
             return REG.get(ref);
         }
-        return DeepLogicError;
+        return LayoutError;
     }
 
     static buildLayout(layout) {
         if (typeof layout == "object" && !!layout) {
             if (Array.isArray(layout)) {
-                return new DeepLayoutError();
+                return new LayoutError();
             } else {
-                let el = new (DeepLayoutAbstractElement.getReference(layout.type));
+                let el = new (LayoutAbstractElement.getReference(layout.type));
                 el.loadLogic(layout);
                 return el;
             }
         }
-        return new (DeepLayoutAbstractElement.getReference(`${layout}`));
+        return new (LayoutAbstractElement.getReference(`${layout}`));
     }
 
     static allowDrop(event) {
@@ -185,7 +185,7 @@ export default class DeepLayoutAbstractElement extends HTMLElement {
         if (!!event.dataTransfer) {
             let id = event.dataTransfer.getData("logic-transfer-id");
             let el = document.getElementById(id);
-            if (!!el && el instanceof DeepLayoutAbstractElement) {
+            if (!!el && el instanceof LayoutAbstractElement) {
                 let ne = event.target.getRootNode().host.append(el.getElement(event.ctrlKey));
                 if (!!ne) {
                     let slot = event.target.parentNode;
@@ -218,7 +218,7 @@ const TPL_E = new Template(`
     <span class="error">ERROR: REFERENCE NOT FOUND</span>
 `);
 
-class DeepLayoutError extends DeepLayoutAbstractElement {
+class LayoutError extends LayoutAbstractElement {
 
     constructor() {
         super();
@@ -235,4 +235,4 @@ class DeepLayoutError extends DeepLayoutAbstractElement {
 
 }
 
-customElements.define('deep-logic-error', DeepLogicError);
+customElements.define('deep-layout-error', LayoutError);

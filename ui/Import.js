@@ -1,4 +1,4 @@
-import {importHTML, importStyle, importModule} from "../util/ImportResources.js";
+import ImportResources from "../util/ImportResources.js";
 import Template from "../util/Template.js";
 
 const TPL = new Template(`
@@ -23,7 +23,7 @@ function appendHTML(r) {
     }
 }
 
-export default class DeepImport extends HTMLElement {
+export default class HTMLImport extends HTMLElement {
 
     get style() {
         return this.getAttribute('style');
@@ -57,17 +57,17 @@ export default class DeepImport extends HTMLElement {
         switch (name) {
             case 'style':
                 if (oldValue != newValue) {
-                    importStyle(newValue);
+                    ImportResources.importStyle(newValue);
                 }
                 break;
             case 'html':
                 if (oldValue != newValue) {
-                    importHTML(newValue).then(appendHTML.bind(this));
+                    ImportResources.importHTML(newValue).then(appendHTML.bind(this));
                 }
                 break;
             case 'module':
                 if (oldValue != newValue) {
-                    importModule(newValue);
+                    ImportResources.importModule(newValue);
                 }
                 break;
         }
@@ -75,4 +75,4 @@ export default class DeepImport extends HTMLElement {
 
 }
 
-customElements.define('deep-import', DeepImport);
+customElements.define('deep-import', HTMLImport);

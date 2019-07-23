@@ -1,4 +1,4 @@
-import UID from "../../util/UID.js";
+import UniqueGenerator from "../../util/UniqueGenerator.js";
 import Template from "../../util/Template.js";
 
 const TPL = new Template(`
@@ -26,7 +26,7 @@ export default class DeepDragElement extends HTMLElement {
     constructor() {
         super();
         /* host */
-        this.id = UID.generate("draggable");
+        this.id = UniqueGenerator.appUID("draggable");
         this.attachShadow({mode: 'open'});
         this.shadowRoot.append(TPL.generate());
         this.setAttribute("draggable", true);

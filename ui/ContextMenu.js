@@ -49,6 +49,7 @@ const TPL = new Template(`
 
 function closeMenu(event) {
     this.active = false;
+    event.preventDefault();
     event.stopPropagation();
     return false;
 }
@@ -60,6 +61,7 @@ export default class DeepContextMenu extends HTMLElement {
         this.attachShadow({mode: 'open'});
         this.shadowRoot.append(TPL.generate());
         this.addEventListener("click", closeMenu.bind(this));
+        this.addEventListener("contextmenu", closeMenu.bind(this));
         this.shadowRoot.getElementById('menu').addEventListener("click", closeMenu.bind(this));
     }
 

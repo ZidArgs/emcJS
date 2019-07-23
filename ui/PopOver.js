@@ -72,31 +72,35 @@ function removeElement() {
     document.body.removeChild(this);
 }
 
-function showPopover(text = "", time) {
-    let el = document.createElement('div');
-    el.attachShadow({mode: 'open'});
-    el.shadowRoot.append(TPL.generate());
-    let textEl = el.shadowRoot.getElementById('text');
-    textEl.innerHTML = text;
-    let autocloseEL = el.shadowRoot.getElementById('autoclose');
-    let removeEl = removeElement.bind(el);
-    time = parseInt(time);
-    if (isNaN(time) || time < 5) {
-        time = 5;
+class PopOver {
+
+    show(text = "", time) {
+        let el = document.createElement('div');
+        el.attachShadow({mode: 'open'});
+        el.shadowRoot.append(TPL.generate());
+        let textEl = el.shadowRoot.getElementById('text');
+        textEl.innerHTML = text;
+        let autocloseEL = el.shadowRoot.getElementById('autoclose');
+        let removeEl = removeElement.bind(el);
+        time = parseInt(time);
+        if (isNaN(time) || time < 5) {
+            time = 5;
+        }
+        autocloseEL.style.animation = `autoclose ${time}s linear 1`;
+        autocloseEL.addEventListener("animationend", removeEl);
+        textEl.onclick = function(ev) {
+            autocloseEL.removeEventListener("animationend", removeEl);
+            document.body.removeChild(el);
+        }
+        el.shadowRoot.getElementById('close').onclick = function(ev) {
+            autocloseEL.removeEventListener("animationend", removeEl);
+            document.body.removeChild(el);
+            ev.stopPropagation();
+        }
+        document.body.append(el);
+        return el;
     }
-    autocloseEL.style.animation = `autoclose ${time}s linear 1`;
-    autocloseEL.addEventListener("animationend", removeEl);
-    textEl.onclick = function(ev) {
-        autocloseEL.removeEventListener("animationend", removeEl);
-        document.body.removeChild(el);
-    }
-    el.shadowRoot.getElementById('close').onclick = function(ev) {
-        autocloseEL.removeEventListener("animationend", removeEl);
-        document.body.removeChild(el);
-        ev.stopPropagation();
-    }
-    document.body.append(el);
-    return el;
+
 }
 
-export {showPopover};
+export default new PopOver;

@@ -59,53 +59,56 @@ function appendToast(el, timeout) {
     document.body.append(el);
 }
 
-function showToast(text, timeout) {
-    let el = document.createElement('div');
-    el.attachShadow({mode: 'open'});
-    el.shadowRoot.append(TPL.generate());
-    let txt = el.shadowRoot.getElementById('text');
-    txt.innerHTML = text;
-    appendToast(el, timeout);
+class Toast {
+
+    show(text, timeout) {
+        let el = document.createElement('div');
+        el.attachShadow({mode: 'open'});
+        el.shadowRoot.append(TPL.generate());
+        let txt = el.shadowRoot.getElementById('text');
+        txt.innerHTML = text;
+        appendToast(el, timeout);
+    }
+    
+    success(text, timeout) {
+        let el = document.createElement('div');
+        el.attachShadow({mode: 'open'});
+        el.shadowRoot.append(TPL.generate());
+        let txt = el.shadowRoot.getElementById('text');
+        txt.innerHTML = text;
+        txt.className = "success";
+        appendToast(el, timeout);
+    }
+    
+    info(text, timeout) {
+        let el = document.createElement('div');
+        el.attachShadow({mode: 'open'});
+        el.shadowRoot.append(TPL.generate());
+        let txt = el.shadowRoot.getElementById('text');
+        txt.innerHTML = text;
+        txt.className = "info";
+        appendToast(el, timeout);
+    }
+    
+    warn(text, timeout) {
+        let el = document.createElement('div');
+        el.attachShadow({mode: 'open'});
+        el.shadowRoot.append(TPL.generate());
+        let txt = el.shadowRoot.getElementById('text');
+        txt.innerHTML = text;
+        txt.className = "warning";
+        appendToast(el, timeout);
+    }
+    
+    error(text, timeout) {
+        let el = document.createElement('div');
+        el.attachShadow({mode: 'open'});
+        el.shadowRoot.append(TPL.generate());
+        let txt = el.shadowRoot.getElementById('text');
+        txt.innerHTML = text;
+        txt.className = "error";
+        appendToast(el, timeout);
+    }
 }
 
-function showSuccessToast(text, timeout) {
-    let el = document.createElement('div');
-    el.attachShadow({mode: 'open'});
-    el.shadowRoot.append(TPL.generate());
-    let txt = el.shadowRoot.getElementById('text');
-    txt.innerHTML = text;
-    txt.className = "success";
-    appendToast(el, timeout);
-}
-
-function showInfoToast(text, timeout) {
-    let el = document.createElement('div');
-    el.attachShadow({mode: 'open'});
-    el.shadowRoot.append(TPL.generate());
-    let txt = el.shadowRoot.getElementById('text');
-    txt.innerHTML = text;
-    txt.className = "info";
-    appendToast(el, timeout);
-}
-
-function showWarnToast(text, timeout) {
-    let el = document.createElement('div');
-    el.attachShadow({mode: 'open'});
-    el.shadowRoot.append(TPL.generate());
-    let txt = el.shadowRoot.getElementById('text');
-    txt.innerHTML = text;
-    txt.className = "warning";
-    appendToast(el, timeout);
-}
-
-function showErrorToast(text, timeout) {
-    let el = document.createElement('div');
-    el.attachShadow({mode: 'open'});
-    el.shadowRoot.append(TPL.generate());
-    let txt = el.shadowRoot.getElementById('text');
-    txt.innerHTML = text;
-    txt.className = "error";
-    appendToast(el, timeout);
-}
-
-export {showToast, showSuccessToast, showInfoToast, showWarnToast, showErrorToast};
+export default new Toast;
