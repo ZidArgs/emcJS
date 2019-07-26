@@ -15,6 +15,7 @@ const TPL = new Template(`
             display: none;
         }
         ::slotted(.panel) {
+            padding: 5px;
             border-style: solid;
             border-width: 2px;
             border-color: var(--page-border-color, #ffffff);
