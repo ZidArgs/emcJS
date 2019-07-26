@@ -20,16 +20,25 @@ class EventBus {
     addModule(module) {
         if (module instanceof EventBusAbstractModule) {
             MODULES.add(module);
-            module.onmessage = triggerEvent;
+            module.onModuleEvent = triggerEvent;
         }
     }
 
-    register(name, callback) {
+    removeModule(module) {
+        if (module instanceof EventBusAbstractModule) {
+            if (MODULES.has(module)) {
+                MODULES.delete(module);
+                module.onModuleEvent = function(){};
+            }
+        }
+    }
+
+    register(name, fn) {
         if (typeof name == "function") {
             ALLS.add(name);
         } else {
             if (Array.isArray(name)) {
-                name.forEach(n => this.register(n, callback));
+                name.forEach(n => this.register(n, fn));
             } else {
                 let subs;
                 if (!SUBS.has(name)) {
@@ -38,22 +47,22 @@ class EventBus {
                 } else {
                     subs = SUBS.get(name);
                 }
-                subs.add(callback);
+                subs.add(fn);
             }
         }
     }
 
-    unregister(name, callback) {
+    unregister(name, fn) {
         if (typeof name == "function") {
             ALLS.delete(name);
         } else {
             if (Array.isArray(name)) {
-                name.forEach(n => this.unregister(n, callback));
+                name.forEach(n => this.unregister(n, fn));
             } else {
                 if (SUBS.has(name)) {
                     let subs = SUBS.get(name);
-                    if (subs.has(callback)) {
-                        subs.delete(callback);
+                    if (subs.has(fn)) {
+                        subs.delete(fn);
                     }
                 }
             }
@@ -67,7 +76,7 @@ class EventBus {
                 data: data
             };
             for (let module of MODULES) {
-                module.trigger(payload);
+                module.triggerModuleEvent(payload);
             }
             triggerEvent(payload);
         }

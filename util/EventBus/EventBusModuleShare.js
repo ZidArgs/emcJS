@@ -12,17 +12,17 @@ class EventBusModuleShare extends EventBusAbstractModule {
         WORKER.onmessage = function(e) {
             let payload = e.data;
             if (!MUTED.has(payload.name)) {
-                this.onmessage(payload);
+                this.onModuleEvent(payload);
             }
         }.bind(this);
         WORKER.start();
     }
 
-    onmessage(payload) {
+    onModuleEvent(payload) {
         // nothing
     }
 
-    trigger(payload) {
+    triggerModuleEvent(payload) {
         if (!MUTED.has(payload.name)) {
             WORKER.postMessage(payload);
         }

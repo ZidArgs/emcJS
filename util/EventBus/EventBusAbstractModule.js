@@ -6,11 +6,11 @@ class EventBusAbstractModule {
         }
     }
 
-    onmessage(payload) {
+    onModuleEvent(payload) {
         throw new TypeError("can not call abstract method");
     }
 
-    trigger(payload) {
+    triggerModuleEvent(payload) {
         throw new TypeError("can not call abstract method");
     }
 
