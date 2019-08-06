@@ -62,7 +62,6 @@ function write(data) {
         } else {
             msg = `[ ${data.type} | ${data.time} ] <${data.target}>\n${data.message}`;
         }
-        console.log("%c%s%c", CONSOLE_DEFAULT_UNSET_STYLES[data.type] || CONSOLE_DEFAULT_UNSET, msg, "");
         Array.from(output).forEach(function(out) {
             if (out instanceof HTMLTextAreaElement) {
                 out.value += msg+"\n";
@@ -81,6 +80,8 @@ function write(data) {
                 el.append(document.createTextNode(msg));
                 out.append(el);
                 out.scrollTop = out.scrollHeight;
+            } else if (output === console) {
+                console.log("%c%s%c", CONSOLE_DEFAULT_UNSET_STYLES[data.type] || CONSOLE_DEFAULT_UNSET, msg, "");
             }
         });
     }

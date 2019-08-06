@@ -1,52 +1,39 @@
-function getCategory(v) {
-    return v.split('\0')[0];
-}
-
-function filterCategory(c, v) {
-    return v.startsWith(c+'\0');
-}
-
-function getName(v) {
-    return v.split('\0')[1];
-}
-
 class SessionStorage {
 
     set(category, name, data) {
-        sessionStorage.setItem(category+"\0"+name, JSON.stringify(data));
+        sessionStorage.setItem(`${category}\0${name}`, JSON.stringify(data));
     }
 
-    get(category, name, def = null) {
-        let res = sessionStorage.getItem(category+"\0"+name);
-        if (typeof result == "undefined" || result == null) {
+    get(category, name, def) {
+        let res = sessionStorage.getItem(`${category}\0${name}`);
+        if (typeof res == "undefined" || res == null) {
             return def;
         }
         return JSON.parse(res);
     }
 
     has(category, name) {
-        return sessionStorage.hasOwnProperty(category+"\0"+name);
+        return sessionStorage.hasOwnProperty(`${category}\0${name}`);
     }
 
     remove(category, name) {
-        sessionStorage.removeItem(category+"\0"+name);
+        sessionStorage.removeItem(`${category}\0${name}`);
     }
 
     purge() {
         sessionStorage.clear();
     }
 
-    categories() {
-        let k = Object.keys(sessionStorage);
-        k = k.map(getCategory);
-        return Array.from(new Set(k));
-    }
-
     names(category) {
         let k = Object.keys(sessionStorage);
-        k = k.filter(filterCategory.bind(this, category));
-        k = k.map(getName);
-        return Array.from(new Set(k));
+        let res = [];
+        for (let i of k) {
+            let r = i.split("\0");
+            if (r[0] == category) {
+                res.push(r[1]);
+            }
+        }
+        return res;
     }
 
     toObject() {
