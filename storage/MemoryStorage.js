@@ -1,4 +1,4 @@
-let STORAGE = {};
+let STORAGE = {}; // TODO make this work like localstorage only working with a map instead
 
 class MemorySTORAGE {
 

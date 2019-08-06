@@ -18,7 +18,9 @@ class LocalStorage {
 
     get(category, name, def = null) {
         let res = localStorage.getItem(category+"\0"+name);
-        if (!res || res == null) return def;
+        if (typeof result == "undefined" || result == null) {
+            return def;
+        }
         return JSON.parse(res);
     }
 
