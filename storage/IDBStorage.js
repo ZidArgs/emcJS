@@ -83,7 +83,7 @@ class IDBStorage {
 	async set(name, key, value) {
 		try {
 			var db = await openDB(name);
-			let store = getStoreWritable(db, name);
+			let store = getStoreWritable(db);
 			await writeData(store, key, value);
 			db.close();
 		} catch(error) {
@@ -94,7 +94,7 @@ class IDBStorage {
 	async get(name, key, value) {
 		try {
 			var db = await openDB(name);
-			let store = getStoreReadonly(db, name);
+			let store = getStoreReadonly(db);
 			var res = await readData(store, key);
 			db.close();
 			if (typeof res == "undefined" || res == null) {
@@ -109,7 +109,7 @@ class IDBStorage {
 	async has(name, key) {
 		try {
 			var db = await openDB(name);
-			let store = getStoreReadonly(db, name);
+			let store = getStoreReadonly(db);
 			var res = await hasKey(store, key);
 			db.close();
 			return !!res;
@@ -118,10 +118,10 @@ class IDBStorage {
 		}
 	}
 
-	async remove(name, key) {
+	async delete(name, key) {
 		try {
 			var db = await openDB(name);
-			let store = getStoreWritable(db, name);
+			let store = getStoreWritable(db);
 			var res = await deleteData(store, key);
 			db.close();
 			return !!res;
@@ -130,10 +130,14 @@ class IDBStorage {
 		}
 	}
 
+    async clear() {
+        // TODO
+    }
+
 	async keys(name) {
 		try {
 			var db = await openDB(name);
-			let store = getStoreReadonly(db, name);
+			let store = getStoreReadonly(db);
 			var res = await getKeys(store);
 			db.close();
 			return !!res;
@@ -141,6 +145,10 @@ class IDBStorage {
 			// error handling
 		}
 	}
+
+    async getAll() {
+        // TODO
+    }
 
 }
 

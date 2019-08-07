@@ -1,53 +1,40 @@
-let STORAGE = new Map(); // TODO make this work like localstorage only working with a map instead
+let STORAGE = new Map();
 
 class MemoryStorage {
 
-    set(category, name, data) {
-        STORAGE.add(`${category}\0${name}`, data);
+    set(key, value) {
+        STORAGE.set(key, JSON.stringify(value));
     }
 
-
-    get(category, name, def) {
-        let res = STORAGE.get(`${category}\0${name}`);
+    get(key, value) {
+        let res = STORAGE.get(key);
         if (typeof res == "undefined" || res == null) {
-            return def;
+            return value;
         }
-        return res;
+        return JSON.parse(res);
     }
 
-    has(category, name) {
-        return STORAGE.has(`${category}\0${name}`);
+    has(key) {
+        return STORAGE.has(key);
     }
 
-    remove(category, name) {
-        STORAGE.delete(`${category}\0${name}`);
+    delete(key) {
+        STORAGE.delete(key);
     }
 
-    purge() {
+    clear() {
         STORAGE.clear();
     }
 
-    names(category) {
-        let k = Array.from(STORAGE.keys());
-        let res = [];
-        for (let i of k) {
-            let r = i.split("\0");
-            if (r[0] == category) {
-                res.push(r[1]);
-            }
-        }
-        return res;
+    keys() { // TODO add filter
+        return STORAGE.keys();
     }
 
-    toObject() {
+    getAll() {
         let res = {};
-        let k = Array.from(STORAGE.keys());
+        let k = STORAGE.keys();
         for (let i of k) {
-            let r = i.split("\0");
-            if (!res.hasOwnProperty(r[0])) {
-                res[r[0]] = {};
-            }
-            res[r[0]][r[1]] = JSON.parse(STORAGE.get(i));
+            res[i] = JSON.parse(STORAGE.get(i));
         }
         return res;
     }

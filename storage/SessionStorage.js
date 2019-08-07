@@ -1,50 +1,38 @@
 class SessionStorage {
 
-    set(category, name, data) {
-        sessionStorage.setItem(`${category}\0${name}`, JSON.stringify(data));
+    set(key, value) {
+        sessionStorage.setItem(key, JSON.stringify(value));
     }
 
-    get(category, name, def) {
-        let res = sessionStorage.getItem(`${category}\0${name}`);
+    get(key, value) {
+        let res = sessionStorage.getItem(key);
         if (typeof res == "undefined" || res == null) {
-            return def;
+            return value;
         }
         return JSON.parse(res);
     }
 
-    has(category, name) {
-        return sessionStorage.hasOwnProperty(`${category}\0${name}`);
+    has(key) {
+        return sessionStorage.hasOwnProperty(key);
     }
 
-    remove(category, name) {
-        sessionStorage.removeItem(`${category}\0${name}`);
+    delete(name) {
+        sessionStorage.removeItem(key);
     }
 
-    purge() {
+    clear() {
         sessionStorage.clear();
     }
 
-    names(category) {
-        let k = Object.keys(sessionStorage);
-        let res = [];
-        for (let i of k) {
-            let r = i.split("\0");
-            if (r[0] == category) {
-                res.push(r[1]);
-            }
-        }
-        return res;
+    keys() { // TODO add filter
+        return Object.keys(sessionStorage);
     }
 
-    toObject() {
+    getAll() {
         let res = {};
         let k = Object.keys(sessionStorage);
         for (let i of k) {
-            let r = i.split("\0");
-            if (!res.hasOwnProperty(r[0])) {
-                res[r[0]] = {};
-            }
-            res[r[0]][r[1]] = JSON.parse(sessionStorage.getItem(i));
+            res[i] = JSON.parse(sessionStorage.getItem(i));
         }
         return res;
     }

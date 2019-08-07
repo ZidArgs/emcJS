@@ -1,50 +1,38 @@
 class LocalStorage {
 
-    set(category, name, data) {
-        localStorage.setItem(`${category}\0${name}`, JSON.stringify(data));
+    set(key, value) {
+        localStorage.setItem(key, JSON.stringify(value));
     }
 
-    get(category, name, def) {
-        let res = localStorage.getItem(`${category}\0${name}`);
+    get(key, value) {
+        let res = localStorage.getItem(key);
         if (typeof res == "undefined" || res == null) {
-            return def;
+            return value;
         }
         return JSON.parse(res);
     }
 
-    has(category, name) {
-        return localStorage.hasOwnProperty(`${category}\0${name}`);
+    has(key) {
+        return localStorage.hasOwnProperty(key);
     }
 
-    remove(category, name) {
-        localStorage.removeItem(`${category}\0${name}`);
+    delete(name) {
+        localStorage.removeItem(key);
     }
 
-    purge() {
+    clear() {
         localStorage.clear();
     }
 
-    names(category) {
-        let k = Object.keys(localStorage);
-        let res = [];
-        for (let i of k) {
-            let r = i.split("\0");
-            if (r[0] == category) {
-                res.push(r[1]);
-            }
-        }
-        return res;
+    keys() { // TODO add filter
+        return Object.keys(localStorage);
     }
 
-    toObject() {
+    getAll() {
         let res = {};
-        let k = Object.keys(sessionStorage);
+        let k = Object.keys(localStorage);
         for (let i of k) {
-            let r = i.split("\0");
-            if (!res.hasOwnProperty(r[0])) {
-                res[r[0]] = {};
-            }
-            res[r[0]][r[1]] = JSON.parse(sessionStorage.getItem(i));
+            res[i] = JSON.parse(localStorage.getItem(i));
         }
         return res;
     }

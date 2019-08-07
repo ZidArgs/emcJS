@@ -15,7 +15,7 @@ async function getFile(url) {
 class FileLoader {
 
     json(file) {
-        return fetch(new Request(file, {
+        return getFile(new Request(file, {
             method: 'GET',
             headers: new Headers({
                 "Content-Type": "application/json",
@@ -28,7 +28,7 @@ class FileLoader {
     }
 
     text(file) {
-        return fetch(new Request(file, {
+        return getFile(new Request(file, {
             method: 'GET',
             headers: new Headers({
                 "Content-Type": "text/plain",
@@ -41,7 +41,7 @@ class FileLoader {
     }
 
     ini(file) {
-        return fetch(new Request(file, {
+        return getFile(new Request(file, {
             method: 'GET',
             headers: new Headers({
                 "Content-Type": "text/plain",
