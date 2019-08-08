@@ -24,7 +24,7 @@ function getStoreReadonly(db) {
 }
 function writeData(store, key, value) {
 	return new Promise(function(resolve, reject) {
-		var request = store.add(value, key);
+		var request = store.put(value, key);
 		request.onsuccess = function(e) {
 			resolve();
 		};
