@@ -16,7 +16,7 @@ class LocalStorage {
         return localStorage.hasOwnProperty(key);
     }
 
-    delete(name) {
+    delete(key) {
         localStorage.removeItem(key);
     }
 

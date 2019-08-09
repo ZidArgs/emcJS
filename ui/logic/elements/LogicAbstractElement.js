@@ -228,7 +228,7 @@ export default class DeepLogicAbstractElement extends HTMLElement {
         }
     }
 
-    update() {
+    async update() {
         throw new TypeError("can not call abstract method");
     }
 
@@ -503,7 +503,7 @@ class DeepLogicError extends DeepLogicAbstractElement {
 
     get value() {}
 
-    update() {}
+    async update() {}
 
     visualizeValue() {}
 

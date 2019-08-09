@@ -27,7 +27,7 @@ export default class DeepLogicFalse extends DeepLogicAbstractElement {
         this.shadowRoot.append(TPL.generate());
     }
 
-    update() {
+    async update() {
         this.setAttribute('value', "0");
     }
 

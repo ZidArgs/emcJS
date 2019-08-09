@@ -60,7 +60,7 @@ export default class DeepLogicNand extends DeepLogicAbstractElement {
         this.shadowRoot.querySelector(".header").dataset.value = "";
     }
 
-    update() {
+    async update() {
         let newValue;
         let ch = this.children;
         for (let c of ch) {

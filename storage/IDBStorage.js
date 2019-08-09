@@ -1,7 +1,8 @@
+let dbInstance = null;
 
-function openDB(name) {
+function openDB() {
     return new Promise(function(resolve, reject) {
-        var request = indexedDB.open(name);
+        var request = indexedDB.open("data");
         request.onupgradeneeded = function(event) {
             var db = request.result;
             if(!db.objectStoreNames.contains("data")){
@@ -9,18 +10,19 @@ function openDB(name) {
             }
         };
         request.onsuccess = function() {
-            resolve(request.result);
+			dbInstance = request.result;
+            resolve();
         };
         request.onerror = function(e) {
             reject(e);
         }
     });
 }
-function getStoreWritable(db) {
-	return db.transaction("data", "readwrite").objectStore("data");
+function getStoreWritable() {
+	return dbInstance.transaction("data", "readwrite").objectStore("data");
 }
-function getStoreReadonly(db) {
-	return db.transaction("data", "readonly").objectStore("data");
+function getStoreReadonly() {
+	return dbInstance.transaction("data", "readonly").objectStore("data");
 }
 function writeData(store, key, value) {
 	return new Promise(function(resolve, reject) {
@@ -78,25 +80,40 @@ function getKeys(store) {
 	});
 }
 
+function getAll(store) {
+	return new Promise(function(resolve, reject) {
+		// TODO
+		var request = store.getAll();
+		request.onsuccess = function(e) {
+			resolve(e.target.result);
+		};
+		request.onerror = function(e) {
+			reject(e);
+		}
+	});
+}
+
 class IDBStorage {
     
-	async set(name, key, value) {
+	async set(key, value) {
 		try {
-			var db = await openDB(name);
-			let store = getStoreWritable(db);
+			if (dbInstance == null) {
+				await openDB()
+			}
+			let store = getStoreWritable();
 			await writeData(store, key, value);
-			db.close();
 		} catch(error) {
 			// error handling
 		}
 	}
 
-	async get(name, key, value) {
+	async get(key, value) {
 		try {
-			var db = await openDB(name);
-			let store = getStoreReadonly(db);
+			if (dbInstance == null) {
+				await openDB()
+			}
+			let store = getStoreReadonly();
 			var res = await readData(store, key);
-			db.close();
 			if (typeof res == "undefined" || res == null) {
 				return value;
 			}
@@ -106,24 +123,26 @@ class IDBStorage {
 		}
 	}
 
-	async has(name, key) {
+	async has(key) {
 		try {
-			var db = await openDB(name);
-			let store = getStoreReadonly(db);
+			if (dbInstance == null) {
+				await openDB()
+			}
+			let store = getStoreReadonly();
 			var res = await hasKey(store, key);
-			db.close();
 			return !!res;
 		} catch(error) {
 			// error handling
 		}
 	}
 
-	async delete(name, key) {
+	async delete(key) {
 		try {
-			var db = await openDB(name);
-			let store = getStoreWritable(db);
+			if (dbInstance == null) {
+				await openDB()
+			}
+			let store = getStoreWritable();
 			var res = await deleteData(store, key);
-			db.close();
 			return !!res;
 		} catch(error) {
 			// error handling
@@ -134,12 +153,13 @@ class IDBStorage {
         // TODO
     }
 
-	async keys(name) {
+	async keys() {
 		try {
-			var db = await openDB(name);
-			let store = getStoreReadonly(db);
+			if (dbInstance == null) {
+				await openDB()
+			}
+			let store = getStoreReadonly();
 			var res = await getKeys(store);
-			db.close();
 			return !!res;
 		} catch(error) {
 			// error handling
@@ -147,7 +167,16 @@ class IDBStorage {
 	}
 
     async getAll() {
-        // TODO
+		try {
+			if (dbInstance == null) {
+				await openDB()
+			}
+			let store = getStoreReadonly();
+			var res = await getAll(store);
+			return !!res;
+		} catch(error) {
+			// error handling
+		}
     }
 
 }

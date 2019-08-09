@@ -16,7 +16,7 @@ class SessionStorage {
         return sessionStorage.hasOwnProperty(key);
     }
 
-    delete(name) {
+    delete(key) {
         sessionStorage.removeItem(key);
     }
 

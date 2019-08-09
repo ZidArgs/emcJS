@@ -42,7 +42,7 @@ export default class DeepLogicNot extends DeepLogicAbstractElement {
         }.bind(this);
     }
 
-    update() {
+    async update() {
         let newValue;
         let ch = this.children;
         if (ch.length > 0) {

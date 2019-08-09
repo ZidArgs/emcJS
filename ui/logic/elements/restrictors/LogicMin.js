@@ -48,7 +48,7 @@ export default class DeepLogicMin extends DeepLogicAbstractElement {
         });
     }
 
-    update() {
+    async update() {
         let newValue;
         let ch = this.children;
         if (!!ch[0] && typeof ch[0].value != "undefined") {

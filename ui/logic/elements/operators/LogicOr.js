@@ -41,7 +41,7 @@ export default class DeepLogicOr extends DeepLogicAbstractElement {
         }.bind(this);
     }
 
-    update() {
+    async update() {
         let newValue;
         let ch = this.children;
         for (let c of ch) {
