@@ -29,23 +29,27 @@ const TPL = new Template(`
             align-items: center;
             min-height: 30px;
             padding: 5px;
-            cursor: pointer;
             white-space: normal;
             margin: 5px 2px;
+        }
+        ::slotted([value]:not(.active)),
+        :host[multimode]:not([multimode="false"]) ::slotted([value].active) {
+            cursor: pointer;
         }
         ::slotted([value]:not(.active)) {
             color: #000000;
             background-color: #ffffff;
         }
-        ::slotted([value].active) {
+        ::slotted([value].active),
+        :host[multimode]:not([multimode="false"]) ::slotted([value].active) {
             color: #ffffff;
             background-color: #000000;
         }
-        ::slotted([value]:hover) {
+        ::slotted([value]:not(.active):hover) {
             color: #000000;
             background-color: #cccccc;
         }
-        ::slotted([value].active:hover) {
+        :host[multimode]:not([multimode="false"]) ::slotted([value].active:hover) {
             color: #ffffff;
             background-color: #555555;
         }
