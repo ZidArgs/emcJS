@@ -3,19 +3,24 @@ import Path from "../Path.js";
 
 const MUTED = new Set;
 
-const WORKER = (new SharedWorker(Path.getAbsolute(import.meta.url, "./EventBusModuleShare.worker.js"), 'EventWorker')).port;
+let WORKER = null;
+if ("SharedWorker" in window) {
+    WORKER = (new SharedWorker(Path.getAbsolute(import.meta.url, "./EventBusModuleShare.worker.js"), 'EventWorker')).port;
+}
 
 class EventBusModuleShare extends EventBusAbstractModule {
 
     constructor() {
         super();
-        WORKER.onmessage = function(e) {
-            let payload = e.data;
-            if (!MUTED.has(payload.name)) {
-                this.onModuleEvent(payload);
-            }
-        }.bind(this);
-        WORKER.start();
+        if (!!WORKER) {
+            WORKER.onmessage = function(e) {
+                let payload = e.data;
+                if (!MUTED.has(payload.name)) {
+                    this.onModuleEvent(payload);
+                }
+            }.bind(this);
+            WORKER.start();
+        }
     }
 
     onModuleEvent(payload) {
@@ -23,8 +28,10 @@ class EventBusModuleShare extends EventBusAbstractModule {
     }
 
     triggerModuleEvent(payload) {
-        if (!MUTED.has(payload.name)) {
-            WORKER.postMessage(payload);
+        if (!!WORKER) {
+            if (!MUTED.has(payload.name)) {
+                WORKER.postMessage(payload);
+            }
         }
     }
 
