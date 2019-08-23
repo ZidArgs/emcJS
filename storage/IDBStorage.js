@@ -46,6 +46,17 @@ function readData(store, key) {
 		}
 	});
 }
+function hasKey(store, key) {
+	return new Promise(function(resolve, reject) {
+		var request = store.getKey(key);
+		request.onsuccess = function(e) {
+			resolve(e.target.result === key);
+		};
+		request.onerror = function(e) {
+			reject(e);
+		}
+	});
+}
 function deleteData(store, key) {
 	return new Promise(function(resolve, reject) {
 		var request = store.delete(key);
@@ -57,11 +68,11 @@ function deleteData(store, key) {
 		}
 	});
 }
-function hasKey(store, key) {
+function clearData(store) {
 	return new Promise(function(resolve, reject) {
-		var request = store.getKey(key);
+		var request = store.clear();
 		request.onsuccess = function(e) {
-			resolve(e.target.result === key);
+			resolve();
 		};
 		request.onerror = function(e) {
 			reject(e);
@@ -82,7 +93,6 @@ function getKeys(store) {
 
 function getAll(store) {
 	return new Promise(function(resolve, reject) {
-		// TODO
 		var request = store.getAll();
 		request.onsuccess = function(e) {
 			resolve(e.target.result);
@@ -150,7 +160,16 @@ class IDBStorage {
 	}
 
     async clear() {
-        // TODO
+		try {
+			if (dbInstance == null) {
+				await openDB()
+			}
+			let store = getStoreWritable();
+			var res = await clearData(store);
+			return !!res;
+		} catch(error) {
+			// error handling
+		}
     }
 
 	async keys() {
