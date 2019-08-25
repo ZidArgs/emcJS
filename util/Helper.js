@@ -38,7 +38,7 @@ class Helper {
         if (keys_a.length != Object.keys(b).length) {
             return false;
         }
-        return keys_a.every(i => b.hasOwnProperty(i) && deepEquals(a[i], b[i]));
+        return keys_a.every(i => b.hasOwnProperty(i) && this.deepEquals(a[i], b[i]));
     }
     
     svg2png(svg) {
