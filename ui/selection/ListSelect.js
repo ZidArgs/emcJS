@@ -53,8 +53,12 @@ const TPL = new Template(`
             color: #ffffff;
             background-color: #555555;
         }
+        #empty {
+            font-style: italic;
+        }
     </style>
     <slot id="container">
+        <div id="empty">no entries</div>
     </slot>
 `);
 
