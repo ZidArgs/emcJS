@@ -24,8 +24,12 @@ class SessionStorage {
         sessionStorage.clear();
     }
 
-    keys() { // TODO add filter
-        return Object.keys(sessionStorage);
+    keys(filter) {
+        let keys = Object.keys(localStorage);
+        if (typeof filter == "string") {
+            keys.filter(key => key.startsWith(filter));
+        }
+        return keys;
     }
 
     getAll() {

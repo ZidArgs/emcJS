@@ -26,8 +26,12 @@ class MemoryStorage {
         STORAGE.clear();
     }
 
-    keys() { // TODO add filter
-        return STORAGE.keys();
+    keys(filter) {
+        let keys = STORAGE.keys();
+        if (typeof filter == "string") {
+            keys.filter(key => key.startsWith(filter));
+        }
+        return keys;
     }
 
     getAll() {
