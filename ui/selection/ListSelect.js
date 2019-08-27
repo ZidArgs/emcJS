@@ -10,11 +10,12 @@ const TPL = new Template(`
         :host {
             display: block;
             min-width: 200px;
+            min-height: 100px;
             -webkit-user-select: none;
             -moz-user-select: none;
             user-select: none;
             overflow-x: hidden;
-            overflow-y: auto;
+            overflow-y: scroll;
         }
         slot {
             display: block;
@@ -54,7 +55,14 @@ const TPL = new Template(`
             background-color: #555555;
         }
         #empty {
+            display: flex;
+            align-items: center;
+            justify-content: center;
             font-style: italic;
+            min-height: 30px;
+            padding: 5px;
+            white-space: normal;
+            margin: 5px 2px;
         }
     </style>
     <slot id="container">
