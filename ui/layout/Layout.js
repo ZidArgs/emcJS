@@ -1,7 +1,9 @@
 import Template from "../../util/Template.js";
-import HBox from "./HBox.js";
-import VBox from "./VBox.js";
+import"./HBox.js";
+import"./VBox.js";
 import Panel from "./Panel.js";
+
+// TODO WebKit - add a wrapper with hbox abilities around panels residing inside a vbox
 
 const TPL = new Template(`
     <style>
@@ -26,23 +28,11 @@ const TPL = new Template(`
     </slot>
 `);
 
-const PANEL_CACHE = new WeakMap();
-
-function getPanel(cache, name) {
-    if (!!cache.has(name)) {
-        return cache.get(name);
-    }
-    let el = new (Panel.getReference(name));
-    cache.set(name, el);
-    return el;
-}
-
 function loadLayout(cache, layout) {
     if (!!layout) {
         if (layout.type == "panel") {
             let el = document.createElement('div');
             el.classList.add("panel");
-            // let ch = getPanel(cache, layout.name);
             let ch = new (Panel.getReference(layout.name));
             for (let i in layout.options) {
                 ch.setAttribute(i, layout.options[i]);
