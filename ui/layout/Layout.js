@@ -28,7 +28,7 @@ const TPL = new Template(`
     </slot>
 `);
 
-function loadLayout(cache, layout) {
+function loadLayout(layout) {
     if (!!layout) {
         if (layout.type == "panel") {
             let el = document.createElement('div');
@@ -43,7 +43,7 @@ function loadLayout(cache, layout) {
             let el = document.createElement(`deep-${layout.type}`);
             el.classList.add("stretchlast");
             for (let item of layout.items) {
-                let ch = loadLayout(cache, item);
+                let ch = loadLayout(item);
                 if (!!item.autosize) {
                     ch.classList.add("autosize");
                     el.classList.remove("stretchlast");
@@ -59,7 +59,6 @@ export default class DeepLayout extends HTMLElement {
 
     constructor() {
         super();
-        PANEL_CACHE.set(this, new Map());
         this.attachShadow({mode: 'open'});
         this.shadowRoot.append(TPL.generate());
     }
@@ -67,7 +66,7 @@ export default class DeepLayout extends HTMLElement {
     loadLayout(layout) {
         this.innerHTML = "";
         if (!layout) return;
-        this.appendChild(loadLayout(PANEL_CACHE.get(this), layout));
+        this.appendChild(loadLayout(layout));
     }
 
 }
