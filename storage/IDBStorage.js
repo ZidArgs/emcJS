@@ -152,8 +152,7 @@ class IDBStorage {
 				await openDB()
 			}
 			let store = getStoreWritable();
-			var res = await deleteData(store, key);
-			return !!res;
+			await deleteData(store, key);
 		} catch(error) {
 			// error handling
 		}
@@ -165,21 +164,23 @@ class IDBStorage {
 				await openDB()
 			}
 			let store = getStoreWritable();
-			var res = await clearData(store);
-			return !!res;
+			await clearData(store);
 		} catch(error) {
 			// error handling
 		}
     }
 
-	async keys() {
+	async keys(filter) {
 		try {
 			if (dbInstance == null) {
 				await openDB()
 			}
 			let store = getStoreReadonly();
-			var res = await getKeys(store);
-			return !!res;
+			var keys = await getKeys(store);
+			if (typeof filter == "string") {
+				return keys.filter(key => key.startsWith(filter));
+			}
+			return keys;
 		} catch(error) {
 			// error handling
 		}
@@ -191,8 +192,7 @@ class IDBStorage {
 				await openDB()
 			}
 			let store = getStoreReadonly();
-			var res = await getAll(store);
-			return !!res;
+			return await getAll(store);
 		} catch(error) {
 			// error handling
 		}

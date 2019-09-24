@@ -29,7 +29,7 @@ class MemoryStorage {
     keys(filter) {
         let keys = STORAGE.keys();
         if (typeof filter == "string") {
-            keys.filter(key => key.startsWith(filter));
+            return keys.filter(key => key.startsWith(filter));
         }
         return keys;
     }

@@ -27,7 +27,7 @@ class SessionStorage {
     keys(filter) {
         let keys = Object.keys(localStorage);
         if (typeof filter == "string") {
-            keys.filter(key => key.startsWith(filter));
+            return keys.filter(key => key.startsWith(filter));
         }
         return keys;
     }
