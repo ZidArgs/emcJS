@@ -1,8 +1,19 @@
 let dbInstance = null;
 
+/*function removeAll() {
+	return new Promise(function(resolve, reject) {
+		var req = indexedDB.deleteDatabase("SimpleIDBStorage");
+		req.onerror = function(event) {
+			reject("Error deleting database.");
+		};
+		req.onsuccess = function(event) {
+			resolve();
+		};
+	});
+}*/
 function openDB() {
     return new Promise(function(resolve, reject) {
-        var request = indexedDB.open("data");
+        var request = indexedDB.open("SimpleIDBStorage");
         request.onupgradeneeded = function(event) {
             var db = request.result;
             if(!db.objectStoreNames.contains("data")){
@@ -103,7 +114,7 @@ function getAll(store) {
 	});
 }
 
-class IDBStorage {
+class SimpleIDBStorage {
     
 	async set(key, value) {
 		try {
@@ -200,4 +211,4 @@ class IDBStorage {
 
 }
 
-export default new IDBStorage;
+export default new SimpleIDBStorage;
