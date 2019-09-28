@@ -1,7 +1,7 @@
 let dbInstance = null;
 
 /*function removeAll() {
-	return new Promise(function(resolve, reject) {
+	return new Promise(async (resolve, reject) => {
 		var req = indexedDB.deleteDatabase("SimpleIDBStorage");
 		req.onerror = function(event) {
 			reject("Error deleting database.");
@@ -29,89 +29,11 @@ function openDB() {
         }
     });
 }
-function getStoreWritable() {
-	return dbInstance.transaction("data", "readwrite").objectStore("data");
+function getStoreWritable(name) {
+	return dbInstance.transaction(name, "readwrite").objectStore(name);
 }
-function getStoreReadonly() {
-	return dbInstance.transaction("data", "readonly").objectStore("data");
-}
-function writeData(store, key, value) {
-	return new Promise(function(resolve, reject) {
-		var request = store.put(value, key);
-		request.onsuccess = function(e) {
-			resolve();
-		};
-		request.onerror = function(e) {
-			reject(e);
-		}
-	});
-}
-function readData(store, key) {
-	return new Promise(function(resolve, reject) {
-		var request = store.get(key);
-		request.onsuccess = function(e) {
-			resolve(e.target.result);
-		};
-		request.onerror = function(e) {
-			reject(e);
-		}
-	});
-}
-function hasKey(store, key) {
-	return new Promise(function(resolve, reject) {
-		var request = store.getKey(key);
-		request.onsuccess = function(e) {
-			resolve(e.target.result === key);
-		};
-		request.onerror = function(e) {
-			reject(e);
-		}
-	});
-}
-function deleteData(store, key) {
-	return new Promise(function(resolve, reject) {
-		var request = store.delete(key);
-		request.onsuccess = function(e) {
-			resolve(e.target.result);
-		};
-		request.onerror = function(e) {
-			reject(e);
-		}
-	});
-}
-function clearData(store) {
-	return new Promise(function(resolve, reject) {
-		var request = store.clear();
-		request.onsuccess = function(e) {
-			resolve();
-		};
-		request.onerror = function(e) {
-			reject(e);
-		}
-	});
-}
-function getKeys(store) {
-	return new Promise(function(resolve, reject) {
-		var request = store.getAllKeys();
-		request.onsuccess = function(e) {
-			resolve(e.target.result);
-		};
-		request.onerror = function(e) {
-			reject(e);
-		}
-	});
-}
-
-function getAll(store) {
-	return new Promise(function(resolve, reject) {
-		var request = store.getAll();
-		request.onsuccess = function(e) {
-			resolve(e.target.result);
-		};
-		request.onerror = function(e) {
-			reject(e);
-		}
-	});
+function getStoreReadonly(name) {
+	return dbInstance.transaction(name, "readonly").objectStore(name);
 }
 
 const NAME = new WeakMap();
@@ -122,98 +44,117 @@ class IDBTable {
 		NAME.set(this, name);
 	}
     
-	async set(key, value) {
-		try {
-			if (dbInstance == null) {
-				await openDB()
+	set(key, value) {
+		return new Promise(async (resolve, reject) => {
+			await openDB();
+			let request = getStoreWritable(NAME.get(this)).put(value, key);
+			request.onsuccess = function(e) {
+				resolve();
+			};
+			request.onerror = function(e) {
+				reject(e);
 			}
-			let store = getStoreWritable();
-			await writeData(store, key, value);
-		} catch(error) {
-			// error handling
-		}
+		});
 	}
 
-	async get(key, value) {
-		try {
-			if (dbInstance == null) {
-				await openDB()
+	get(key, value) {
+		return new Promise(async (resolve, reject) => {
+			await openDB();
+			let request = getStoreReadonly(NAME.get(this)).get(key);
+			request.onsuccess = function(e) {
+				let res = e.target.result;
+				if (typeof res == "undefined") {
+					resolve(value);
+				} else {
+					resolve(res);
+				}
+			};
+			request.onerror = function(e) {
+				reject(e);
 			}
-			let store = getStoreReadonly();
-			var res = await readData(store, key);
-			if (typeof res == "undefined" || res == null) {
-				return value;
-			}
-			return res;
-		} catch(error) {
-			// error handling
-		}
+		});
 	}
 
-	async has(key) {
-		try {
-			if (dbInstance == null) {
-				await openDB()
+	has(key) {
+		return new Promise(async (resolve, reject) => {
+			await openDB();
+			let request = getStoreReadonly(NAME.get(this)).getKey(key);
+			request.onsuccess = function(e) {
+				resolve(e.target.result === key);
+			};
+			request.onerror = function(e) {
+				reject(e);
 			}
-			let store = getStoreReadonly();
-			var res = await hasKey(store, key);
-			return !!res;
-		} catch(error) {
-			// error handling
-		}
+		});
 	}
 
-	async delete(key) {
-		try {
-			if (dbInstance == null) {
-				await openDB()
+	delete(key) {
+		return new Promise(async (resolve, reject) => {
+			await openDB();
+			let request = getStoreWritable(NAME.get(this)).delete(key);
+			request.onsuccess = function(e) {
+				resolve();
+			};
+			request.onerror = function(e) {
+				reject(e);
 			}
-			let store = getStoreWritable();
-			await deleteData(store, key);
-		} catch(error) {
-			// error handling
-		}
+		});
 	}
 
-    async clear() {
-		try {
-			if (dbInstance == null) {
-				await openDB()
+    clear() {
+		return new Promise(async (resolve, reject) => {
+			await openDB();
+			let request = getStoreWritable(NAME.get(this)).clear();
+			request.onsuccess = function(e) {
+				resolve();
+			};
+			request.onerror = function(e) {
+				reject(e);
 			}
-			let store = getStoreWritable();
-			await clearData(store);
-		} catch(error) {
-			// error handling
-		}
+		});
     }
 
-	async keys(filter) {
-		try {
-			if (dbInstance == null) {
-				await openDB()
+	keys(filter) {
+		return new Promise(async (resolve, reject) => {
+			await openDB();
+			let request = getStoreReadonly(NAME.get(this)).getAllKeys();
+			request.onsuccess = function(e) {
+				let res = e.target.result;
+				if (typeof filter == "string") {
+					resolve(res.filter(key => key.startsWith(filter)));
+				} else {
+					resolve(res);
+				}
+			};
+			request.onerror = function(e) {
+				reject(e);
 			}
-			let store = getStoreReadonly();
-			var keys = await getKeys(store);
-			if (typeof filter == "string") {
-				return keys.filter(key => key.startsWith(filter));
-			}
-			return keys;
-		} catch(error) {
-			// error handling
-		}
+		});
 	}
 
-    async getAll() {
-		try {
-			if (dbInstance == null) {
-				await openDB()
+    getAll(filter) {
+		return new Promise(async (resolve, reject) => {
+			await openDB();
+			let request = getStoreReadonly(NAME.get(this)).openCursor();
+			let res = {};
+			request.onsuccess = function(e) {
+				let el = e.target.result;
+				if (el) {
+					res[el.key] = el.value;
+					el.continue();
+				} else {
+					if (typeof filter == "string") {
+						resolve(res.filter(key => key.startsWith(filter)));
+					} else {
+						resolve(res);
+					}
+				}
+			};
+			request.onerror = function(e) {
+				reject(e);
 			}
-			let store = getStoreReadonly();
-			return await getAll(store);
-		} catch(error) {
-			// error handling
-		}
-	}
+		});
+    }
 	
 }
 

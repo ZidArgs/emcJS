@@ -6,14 +6,15 @@ const MUTED = new Set;
 
 const MODULES = new Set;
 
-async function triggerEvent(data = {name:"",data:{}}) {
-    async function callFn(fn) {
+function triggerEvent(data = {name:"",data:{}}) {
+    if (SUBS.has(data.name)) {
+        for (let fn of SUBS.get(data.name)) {
+            fn(data);
+        }
+    }
+    for (let fn of ALLS) {
         fn(data);
     }
-    if (SUBS.has(data.name)) {
-        SUBS.get(data.name).forEach(callFn);
-    }
-    ALLS.forEach(callFn);
 }
 
 class EventBus {
@@ -70,16 +71,16 @@ class EventBus {
         }
     }
 
-    async trigger(name, data = {}) {
+    trigger(name, data = {}) {
         if (!MUTED.has(name)) {
             let payload = {
                 name: name,
                 data: data
             };
+            triggerEvent(payload);
             for (let module of MODULES) {
                 module.triggerModuleEvent(payload);
             }
-            triggerEvent(payload);
         }
     }
 

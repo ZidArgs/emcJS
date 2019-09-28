@@ -27,7 +27,7 @@ class EventBusModuleShare extends EventBusAbstractModule {
         // nothing
     }
 
-    triggerModuleEvent(payload) {
+    async triggerModuleEvent(payload) {
         if (!!WORKER) {
             if (!MUTED.has(payload.name)) {
                 WORKER.postMessage(payload);

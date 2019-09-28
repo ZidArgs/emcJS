@@ -48,7 +48,7 @@ export default class DeepLogicMax extends DeepLogicAbstractElement {
         });
     }
 
-    async update() {
+    update() {
         let newValue;
         let ch = this.children;
         if (!!ch[0] && typeof ch[0].value != "undefined") {

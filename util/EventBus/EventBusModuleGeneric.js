@@ -15,7 +15,7 @@ class EventBusModuleGeneric extends EventBusAbstractModule {
         // empty
     }
 
-    triggerModuleEvent(payload) {
+    async triggerModuleEvent(payload) {
         if (!MUTED.get(this).has(payload.name)) {
             SUBS.get(this).forEach(function(fn) {
                 fn(payload);
