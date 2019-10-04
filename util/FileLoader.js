@@ -2,8 +2,6 @@ import XML from "./TextConverter/XML.js";
 import INI from "./TextConverter/INI.js";
 import Properties from "./TextConverter/Properties.js";
 
-const LNBR_SEQ = /(?:\r\n|\n|\r)/g;
-
 async function getFile(file, contentType) {
     let r = await fetch(new Request(file, {
         method: 'GET',

@@ -1,5 +1,6 @@
 import Logger from "../Logger.js";
 
+const LNBR_SEQ = /(?:\r\n|\n|\r)/g;
 const GROUP = /^\[(.+)\]$/;
 const VALUE = /^[^=]+=.*$/;
 const COMMENT = /^;.*$/;
