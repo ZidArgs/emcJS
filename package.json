@@ -9,10 +9,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@bitbucket.org/2deep4real/deepjs.git"
+    "url": "git+ssh://git@bitbucket.org/zidargs/deepjs.git"
   },
-  "author": "Denis Peters (2deep4real)",
+  "author": "Denis Peters (ZidArgs)",
   "license": "MIT",
-  "homepage": "https://bitbucket.org/2deep4real/deepjs#readme",
+  "homepage": "https://bitbucket.org/zidargs/deepjs#readme",
   "dependencies": {}
 }
