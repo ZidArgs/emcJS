@@ -5,7 +5,7 @@ const SERIALIZER = new XMLSerializer();
 class Helper {
 
     arrayDiff(a, b) {
-        if (!Array.isArray(a) ||!Array.isArray(b)) {
+        if (!Array.isArray(a) || !Array.isArray(b)) {
             throw new TypeError("only arrays are comparable");
         }
         let c = new Set(b);
@@ -13,18 +13,33 @@ class Helper {
     }
       
     arraySymDiff(a, b) {
-        if (!Array.isArray(a) ||!Array.isArray(b)) {
+        if (!Array.isArray(a) || !Array.isArray(b)) {
             throw new TypeError("only arrays are comparable");
         }
         return difference(a, b).concat(difference(b, a));
     }
     
     arrayIntersect(a, b) {
-        if (!Array.isArray(a) ||!Array.isArray(b)) {
+        if (!Array.isArray(a) || !Array.isArray(b)) {
             throw new TypeError("only arrays are comparable");
         }
         let c = new Set(b);
         return a.filter(d =>c.has(d));
+    }
+    
+    objectSort(a, b) {
+        if (typeof a != "object" || Array.isArray(a)) {
+            throw new TypeError("only objects are sortable");
+        }
+        if (typeof b != "function") {
+            b = undefined;
+        }
+        let c = {};
+        let d = Object.keys(a).sort(b);
+        for (let e of d) {
+            c[e] = a[e];
+        }
+        return c;
     }
     
     deepEquals(a, b) {
@@ -34,15 +49,18 @@ class Helper {
         if (a instanceof Date && b instanceof Date) {
             return a.getTime() == b.getTime();
         }
-        let keys_a = Object.keys(a);
-        if (keys_a.length != Object.keys(b).length) {
+        let c = Object.keys(a);
+        if (c.length != Object.keys(b).length) {
             return false;
         }
-        return keys_a.every(i => b.hasOwnProperty(i) && this.deepEquals(a[i], b[i]));
+        return c.every(i => b.hasOwnProperty(i) && this.deepEquals(a[i], b[i]));
     }
     
     svg2png(svg) {
         return new Promise(function(resolve, reject) {
+            if (!svg instanceof SVGElement) {
+                reject(new TypeError("only svg elements can be converted to png"));
+            }
             CANVAS.setAttribute("width", svg.getAttribute("width"));
             CANVAS.setAttribute("height", svg.getAttribute("height"));
             let url = 'data:image/svg+xml;base64,' + btoa(SERIALIZER.serializeToString(svg));

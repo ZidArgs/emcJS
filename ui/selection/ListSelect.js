@@ -21,7 +21,6 @@ const TPL = new Template(`
             display: block;
             width: 100%;
         }
-        ::slotted(:not()),
         ::slotted(:not([value])) {
             display: none;
         }
@@ -32,27 +31,24 @@ const TPL = new Template(`
             padding: 5px;
             white-space: normal;
             margin: 5px 2px;
-        }
-        ::slotted([value]:not(.active)),
-        :host[multimode]:not([multimode="false"]) ::slotted([value].active) {
-            cursor: pointer;
-        }
-        ::slotted([value]:not(.active)) {
             color: #000000;
             background-color: #ffffff;
         }
-        ::slotted([value].active),
-        :host[multimode]:not([multimode="false"]) ::slotted([value].active) {
-            color: #ffffff;
-            background-color: #000000;
+        ::slotted([value]:hover) {
+            background-color: #b8b8b8;
         }
-        ::slotted([value]:not(.active):hover) {
-            color: #000000;
-            background-color: #cccccc;
+        ::slotted([value])::before {
+            margin-left: 2px;
+            margin-right: 10px;
+            font-size: 1.4em;
+            content: "☐";
         }
-        :host[multimode]:not([multimode="false"]) ::slotted([value].active:hover) {
-            color: #ffffff;
-            background-color: #555555;
+        ::slotted([value].active)::before {
+            content: "☑";
+        }
+        ::slotted([value]:not(.active)),
+        :host([multimode]:not([multimode="false"])) ::slotted([value].active) {
+            cursor: pointer;
         }
         #empty {
             display: flex;
@@ -72,7 +68,7 @@ const TPL = new Template(`
 
 function clickOption(event) {
     if (!this.readonly) {
-        let value = event.target.getAttribute("value");
+        let value = event.currentTarget.getAttribute("value");
         if (this.multimode == "true") {
             let arr = [];
             if (!!this.value && this.value.length > 0) {
@@ -95,7 +91,6 @@ export default class DeepListSelect extends HTMLElement {
 
     constructor() {
         super();
-        this.addEventListener("click", clickOption.bind(this));
         this.attachShadow({mode: 'open'});
         this.shadowRoot.append(TPL.generate());
         this.shadowRoot.getElementById("container").addEventListener("slotchange", event => {
@@ -162,9 +157,10 @@ export default class DeepListSelect extends HTMLElement {
     }
     
     calculateItems() {
-        this.querySelectorAll(`[value]:not([value=""])`).forEach(el => {
+        this.querySelectorAll(`[value]`).forEach(el => {
             if (!!el) {
                 el.classList.remove("active");
+                el.onclick = clickOption.bind(this);
             }
         });
         if (typeof this.value === "string" && this.value.length > 0) {

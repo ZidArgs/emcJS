@@ -34,7 +34,7 @@ const TPL = new Template(`
 
 function clickOption(event) {
     if (!this.readonly) {
-        let value = event.target.getAttribute("value");
+        let value = event.currentTarget.getAttribute("value");
         if (this.multimode == "true") {
             let arr = [];
             if (!!this.value && this.value.length > 0) {
@@ -57,7 +57,6 @@ export default class DeepChoiceSelect extends HTMLElement {
 
     constructor() {
         super();
-        this.addEventListener("click", clickOption.bind(this));
         this.attachShadow({mode: 'open'});
         this.shadowRoot.append(TPL.generate());
         this.shadowRoot.getElementById("container").addEventListener("slotchange", event => {
@@ -127,9 +126,10 @@ export default class DeepChoiceSelect extends HTMLElement {
     }
     
     calculateItems() {
-        this.querySelectorAll(`[value]:not([value=""])`).forEach(el => {
+        this.querySelectorAll(`[value]`).forEach(el => {
             if (!!el) {
                 el.classList.remove("active");
+                el.onclick = clickOption.bind(this);
             }
         });
         if (typeof this.value === "string" && this.value.length > 0) {

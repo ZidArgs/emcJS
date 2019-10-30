@@ -32,11 +32,13 @@ class SessionStorage {
         return keys;
     }
 
-    getAll() {
+    getAll(filter) {
         let res = {};
         let k = Object.keys(sessionStorage);
         for (let i of k) {
-            res[i] = JSON.parse(sessionStorage.getItem(i));
+            if (i.startsWith(filter)) {
+                res[i] = JSON.parse(localStorage.getItem(i));
+            }
         }
         return res;
     }

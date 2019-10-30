@@ -32,11 +32,13 @@ class LocalStorage {
         return keys;
     }
 
-    getAll() {
+    getAll(filter) {
         let res = {};
         let k = Object.keys(localStorage);
         for (let i of k) {
-            res[i] = JSON.parse(localStorage.getItem(i));
+            if (i.startsWith(filter)) {
+                res[i] = JSON.parse(localStorage.getItem(i));
+            }
         }
         return res;
     }

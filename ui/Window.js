@@ -64,7 +64,7 @@ const TPL = new Template(`
         }
         :focus {
             outline: none;
-            box-shadow: blue 0 0px 3px 4px;
+            box-shadow: inset black 0 0px 3px 2px;
         }
         #close {
             display: flex;
