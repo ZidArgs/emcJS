@@ -1,6 +1,6 @@
-import XML from "./TextConverter/XML.js";
-import INI from "./TextConverter/INI.js";
-import Properties from "./TextConverter/Properties.js";
+import XML from "./converter/XML.js";
+import INI from "./converter/INI.js";
+import Properties from "./converter/Properties.js";
 
 async function getFile(file, contentType) {
     let r = await fetch(new Request(file, {

@@ -4,8 +4,7 @@
   "description": "Modular JS API",
   "main": "index.js",
   "scripts": {
-    "index": "node dist.js",
-    "index_old": "create-index ./"
+    "index": "node dist.js"
   },
   "repository": {
     "type": "git",

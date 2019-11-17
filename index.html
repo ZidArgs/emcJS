@@ -6,18 +6,115 @@
         <meta name="robots" content="none">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
         <meta name="theme-color" content="#000000">
-        <script type="module" src="./index.js"></script>
+        <script type="module">
+            import deepJS from "./index.js";
+
+            function recTransformLogic(logic) {
+                if (["true","false","not","and","nand","or","nor","xor","min","max"].indexOf(logic.type)<0) {
+                    logic.el = `${logic.type}.${logic.el}`;
+                } else {
+                    if (!!logic.el) {
+                        if (Array.isArray(logic.el)) {
+                            for (let i in logic.el) {
+                                logic.el[i] = recTransformLogic(logic.el[i]);
+                            }
+                        } else {
+                            logic.el = recTransformLogic(logic.el);
+                        }
+                    }
+                }
+                return logic;
+            }
+
+            function transformLogic(logic) {
+                let res = {};
+                
+                for (let i of Object.keys(logic)) {
+                    for (let j of Object.keys(logic[i])) {
+                        res[`${i.slice(0,-1)}.${j}`] = recTransformLogic(logic[i][j]);
+                    }
+                }
+
+                return res;
+            }
+
+            let logic = {};
+
+            async function init() {
+                logic = transformLogic(await deepJS.util.FileLoader.json(`logic.json`));
+
+                deepJS.util.logic.LogicExec.loadLogic(logic);
+
+                console.time("logic exec");
+                console.log(deepJS.util.logic.LogicExec.execute({
+                    "option.trade_sequence_start_item": "10",
+                    "option.water_trial": false,
+                    "option.keysanity_boss": "keysanity_boss_keysanity",
+                    "option.consider_buyable": false,
+                    "option.doors_open_temple": true,
+                    "option.spirit_trial": false,
+                    "option.ganon_castle_open": "ganon_castle_open_medallion",
+                    "option.beansanity": true,
+                    "option.bombchu_logic": false,
+                    "option.shadow_trial": false,
+                    "option.ganon_boss_door_open": false,
+                    "option.keysanity_small": "keysanity_small_keysanity",
+                    "option.doors_open_zora": false,
+                    "option.cowsanity": false,
+                    "option.gerudo_fortress_open": "gerudo_fortress_open_default",
+                    "option.scrubsanity": true,
+                    "option.forest_trial": false,
+                    "option.light_trial": false,
+                    "option.fire_trial": false,
+                    "option.doors_open_forest": true
+                }));
+                console.timeEnd("logic exec");
+
+                console.time("logic exec");
+                console.log(deepJS.util.logic.LogicExec.execute({
+                    "item.ocarina": true,
+                    "item.song_storm": true
+                }));
+                console.timeEnd("logic exec");
+
+                console.time("logic exec");
+                console.log(deepJS.util.logic.LogicExec.execute({
+                    "item.ocarina": false,
+                    "item.song_storm": true
+                }));
+                console.timeEnd("logic exec");
+
+                console.time("logic exec");
+                console.log(deepJS.util.logic.LogicExec.execute({
+                    "item.bombs": true,
+                    "item.ocarina": true,
+                    "item.song_storm": true
+                }));
+                console.timeEnd("logic exec");
+
+                console.time("logic exec");
+                console.log(deepJS.util.logic.LogicExec.execute({
+                    "item.ocarina": false,
+                    "item.song_storm": false,
+                }));
+                console.timeEnd("logic exec");
+
+                console.time("logic get values");
+                console.log(deepJS.util.logic.LogicExec.getValues());
+                console.timeEnd("logic get values");
+            }
+
+            init();
+
+            document.getElementById('savelogic').onclick = downloadLogic;
+
+            async function downloadLogic() {
+                deepJS.util.FileSystem.save(JSON.stringify(logic, " ", 4), `logic.json`);
+            }
+
+        </script>
     </head>
     <body>
-        <deep-listselect style="height: 80px;">
-            <deep-option value="1">One</deep-option>
-            <deep-option value="2">Two</deep-option>
-            <deep-option value="3">Three</deep-option>
-            <deep-option value="4">Four</deep-option>
-            <deep-option value="5">Five</deep-option>
-            <deep-option value="6">Six</deep-option>
-            <deep-option value="7">Seven</deep-option>
-            <deep-option value="8">Eight</deep-option>
-        </deep-listselect>
+        <button id="savelogic">down</button>
     </body>
 </html>
