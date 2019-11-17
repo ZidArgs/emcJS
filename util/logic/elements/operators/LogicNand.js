@@ -2,20 +2,6 @@ import LogicAbstractElement from "../LogicAbstractElement.js";
 
 export default class LogicNand extends LogicAbstractElement {
 
-    update() {
-        let newValue;
-        let ch = this.children;
-        for (let c of ch) {
-            if (typeof c.value != "undefined") {
-                newValue = +!c.value;
-                if (!newValue) {
-                    break;
-                }
-            }
-        }
-        this.value = newValue;
-    }
-
     loadLogic(logic) {
         if (!!logic && Array.isArray(logic.el)) {
             logic.el.forEach(ch => {
@@ -29,7 +15,15 @@ export default class LogicNand extends LogicAbstractElement {
     }
 
     toString() {
-        return `!(${this.children.join("&&")})`;
+        let ch = this.children;
+        ch = ch.map(v=>v.toString()).filter(v=>!!v);
+        if (ch.length <= 1) {
+            if (ch.length == 1) {
+                return `!${ch[0]}`;
+            }
+            return "";
+        }
+        return `!(${ch.join("&&")})`;
     }
 
 }

@@ -2,18 +2,6 @@ import LogicAbstractElement from "../LogicAbstractElement.js";
 
 export default class LogicNot extends LogicAbstractElement {
 
-    update() {
-        let newValue;
-        let ch = this.children;
-        if (ch.length > 0) {
-            let value = ch[0].value;
-            if (typeof value != "undefined") {
-                newValue = +!value;
-            }
-        }
-        this.value = newValue;
-    }
-
     loadLogic(logic) {
         if (!!logic && !!logic.el) {
             let el = new (LogicAbstractElement.getReference(logic.el.type));
@@ -23,7 +11,12 @@ export default class LogicNot extends LogicAbstractElement {
     }
 
     toString() {
-        return `!${this.children[0]}`;
+        let ch = this.children;
+        ch = !!ch[0] && ch[0].toString();
+        if (!ch) {
+            return "";
+        }
+        return `!${ch}`;
     }
 
 }

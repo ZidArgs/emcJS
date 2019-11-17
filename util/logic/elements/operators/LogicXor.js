@@ -2,19 +2,6 @@ import LogicAbstractElement from "../LogicAbstractElement.js";
 
 export default class LogicXor extends LogicAbstractElement {
 
-    update() {
-        let newValue;
-        let ch = this.children;
-        if (!!ch[0] && typeof ch[0].value != "undefined") {
-            if (!!ch[1] && typeof ch[1].value != "undefined") {
-                newValue = +(!!ch[0].value != !!ch[1].value);
-            } else {
-                newValue = +!!ch[0].value;
-            }
-        }
-        this.value = newValue;
-    }
-
     loadLogic(logic) {
         if (!!logic) {
             if (!!logic.el0) {
@@ -31,7 +18,13 @@ export default class LogicXor extends LogicAbstractElement {
     }
 
     toString() {
-        return `(!${this.children[0]}!=!${this.children[1]})`;
+        let ch = this.children;
+        let ch0 = !!ch[0] && ch[0].toString();
+        let ch1 = !!ch[1] && ch[1].toString();
+        if (!ch0 || !ch1) {
+            return "";
+        }
+        return `(!${ch0}!=!${ch1})`;
     }
 
 }

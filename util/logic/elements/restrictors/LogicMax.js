@@ -4,15 +4,6 @@ let LIMIT = new WeakMap();
 
 export default class LogicMax extends LogicAbstractElement {
 
-    update() {
-        let newValue;
-        let ch = this.children;
-        if (!!ch[0] && typeof ch[0].value != "undefined") {
-            newValue = +((+ch[0].value) <= this.shadowRoot.getElementById("input").value);
-        }
-        this.value = newValue;
-    }
-
     loadLogic(logic) {
         if (!!logic && !!logic.el) {
             let el = new (DeepLogicAbstractElement.getReference(logic.el.type));
@@ -23,7 +14,12 @@ export default class LogicMax extends LogicAbstractElement {
     }
 
     toString() {
-        return `(${this.children[0]}<=${LIMIT.get(this)})`;
+        let ch = this.children;
+        ch = !!ch[0] && ch[0].toString();
+        if (!ch) {
+            return "";
+        }
+        return `(${ch}<=${LIMIT.get(this)})`;
     }
 
 }

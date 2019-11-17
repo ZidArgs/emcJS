@@ -1,7 +1,5 @@
 
 const REG = new Map();
-
-let VALUE = new WeakMap();
 let PARENT = new WeakMap();
 let CHILDREN = new WeakMap();
 
@@ -19,21 +17,6 @@ export default class LogicAbstractElement {
         throw new TypeError("can not call abstract method");
     }
 
-    get value() {
-        if (VALUE.has(this)) {
-            return VALUE.get(this);
-        }
-    }
-
-    set value(val) {
-        if (typeof value == "undefined") {
-            VALUE.delete(this);
-        } else {
-            VALUE.set(this, val);
-        }
-        this.parent.update();
-    }
-
     get parent() {
         return PARENT.get(this);
     }
@@ -43,17 +26,21 @@ export default class LogicAbstractElement {
     }
 
     append(el) {
-        let old = PARENT.get(el);
-        if (!!old) {
-            CHILDREN.get(old).delete(el);
+        if (el instanceof LogicAbstractElement) {
+            let old = PARENT.get(el);
+            if (!!old) {
+                CHILDREN.get(old).delete(el);
+            }
+            PARENT.set(el, this);
+            CHILDREN.get(this).add(el);
         }
-        PARENT.set(el, this);
-        CHILDREN.get(this).add(el);
     }
 
     remove(el) {
-        PARENT.set(el, null);
-        CHILDREN.get(this).delete(el);
+        if (el instanceof LogicAbstractElement) {
+            PARENT.set(el, null);
+            CHILDREN.get(this).delete(el);
+        }
     }
 
     static registerReference(ref, clazz) {
