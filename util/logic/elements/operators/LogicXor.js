@@ -21,8 +21,14 @@ export default class LogicXor extends LogicAbstractElement {
         let ch = this.children;
         let ch0 = !!ch[0] && ch[0].toString();
         let ch1 = !!ch[1] && ch[1].toString();
-        if (!ch0 || !ch1) {
+        if (!ch0 && !ch1) {
             return "";
+        }
+        if (!ch0) {
+            return ch1;
+        }
+        if (!ch1) {
+            return ch0;
         }
         return `(!${ch0}!=!${ch1})`;
     }
