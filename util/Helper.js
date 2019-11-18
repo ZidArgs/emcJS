@@ -4,6 +4,21 @@ const SERIALIZER = new XMLSerializer();
 
 class Helper {
 
+    compareVersions(a = "", b = "", s = ".") {
+        let c = a.split(s);
+        let d = b.split(s);
+        let e = parseInt(c.shift());
+        let f = parseInt(d.shift());
+        while (!!e && !!f) {
+            if (e != f) {
+                return e < f;
+            }
+            e = parseInt(c.shift());
+            f = parseInt(d.shift());
+        }
+        return !!f;
+    }
+
     arrayDiff(a, b) {
         if (!Array.isArray(a) || !Array.isArray(b)) {
             throw new TypeError("only arrays are comparable");
