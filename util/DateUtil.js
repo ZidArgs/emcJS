@@ -5,27 +5,41 @@ class DateUtil {
 
     constructor(date) {
         if (date instanceof Date) {
+            if (isNaN(date)) {
+                throw new TypeError("date is invalid");
+            }
             DATE.set(this, date);
-        } else {
+        } else if (typeof date == "undefined") {
             DATE.set(this, new Date);
+        } else {
+            throw new TypeError("date expected");
         }
     }
 
     convert(formatter) {
-        DateUtil.convert(formatter, DATE.get(this));
+        if (typeof formatter == "string") {
+            return DateUtil.convert(DATE.get(this), formatter);
+        } else if (typeof formatter == "undefined") {
+            return DateUtil.convert(DATE.get(this));
+        } else {
+            throw new TypeError("format string expected");
+        }
     }
 
     static convert(date, formatter) {
-        if (typeof formatter == "undefined") {
-            if (typeof date == "string") {
-                formatter = date;
-                date = new Date();
-            } else if (date instanceof Date) {
-                formatter = "D.M.Y h:m:s";
-            } else {
-                date = new Date;
+        if (date instanceof Date) {
+            if (isNaN(date)) {
+                throw new TypeError("date is invalid");
+            }
+            if (typeof formatter == "undefined") {
                 formatter = "D.M.Y h:m:s";
             }
+        } else if (typeof date == "string") {
+            formatter = date;
+            date = new Date();
+        } else {
+            date = new Date;
+            formatter = "D.M.Y h:m:s";
         }
         return formatter.replace(FORMATTER_REGEX, function(m) {
             switch(m) {
