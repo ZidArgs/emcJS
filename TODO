@@ -3,9 +3,6 @@
     - predefine url, leave placeholders
     - fill placeholders on send request
 
-- Storage-Model-System
-    - have a storage model containing fields and types
-
 - Types (self casting types)
     - integer
     - float
@@ -24,3 +21,7 @@
             - buffer notifications and show them after another went down
     - create multiple layer, set target element for interface
         - body is not ideal for everything
+
+- listselection
+    - comma seperated values are no good, use seperator that is not enterable by user
+        - alternative parse value as json if multimode and use string if singlemode
