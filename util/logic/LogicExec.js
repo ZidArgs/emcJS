@@ -12,28 +12,50 @@ import "./elements/restrictors/LogicMax.js";
 import "./elements/restrictors/LogicMin.js";
 import LogicAbstractElement from "./elements/LogicAbstractElement.js";
 
-const LOGICS = new Map();
-const VALUES = new Map();
+const LOGICS = new WeakMap();
+const VALUES = new WeakMap();
 const VALUES_REGEX = /values.get\("([^"]+)"\)/g;
 
-class LogicExec {
+export default class LogicExec {
+
+    constructor() {
+        LOGICS.set(this, new Map());
+        VALUES.set(this, new Map());
+    }
     
     loadLogic(logic) {
-        console.time("logic build");
-        buildLogic(logic);
-        sortLogic();
-        console.timeEnd("logic build");
+        if (typeof logic == "object" && !Array.isArray(logic)) {
+            let logics = LOGICS.get(this);
+            let values = VALUES.get(this);
+            console.time("logic build");
+            for (let name in logic) {
+                if (logic[name] == null) {
+                    logics.delete(name);
+                    values.delete(name);
+                } else {
+                    let fn = buildLogic(logic[name]);
+                    Object.defineProperty(fn, 'name', {value: name});
+                    logics.set(name, fn);
+                    values.set(name, false);
+                }
+            }
+            sortLogic(logics);
+            console.timeEnd("logic build");
+            return this.execute();
+        }
     }
 
     execute(state) {
+        let logics = LOGICS.get(this);
+        let values = VALUES.get(this);
         for (let i in state) {
-            VALUES.set(i, state[i]);
+            values.set(i, state[i]);
         }
         let res = {};
-        LOGICS.forEach((v, k) => {
-            let r = !!v.fn(VALUES);
-            if (r != VALUES.get(k)) {
-                VALUES.set(k, r);
+        logics.forEach((v, k) => {
+            let r = !!v(values);
+            if (r != values.get(k)) {
+                values.set(k, r);
                 res[k] = r;
             }
         });
@@ -41,16 +63,17 @@ class LogicExec {
     }
 
     getValues() {
+        let values = VALUES.get(this);
         let obj = {};
-        VALUES.forEach((v,k) => {obj[k] = v});
+        values.forEach((v,k) => {obj[k] = v});
         return obj;
     }
 
 }
 
-function sortLogic() {
-    let logic_old = new Map(LOGICS);
-    LOGICS.clear();
+function sortLogic(logics) {
+    let logic_old = new Map(logics);
+    logics.clear();
     let len = 0;
     while (!!logic_old.size && logic_old.size != len) {
         len = logic_old.size;
@@ -61,7 +84,7 @@ function sortLogic() {
                     continue next_rule;
                 }
             }
-            LOGICS.set(rule[0], rule[1]);
+            logics.set(rule[0], rule[1]);
             logic_old.delete(rule[0]);
         }
     }
@@ -71,28 +94,14 @@ function sortLogic() {
 }
 
 function buildLogic(logic) {
-    if (typeof logic == "object" && !Array.isArray(logic)) {
-        for (let l in logic) {
-            if (logic[l] == null) {
-                LOGICS.delete(l);
-                VALUES.delete(l);
-            } else {
-                let buf = LogicAbstractElement.buildLogic(logic[l]);
-                let req = new Set();
-                while (true) {
-                    let m = VALUES_REGEX.exec(buf);
-                    if (m == null) break;
-                    req.add(m[1]);
-                }
-                LOGICS.set(l, {
-                    fn: new Function('values', 'return ' + buf),
-                    requires: req,
-                    name: l
-                });
-                VALUES.set(l, false);
-            }
-        }
+    let buf = LogicAbstractElement.buildLogic(logic);
+    let req = new Set();
+    while (true) {
+        let m = VALUES_REGEX.exec(buf);
+        if (m == null) break;
+        req.add(m[1]);
     }
+    let fn = new Function('values', `return ${buf}`);
+    Object.defineProperty(fn, 'requires', {value: req});
+    return fn;
 }
-
-export default new LogicExec();
