@@ -3,10 +3,10 @@ const REG = new Map();
 let PARENT = new WeakMap();
 let CHILDREN = new WeakMap();
 
-export default class LogicAbstractElement {
+export default class AbstractElement {
 
     constructor() {
-        if (new.target === LogicAbstractElement) {
+        if (new.target === AbstractElement) {
             throw new TypeError("can not construct abstract class");
         }
         PARENT.set(this, null);
@@ -26,7 +26,7 @@ export default class LogicAbstractElement {
     }
 
     append(el) {
-        if (el instanceof LogicAbstractElement) {
+        if (el instanceof AbstractElement) {
             let old = PARENT.get(el);
             if (!!old) {
                 CHILDREN.get(old).delete(el);
@@ -37,7 +37,7 @@ export default class LogicAbstractElement {
     }
 
     remove(el) {
-        if (el instanceof LogicAbstractElement) {
+        if (el instanceof AbstractElement) {
             PARENT.set(el, null);
             CHILDREN.get(this).delete(el);
         }
@@ -62,12 +62,12 @@ export default class LogicAbstractElement {
             if (Array.isArray(logic)) {
                 return null;
             } else {
-                let el = new (LogicAbstractElement.getReference(logic.type));
+                let el = new (AbstractElement.getReference(logic.type));
                 el.loadLogic(logic);
                 return el;
             }
         }
-        return new (LogicAbstractElement.getReference(`${logic}`));
+        return new (AbstractElement.getReference(`${logic}`));
     }
 
     toString() {

@@ -70,17 +70,14 @@ function clickOption(event) {
     if (!this.readonly) {
         let value = event.currentTarget.getAttribute("value");
         if (this.multimode == "true") {
-            let arr = [];
-            if (!!this.value && this.value.length > 0) {
-                arr = this.value.split(",");
-            }
+            let arr = this.value;
             let set = new Set(arr);
             if (set.has(value)) {
                 set.delete(value);
             } else {
                 set.add(value);
             }
-            this.value = Array.from(set).join(",");
+            this.value = Array.from(set);
         } else {
             this.value = value;
         }
@@ -105,15 +102,25 @@ export default class DeepListSelect extends HTMLElement {
     }
 
     get value() {
-        return this.getAttribute('value');
+        let val = this.getAttribute('value');
+        if (this.multimode) {
+            val = JSON.parse(val);
+        }
+        return val;
     }
 
     set value(val) {
+        if (this.multimode) {
+            if (Array.isArray(val)) {
+                val = [val];
+            }
+            val = JSON.stringify(val);
+        }
         this.setAttribute('value', val);
     }
 
     get multimode() {
-        return this.getAttribute('multimode');
+        return this.getAttribute('multimode') == "true";
     }
 
     set multimode(val) {
@@ -146,10 +153,12 @@ export default class DeepListSelect extends HTMLElement {
             case 'multimode':
                 if (oldValue != newValue) {
                     if (newValue != "true") {
-                        let arr = this.value.split(",");
+                        let arr = JSON.parse(this.value);
                         if (arr.length > 1) {
                             this.value = arr[0];
                         }
+                    } else {
+                        this.value = [this.value];
                     }
                 }
                 break;
@@ -163,13 +172,18 @@ export default class DeepListSelect extends HTMLElement {
                 el.onclick = clickOption.bind(this);
             }
         });
-        if (typeof this.value === "string" && this.value.length > 0) {
-            this.value.split(",").forEach(v => {
+        if (this.multimode) {
+            this.value.forEach(v => {
                 let el = this.querySelector(`[value="${v}"]`);
                 if (!!el) {
                     el.classList.add("active");
                 }
             });
+        } else {
+            let el = this.querySelector(`[value="${this.value}"]`);
+            if (!!el) {
+                el.classList.add("active");
+            }
         }
     }
 

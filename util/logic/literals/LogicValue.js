@@ -1,8 +1,8 @@
-import LogicAbstractElement from "../LogicAbstractElement.js";
+import AbstractElement from "../AbstractElement.js";
 
 let REF = new WeakMap();
 
-export default class LogicValue extends LogicAbstractElement {
+export default class LogicValue extends AbstractElement {
 
     loadLogic(logic) {
         if (!!logic && !!logic.el) {
@@ -16,4 +16,4 @@ export default class LogicValue extends LogicAbstractElement {
 
 }
 
-LogicAbstractElement.registerReference("", LogicValue);
+AbstractElement.registerReference("", LogicValue);

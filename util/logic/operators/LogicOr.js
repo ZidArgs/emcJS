@@ -1,12 +1,12 @@
-import LogicAbstractElement from "../LogicAbstractElement.js";
+import AbstractElement from "../AbstractElement.js";
 
-export default class LogicOr extends LogicAbstractElement {
+export default class LogicOr extends AbstractElement {
 
     loadLogic(logic) {
         if (!!logic && Array.isArray(logic.el)) {
             logic.el.forEach(ch => {
                 if (!!ch) {
-                    let el = new (LogicAbstractElement.getReference(ch.type));
+                    let el = new (AbstractElement.getReference(ch.type));
                     el.loadLogic(ch);
                     this.append(el);
                 }
@@ -28,4 +28,4 @@ export default class LogicOr extends LogicAbstractElement {
 
 }
 
-LogicAbstractElement.registerReference("or", LogicOr);
+AbstractElement.registerReference("or", LogicOr);

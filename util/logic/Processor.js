@@ -16,7 +16,7 @@ const LOGICS = new WeakMap();
 const VALUES = new WeakMap();
 const VALUES_REGEX = /values.get\("([^"]+)"\)/g;
 
-export default class LogicExec {
+export default class Processor {
 
     constructor() {
         LOGICS.set(this, new Map());

@@ -1,10 +1,10 @@
-import LogicAbstractElement from "../LogicAbstractElement.js";
+import AbstractElement from "../AbstractElement.js";
 
-export default class LogicNot extends LogicAbstractElement {
+export default class LogicNot extends AbstractElement {
 
     loadLogic(logic) {
         if (!!logic && !!logic.el) {
-            let el = new (LogicAbstractElement.getReference(logic.el.type));
+            let el = new (AbstractElement.getReference(logic.el.type));
             el.loadLogic(logic.el);
             this.append(el);
         }
@@ -21,4 +21,4 @@ export default class LogicNot extends LogicAbstractElement {
 
 }
 
-LogicAbstractElement.registerReference("not", LogicNot);
+AbstractElement.registerReference("not", LogicNot);

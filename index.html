@@ -43,11 +43,11 @@
             async function init() {
                 logic = transformLogic(await deepJS.util.FileLoader.json(`logic.json`));
 
-                let logicExecutor = new deepJS.util.logic.LogicExec();
-                logicExecutor.loadLogic(logic);
+                let logicProcessor = new deepJS.util.logic.Processor();
+                logicProcessor.loadLogic(logic);
 
                 console.time("logic exec");
-                console.log(logicExecutor.execute({
+                console.log(logicProcessor.execute({
                     "option.trade_sequence_start_item": "10",
                     "option.water_trial": false,
                     "option.keysanity_boss": "keysanity_boss_keysanity",
@@ -72,21 +72,21 @@
                 console.timeEnd("logic exec");
 
                 console.time("logic exec");
-                console.log(logicExecutor.execute({
+                console.log(logicProcessor.execute({
                     "item.ocarina": true,
                     "item.song_storm": true
                 }));
                 console.timeEnd("logic exec");
 
                 console.time("logic exec");
-                console.log(logicExecutor.execute({
+                console.log(logicProcessor.execute({
                     "item.ocarina": false,
                     "item.song_storm": true
                 }));
                 console.timeEnd("logic exec");
 
                 console.time("logic exec");
-                console.log(logicExecutor.execute({
+                console.log(logicProcessor.execute({
                     "item.bombs": true,
                     "item.ocarina": true,
                     "item.song_storm": true
@@ -94,14 +94,14 @@
                 console.timeEnd("logic exec");
 
                 console.time("logic exec");
-                console.log(logicExecutor.execute({
+                console.log(logicProcessor.execute({
                     "item.ocarina": false,
                     "item.song_storm": false,
                 }));
                 console.timeEnd("logic exec");
 
                 console.time("logic get values");
-                console.log(logicExecutor.getValues());
+                console.log(logicProcessor.getValues());
                 console.timeEnd("logic get values");
             }
 
