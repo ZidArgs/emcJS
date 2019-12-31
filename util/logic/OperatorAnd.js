@@ -1,12 +1,14 @@
 import AbstractElement from "../AbstractElement.js";
 
-export default class LogicOr extends AbstractElement {
+export default class OperatorAnd extends AbstractElement {
 
     loadLogic(logic) {
         if (!!logic && Array.isArray(logic.el)) {
             logic.el.forEach(ch => {
                 if (!!ch) {
-                    let el = new (AbstractElement.getReference(ch.type));
+                    let cl = AbstractElement.getReference(ch.type);
+                    if (!cl) return;
+                    let el = new cl;
                     el.loadLogic(ch);
                     this.append(el);
                 }
@@ -23,9 +25,9 @@ export default class LogicOr extends AbstractElement {
             }
             return "";
         }
-        return `(${ch.join("||")})`;
+        return `(${ch.join("&&")})`;
     }
 
 }
 
-AbstractElement.registerReference("or", LogicOr);
+AbstractElement.registerReference("and", OperatorAnd);

@@ -54,7 +54,6 @@ export default class AbstractElement {
         if (REG.has(ref)) {
             return REG.get(ref);
         }
-        return REG.get("");
     }
 
     static buildLogic(logic) {
@@ -62,7 +61,9 @@ export default class AbstractElement {
             if (Array.isArray(logic)) {
                 return null;
             } else {
-                let el = new (AbstractElement.getReference(logic.type));
+                let cl = AbstractElement.getReference(logic.type);
+                if (!cl) return;
+                let el = new cl;
                 el.loadLogic(logic);
                 return el;
             }

@@ -2,11 +2,13 @@ import AbstractElement from "../AbstractElement.js";
 
 let REF = new WeakMap();
 
-export default class LogicValue extends AbstractElement {
+export default class LiteralNumber extends AbstractElement {
 
     loadLogic(logic) {
         if (!!logic && !!logic.el) {
             REF.set(this, logic.el);
+        } else {
+            REF.set(this, "");
         }
     }
 
@@ -16,4 +18,4 @@ export default class LogicValue extends AbstractElement {
 
 }
 
-AbstractElement.registerReference("", LogicValue);
+AbstractElement.registerReference("number", LiteralNumber);

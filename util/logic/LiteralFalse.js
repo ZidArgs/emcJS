@@ -1,6 +1,6 @@
 import AbstractElement from "../AbstractElement.js";
 
-export default class LogicFalse extends AbstractElement {
+export default class LiteralFalse extends AbstractElement {
 
     loadLogic(logic) {}
 
@@ -10,4 +10,4 @@ export default class LogicFalse extends AbstractElement {
 
 }
 
-AbstractElement.registerReference("false", LogicFalse);
+AbstractElement.registerReference("false", LiteralFalse);

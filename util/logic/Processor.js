@@ -1,15 +1,16 @@
-import "./elements/literals/LogicFalse.js";
-import "./elements/literals/LogicTrue.js";
-import "./elements/literals/LogicValue.js";
-import "./elements/LogicAbstractElement.js";
-import "./elements/operators/LogicAnd.js";
-import "./elements/operators/LogicNand.js";
-import "./elements/operators/LogicNor.js";
-import "./elements/operators/LogicNot.js";
-import "./elements/operators/LogicOr.js";
-import "./elements/operators/LogicXor.js";
-import "./elements/restrictors/LogicMax.js";
-import "./elements/restrictors/LogicMin.js";
+import "./LiteralFalse.js";
+import "./LiteralTrue.js";
+import "./LiteralNumber.js";
+import "./LiteralValue.js";
+import "./AbstractElement.js";
+import "./OperatorAnd.js";
+import "./OperatorMax.js";
+import "./OperatorMin.js";
+import "./OperatorNand.js";
+import "./OperatorNor.js";
+import "./OperatorNot.js";
+import "./OperatorOr.js";
+import "./OperatorXor.js";
 import LogicAbstractElement from "./elements/LogicAbstractElement.js";
 
 const LOGICS = new WeakMap();

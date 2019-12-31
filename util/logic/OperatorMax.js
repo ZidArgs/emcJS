@@ -2,11 +2,13 @@ import AbstractElement from "../AbstractElement.js";
 
 let LIMIT = new WeakMap();
 
-export default class LogicMin extends AbstractElement {
+export default class OperatorMax extends AbstractElement {
 
     loadLogic(logic) {
         if (!!logic && !!logic.el) {
-            let el = new (AbstractElement.getReference(logic.el.type));
+            let cl = AbstractElement.getReference(ch.type);
+            if (!cl) return;
+            let el = new cl;
             el.loadLogic(logic.el);
             this.append(el);
             LIMIT.set(this, logic.value);
@@ -19,9 +21,9 @@ export default class LogicMin extends AbstractElement {
         if (!ch) {
             return "";
         }
-        return `(${ch}>=${LIMIT.get(this)})`;
+        return `(${ch}<=${LIMIT.get(this)})`;
     }
 
 }
 
-AbstractElement.registerReference("min", LogicMin);
+AbstractElement.registerReference("max", OperatorMax);

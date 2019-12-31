@@ -1,16 +1,20 @@
 import AbstractElement from "../AbstractElement.js";
 
-export default class LogicXor extends AbstractElement {
+export default class OperatorXor extends AbstractElement {
 
     loadLogic(logic) {
         if (!!logic) {
             if (!!logic.el0) {
-                let el0 = new (AbstractElement.getReference(logic.el0.type));
+                let cl = AbstractElement.getReference(logic.el0.type);
+                if (!cl) return;
+                let el0 = new cl;
                 el0.loadLogic(logic.el0);
                 this.append(el0);
             }
             if (!!logic.el1) {
-                let el1 = new (AbstractElement.getReference(logic.el1.type));
+                let cl = AbstractElement.getReference(logic.el1.type);
+                if (!cl) return;
+                let el1 = new cl;
                 el1.loadLogic(logic.el1);
                 this.append(el1);
             }
@@ -35,4 +39,4 @@ export default class LogicXor extends AbstractElement {
 
 }
 
-AbstractElement.registerReference("xor", LogicXor);
+AbstractElement.registerReference("xor", OperatorXor);
