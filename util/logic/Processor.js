@@ -11,7 +11,7 @@ import "./OperatorNor.js";
 import "./OperatorNot.js";
 import "./OperatorOr.js";
 import "./OperatorXor.js";
-import LogicAbstractElement from "./elements/LogicAbstractElement.js";
+import AbstractElement from "./AbstractElement.js";
 
 const LOGICS = new WeakMap();
 const VALUES = new WeakMap();
@@ -95,7 +95,7 @@ function sortLogic(logics) {
 }
 
 function buildLogic(logic) {
-    let buf = LogicAbstractElement.buildLogic(logic);
+    let buf = AbstractElement.buildLogic(logic);
     let req = new Set();
     while (true) {
         let m = VALUES_REGEX.exec(buf);

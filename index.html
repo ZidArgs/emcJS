@@ -41,7 +41,7 @@
             let logic = {};
 
             async function init() {
-                logic = transformLogic(await deepJS.util.FileLoader.json(`logic.json`));
+                logic = await deepJS.util.FileLoader.json(`logic.json`);
 
                 let logicProcessor = new deepJS.util.logic.Processor();
                 logicProcessor.loadLogic(logic);

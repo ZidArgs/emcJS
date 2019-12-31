@@ -1,4 +1,4 @@
-import AbstractElement from "../AbstractElement.js";
+import AbstractElement from "./AbstractElement.js";
 
 let LIMIT = new WeakMap();
 
@@ -6,7 +6,7 @@ export default class OperatorMax extends AbstractElement {
 
     loadLogic(logic) {
         if (!!logic && !!logic.el) {
-            let cl = AbstractElement.getReference(ch.type);
+            let cl = AbstractElement.getReference(logic.type);
             if (!cl) return;
             let el = new cl;
             el.loadLogic(logic.el);
