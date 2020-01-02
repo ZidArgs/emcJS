@@ -153,12 +153,12 @@ export default class DeepListSelect extends HTMLElement {
             case 'multimode':
                 if (oldValue != newValue) {
                     if (newValue != "true") {
-                        let arr = JSON.parse(this.value);
+                        let arr = JSON.parse(this.getAttribute('value'));
                         if (arr.length > 1) {
                             this.value = arr[0];
                         }
                     } else {
-                        this.value = [this.value];
+                        this.value = [this.getAttribute('value')];
                     }
                 }
                 break;

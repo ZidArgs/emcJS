@@ -46,20 +46,25 @@ export default class Processor {
         }
     }
 
-    execute(state) {
+    execute(state = {}) {
+        console.group("LOGIC EXECUTION");
+        console.log("input", state);
+        console.time("logic exec");
         let logics = LOGICS.get(this);
         let values = VALUES.get(this);
-        for (let i in state) {
-            values.set(i, state[i]);
-        }
+        let buffer = new Map(Object.entries(state));
         let res = {};
         logics.forEach((v, k) => {
-            let r = !!v(values);
+            let r = !!v(buffer);
+            buffer.set(k, r);
             if (r != values.get(k)) {
                 values.set(k, r);
                 res[k] = r;
             }
         });
+        console.log("output", res);
+        console.timeEnd("logic exec");
+        console.groupEnd("LOGIC EXECUTION");
         return res;
     }
 
@@ -68,6 +73,14 @@ export default class Processor {
         let obj = {};
         values.forEach((v,k) => {obj[k] = v});
         return obj;
+    }
+
+    getValue(ref) {
+        let values = VALUES.get(this);
+        if (values.has(ref)) {
+            return values.get(ref);
+        }
+        return false;
     }
 
 }
