@@ -4,11 +4,14 @@ export default class OperatorNot extends AbstractElement {
 
     loadLogic(logic) {
         if (!!logic && !!logic.el) {
-            let cl = AbstractElement.getReference(logic.type);
-            if (!cl) return;
-            let el = new cl;
-            el.loadLogic(logic.el);
-            this.append(el);
+            let ch = logic.el;
+            if (!!ch) {
+                let cl = AbstractElement.getReference(ch.type);
+                if (!cl) return;
+                let el = new cl;
+                el.loadLogic(ch);
+                this.append(el);
+            }
         }
     }
 

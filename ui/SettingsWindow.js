@@ -342,6 +342,7 @@ export default class DeepSettingsWindow extends DeepWindow {
         let el = generateField(label);
         let input = document.createElement("select");
         input.className = "settings-input";
+        input.setAttribute("type", "input");
         for (let j in values) {
             input.append(createOption(j, values[j]));
         }
@@ -355,8 +356,9 @@ export default class DeepSettingsWindow extends DeepWindow {
         let el = generateField(label);
         let input = document.createElement("deep-listselect");
         input.className = "settings-input";
-        input.value = def;
+        input.setAttribute("type", "list");
         input.multimode = multimode;
+        input.value = def;
         input.dataset.ref = ref;
         for (let j in values) {
             input.append(createDeepOption(j, values[j]));
@@ -369,6 +371,7 @@ export default class DeepSettingsWindow extends DeepWindow {
         let el = generateField(label);
         let input = document.createElement("button");
         input.className = "settings-button";
+        input.setAttribute("type", "button");
         input.dataset.ref = ref;
         input.innerHTML = text;
         if (typeof callback == "function") {

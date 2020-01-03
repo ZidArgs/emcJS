@@ -1,5 +1,5 @@
 import Template from "../../../../util/Template.js";
-import DeepLogicAbstractElement from "../LogicAbstractElement.js";
+import AbstractElement from "../AbstractElement.js";
 
 const TPL_CAPTION = "NOT";
 const TPL_BACKGROUND = "#ffdfe4";
@@ -26,14 +26,14 @@ const SVG = new Template(`
     </div>
 `);
 
-export default class DeepLogicNot extends DeepLogicAbstractElement {
+export default class DeepLogicNot extends AbstractElement {
 
     constructor() {
         super();
         this.shadowRoot.append(TPL.generate());
         let target = this.shadowRoot.getElementById("droptarget");
-        target.ondragover = DeepLogicAbstractElement.allowDrop;
-        target.ondrop = DeepLogicAbstractElement.dropOnPlaceholder;
+        target.ondragover = AbstractElement.allowDrop;
+        target.ondrop = AbstractElement.dropOnPlaceholder;
         target.onclick = function(event) {
             let e = new Event('placeholderclicked');
             e.name = event.target.name;
@@ -73,7 +73,7 @@ export default class DeepLogicNot extends DeepLogicAbstractElement {
 
     loadLogic(logic) {
         if (!!logic && !!logic.el) {
-            let el = new (DeepLogicAbstractElement.getReference(logic.el.type));
+            let el = new (AbstractElement.getReference(logic.el.type));
             el.loadLogic(logic.el);
             this.append(el);
         }
@@ -85,7 +85,7 @@ export default class DeepLogicNot extends DeepLogicAbstractElement {
         let hdr = el.querySelector(".header");
         let newValue;
         if (!!logic && !!logic.el) {
-            let el = DeepLogicAbstractElement.getReference(logic.el.type).getSVG(logic.el);
+            let el = AbstractElement.getReference(logic.el.type).getSVG(logic.el);
             if (typeof el.dataset.value != "undefined") {
                 newValue = !!parseInt(el.dataset.value);
             }
@@ -100,5 +100,5 @@ export default class DeepLogicNot extends DeepLogicAbstractElement {
 
 }
 
-DeepLogicAbstractElement.registerReference("not", DeepLogicNot);
+AbstractElement.registerReference("not", DeepLogicNot);
 customElements.define('deep-logic-not', DeepLogicNot);

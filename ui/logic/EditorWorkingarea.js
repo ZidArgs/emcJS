@@ -1,5 +1,5 @@
 import Template from "../../util/Template.js";
-import DeepLogicAbstractElement from "./elements/LogicAbstractElement.js";
+import LogicAbstractElement from "./elements/AbstractElement.js";
 
 const TPL = new Template(`
     <style>
@@ -62,7 +62,6 @@ const TPL = new Template(`
         }
     </style>
     <div id="title-container">
-        <span id="title"></span>
         <span id="save" class="button">save</span>
         <span id="load" class="button">load</span>
         <span id="clear" class="button">delete</span>
@@ -113,7 +112,7 @@ function onPlaceholderClicked(event) {
     event.stopPropagation();
 }
 
-export default class LogicEditorWorkingarea extends HTMLElement {
+export default class EditorWorkingarea extends HTMLElement {
 
     constructor() {
         super();
@@ -150,14 +149,14 @@ export default class LogicEditorWorkingarea extends HTMLElement {
     loadLogic(logic) {
         if (!!this.children.length) this.removeChild(this.children[0]);
         if (!!logic) {
-            let el = new (DeepLogicAbstractElement.getReference(logic.type));
+            let el = new (LogicAbstractElement.getReference(logic.type));
             el.loadLogic(logic);
             this.append(el);
         }
     }
     
     append(el) {
-        if (el instanceof DeepLogicAbstractElement && (typeof this.template != "string" || this.template == "false")) {
+        if (el instanceof LogicAbstractElement && (typeof this.template != "string" || this.template == "false")) {
             return super.append(el);
         }
     }
@@ -186,4 +185,4 @@ export default class LogicEditorWorkingarea extends HTMLElement {
 
 }
 
-customElements.define('deep-logiceditor-workingarea', LogicEditorWorkingarea);
+customElements.define('deep-logiceditor-workingarea', EditorWorkingarea);

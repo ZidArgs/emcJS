@@ -1,5 +1,5 @@
 import Template from "../../util/Template.js";
-import DeepLogicAbstractElement from "./elements/LogicAbstractElement.js";
+import LogicAbstractElement from "./elements/AbstractElement.js";
 
 const TPL = new Template(`
     <style>
@@ -62,7 +62,7 @@ function dropOnPlaceholder(event) {
     return false;
 }
 
-export default class LogicEditorClipboard extends HTMLElement {
+export default class EditorClipboard extends HTMLElement {
 
     constructor() {
         super();
@@ -81,11 +81,11 @@ export default class LogicEditorClipboard extends HTMLElement {
     }
     
     append(el) {
-        if (el instanceof DeepLogicAbstractElement && (typeof this.template != "string" || this.template == "false")) {
+        if (el instanceof LogicAbstractElement && (typeof this.template != "string" || this.template == "false")) {
             return super.append(el);
         }
     }
 
 }
 
-customElements.define('deep-logiceditor-clipboard', LogicEditorClipboard);
+customElements.define('deep-logiceditor-clipboard', EditorClipboard);

@@ -4,15 +4,16 @@ export default class OperatorOr extends AbstractElement {
 
     loadLogic(logic) {
         if (!!logic && Array.isArray(logic.el)) {
-            logic.el.forEach(ch => {
+            for (let i = 0; i < logic.el.length; ++i) {
+                let ch = logic.el[i];
                 if (!!ch) {
                     let cl = AbstractElement.getReference(ch.type);
-                    if (!cl) return;
+                    if (!cl) continue;
                     let el = new cl;
                     el.loadLogic(ch);
                     this.append(el);
                 }
-            });
+            }
         }
     }
 

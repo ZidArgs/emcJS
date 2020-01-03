@@ -17,11 +17,14 @@ const LOGICS = new WeakMap();
 const VALUES = new WeakMap();
 const VALUES_REGEX = /values.get\("([^"]+)"\)/g;
 
+window.logicProcessors = [];
+
 export default class Processor {
 
     constructor() {
         LOGICS.set(this, new Map());
         VALUES.set(this, new Map());
+        window.logicProcessors.push(this);
     }
     
     loadLogic(logic) {

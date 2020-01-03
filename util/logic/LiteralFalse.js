@@ -5,7 +5,7 @@ export default class LiteralFalse extends AbstractElement {
     loadLogic(logic) {}
 
     toString() {
-        return "false";
+        return "0";
     }
 
 }

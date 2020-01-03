@@ -80,7 +80,7 @@ export default class DeepChoiceSelect extends HTMLElement {
 
     set value(val) {
         if (this.multimode) {
-            if (Array.isArray(val)) {
+            if (!Array.isArray(val)) {
                 val = [val];
             }
             val = JSON.stringify(val);

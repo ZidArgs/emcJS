@@ -1,5 +1,5 @@
-import Template from "../../../../util/Template.js";
-import DeepLogicAbstractElement from "../LogicAbstractElement.js";
+import Template from "../../../util/Template.js";
+import AbstractElement from "./AbstractElement.js";
 
 const TPL_CAPTION = "TRUE";
 const TPL_BACKGROUND = "lightgreen";
@@ -20,23 +20,11 @@ const SVG = new Template(`
     </div>
 `);
 
-export default class DeepLogicTrue extends DeepLogicAbstractElement {
+export default class LiteralTrue extends AbstractElement {
 
     constructor() {
         super();
         this.shadowRoot.append(TPL.generate());
-    }
-
-    update() {
-        this.setAttribute('value', "1");
-    }
-
-    get value() {
-        return 1;
-    }
-
-    set value(val) {
-        this.setAttribute('value', "1");
     }
 
     toJSON() {
@@ -45,7 +33,13 @@ export default class DeepLogicTrue extends DeepLogicAbstractElement {
         };
     }
 
-    loadLogic(logic) {}
+    toString() {
+        return "1";
+    }
+
+    loadLogic(logic) {
+        this.setAttribute('value', "1");
+    }
 
     static getSVG(logic) {
         return SVG.generate().children[0];
@@ -53,5 +47,5 @@ export default class DeepLogicTrue extends DeepLogicAbstractElement {
 
 }
 
-DeepLogicAbstractElement.registerReference("true", DeepLogicTrue);
-customElements.define('deep-logic-true', DeepLogicTrue);
+AbstractElement.registerReference("true", LiteralTrue);
+customElements.define('deep-logic-true', LiteralTrue);

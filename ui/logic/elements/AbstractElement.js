@@ -182,11 +182,11 @@ function dragStart(event) {
 const ID = new WeakMap();
 const REG = new Map();
 
-export default class DeepLogicAbstractElement extends HTMLElement {
+export default class AbstractElement extends HTMLElement {
 
     constructor() {
         super();
-        if (new.target === DeepLogicAbstractElement) {
+        if (new.target === AbstractElement) {
             throw new TypeError("can not construct abstract class");
         }
         this.attachShadow({mode: 'open'});
@@ -257,7 +257,7 @@ export default class DeepLogicAbstractElement extends HTMLElement {
     }
     
     appendChild(el) {
-        if (el instanceof DeepLogicAbstractElement && (typeof this.template != "string" || this.template == "false")) {
+        if (el instanceof AbstractElement && (typeof this.template != "string" || this.template == "false")) {
             let r = super.appendChild(el);
 
             if (this.hasAttribute("visualize")) {
@@ -276,7 +276,7 @@ export default class DeepLogicAbstractElement extends HTMLElement {
     }
 
     insertBefore(el, ref) {
-        if (el instanceof DeepLogicAbstractElement && (typeof this.template != "string" || this.template == "false")) {
+        if (el instanceof AbstractElement && (typeof this.template != "string" || this.template == "false")) {
             let r = super.insertBefore(el, ref);
 
             if (this.hasAttribute("visualize")) {
@@ -360,7 +360,7 @@ export default class DeepLogicAbstractElement extends HTMLElement {
                 break;
             case 'value':
                 if (oldValue != newValue) {
-                    if (this.parentElement instanceof DeepLogicAbstractElement) {
+                    if (this.parentElement instanceof AbstractElement) {
                         this.parentElement.update();
                     }
                     let event = new Event('update');
@@ -397,12 +397,12 @@ export default class DeepLogicAbstractElement extends HTMLElement {
             if (Array.isArray(logic)) {
                 return new DeepLogicError();
             } else {
-                let el = new (DeepLogicAbstractElement.getReference(logic.type));
+                let el = new (AbstractElement.getReference(logic.type));
                 el.loadLogic(logic);
                 return el;
             }
         }
-        return new (DeepLogicAbstractElement.getReference(`${logic}`));
+        return new (AbstractElement.getReference(`${logic}`));
     }
 
     static buildSVG(logic) {
@@ -439,7 +439,7 @@ export default class DeepLogicAbstractElement extends HTMLElement {
         if (!!event.dataTransfer) {
             let id = event.dataTransfer.getData("logic-transfer-id");
             let el = document.getElementById(id);
-            if (!!el && el instanceof DeepLogicAbstractElement) {
+            if (!!el && el instanceof AbstractElement) {
                 let ne = event.target.getRootNode().host.append(el.getElement(event.ctrlKey));
                 if (!!ne) {
                     let slot = event.target.parentNode;
@@ -463,10 +463,10 @@ function buildVisual(logic) {
         if (Array.isArray(logic)) {
             DeepLogicError.getSVG(logic);
         } else {
-            return DeepLogicAbstractElement.getReference(logic.type).getSVG(logic);
+            return AbstractElement.getReference(logic.type).getSVG(logic);
         }
     } else {
-        return DeepLogicAbstractElement.getReference(`${logic}`).getSVG(logic);
+        return AbstractElement.getReference(`${logic}`).getSVG(logic);
     }
 }
 
@@ -490,7 +490,7 @@ const SVG_E = new Template(`
     </div>
 `);
 
-class DeepLogicError extends DeepLogicAbstractElement {
+class DeepLogicError extends AbstractElement {
 
     constructor() {
         super();

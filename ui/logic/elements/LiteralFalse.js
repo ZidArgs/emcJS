@@ -1,5 +1,5 @@
-import Template from "../../../../util/Template.js";
-import DeepLogicAbstractElement from "../LogicAbstractElement.js";
+import Template from "../../../util/Template.js";
+import AbstractElement from "./AbstractElement.js";
 
 const TPL_CAPTION = "FALSE";
 const TPL_BACKGROUND = "#fb7c7c";
@@ -20,23 +20,11 @@ const SVG = new Template(`
     </div>
 `);
 
-export default class DeepLogicFalse extends DeepLogicAbstractElement {
+export default class LiteralFalse extends AbstractElement {
 
     constructor() {
         super();
         this.shadowRoot.append(TPL.generate());
-    }
-
-    update() {
-        this.setAttribute('value', "0");
-    }
-
-    get value() {
-        return 0;
-    }
-
-    set value(val) {
-        this.setAttribute('value', "0");
     }
 
     toJSON() {
@@ -45,7 +33,13 @@ export default class DeepLogicFalse extends DeepLogicAbstractElement {
         };
     }
 
-    loadLogic(logic) {}
+    toString() {
+        return "0";
+    }
+
+    loadLogic(logic) {
+        this.setAttribute('value', "0");
+    }
 
     static getSVG(logic) {
         return SVG.generate().children[0];
@@ -53,5 +47,5 @@ export default class DeepLogicFalse extends DeepLogicAbstractElement {
 
 }
 
-DeepLogicAbstractElement.registerReference("false", DeepLogicFalse);
-customElements.define('deep-logic-false', DeepLogicFalse);
+AbstractElement.registerReference("false", LiteralFalse);
+customElements.define('deep-logic-false', LiteralFalse);

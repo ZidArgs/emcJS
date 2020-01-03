@@ -1,5 +1,5 @@
 import Template from "../../util/Template.js";
-import DeepLogicAbstractElement from "./elements/LogicAbstractElement.js";
+import LogicAbstractElement from "./elements/AbstractElement.js";
 
 const TPL = new Template(`
     <style>
@@ -29,7 +29,7 @@ function dropOnPlaceholder(event) {
     if (!!event.dataTransfer) {
         let id = event.dataTransfer.getData("logic-transfer-id");
         let el = document.getElementById(id);
-        if (!!el && el instanceof DeepLogicAbstractElement && (typeof this.template != "string" || this.template == "false")) {
+        if (!!el && el instanceof LogicAbstractElement && (typeof this.template != "string" || this.template == "false")) {
             el.parentElement.removeChild(el);
         }
     }
@@ -38,7 +38,7 @@ function dropOnPlaceholder(event) {
     return false;
 }
 
-export default class LogicEditorTrashcan extends HTMLElement {
+export default class EditorTrashcan extends HTMLElement {
 
     constructor() {
         super();
@@ -50,4 +50,4 @@ export default class LogicEditorTrashcan extends HTMLElement {
 
 }
 
-customElements.define('deep-logiceditor-trashcan', LogicEditorTrashcan);
+customElements.define('deep-logiceditor-trashcan', EditorTrashcan);

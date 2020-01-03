@@ -1,5 +1,5 @@
 import Template from "../../../../util/Template.js";
-import DeepLogicAbstractElement from "../LogicAbstractElement.js";
+import AbstractElement from "../AbstractElement.js";
 
 const TPL_CAPTION = "MIN";
 const TPL_BACKGROUND = "#ee82ee";
@@ -29,14 +29,14 @@ const SVG = new Template(`
     </div>
 `);
 
-export default class DeepLogicMin extends DeepLogicAbstractElement {
+export default class DeepLogicMin extends AbstractElement {
 
     constructor() {
         super();
         this.shadowRoot.append(TPL.generate());
         let target = this.shadowRoot.getElementById("droptarget");
-        target.ondragover = DeepLogicAbstractElement.allowDrop;
-        target.ondrop = DeepLogicAbstractElement.dropOnPlaceholder;
+        target.ondragover = AbstractElement.allowDrop;
+        target.ondrop = AbstractElement.dropOnPlaceholder;
         target.onclick = function(event) {
             let e = new Event('placeholderclicked');
             e.name = event.target.name;
@@ -77,7 +77,7 @@ export default class DeepLogicMin extends DeepLogicAbstractElement {
 
     loadLogic(logic) {
         if (!!logic && !!logic.el) {
-            let el = new (DeepLogicAbstractElement.getReference(logic.el.type));
+            let el = new (AbstractElement.getReference(logic.el.type));
             el.loadLogic(logic.el);
             this.append(el);
             this.shadowRoot.getElementById("input").value = logic.value;
@@ -91,7 +91,7 @@ export default class DeepLogicMin extends DeepLogicAbstractElement {
         let inp = el.querySelector(".input");
         let newValue;
         if (!!logic && !!logic.el) {
-            let el = DeepLogicAbstractElement.getReference(logic.el.type).getSVG(logic.el);
+            let el = AbstractElement.getReference(logic.el.type).getSVG(logic.el);
             if (typeof el.dataset.value != "undefined") {
                 newValue = parseInt(el.dataset.value) >= logic.value;
             }
@@ -123,5 +123,5 @@ export default class DeepLogicMin extends DeepLogicAbstractElement {
 
 }
 
-DeepLogicAbstractElement.registerReference("min", DeepLogicMin);
+AbstractElement.registerReference("min", DeepLogicMin);
 customElements.define('deep-logic-min', DeepLogicMin);

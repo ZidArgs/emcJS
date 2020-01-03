@@ -1,5 +1,5 @@
 import Template from "../../../../util/Template.js";
-import DeepLogicAbstractElement from "../LogicAbstractElement.js";
+import AbstractElement from "../AbstractElement.js";
 
 const TPL_CAPTION = "OR";
 const TPL_BACKGROUND = "#bcdefb";
@@ -25,14 +25,14 @@ const SVG = new Template(`
     </div>
 `);
 
-export default class DeepLogicOr extends DeepLogicAbstractElement {
+export default class DeepLogicOr extends AbstractElement {
 
     constructor() {
         super();
         this.shadowRoot.append(TPL.generate());
         let target = this.shadowRoot.getElementById("droptarget");
-        target.ondragover = DeepLogicAbstractElement.allowDrop;
-        target.ondrop = DeepLogicAbstractElement.dropOnPlaceholder;
+        target.ondragover = AbstractElement.allowDrop;
+        target.ondrop = AbstractElement.dropOnPlaceholder;
         target.onclick = function(event) {
             let e = new Event('placeholderclicked');
             e.name = event.target.name;
@@ -72,7 +72,7 @@ export default class DeepLogicOr extends DeepLogicAbstractElement {
         if (!!logic && Array.isArray(logic.el)) {
             logic.el.forEach(ch => {
                 if (!!ch) {
-                    let el = new (DeepLogicAbstractElement.getReference(ch.type));
+                    let el = new (AbstractElement.getReference(ch.type));
                     el.loadLogic(ch);
                     this.append(el);
                 }
@@ -88,7 +88,7 @@ export default class DeepLogicOr extends DeepLogicAbstractElement {
         if (!!logic && Array.isArray(logic.el)) {
             logic.el.forEach(ch => {
                 if (!!ch) {
-                    let el = DeepLogicAbstractElement.getReference(ch.type).getSVG(ch);
+                    let el = AbstractElement.getReference(ch.type).getSVG(ch);
                     if (typeof el.dataset.value != "undefined") {
                         if (typeof newValue != "undefined") {
                             newValue = newValue || !!parseInt(el.dataset.value);
@@ -109,5 +109,5 @@ export default class DeepLogicOr extends DeepLogicAbstractElement {
 
 }
 
-DeepLogicAbstractElement.registerReference("or", DeepLogicOr);
+AbstractElement.registerReference("or", DeepLogicOr);
 customElements.define('deep-logic-or', DeepLogicOr);
