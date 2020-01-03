@@ -12,7 +12,7 @@ const TPL = new Template(`
             --logic-color-border: ${TPL_BORDER};
         }
     </style>
-    <div class="header">${TPL_CAPTION}</div>
+    <div id="header" class="header">${TPL_CAPTION}</div>
     <div id="ref" class="body"></div>
     <div id="value" class="body"></div>
 `);
@@ -27,7 +27,6 @@ export default class LiteralValue extends AbstractElement {
     constructor() {
         super();
         this.shadowRoot.append(TPL.generate());
-        let select = this.shadowRoot.getElementById('select');
     }
 
     get ref() {
@@ -38,6 +37,14 @@ export default class LiteralValue extends AbstractElement {
         this.setAttribute('ref', val);
     }
 
+    get expects() {
+        return this.getAttribute('expects');
+    }
+
+    set expects(val) {
+        this.setAttribute('expects', val);
+    }
+
     get category() {
         return this.getAttribute('category');
     }
@@ -46,45 +53,42 @@ export default class LiteralValue extends AbstractElement {
         this.setAttribute('category', val);
     }
 
-    toJSON() {
-        let value;
-        if (SELECTOR_VALUE.has(this)) {
-            value = SELECTOR_VALUE.get(this);
+    calculate(state = {}) {
+        if (state.hasOwnProperty(this.ref)) {
+            let val = +(state[this.ref] == this.expects);
+            this.shadowRoot.getElementById('header').setAttribute('value', val);
+            return val;
+        } else {
+            this.shadowRoot.getElementById('header').setAttribute('value', "0");
+            return 0;
         }
+    }
+
+    loadLogic(logic) {
+        this.ref = logic.el;
+        this.shadowRoot.getElementById("ref").innerHTML = this.ref;
+        this.expects = logic.el;
+        this.shadowRoot.getElementById('value').innerHTML = this.expects;
+        if (!!logic.category) {
+            this.category = logic.category;
+            this.shadowRoot.getElementById('header').innerHTML = logic.category.toUpperCase();
+        }
+    }
+
+    toJSON() {
         if (!!this.category) {
             return {
-                type: "number",
+                type: "value",
                 el: this.ref,
-                value: value,
+                value: this.expects,
                 category: this.category
             };
         } else {
             return {
-                type: "number",
+                type: "value",
                 el: this.ref,
-                value: value
+                value: this.expects
             };
-        }
-    }
-
-    toString() {
-        return this.getAttribute('value') || "0";
-    }
-
-    loadLogic(logic, state = {}) {
-        this.ref = logic.el;
-        let bdy = this.shadowRoot.getElementById("ref");
-        bdy.innerHTML = this.ref;
-        if (!!logic.category) {
-            this.category = logic.category;
-            this.shadowRoot.querySelector('.header').innerHTML = logic.category.toUpperCase();
-        }
-        this.shadowRoot.getElementById('value').value = logic.value;
-        // value
-        if (state.hasOwnProperty(logic.el)) {
-            this.setAttribute('value', +(state[logic.el] == logic.value));
-        } else {
-            this.setAttribute('value', "0");
         }
     }
 
@@ -94,5 +98,5 @@ export default class LiteralValue extends AbstractElement {
 
 }
 
-AbstractElement.registerReference("false", LiteralValue);
-customElements.define('deep-logic-false', LiteralValue);
+AbstractElement.registerReference("value", LiteralValue);
+customElements.define('deep-logic-value', LiteralValue);

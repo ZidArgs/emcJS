@@ -30,7 +30,7 @@ const TPL = new Template(`
             padding: 5px;
             user-select: none;
         }
-        :host([visualize]:not([visualize="false"])) .header:before {
+        .header[value]:before {
             display: flex;
             align-items: center;
             justify-content: center;
@@ -41,14 +41,10 @@ const TPL = new Template(`
             margin-right: 5px;
             border-radius: 10px;
             border: solid 2px black;
-            background-color: #ecff85;
-            content: "n/a";
-        }
-        :host([visualize]:not([visualize="false"])) .header[data-value]:before {
             background-color: #85ff85;
-            content: attr(data-value);
+            content: attr(value);
         }
-        :host([visualize]:not([visualize="false"])) .header[data-value="0"]:before {
+        .header[value="0"]:before {
             background-color: #ff8585;
         }
         .body {
@@ -179,6 +175,7 @@ function dragStart(event) {
 }
 
 // TODO add on placeholder click dialog to append logic elements
+// TODO calculate all values of operators
 const ID = new WeakMap();
 const REG = new Map();
 
@@ -209,7 +206,6 @@ export default class AbstractElement extends HTMLElement {
         }
         this.id = ID.get(this);
         this.addEventListener("dragstart", dragStart);
-        this.update();
     }
 
     disconnectedCallback() {
@@ -228,15 +224,15 @@ export default class AbstractElement extends HTMLElement {
         }
     }
 
-    update() {
-        throw new TypeError("can not call abstract method");
-    }
-
-    toJSON() {
+    calculate(state = {}) {
         throw new TypeError("can not call abstract method");
     }
 
     loadLogic() {
+        throw new TypeError("can not call abstract method");
+    }
+
+    toJSON() {
         throw new TypeError("can not call abstract method");
     }
 
@@ -322,14 +318,6 @@ export default class AbstractElement extends HTMLElement {
             this.setAttribute('value', parseInt(val) || 0);
             if (!!hdr) hdr.dataset.value = parseInt(val) || 0;
         }
-    }
-
-    get visualize() {
-        return this.getAttribute('visualize');
-    }
-
-    set visualize(val) {
-        this.setAttribute('visualize', val);
     }
 
     get readonly() {

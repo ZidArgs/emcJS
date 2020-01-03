@@ -1,8 +1,10 @@
-import Template from "../../../../util/Template.js";
-import AbstractElement from "../AbstractElement.js";
+import Template from "../../../util/Template.js";
+import AbstractElement from "./AbstractElement.js";
 
-const TPL_CAPTION = "OR";
-const TPL_BACKGROUND = "#bcdefb";
+const TPL_CAPTION = "NOR";
+const TPL_BG_0 = "#bcdefb";
+const TPL_BG_1 = "#ffdfe4";
+const TPL_BACKGROUND = `repeating-linear-gradient(145deg, ${TPL_BG_0}, ${TPL_BG_0} 20px, ${TPL_BG_1} 20px, ${TPL_BG_1} 40px)`;
 const TPL_BORDER = "#37a3ff";
 
 const TPL = new Template(`
@@ -12,7 +14,7 @@ const TPL = new Template(`
             --logic-color-border: ${TPL_BORDER};
         }
     </style>
-    <div class="header">${TPL_CAPTION}</div>
+    <div id="header" class="header">${TPL_CAPTION}</div>
     <div class="body">
         <slot id="children"></slot>
         <span id="droptarget" class="placeholder">...</span>
@@ -20,12 +22,12 @@ const TPL = new Template(`
 `);
 const SVG = new Template(`
     <div class="logic-element" style="--logic-color-back: ${TPL_BACKGROUND}; --logic-color-border: ${TPL_BORDER};">
-        <div class="header">${TPL_CAPTION}</div>
+        <div id="header" class="header">${TPL_CAPTION}</div>
         <div class="body"></div>
     </div>
 `);
 
-export default class DeepLogicOr extends AbstractElement {
+export default class OperatorNor extends AbstractElement {
 
     constructor() {
         super();
@@ -41,30 +43,26 @@ export default class DeepLogicOr extends AbstractElement {
         }.bind(this);
     }
 
-    update() {
-        let newValue;
+    calculate(state = {}) {
+        let value;
         let ch = this.children;
         for (let c of ch) {
-            if (typeof c.value != "undefined") {
-                newValue = +!!c.value;
-                if (!!newValue) {
+            let val = c.calculate(state);
+            if (typeof val != "undefined") {
+                value = +!val;
+                if (!!value) {
                     break;
                 }
             }
         }
-        this.value = newValue;
+        this.shadowRoot.getElementById('header').setAttribute('value', value);
+        return value;
     }
 
     toJSON() {
-        if (this.children.length > 0) {
-            return {
-                type: "or",
-                el: Array.from(this.children).map(e => e.toJSON())
-            };
-        }
         return {
-            type: "or",
-            el: []
+            type: "nor",
+            el: Array.from(this.children).map(e => e.toJSON())
         };
     }
 
@@ -101,13 +99,13 @@ export default class DeepLogicOr extends AbstractElement {
             });
         }
         if (typeof newValue != "undefined") {
-            el.dataset.value = +newValue;
-            hdr.dataset.value = +newValue;
+            el.dataset.value = +!newValue;
+            hdr.dataset.value = +!newValue;
         }
         return el;
     }
 
 }
 
-AbstractElement.registerReference("or", DeepLogicOr);
-customElements.define('deep-logic-or', DeepLogicOr);
+AbstractElement.registerReference("nor", OperatorNor);
+customElements.define('deep-logic-nor', OperatorNor);

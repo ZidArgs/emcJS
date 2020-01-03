@@ -12,7 +12,8 @@ const TPL = new Template(`
             --logic-color-border: ${TPL_BORDER};
         }
     </style>
-    <div class="header">${TPL_CAPTION}</div>
+    <div id="header" class="header">${TPL_CAPTION}</div>
+    <div id="ref" class="body"></div>
 `);
 const SVG = new Template(`
     <div class="logic-element" style="--logic-color-back: ${TPL_BACKGROUND}; --logic-color-border: ${TPL_BORDER};">
@@ -44,6 +45,26 @@ export default class LiteralNumber extends AbstractElement {
         this.setAttribute('category', val);
     }
 
+    calculate(state = {}) {
+        if (state.hasOwnProperty(this.ref)) {
+            let val = +!!state[this.ref];
+            this.shadowRoot.getElementById('header').setAttribute('value', val);
+            return val;
+        } else {
+            this.shadowRoot.getElementById('header').setAttribute('value', "0");
+            return 0;
+        }
+    }
+
+    loadLogic(logic) {
+        this.ref = logic.el;
+        this.shadowRoot.getElementById("ref").innerHTML = this.ref;
+        if (!!logic.category) {
+            this.category = logic.category;
+            this.shadowRoot.getElementById('header').innerHTML = logic.category.toUpperCase();
+        }
+    }
+
     toJSON() {
         if (!!this.category) {
             return {
@@ -59,31 +80,11 @@ export default class LiteralNumber extends AbstractElement {
         }
     }
 
-    toString() {
-        return this.getAttribute('value') || "0";
-    }
-
-    loadLogic(logic, state = {}) {
-        this.ref = logic.el;
-        let bdy = this.shadowRoot.getElementById("ref");
-        bdy.innerHTML = this.ref;
-        if (!!logic.category) {
-            this.category = logic.category;
-            this.shadowRoot.querySelector('.header').innerHTML = logic.category.toUpperCase();
-        }
-        // value
-        if (state.hasOwnProperty(logic.el)) {
-            this.setAttribute('value', +!!state[logic.el]);
-        } else {
-            this.setAttribute('value', "0");
-        }
-    }
-
     static getSVG(logic) {
         return SVG.generate().children[0];
     }
 
 }
 
-AbstractElement.registerReference("false", LiteralNumber);
-customElements.define('deep-logic-false', LiteralNumber);
+AbstractElement.registerReference("number", LiteralNumber);
+customElements.define('deep-logic-number', LiteralNumber);

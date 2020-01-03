@@ -1,5 +1,5 @@
-import Template from "../../../../util/Template.js";
-import AbstractElement from "../AbstractElement.js";
+import Template from "../../../util/Template.js";
+import AbstractElement from "./AbstractElement.js";
 
 const TPL_CAPTION = "NOT";
 const TPL_BACKGROUND = "#ffdfe4";
@@ -12,7 +12,7 @@ const TPL = new Template(`
             --logic-color-border: ${TPL_BORDER};
         }
     </style>
-    <div class="header">${TPL_CAPTION}</div>
+    <div id="header" class="header">${TPL_CAPTION}</div>
     <div class="body">
         <slot id="child">
             <span id="droptarget" class="placeholder">...</span>
@@ -21,12 +21,12 @@ const TPL = new Template(`
 `);
 const SVG = new Template(`
     <div class="logic-element" style="--logic-color-back: ${TPL_BACKGROUND}; --logic-color-border: ${TPL_BORDER};">
-        <div class="header">${TPL_CAPTION}</div>
+        <div id="header" class="header">${TPL_CAPTION}</div>
         <div class="body"></div>
     </div>
 `);
 
-export default class DeepLogicNot extends AbstractElement {
+export default class OperatorNot extends AbstractElement {
 
     constructor() {
         super();
@@ -42,32 +42,23 @@ export default class DeepLogicNot extends AbstractElement {
         }.bind(this);
     }
 
-    update() {
-        let newValue;
+    calculate(state = {}) {
+        let value;
         let ch = this.children;
-        if (ch.length > 0) {
-            let value = ch[0].value;
-            if (typeof value != "undefined") {
-                newValue = +!value;
+        if (!!ch[0]) {
+            let val = ch[0].calculate(state);
+            if (typeof val != "undefined") {
+                value = +!val;
             }
         }
-        this.value = newValue;
+        this.shadowRoot.getElementById('header').setAttribute('value', value);
+        return value;
     }
 
     toJSON() {
-        if (this.children.length > 0) {
-            let el = this.children[0];
-            if (!!el) {
-                el = el.toJSON();
-            }
-            return {
-                type: "not",
-                el: el
-            };
-        }
         return {
             type: "not",
-            el: undefined
+            el: Array.from(this.children).slice(0,1).map(e => e.toJSON())[0]
         };
     }
 
@@ -100,5 +91,5 @@ export default class DeepLogicNot extends AbstractElement {
 
 }
 
-AbstractElement.registerReference("not", DeepLogicNot);
-customElements.define('deep-logic-not', DeepLogicNot);
+AbstractElement.registerReference("not", OperatorNot);
+customElements.define('deep-logic-not', OperatorNot);

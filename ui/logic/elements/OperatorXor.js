@@ -1,5 +1,5 @@
-import Template from "../../../../util/Template.js";
-import AbstractElement from "../AbstractElement.js";
+import Template from "../../../util/Template.js";
+import AbstractElement from "./AbstractElement.js";
 
 const TPL_CAPTION = "XOR";
 const TPL_BACKGROUND = "#ffa500";
@@ -12,7 +12,7 @@ const TPL = new Template(`
             --logic-color-border: ${TPL_BORDER};
         }
     </style>
-    <div class="header">${TPL_CAPTION}</div>
+    <div id="header" class="header">${TPL_CAPTION}</div>
     <div class="body">
         <slot id="child0" name="slot0">
             <span id="droptarget0" class="placeholder">...</span>
@@ -24,12 +24,12 @@ const TPL = new Template(`
 `);
 const SVG = new Template(`
     <div class="logic-element" style="--logic-color-back: ${TPL_BACKGROUND}; --logic-color-border: ${TPL_BORDER};">
-        <div class="header">${TPL_CAPTION}</div>
+        <div id="header" class="header">${TPL_CAPTION}</div>
         <div class="body"></div>
     </div>
 `);
 
-export default class DeepLogicXor extends AbstractElement {
+export default class OperatorXor extends AbstractElement {
 
     constructor() {
         super();
@@ -48,6 +48,25 @@ export default class DeepLogicXor extends AbstractElement {
         }.bind(this);
     }
 
+    calculate(state = {}) {
+        let value;
+        let ch = this.children;
+        if (!!ch[0]) {
+            let val = ch[0].calculate(state);
+            if (typeof val != "undefined") {
+                value = +val;
+            }
+        }
+        if (!!ch[1]) {
+            let val = ch[1].calculate(state);
+            if (typeof val != "undefined") {
+                value = +(value != +val);
+            }
+        }
+        this.shadowRoot.getElementById('header').setAttribute('value', value);
+        return value;
+    }
+
     update() {
         let newValue;
         let ch = this.children;
@@ -62,39 +81,23 @@ export default class DeepLogicXor extends AbstractElement {
     }
 
     toJSON() {
-        if (this.children.length > 0) {
-            let el0 = this.children[0];
-            if (!!el0) {
-                el0 = el0.toJSON();
-            }
-            let el1 = this.children[1];
-            if (!!el1) {
-                el1 = el1.toJSON();
-            }
-            return {
-                type: "xor",
-                el0: el0,
-                el1: el1
-            };
-        }
         return {
             type: "xor",
-            el0: undefined,
-            el1: undefined
+            el: Array.from(this.children).slice(0,2).map(e => e.toJSON())
         };
     }
 
     loadLogic(logic) {
-        if (!!logic) {
-            if (!!logic.el0) {
-                let el0 = new (AbstractElement.getReference(logic.el0.type));
-                el0.loadLogic(logic.el0);
-                this.append(el0);
-            }
-            if (!!logic.el1) {
-                let el1 = new (AbstractElement.getReference(logic.el1.type));
-                el1.loadLogic(logic.el1);
-                this.append(el1);
+        if (!!logic && Array.isArray(logic.el)) {
+            for (let i = 0; i < logic.el.length && i < 2; ++i) {
+                let ch = logic.el[i];
+                if (!!ch) {
+                    let cl = AbstractElement.getReference(ch.type);
+                    if (!cl) continue;
+                    let el = new cl;
+                    el.loadLogic(ch);
+                    this.append(el);
+                }
             }
         }
     }
@@ -133,5 +136,5 @@ export default class DeepLogicXor extends AbstractElement {
 
 }
 
-AbstractElement.registerReference("xor", DeepLogicXor);
-customElements.define('deep-logic-xor', DeepLogicXor);
+AbstractElement.registerReference("xor", OperatorXor);
+customElements.define('deep-logic-xor', OperatorXor);

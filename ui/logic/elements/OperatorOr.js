@@ -1,11 +1,9 @@
-import Template from "../../../../util/Template.js";
-import AbstractElement from "../AbstractElement.js";
+import Template from "../../../util/Template.js";
+import AbstractElement from "./AbstractElement.js";
 
-const TPL_CAPTION = "NAND";
-const TPL_BG_0 = "#ffffe0";
-const TPL_BG_1 = "#ffdfe4";
-const TPL_BACKGROUND = `repeating-linear-gradient(145deg, ${TPL_BG_0}, ${TPL_BG_0} 20px, ${TPL_BG_1} 20px, ${TPL_BG_1} 40px)`;
-const TPL_BORDER = "#ffa500";
+const TPL_CAPTION = "OR";
+const TPL_BACKGROUND = "#bcdefb";
+const TPL_BORDER = "#37a3ff";
 
 const TPL = new Template(`
     <style>
@@ -14,7 +12,7 @@ const TPL = new Template(`
             --logic-color-border: ${TPL_BORDER};
         }
     </style>
-    <div class="header">${TPL_CAPTION}</div>
+    <div id="header" class="header">${TPL_CAPTION}</div>
     <div class="body">
         <slot id="children"></slot>
         <span id="droptarget" class="placeholder">...</span>
@@ -22,12 +20,12 @@ const TPL = new Template(`
 `);
 const SVG = new Template(`
     <div class="logic-element" style="--logic-color-back: ${TPL_BACKGROUND}; --logic-color-border: ${TPL_BORDER};">
-        <div class="header">${TPL_CAPTION}</div>
+        <div id="header" class="header">${TPL_CAPTION}</div>
         <div class="body"></div>
     </div>
 `);
 
-export default class DeepLogicNand extends AbstractElement {
+export default class OperatorOr extends AbstractElement {
 
     constructor() {
         super();
@@ -43,47 +41,26 @@ export default class DeepLogicNand extends AbstractElement {
         }.bind(this);
     }
 
-    visualizeValue() {
-        if (this.children.length > 0) {
-            let values = Array.from(this.children).map(el => {
-                return el.visualizeValue();
-            });
-            if (values.some(v => v === false)) {
-                this.shadowRoot.querySelector(".header").dataset.value = "true";
-                return true;
-            }
-            if (values.some(v => v === true)) {
-                this.shadowRoot.querySelector(".header").dataset.value = "false";
-                return false;
-            }
-        }
-        this.shadowRoot.querySelector(".header").dataset.value = "";
-    }
-
-    update() {
-        let newValue;
+    calculate(state = {}) {
+        let value;
         let ch = this.children;
         for (let c of ch) {
-            if (typeof c.value != "undefined") {
-                newValue = +!c.value;
-                if (!newValue) {
+            let val = c.calculate(state);
+            if (typeof val != "undefined") {
+                value = +!!val;
+                if (!!value) {
                     break;
                 }
             }
         }
-        this.value = newValue;
+        this.shadowRoot.getElementById('header').setAttribute('value', value);
+        return value;
     }
 
     toJSON() {
-        if (this.children.length > 0) {
-            return {
-                type: "nand",
-                el: Array.from(this.children).map(e => e.toJSON())
-            };
-        }
         return {
-            type: "nand",
-            el: []
+            type: "or",
+            el: Array.from(this.children).map(e => e.toJSON())
         };
     }
 
@@ -110,7 +87,7 @@ export default class DeepLogicNand extends AbstractElement {
                     let el = AbstractElement.getReference(ch.type).getSVG(ch);
                     if (typeof el.dataset.value != "undefined") {
                         if (typeof newValue != "undefined") {
-                            newValue = newValue && !!parseInt(el.dataset.value);
+                            newValue = newValue || !!parseInt(el.dataset.value);
                         } else {
                             newValue = !!parseInt(el.dataset.value);
                         }
@@ -120,13 +97,13 @@ export default class DeepLogicNand extends AbstractElement {
             });
         }
         if (typeof newValue != "undefined") {
-            el.dataset.value = +!newValue;
-            hdr.dataset.value = +!newValue;
+            el.dataset.value = +newValue;
+            hdr.dataset.value = +newValue;
         }
         return el;
     }
 
 }
 
-AbstractElement.registerReference("nand", DeepLogicNand);
-customElements.define('deep-logic-nand', DeepLogicNand);
+AbstractElement.registerReference("or", OperatorOr);
+customElements.define('deep-logic-or', OperatorOr);

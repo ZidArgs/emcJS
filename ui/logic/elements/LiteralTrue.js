@@ -12,7 +12,7 @@ const TPL = new Template(`
             --logic-color-border: ${TPL_BORDER};
         }
     </style>
-    <div class="header">${TPL_CAPTION}</div>
+    <div id="header" class="header">${TPL_CAPTION}</div>
 `);
 const SVG = new Template(`
     <div class="logic-element" style="--logic-color-back: ${TPL_BACKGROUND}; --logic-color-border: ${TPL_BORDER};">
@@ -27,18 +27,17 @@ export default class LiteralTrue extends AbstractElement {
         this.shadowRoot.append(TPL.generate());
     }
 
+    calculate(state = {}) {
+        this.shadowRoot.getElementById('header').setAttribute('value', "1");
+        return 1;
+    }
+
+    loadLogic(logic) {}
+
     toJSON() {
         return {
             type: "true"
         };
-    }
-
-    toString() {
-        return "1";
-    }
-
-    loadLogic(logic) {
-        this.setAttribute('value', "1");
     }
 
     static getSVG(logic) {

@@ -1,5 +1,5 @@
-import Template from "../../../../util/Template.js";
-import AbstractElement from "../AbstractElement.js";
+import Template from "../../../util/Template.js";
+import AbstractElement from "./AbstractElement.js";
 
 const TPL_CAPTION = "MIN";
 const TPL_BACKGROUND = "#ee82ee";
@@ -12,9 +12,11 @@ const TPL = new Template(`
             --logic-color-border: ${TPL_BORDER};
         }
     </style>
-    <div class="header">${TPL_CAPTION}</div>
+    <div id="header" class="header">${TPL_CAPTION}</div>
     <div class="body">
         <input id="input" type="number" value="0" />
+    </div>
+    <div class="body">
         <slot id="children">
             <span id="droptarget" class="placeholder">...</span>
         </slot>
@@ -22,14 +24,15 @@ const TPL = new Template(`
 `);
 const SVG = new Template(`
     <div class="logic-element" style="--logic-color-back: ${TPL_BACKGROUND}; --logic-color-border: ${TPL_BORDER};">
-        <div class="header">${TPL_CAPTION}</div>
+        <div id="header" class="header">${TPL_CAPTION}</div>
         <div class="body">
-            <div class="input" />
+            <div class="input">
+            </div>
         </div>
     </div>
 `);
 
-export default class DeepLogicMin extends AbstractElement {
+export default class OperatorMin extends AbstractElement {
 
     constructor() {
         super();
@@ -48,30 +51,22 @@ export default class DeepLogicMin extends AbstractElement {
         });
     }
 
-    update() {
-        let newValue;
+    calculate(state = {}) {
         let ch = this.children;
-        if (!!ch[0] && typeof ch[0].value != "undefined") {
-            newValue = +((+ch[0].value) >= this.shadowRoot.getElementById("input").value);
+        if (!!ch[0]) {
+            let val = ch[0].calculate(state);
+            if (typeof val != "undefined") {
+                value = +(val >= this.shadowRoot.getElementById("input").value);
+            }
         }
-        this.value = newValue;
+        this.shadowRoot.getElementById('header').setAttribute('value', value);
+        return value;
     }
 
     toJSON() {
-        if (this.children.length > 0) {
-            let el = this.children[0];
-            if (!!el) {
-                el = el.toJSON();
-            }
-            return {
-                type: "min",
-                el: el,
-                value: this.shadowRoot.getElementById("input").value
-            };
-        }
         return {
             type: "min",
-            el: undefined
+            el: Array.from(this.children).slice(0,1).map(e => e.toJSON())[0]
         };
     }
 
@@ -123,5 +118,5 @@ export default class DeepLogicMin extends AbstractElement {
 
 }
 
-AbstractElement.registerReference("min", DeepLogicMin);
-customElements.define('deep-logic-min', DeepLogicMin);
+AbstractElement.registerReference("min", OperatorMin);
+customElements.define('deep-logic-min', OperatorMin);
