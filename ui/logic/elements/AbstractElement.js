@@ -175,7 +175,6 @@ function dragStart(event) {
 }
 
 // TODO add on placeholder click dialog to append logic elements
-// TODO calculate all values of operators
 const ID = new WeakMap();
 const REG = new Map();
 
@@ -189,15 +188,6 @@ export default class AbstractElement extends HTMLElement {
         this.attachShadow({mode: 'open'});
         this.shadowRoot.append(TPL.generate());
         ID.set(this, UGen.appUID("logic-element"));
-        // observe changes to dom and update on change
-        (new MutationObserver(() => {
-            this.update();
-        })).observe(this, {
-            attributes: false,
-            characterData: false,
-            childList: true,
-            subtree: false
-        });
     }
 
     connectedCallback() {

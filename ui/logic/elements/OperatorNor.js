@@ -45,9 +45,8 @@ export default class OperatorNor extends AbstractElement {
 
     calculate(state = {}) {
         let value;
-        let ch = this.children;
-        for (let c of ch) {
-            let val = c.calculate(state);
+        let ch = Array.from(this.children).map(el => el.calculate(state));
+        for (let val of ch) {
             if (typeof val != "undefined") {
                 value = +!val;
                 if (!!value) {
