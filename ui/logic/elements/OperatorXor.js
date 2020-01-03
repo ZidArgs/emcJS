@@ -92,8 +92,12 @@ export default class OperatorXor extends AbstractElement {
             for (let i = 0; i < logic.el.length && i < 2; ++i) {
                 let ch = logic.el[i];
                 if (!!ch) {
-                    let cl = AbstractElement.getReference(ch.type);
-                    if (!cl) continue;
+                    let cl;
+                    if (!!ch.category) {
+                        cl = AbstractElement.getReference(ch.category, ch.type);
+                    } else {
+                        cl = AbstractElement.getReference(ch.type);
+                    }
                     let el = new cl;
                     el.loadLogic(ch);
                     this.append(el);

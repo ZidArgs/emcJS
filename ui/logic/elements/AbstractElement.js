@@ -363,9 +363,11 @@ export default class AbstractElement extends HTMLElement {
         REG.set(ref, clazz);
     }
 
-    static getReference(ref) {
-        if (REG.has(ref)) {
-            return REG.get(ref);
+    static getReference(...refs) {
+        for (let ref of refs) {
+            if (REG.has(ref)) {
+                return REG.get(ref);
+            }
         }
         return DeepLogicError;
     }

@@ -67,7 +67,13 @@ export default class OperatorAnd extends AbstractElement {
         if (!!logic && Array.isArray(logic.el)) {
             logic.el.forEach(ch => {
                 if (!!ch) {
-                    let el = new (AbstractElement.getReference(ch.type));
+                    let cl;
+                    if (!!ch.category) {
+                        cl = AbstractElement.getReference(ch.category, ch.type);
+                    } else {
+                        cl = AbstractElement.getReference(ch.type);
+                    }
+                    let el = new cl;
                     el.loadLogic(ch);
                     this.append(el);
                 }

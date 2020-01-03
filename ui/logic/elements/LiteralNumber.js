@@ -61,7 +61,7 @@ export default class LiteralNumber extends AbstractElement {
         this.shadowRoot.getElementById("ref").innerHTML = this.ref;
         if (!!logic.category) {
             this.category = logic.category;
-            this.shadowRoot.getElementById('header').innerHTML = logic.category.toUpperCase();
+            //this.shadowRoot.getElementById('header').innerHTML = logic.category.toUpperCase();
         }
     }
 

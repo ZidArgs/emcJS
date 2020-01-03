@@ -71,7 +71,7 @@ export default class LiteralValue extends AbstractElement {
         this.shadowRoot.getElementById('value').innerHTML = this.expects;
         if (!!logic.category) {
             this.category = logic.category;
-            this.shadowRoot.getElementById('header').innerHTML = logic.category.toUpperCase();
+            //this.shadowRoot.getElementById('header').innerHTML = logic.category.toUpperCase();
         }
     }
 

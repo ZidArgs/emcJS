@@ -72,7 +72,13 @@ export default class OperatorMin extends AbstractElement {
 
     loadLogic(logic) {
         if (!!logic && !!logic.el) {
-            let el = new (AbstractElement.getReference(logic.el.type));
+            let cl;
+            if (!!logic.el.category) {
+                cl = AbstractElement.getReference(logic.el.category, logic.el.type);
+            } else {
+                cl = AbstractElement.getReference(logic.el.type);
+            }
+            let el = new cl;
             el.loadLogic(logic.el);
             this.append(el);
             this.shadowRoot.getElementById("input").value = logic.value;
