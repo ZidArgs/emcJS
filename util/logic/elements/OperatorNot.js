@@ -21,7 +21,7 @@ export default class OperatorNot extends AbstractElement {
         if (!ch) {
             return "";
         }
-        return `!${ch}`;
+        return `!(${ch})`;
     }
 
 }

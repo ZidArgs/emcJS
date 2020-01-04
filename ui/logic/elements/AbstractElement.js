@@ -148,9 +148,6 @@ const SVG = new Template(`
                 border-top-style: solid;
                 border-color: var(--logic-color-border, black);
             }
-            .logic-element.nobody > .body {
-                display: none;
-            }
             .logic-element > .body > .input {
                 position: relative;
                 box-sizing: border-box;

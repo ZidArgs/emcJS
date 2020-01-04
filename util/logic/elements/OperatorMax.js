@@ -6,6 +6,7 @@ export default class OperatorMax extends AbstractElement {
 
     loadLogic(logic) {
         if (!!logic && !!logic.el) {
+            LIMIT.set(this, parseInt(logic.value) || 0);
             let ch = logic.el;
             if (!!ch) {
                 let cl = AbstractElement.getReference(ch.type);

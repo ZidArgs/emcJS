@@ -59,9 +59,9 @@ export default class LiteralNumber extends AbstractElement {
     loadLogic(logic) {
         this.ref = logic.el;
         this.shadowRoot.getElementById("ref").innerHTML = this.ref;
+        this.category = logic.category;
         if (!!logic.category) {
-            this.category = logic.category;
-            //this.shadowRoot.getElementById('header').innerHTML = logic.category.toUpperCase();
+            this.shadowRoot.getElementById('header').innerHTML = `${TPL_CAPTION}(${logic.category.toUpperCase()})`;
         }
     }
 

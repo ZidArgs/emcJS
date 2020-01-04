@@ -52,6 +52,7 @@ export default class OperatorMax extends AbstractElement {
     }
 
     calculate(state = {}) {
+        let value;
         let ch = this.children;
         if (!!ch[0]) {
             let val = ch[0].calculate(state);
@@ -66,12 +67,14 @@ export default class OperatorMax extends AbstractElement {
     toJSON() {
         return {
             type: "max",
-            el: Array.from(this.children).slice(0,1).map(e => e.toJSON())[0]
+            el: Array.from(this.children).slice(0,1).map(e => e.toJSON())[0],
+            value: parseInt(this.shadowRoot.getElementById("input").value) || 0
         };
     }
 
     loadLogic(logic) {
         if (!!logic && !!logic.el) {
+            this.shadowRoot.getElementById("input").value = parseInt(logic.value) || 0;
             let cl;
             if (!!logic.el.category) {
                 cl = AbstractElement.getReference(logic.el.category, logic.el.type);
@@ -81,7 +84,6 @@ export default class OperatorMax extends AbstractElement {
             let el = new cl;
             el.loadLogic(logic.el);
             this.append(el);
-            this.shadowRoot.getElementById("input").value = logic.value;
         }
     }
 

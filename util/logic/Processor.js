@@ -51,7 +51,7 @@ export default class Processor {
     execute(state = {}) {
         console.group("LOGIC EXECUTION");
         console.log("input", state);
-        console.time("logic exec");
+        console.time("execution time");
         let logics = LOGICS.get(this);
         let values = VALUES.get(this);
         let buffer = new Map(Object.entries(state));
@@ -64,8 +64,9 @@ export default class Processor {
                 res[k] = r;
             }
         });
-        console.log("output", res);
-        console.timeEnd("logic exec");
+        console.log("state", values);
+        console.log("changes", res);
+        console.timeEnd("execution time");
         console.groupEnd("LOGIC EXECUTION");
         return res;
     }

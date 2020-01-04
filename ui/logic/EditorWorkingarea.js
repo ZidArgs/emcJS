@@ -27,21 +27,13 @@ const TPL = new Template(`
             border: 1px solid gray;
             font-weight: bold;
         }
-        #title-container {
+        #button-container {
             display: flex;
             align-items: center;
             top: 0;
-            padding: 0 8px;
+            padding: 8px;
             background-color: #777;
             color: #fff;
-        }
-        #title {
-            display: inline-flex;
-            flex: 1;
-            padding: 8px 0;
-            white-space: nowrap;
-            text-overflow: ellipsis;
-            overflow: hidden;
         }
         .button {
             padding: 2px;
@@ -61,7 +53,7 @@ const TPL = new Template(`
             overflow-x: hidden;
         }
     </style>
-    <div id="title-container">
+    <div id="button-container">
         <span id="save" class="button">save</span>
         <span id="load" class="button">load</span>
         <span id="clear" class="button">delete</span>
@@ -149,37 +141,13 @@ export default class EditorWorkingarea extends HTMLElement {
     loadLogic(logic) {
         if (!!this.children.length) this.removeChild(this.children[0]);
         if (!!logic) {
-            let el = new (LogicAbstractElement.getReference(logic.type));
-            el.loadLogic(logic);
-            this.append(el);
+            this.append(LogicAbstractElement.buildLogic(logic));
         }
     }
     
     append(el) {
         if (el instanceof LogicAbstractElement && (typeof this.template != "string" || this.template == "false")) {
             return super.append(el);
-        }
-    }
-
-    get caption() {
-        return this.getAttribute('caption');
-    }
-
-    set caption(val) {
-        this.setAttribute('caption', val);
-    }
-
-    static get observedAttributes() {
-        return ['caption'];
-    }
-      
-    attributeChangedCallback(name, oldValue, newValue) {
-        switch (name) {
-            case 'caption':
-                if (oldValue != newValue) {
-                    this.shadowRoot.getElementById('title').innerHTML = newValue;
-                }
-                break;
         }
     }
 
