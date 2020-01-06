@@ -18,6 +18,14 @@ const VALUES_REGEX = /values.get\("([^"]+)"\)/g;
 
 window.logicProcessors = [];
 
+function mapToObj(map) {
+    let res = {};
+    map.forEach((v, k) => {
+        res[k] = v;
+    });
+    return res;
+}
+
 export default class Processor {
 
     constructor() {
@@ -64,7 +72,7 @@ export default class Processor {
                 res[k] = r;
             }
         });
-        console.log("state", values);
+        console.log("state", mapToObj(values));
         console.log("changes", res);
         console.timeEnd("execution time");
         console.groupEnd("LOGIC EXECUTION");

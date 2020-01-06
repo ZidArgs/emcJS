@@ -46,8 +46,10 @@ const TPL = new Template(`
         ::slotted([value].active)::before {
             content: "☑";
         }
-        ::slotted([value]:not(.active)),
-        :host([multimode]:not([multimode="false"])) ::slotted([value].active) {
+        :host(:not([readonly])) ::slotted([value]:not(.active)),
+        :host([readonly="false"]) ::slotted([value]:not(.active)),
+        :host([multimode]:not([multimode="false"]):not([readonly])) ::slotted([value].active),
+        :host([readonly="false"][multimode]:not([multimode="false"])) ::slotted([value].active) {
             cursor: pointer;
         }
         #empty {
@@ -128,7 +130,8 @@ export default class DeepListSelect extends HTMLElement {
     }
 
     get readonly() {
-        return this.getAttribute('readonly');
+        let val = this.getAttribute('readonly');
+        return !!val && val != "false";
     }
 
     set readonly(val) {

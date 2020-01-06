@@ -22,10 +22,15 @@ const TPL = new Template(`
         ::slotted([value]) {
             display: inline-block;
             min-height: auto;
-            cursor: pointer;
         }
         ::slotted([value]:not(.active)) {
             opacity: 0.5;
+        }
+        :host(:not([readonly])) ::slotted([value]:not(.active)),
+        :host([readonly="false"]) ::slotted([value]:not(.active)),
+        :host([multimode]:not([multimode="false"]):not([readonly])) ::slotted([value].active),
+        :host([readonly="false"][multimode]:not([multimode="false"])) ::slotted([value].active) {
+            cursor: pointer;
         }
     </style>
     <slot id="container">
@@ -97,7 +102,8 @@ export default class DeepChoiceSelect extends HTMLElement {
     }
 
     get readonly() {
-        return this.getAttribute('readonly');
+        let val = this.getAttribute('readonly');
+        return !!val && val != "false";
     }
 
     set readonly(val) {
