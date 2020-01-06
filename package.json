@@ -1,6 +1,6 @@
 {
-  "name": "deepjs-modules",
-  "version": "0.0.40",
+  "name": "emcjs",
+  "version": "0.1.0",
   "description": "Modular JS API",
   "main": "index.js",
   "scripts": {
@@ -8,10 +8,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@bitbucket.org/zidargs/deepjs.git"
+    "url": "git+ssh://git@bitbucket.org/zidargs/emcjs.git"
   },
   "author": "Denis Peters (ZidArgs)",
   "license": "MIT",
-  "homepage": "https://bitbucket.org/zidargs/deepjs#readme",
+  "homepage": "https://bitbucket.org/zidargs/emcjs/src",
   "dependencies": {}
 }
