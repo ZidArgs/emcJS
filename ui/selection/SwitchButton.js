@@ -11,10 +11,13 @@ const TPL = new Template(`
             display: inline-block;
             width: 20px;
             height: 20px;
-            cursor: pointer;
             -webkit-user-select: none;
             -moz-user-select: none;
             user-select: none;
+        }
+        :host(:not([readonly])),
+        :host([readonly="false"]) {
+            cursor: pointer;
         }
         slot {
             width: 100%;
@@ -66,7 +69,8 @@ export default class DeepSwitchButton extends HTMLElement {
     }
 
     get readonly() {
-        return this.getAttribute('readonly');
+        let val = this.getAttribute('readonly');
+        return !!val && val != "false";
     }
 
     set readonly(val) {
