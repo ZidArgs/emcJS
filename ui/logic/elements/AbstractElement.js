@@ -374,7 +374,13 @@ export default class AbstractElement extends HTMLElement {
             if (Array.isArray(logic)) {
                 return new DeepLogicError();
             } else {
-                let el = new (AbstractElement.getReference(logic.type));
+                let cl;
+                if (!!logic.category) {
+                    cl = AbstractElement.getReference(logic.category, logic.type);
+                } else {
+                    cl = AbstractElement.getReference(logic.type);
+                }
+                let el = new cl;
                 el.loadLogic(logic);
                 return el;
             }
