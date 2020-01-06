@@ -1,6 +1,6 @@
 {
   "name": "deepjs-modules",
-  "version": "0.0.39",
+  "version": "0.0.40",
   "description": "Modular JS API",
   "main": "index.js",
   "scripts": {
