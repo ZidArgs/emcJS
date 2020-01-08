@@ -1,13 +1,13 @@
 <html>
     <head>
-        <title>deepJS sandbox</title>
+        <title>emcJS sandbox</title>
         <meta charset="UTF-8">
-        <meta name="description" content="Test for deepJS components">
+        <meta name="description" content="Test for emcJS components">
         <meta name="robots" content="none">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
         <meta name="theme-color" content="#000000">
         <script type="module">
-            import deepJS from "./index.js";
+            import emcJS from "./index.js";
 
             function recTransformLogic(logic) {
                 if (["true","false","not","and","nand","or","nor","xor","min","max"].indexOf(logic.type)<0) {
@@ -41,9 +41,9 @@
             let logic = {};
 
             async function init() {
-                logic = await deepJS.util.FileLoader.json(`logic.json`);
+                logic = await emcJS.util.FileLoader.json(`logic.json`);
 
-                let logicProcessor = new deepJS.util.logic.Processor();
+                let logicProcessor = new emcJS.util.logic.Processor();
                 logicProcessor.loadLogic(logic);
 
                 logicProcessor.execute({
@@ -98,7 +98,7 @@
             document.getElementById('savelogic').onclick = downloadLogic;
 
             async function downloadLogic() {
-                deepJS.util.FileSystem.save(JSON.stringify(logic, " ", 4), `logic.json`);
+                emcJS.util.FileSystem.save(JSON.stringify(logic, " ", 4), `logic.json`);
             }
 
         </script>
