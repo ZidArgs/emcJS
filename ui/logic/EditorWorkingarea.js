@@ -153,4 +153,4 @@ export default class EditorWorkingarea extends HTMLElement {
 
 }
 
-customElements.define('deep-logiceditor-workingarea', EditorWorkingarea);
+customElements.define('emc-logiceditor-workingarea', EditorWorkingarea);

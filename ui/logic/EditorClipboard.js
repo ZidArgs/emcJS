@@ -88,4 +88,4 @@ export default class EditorClipboard extends HTMLElement {
 
 }
 
-customElements.define('deep-logiceditor-clipboard', EditorClipboard);
+customElements.define('emc-logiceditor-clipboard', EditorClipboard);

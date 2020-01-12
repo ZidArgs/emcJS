@@ -132,4 +132,4 @@ export default class DeepTooltip extends HTMLElement {
 
 }
 
-customElements.define('deep-tooltip', DeepTooltip);
+customElements.define('emc-tooltip', DeepTooltip);

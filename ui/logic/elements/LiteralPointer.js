@@ -22,7 +22,7 @@ const SVG = new Template(`
     </div>
 `);
 
-export default class LiteralNumber extends AbstractElement {
+export default class LiteralPointer extends AbstractElement {
 
     constructor() {
         super();
@@ -47,9 +47,12 @@ export default class LiteralNumber extends AbstractElement {
 
     calculate(state = {}) {
         if (state.hasOwnProperty(this.ref)) {
-            let val = +!!state[this.ref];
-            this.shadowRoot.getElementById('header').setAttribute('value', val);
-            return val;
+            let pointer = state[this.ref];
+            if (state.hasOwnProperty(pointer)) {
+                let val = +!!state[pointer];
+                this.shadowRoot.getElementById('header').setAttribute('value', val);
+                return val;
+            }
         }
         this.shadowRoot.getElementById('header').setAttribute('value', "0");
         return 0;
@@ -67,13 +70,13 @@ export default class LiteralNumber extends AbstractElement {
     toJSON() {
         if (!!this.category) {
             return {
-                type: "number",
+                type: "pointer",
                 el: this.ref,
                 category: this.category
             };
         } else {
             return {
-                type: "number",
+                type: "pointer",
                 el: this.ref
             };
         }
@@ -85,5 +88,5 @@ export default class LiteralNumber extends AbstractElement {
 
 }
 
-AbstractElement.registerReference("number", LiteralNumber);
-customElements.define('emc-logic-number', LiteralNumber);
+AbstractElement.registerReference("pointer", LiteralPointer);
+customElements.define('emc-logic-pointer', LiteralPointer);

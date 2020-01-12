@@ -96,4 +96,4 @@ export default class DeepCollapsePanel extends HTMLElement {
 
 }
 
-customElements.define('deep-collapsepanel', DeepCollapsePanel);
+customElements.define('emc-collapsepanel', DeepCollapsePanel);

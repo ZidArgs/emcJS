@@ -78,7 +78,7 @@ const TPL = new Template(`
         input[type="checkbox"] {
             margin-right: 10px;
         }
-        deep-listselect {
+        emc-listselect {
             max-height: 300px;
         }
         .settings-input {
@@ -354,7 +354,7 @@ export default class DeepSettingsWindow extends DeepWindow {
 
     addListSelectInput(category, label, ref, def, multimode, values) {
         let el = generateField(label);
-        let input = document.createElement("deep-listselect");
+        let input = document.createElement("emc-listselect");
         input.className = "settings-input";
         input.setAttribute("type", "list");
         input.multimode = multimode;
@@ -383,7 +383,7 @@ export default class DeepSettingsWindow extends DeepWindow {
 
 }
 
-customElements.define('deep-settingswindow', DeepSettingsWindow);
+customElements.define('emc-settingswindow', DeepSettingsWindow);
 
 function generateField(label) {
     let el = document.createElement("label");
@@ -403,7 +403,7 @@ function createOption(value, content) {
 }
 
 function createDeepOption(value, content) {
-    let opt = document.createElement('deep-option');
+    let opt = document.createElement('emc-option');
     opt.value = value;
     opt.innerHTML = content;
     return opt;

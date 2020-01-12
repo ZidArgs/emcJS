@@ -130,4 +130,4 @@ export default class OperatorNand extends AbstractElement {
 }
 
 AbstractElement.registerReference("nand", OperatorNand);
-customElements.define('deep-logic-nand', OperatorNand);
+customElements.define('emc-logic-nand', OperatorNand);

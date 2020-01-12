@@ -166,4 +166,4 @@ export default class DeepWindow extends HTMLElement {
 
 }
 
-customElements.define('deep-window', DeepWindow);
+customElements.define('emc-window', DeepWindow);

@@ -127,4 +127,4 @@ export default class OperatorMax extends AbstractElement {
 }
 
 AbstractElement.registerReference("max", OperatorMax);
-customElements.define('deep-logic-max', OperatorMax);
+customElements.define('emc-logic-max', OperatorMax);

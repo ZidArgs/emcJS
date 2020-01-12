@@ -75,4 +75,4 @@ export default class HTMLImport extends HTMLElement {
 
 }
 
-customElements.define('deep-import', HTMLImport);
+customElements.define('emc-import', HTMLImport);

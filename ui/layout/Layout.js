@@ -40,7 +40,7 @@ function loadLayout(layout) {
             el.append(ch);
             return el;
         } else {
-            let el = document.createElement(`deep-${layout.type}`);
+            let el = document.createElement(`emc-${layout.type}`);
             el.classList.add("stretchlast");
             for (let item of layout.items) {
                 let ch = loadLayout(item);
@@ -71,4 +71,4 @@ export default class DeepLayout extends HTMLElement {
 
 }
 
-customElements.define('deep-layout', DeepLayout);
+customElements.define('emc-layout', DeepLayout);

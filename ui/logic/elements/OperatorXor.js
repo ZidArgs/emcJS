@@ -141,4 +141,4 @@ export default class OperatorXor extends AbstractElement {
 }
 
 AbstractElement.registerReference("xor", OperatorXor);
-customElements.define('deep-logic-xor', OperatorXor);
+customElements.define('emc-logic-xor', OperatorXor);

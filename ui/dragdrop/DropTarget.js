@@ -54,4 +54,4 @@ export default class DeepDropTarget extends HTMLElement {
 
 }
 
-customElements.define('deep-droptarget', DeepDropTarget);
+customElements.define('emc-droptarget', DeepDropTarget);

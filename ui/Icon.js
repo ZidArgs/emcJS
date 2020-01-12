@@ -60,4 +60,4 @@ export default class DeepIcon extends HTMLElement {
 
 }
 
-customElements.define('deep-icon', DeepIcon);
+customElements.define('emc-icon', DeepIcon);

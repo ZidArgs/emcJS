@@ -235,4 +235,4 @@ class LayoutError extends LayoutAbstractElement {
 
 }
 
-customElements.define('deep-layout-error', LayoutError);
+customElements.define('emc-layout-error', LayoutError);

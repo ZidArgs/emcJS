@@ -43,4 +43,4 @@ export default class DeepVBox extends HTMLElement {
 
 }
 
-customElements.define('deep-vbox', DeepVBox);
+customElements.define('emc-vbox', DeepVBox);

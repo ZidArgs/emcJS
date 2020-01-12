@@ -47,4 +47,4 @@ export default class LiteralTrue extends AbstractElement {
 }
 
 AbstractElement.registerReference("true", LiteralTrue);
-customElements.define('deep-logic-true', LiteralTrue);
+customElements.define('emc-logic-true', LiteralTrue);

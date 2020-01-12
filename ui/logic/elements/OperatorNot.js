@@ -98,4 +98,4 @@ export default class OperatorNot extends AbstractElement {
 }
 
 AbstractElement.registerReference("not", OperatorNot);
-customElements.define('deep-logic-not', OperatorNot);
+customElements.define('emc-logic-not', OperatorNot);

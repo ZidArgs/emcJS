@@ -111,4 +111,4 @@ export default class OperatorAnd extends AbstractElement {
 }
 
 AbstractElement.registerReference("and", OperatorAnd);
-customElements.define('deep-logic-and', OperatorAnd);
+customElements.define('emc-logic-and', OperatorAnd);

@@ -222,4 +222,4 @@ export default class DeepDialog extends DeepWindow {
 
 }
 
-customElements.define('deep-dialog', DeepDialog);
+customElements.define('emc-dialog', DeepDialog);

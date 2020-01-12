@@ -58,10 +58,9 @@ export default class LiteralValue extends AbstractElement {
             let val = +(state[this.ref] == this.expects);
             this.shadowRoot.getElementById('header').setAttribute('value', val);
             return val;
-        } else {
-            this.shadowRoot.getElementById('header').setAttribute('value', "0");
-            return 0;
         }
+        this.shadowRoot.getElementById('header').setAttribute('value', "0");
+        return 0;
     }
 
     loadLogic(logic) {
@@ -99,4 +98,4 @@ export default class LiteralValue extends AbstractElement {
 }
 
 AbstractElement.registerReference("value", LiteralValue);
-customElements.define('deep-logic-value', LiteralValue);
+customElements.define('emc-logic-value', LiteralValue);

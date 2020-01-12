@@ -43,4 +43,4 @@ export default class DeepHBox extends HTMLElement {
 
 }
 
-customElements.define('deep-hbox', DeepHBox);
+customElements.define('emc-hbox', DeepHBox);

@@ -140,4 +140,4 @@ export default class DeepStateButton extends HTMLElement {
 
 }
 
-customElements.define('deep-statebutton', DeepStateButton);
+customElements.define('emc-statebutton', DeepStateButton);

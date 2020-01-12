@@ -92,4 +92,4 @@ export default class DeepContextMenu extends HTMLElement {
 
 }
 
-customElements.define('deep-contextmenu', DeepContextMenu);
+customElements.define('emc-contextmenu', DeepContextMenu);

@@ -25,7 +25,3 @@
 - listselection
     - comma seperated values are no good, use seperator that is not enterable by user
         - alternative parse value as json if multimode and use string if singlemode 
-
-- logic (new)
-    - remove elements folder (restructure)
-    - remove "Logic" prefix for files

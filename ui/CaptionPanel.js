@@ -73,4 +73,4 @@ export default class DeepCaptionPanel extends HTMLElement {
 
 }
 
-customElements.define('deep-captionpanel', DeepCaptionPanel);
+customElements.define('emc-captionpanel', DeepCaptionPanel);

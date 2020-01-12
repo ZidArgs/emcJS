@@ -136,4 +136,4 @@ export default class DeepSwitchButton extends HTMLElement {
 
 }
 
-customElements.define('deep-switchbutton', DeepSwitchButton);
+customElements.define('emc-switchbutton', DeepSwitchButton);

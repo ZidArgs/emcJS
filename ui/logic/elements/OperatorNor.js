@@ -113,4 +113,4 @@ export default class OperatorNor extends AbstractElement {
 }
 
 AbstractElement.registerReference("nor", OperatorNor);
-customElements.define('deep-logic-nor', OperatorNor);
+customElements.define('emc-logic-nor', OperatorNor);

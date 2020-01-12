@@ -43,4 +43,4 @@ export default class DeepDragElement extends HTMLElement {
 
 }
 
-customElements.define('deep-dragelement', DeepDragElement);
+customElements.define('emc-dragelement', DeepDragElement);

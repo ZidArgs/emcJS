@@ -500,4 +500,4 @@ class DeepLogicError extends AbstractElement {
 
 }
 
-customElements.define('deep-logic-error', DeepLogicError);
+customElements.define('emc-logic-error', DeepLogicError);

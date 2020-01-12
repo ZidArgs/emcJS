@@ -13,7 +13,7 @@ const TPL = new Template(`
             overflow: hidden;
         }
         :slotted:not(.active),
-        :slotted:not(deep-page) {
+        :slotted:not(emc-page) {
             display: none;
         }
     </style>
@@ -55,4 +55,4 @@ export default class DeepPaging extends HTMLElement {
 
 }
 
-customElements.define('deep-paging', DeepPaging);
+customElements.define('emc-paging', DeepPaging);

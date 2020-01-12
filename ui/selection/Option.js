@@ -38,7 +38,7 @@ export default class DeepOption extends HTMLElement {
     }
 
     static createOption(value, content = value, style = {}) {
-        let opt = document.createElement('deep-option');
+        let opt = document.createElement('emc-option');
         opt.setAttribute('value', value);
         if (content instanceof HTMLElement) {
             opt.append(content);
@@ -53,4 +53,4 @@ export default class DeepOption extends HTMLElement {
 
 }
 
-customElements.define('deep-option', DeepOption);
+customElements.define('emc-option', DeepOption);

@@ -40,7 +40,7 @@ const TPL = new Template(`
 function clickOption(event) {
     if (!this.readonly) {
         let value = event.currentTarget.getAttribute("value");
-        if (this.multimode == "true") {
+        if (this.multimode) {
             let arr = this.value;
             let set = new Set(arr);
             if (set.has(value)) {
@@ -164,4 +164,4 @@ export default class DeepChoiceSelect extends HTMLElement {
 
 }
 
-customElements.define('deep-choiceselect', DeepChoiceSelect);
+customElements.define('emc-choiceselect', DeepChoiceSelect);

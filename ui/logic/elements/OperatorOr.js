@@ -111,4 +111,4 @@ export default class OperatorOr extends AbstractElement {
 }
 
 AbstractElement.registerReference("or", OperatorOr);
-customElements.define('deep-logic-or', OperatorOr);
+customElements.define('emc-logic-or', OperatorOr);

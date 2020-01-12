@@ -25,4 +25,4 @@ export default class DeepPanel extends HTMLElement {
 
 }
 
-customElements.define('deep-panel', DeepPanel);
+customElements.define('emc-panel', DeepPanel);

@@ -47,4 +47,4 @@ export default class LiteralFalse extends AbstractElement {
 }
 
 AbstractElement.registerReference("false", LiteralFalse);
-customElements.define('deep-logic-false', LiteralFalse);
+customElements.define('emc-logic-false', LiteralFalse);

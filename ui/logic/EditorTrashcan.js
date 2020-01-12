@@ -50,4 +50,4 @@ export default class EditorTrashcan extends HTMLElement {
 
 }
 
-customElements.define('deep-logiceditor-trashcan', EditorTrashcan);
+customElements.define('emc-logiceditor-trashcan', EditorTrashcan);

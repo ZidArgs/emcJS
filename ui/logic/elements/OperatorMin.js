@@ -124,4 +124,4 @@ export default class OperatorMin extends AbstractElement {
 }
 
 AbstractElement.registerReference("min", OperatorMin);
-customElements.define('deep-logic-min', OperatorMin);
+customElements.define('emc-logic-min', OperatorMin);
