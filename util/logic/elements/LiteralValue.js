@@ -1,5 +1,9 @@
 import AbstractElement from "./AbstractElement.js";
 
+function esc(str) {
+    return str.replace(/\\/g, '\\\\').replace(/"/g, '\"');
+}
+
 let REF = new WeakMap();
 let WNT = new WeakMap();
 
@@ -24,7 +28,12 @@ export default class LiteralValue extends AbstractElement {
     }
 
     toString() {
-        return `(values.get("${REF.get(this)}")||"")=="${WNT.get(this)}"`;
+        return `(val("${esc(REF.get(this))}")||"")=="${esc(WNT.get(this))}"`;
+    }
+
+    getDependency(res = new Set()) {
+        res.add(REF.get(this));
+        return res;
     }
 
 }

@@ -20,11 +20,18 @@ export default class OperatorMin extends AbstractElement {
 
     toString() {
         let ch = this.children;
-        ch = !!ch[0] && ch[0].toString();
-        if (!ch) {
-            return "";
+        if (!ch[0]) {
+            return "0";
         }
         return `(${ch}>=${LIMIT.get(this)})`;
+    }
+
+    getDependency(res = new Set()) {
+        let ch = this.children;
+        if (!ch[0]) {
+            ch[0].getDependency();
+        }
+        return res;
     }
 
 }

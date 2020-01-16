@@ -75,4 +75,8 @@ export default class AbstractElement {
         throw new TypeError("can not call abstract method");
     }
 
+    getDependency(res = new Set()) {
+        return res;
+    }
+
 }

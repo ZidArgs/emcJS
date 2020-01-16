@@ -24,9 +24,14 @@ export default class OperatorAnd extends AbstractElement {
             if (ch.length == 1) {
                 return ch[0];
             }
-            return "";
+            return "0";
         }
         return `(${ch.join("&&")})`;
+    }
+
+    getDependency(res = new Set()) {
+        this.children.forEach(v=>v.getDependency(res));
+        return res;
     }
 
 }

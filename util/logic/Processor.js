@@ -12,11 +12,36 @@ import "./elements/OperatorNot.js";
 import "./elements/OperatorOr.js";
 import "./elements/OperatorXor.js";
 
-const LOGICS = new WeakMap();
-const VALUES = new WeakMap();
-const VALUES_REGEX = /values.get\("([^"]+)"\)/g;
-
 window.logicProcessors = [];
+
+function sortLogic(logics) {
+    let logic_old = new Map(logics);
+    logics.clear();
+    let len = 0;
+    while (!!logic_old.size && logic_old.size != len) {
+        len = logic_old.size;
+        next_rule:
+        for (let rule of logic_old) {
+            for (let i of rule[1].requires) {
+                if (logic_old.has(i)) {
+                    continue next_rule;
+                }
+            }
+            logics.set(rule[0], rule[1]);
+            logic_old.delete(rule[0]);
+        }
+    }
+    if (logic_old.size > 0) {
+        console.error("LOOPS");
+    }
+}
+
+function buildLogic(logic) {
+    let buf = AbstractElement.buildLogic(logic);
+    let fn = new Function('val', `return ${buf}`);
+    Object.defineProperty(fn, 'requires', {value: buf.getDependency()});
+    return fn;
+}
 
 function mapToObj(map) {
     let res = {};
@@ -25,6 +50,17 @@ function mapToObj(map) {
     });
     return res;
 }
+
+function valueEscaper(key) {
+    let value = this.get(key);
+    if (typeof value == "string") {
+        return value.replace(/\\/g, '\\\\').replace(/"/g, '\"');
+    }
+    return value;
+}
+
+const LOGICS = new WeakMap();
+const VALUES = new WeakMap();
 
 export default class Processor {
 
@@ -63,9 +99,10 @@ export default class Processor {
         let logics = LOGICS.get(this);
         let values = VALUES.get(this);
         let buffer = new Map(Object.entries(state));
+        let val = valueEscaper.bind(buffer);
         let res = {};
         logics.forEach((v, k) => {
-            let r = !!v(buffer);
+            let r = !!v(val);
             buffer.set(k, r);
             if (r != values.get(k)) {
                 values.set(k, r);
@@ -94,39 +131,8 @@ export default class Processor {
         return false;
     }
 
-}
+    static get valueEscaper() {
+        return valueEscaper;
+    }
 
-function sortLogic(logics) {
-    let logic_old = new Map(logics);
-    logics.clear();
-    let len = 0;
-    while (!!logic_old.size && logic_old.size != len) {
-        len = logic_old.size;
-        next_rule:
-        for (let rule of logic_old) {
-            for (let i of rule[1].requires) {
-                if (logic_old.has(i)) {
-                    continue next_rule;
-                }
-            }
-            logics.set(rule[0], rule[1]);
-            logic_old.delete(rule[0]);
-        }
-    }
-    if (logic_old.size > 0) {
-        console.error("LOOPS");
-    }
-}
-
-function buildLogic(logic) {
-    let buf = AbstractElement.buildLogic(logic);
-    let req = new Set();
-    while (true) {
-        let m = VALUES_REGEX.exec(buf);
-        if (m == null) break;
-        req.add(m[1]);
-    }
-    let fn = new Function('values', `return ${buf}`);
-    Object.defineProperty(fn, 'requires', {value: req});
-    return fn;
 }
