@@ -1,9 +1,5 @@
 import AbstractElement from "./AbstractElement.js";
 
-function esc(str) {
-    return str.replace(/\\/g, '\\\\').replace(/"/g, '\"');
-}
-
 let REF = new WeakMap();
 
 export default class LiteralNumber extends AbstractElement {
@@ -17,7 +13,7 @@ export default class LiteralNumber extends AbstractElement {
     }
 
     toString() {
-        return `(val("${esc(REF.get(this))}")||0)`;
+        return `(val("${AbstractElement.escape(REF.get(this))}")||0)`;
     }
 
     getDependency(res = new Set()) {

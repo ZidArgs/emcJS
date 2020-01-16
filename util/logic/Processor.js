@@ -12,8 +12,6 @@ import "./elements/OperatorNot.js";
 import "./elements/OperatorOr.js";
 import "./elements/OperatorXor.js";
 
-window.logicProcessors = [];
-
 function sortLogic(logics) {
     let logic_old = new Map(logics);
     logics.clear();
@@ -51,23 +49,20 @@ function mapToObj(map) {
     return res;
 }
 
-function valueEscaper(key) {
-    let value = this.get(key);
-    if (typeof value == "string") {
-        return value.replace(/\\/g, '\\\\').replace(/"/g, '\"');
-    }
-    return value;
+function valueGetter(key) {
+    return this.get(key);
 }
 
 const LOGICS = new WeakMap();
 const VALUES = new WeakMap();
+const CACHE = new WeakMap();
 
 export default class Processor {
 
     constructor() {
         LOGICS.set(this, new Map());
         VALUES.set(this, new Map());
-        window.logicProcessors.push(this);
+        CACHE.set(this, {});
     }
     
     loadLogic(logic) {
@@ -88,18 +83,23 @@ export default class Processor {
             }
             sortLogic(logics);
             console.timeEnd("logic build");
-            return this.execute();
+            this.execute();
         }
     }
 
-    execute(state = {}) {
+    execute(state) {
+        let buffer = CACHE.get(this);
+        if (!!state) {
+            buffer = Object.assign(buffer, state);
+            CACHE.set(this, buffer);
+        }
         console.group("LOGIC EXECUTION");
         console.log("input", state);
         console.time("execution time");
         let logics = LOGICS.get(this);
         let values = VALUES.get(this);
-        let buffer = new Map(Object.entries(state));
-        let val = valueEscaper.bind(buffer);
+        buffer = new Map(Object.entries(buffer));
+        let val = valueGetter.bind(buffer);
         let res = {};
         logics.forEach((v, k) => {
             let r = !!v(val);

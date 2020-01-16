@@ -28,7 +28,7 @@ export default class LiteralValue extends AbstractElement {
     }
 
     toString() {
-        return `(val("${esc(REF.get(this))}")||"")=="${esc(WNT.get(this))}"`;
+        return `(val("${AbstractElement.escape(REF.get(this))}")||"")=="${AbstractElement.escape(WNT.get(this))}"`;
     }
 
     getDependency(res = new Set()) {

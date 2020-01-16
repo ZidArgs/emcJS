@@ -71,6 +71,10 @@ export default class AbstractElement {
         return new (AbstractElement.getReference(`${logic}`));
     }
 
+    static escape(str) {
+        return str.replace(/[\\"]/g, '\\$&');
+    }
+
     toString() {
         throw new TypeError("can not call abstract method");
     }

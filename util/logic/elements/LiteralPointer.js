@@ -17,7 +17,7 @@ export default class LiteralPointer extends AbstractElement {
     }
 
     toString() {
-        return `(val(val("${esc(REF.get(this))}")||"")||0)`;
+        return `(val(val("${AbstractElement.escape(REF.get(this))}")||"")||0)`;
     }
 
     getDependency(res = new Set()) {
