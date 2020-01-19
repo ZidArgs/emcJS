@@ -12,30 +12,30 @@ import "./elements/OperatorNot.js";
 import "./elements/OperatorOr.js";
 import "./elements/OperatorXor.js";
 
-function sortLogic(logics) {
-    let logic_old = new Map(logics);
-    logics.clear();
+function sortLogic(logic) {
+    let value_old = new Map(logic);
+    logic.clear();
     let len = 0;
-    while (!!logic_old.size && logic_old.size != len) {
-        len = logic_old.size;
+    while (!!value_old.size && value_old.size != len) {
+        len = value_old.size;
         next_rule:
-        for (let rule of logic_old) {
+        for (let rule of value_old) {
             for (let i of rule[1].requires) {
-                if (logic_old.has(i)) {
+                if (value_old.has(i)) {
                     continue next_rule;
                 }
             }
-            logics.set(rule[0], rule[1]);
-            logic_old.delete(rule[0]);
+            logic.set(rule[0], rule[1]);
+            value_old.delete(rule[0]);
         }
     }
-    if (logic_old.size > 0) {
+    if (value_old.size > 0) {
         console.error("LOOPS");
     }
 }
 
-function buildLogic(logic) {
-    let buf = AbstractElement.buildLogic(logic);
+function buildLogic(value) {
+    let buf = AbstractElement.buildLogic(value);
     let fn = new Function('val', `return ${buf}`);
     Object.defineProperty(fn, 'requires', {value: buf.getDependency()});
     return fn;
@@ -49,90 +49,113 @@ function mapToObj(map) {
     return res;
 }
 
-function valueGetter(key) {
-    return this.get(key);
+function valueGetter(mem, key) {
+    if (mem.has(key)) {
+        return mem.get(key);
+    }
 }
 
-const LOGICS = new WeakMap();
-const VALUES = new WeakMap();
-const CACHE = new WeakMap();
+const LOGIC = new WeakMap();
+const MEM_I = new WeakMap(); // open mem_iory
+const MEM_O = new WeakMap(); // internal mem_iory
 
 export default class Processor {
 
     constructor() {
-        LOGICS.set(this, new Map());
-        VALUES.set(this, new Map());
-        CACHE.set(this, {});
+        LOGIC.set(this, new Map());
+        MEM_I.set(this, new Map());
+        MEM_O.set(this, new Map());
     }
     
-    loadLogic(logic) {
-        if (typeof logic == "object" && !Array.isArray(logic)) {
-            let logics = LOGICS.get(this);
-            let values = VALUES.get(this);
-            console.time("logic build");
-            for (let name in logic) {
-                if (logic[name] == null) {
-                    logics.delete(name);
-                    values.delete(name);
+    loadLogic(value) {
+        if (typeof value == "object" && !Array.isArray(value)) {
+            let logic = LOGIC.get(this);
+            let mem_o = MEM_O.get(this);
+            console.time("value build");
+            for (let name in value) {
+                if (value[name] == null) {
+                    logic.delete(name);
+                    mem_o.delete(name);
                 } else {
-                    let fn = buildLogic(logic[name]);
+                    let fn = buildLogic(value[name]);
                     Object.defineProperty(fn, 'name', {value: name});
-                    logics.set(name, fn);
-                    values.set(name, false);
+                    logic.set(name, fn);
+                    mem_o.set(name, false);
                 }
             }
-            sortLogic(logics);
-            console.timeEnd("logic build");
+            sortLogic(logic);
+            console.timeEnd("value build");
             this.execute();
         }
     }
 
-    execute(state) {
-        let buffer = CACHE.get(this);
-        if (!!state) {
-            buffer = Object.assign(buffer, state);
-            CACHE.set(this, buffer);
+    setLogic(name, value) {
+        let logic = LOGIC.get(this);
+        if (typeof value == "undefined" || value == null) {
+            logic.delete(name);
+            mem_o.delete(name);
+        } else {
+            let fn = buildLogic(value);
+            Object.defineProperty(fn, 'name', {value: name});
+            logic.set(name, fn);
+            mem_o.set(name, false);
         }
-        console.group("LOGIC EXECUTION");
-        console.log("input", state);
-        console.time("execution time");
-        let logics = LOGICS.get(this);
-        let values = VALUES.get(this);
-        buffer = new Map(Object.entries(buffer));
-        let val = valueGetter.bind(buffer);
+    }
+
+    execute() {
         let res = {};
-        logics.forEach((v, k) => {
+        let logic = LOGIC.get(this);
+        let mem_i = MEM_I.get(this);
+        let mem_o = MEM_O.get(this);
+        console.group("LOGICIC EXECUTION");
+        console.log("input", mem_i);
+        console.time("execution time");
+        let val = valueGetter.bind(this, mem_i);
+        logic.forEach((v, k) => {
             let r = !!v(val);
-            buffer.set(k, r);
-            if (r != values.get(k)) {
-                values.set(k, r);
+            mem_i.set(k, r);
+            if (r != mem_o.get(k)) {
+                mem_o.set(k, r);
                 res[k] = r;
             }
         });
-        console.log("state", mapToObj(values));
+        console.log("state", mapToObj(mem_i));
         console.log("changes", res);
         console.timeEnd("execution time");
-        console.groupEnd("LOGIC EXECUTION");
+        console.groupEnd("LOGICIC EXECUTION");
         return res;
     }
 
-    getValues() {
-        let values = VALUES.get(this);
-        let obj = {};
-        values.forEach((v,k) => {obj[k] = v});
-        return obj;
+    set(key, value) {
+        let mem_i = MEM_I.get(this);
+        mem_i.set(key, value);
     }
 
-    getValue(ref) {
-        let values = VALUES.get(this);
-        if (values.has(ref)) {
-            return values.get(ref);
+    setAll(values) {
+        let mem_i = MEM_I.get(this);
+        if (values instanceof Map) {
+            values.forEach((v, k) => mem_i.set(k, v));
+        } else if (typeof values == "object" && !Array.isArray(values)) {
+            for (let k in values) {
+                let v = values[k];
+                mem_i.set(k, v);
+            }
+        }
+    }
+
+    get(ref) {
+        let mem_o = MEM_O.get(this);
+        if (mem_o.has(ref)) {
+            return mem_o.get(ref);
         }
         return false;
     }
 
-    static get valueEscaper() {
-        return valueEscaper;
+    getAll() {
+        let mem_o = MEM_O.get(this);
+        let obj = {};
+        mem_o.forEach((v,k) => {obj[k] = v});
+        return obj;
     }
 
 }

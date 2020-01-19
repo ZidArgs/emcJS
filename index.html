@@ -46,7 +46,7 @@
                 let logicProcessor = new emcJS.util.logic.Processor();
                 logicProcessor.loadLogic(logic);
 
-                logicProcessor.execute({
+                logicProcessor.setAll({
                     "option.trade_sequence_start_item": "10",
                     "option.water_trial": false,
                     "option.keysanity_boss": "keysanity_boss_keysanity",
@@ -67,30 +67,35 @@
                     "option.light_trial": false,
                     "option.fire_trial": false,
                     "option.doors_open_forest": true
-                });
+                })
+                logicProcessor.execute();
 
-                logicProcessor.execute({
+                logicProcessor.setAll({
                     "item.ocarina": true,
                     "item.song_storm": true
                 });
+                logicProcessor.execute();
 
-                logicProcessor.execute({
+                logicProcessor.setAll({
                     "item.ocarina": false,
                     "item.song_storm": true
                 });
+                logicProcessor.execute();
 
-                logicProcessor.execute({
+                logicProcessor.setAll({
                     "item.bombs": true,
                     "item.ocarina": true,
                     "item.song_storm": true
                 });
+                logicProcessor.execute();
 
-                logicProcessor.execute({
+                logicProcessor.setAll({
                     "item.ocarina": false,
                     "item.song_storm": false,
                 });
+                logicProcessor.execute();
 
-                console.log(logicProcessor.getValues());
+                console.log(logicProcessor.getAll());
             }
 
             init();
