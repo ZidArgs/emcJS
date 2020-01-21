@@ -56,8 +56,8 @@ function valueGetter(mem, key) {
 }
 
 const LOGIC = new WeakMap();
-const MEM_I = new WeakMap(); // open mem_iory
-const MEM_O = new WeakMap(); // internal mem_iory
+const MEM_I = new WeakMap();
+const MEM_O = new WeakMap();
 
 export default class Processor {
 
@@ -172,6 +172,14 @@ export default class Processor {
         let obj = {};
         mem_o.forEach((v,k) => {obj[k] = v});
         return obj;
+    }
+
+    has(ref) {
+        let mem_o = MEM_O.get(this);
+        if (mem_o.has(ref)) {
+            return true;
+        }
+        return false;
     }
 
 }
