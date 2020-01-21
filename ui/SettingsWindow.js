@@ -95,10 +95,6 @@ const TPL = new Template(`
         }
     </style>
     <div id="categories">
-        <div class="category" target="about">About</div>
-    </div>
-    <div class="panel" id="panel_about">
-        <slot></slot>
     </div>
     <div id="footer">
         <button id="submit" title="submit">
@@ -152,7 +148,6 @@ export default class DeepSettingsWindow extends DeepWindow {
         let window = this.shadowRoot.getElementById('window');
         this.shadowRoot.getElementById('body').innerHTML = "";
         this.shadowRoot.insertBefore(els.children[0], this.shadowRoot.getElementById('focus_catcher_top'));
-        this.shadowRoot.getElementById('body').append(els.getElementById('panel_about'));
         let ctgrs = els.getElementById('categories');
         window.insertBefore(ctgrs, this.shadowRoot.getElementById('body'));
         window.append(els.getElementById('footer'));
@@ -278,8 +273,7 @@ export default class DeepSettingsWindow extends DeepWindow {
         cb.className = "category";
         cb.setAttribute('target', id);
         cb.innerHTML = title;
-        let cbt = this.shadowRoot.getElementById('categories');
-        cbt.insertBefore(cb, cbt.children[cbt.children.length - 1]);
+        this.shadowRoot.getElementById('categories').append(cb);
     }
 
     addStringInput(category, label, ref, def) {
@@ -379,6 +373,10 @@ export default class DeepSettingsWindow extends DeepWindow {
         }
         el.append(input);
         this.shadowRoot.getElementById(`panel_${category}`).append(el);
+    }
+
+    addElements(category, content) {
+        this.shadowRoot.getElementById(`panel_${category}`).append(content);
     }
 
 }

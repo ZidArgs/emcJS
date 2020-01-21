@@ -69,9 +69,10 @@ export default class Processor {
     
     loadLogic(value) {
         if (typeof value == "object" && !Array.isArray(value)) {
+            console.group("LOGIC BUILD");
             let logic = LOGIC.get(this);
             let mem_o = MEM_O.get(this);
-            console.time("value build");
+            console.time("build time");
             for (let name in value) {
                 if (value[name] == null) {
                     logic.delete(name);
@@ -84,12 +85,15 @@ export default class Processor {
                 }
             }
             sortLogic(logic);
-            console.timeEnd("value build");
+            console.timeEnd("build time");
             this.execute();
+            console.groupEnd("LOGIC BUILD");
         }
     }
 
     setLogic(name, value) {
+        console.group("LOGIC BUILD");
+        console.time("build time");
         let logic = LOGIC.get(this);
         if (typeof value == "undefined" || value == null) {
             logic.delete(name);
@@ -100,6 +104,10 @@ export default class Processor {
             logic.set(name, fn);
             mem_o.set(name, false);
         }
+        sortLogic(logic);
+        console.timeEnd("build time");
+        this.execute();
+        console.groupEnd("LOGIC BUILD");
     }
 
     execute() {
@@ -107,8 +115,9 @@ export default class Processor {
         let logic = LOGIC.get(this);
         let mem_i = MEM_I.get(this);
         let mem_o = MEM_O.get(this);
-        console.group("LOGICIC EXECUTION");
-        console.log("input", mem_i);
+        console.group("LOGIC EXECUTION");
+        console.log("input", mapToObj(mem_i));
+        console.log("executing logic...");
         console.time("execution time");
         let val = valueGetter.bind(this, mem_i);
         logic.forEach((v, k) => {
@@ -119,19 +128,25 @@ export default class Processor {
                 res[k] = r;
             }
         });
-        console.log("state", mapToObj(mem_i));
-        console.log("changes", res);
+        console.log("success");
         console.timeEnd("execution time");
-        console.groupEnd("LOGICIC EXECUTION");
+        console.log("output", mapToObj(mem_i));
+        console.log("changes", res);
+        console.groupEnd("LOGIC EXECUTION");
         return res;
     }
 
     set(key, value) {
+        console.group("LOGIC MEMORY CHANGE");
+        console.log("change", `${key} => ${value}`);
         let mem_i = MEM_I.get(this);
         mem_i.set(key, value);
+        console.groupEnd("LOGIC MEMORY CHANGE");
     }
 
     setAll(values) {
+        console.group("LOGIC MEMORY CHANGE");
+        console.log("changes", values);
         let mem_i = MEM_I.get(this);
         if (values instanceof Map) {
             values.forEach((v, k) => mem_i.set(k, v));
@@ -141,6 +156,7 @@ export default class Processor {
                 mem_i.set(k, v);
             }
         }
+        console.groupEnd("LOGIC MEMORY CHANGE");
     }
 
     get(ref) {
