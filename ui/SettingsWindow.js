@@ -346,12 +346,13 @@ export default class DeepSettingsWindow extends DeepWindow {
         this.shadowRoot.getElementById(`panel_${category}`).append(el);
     }
 
-    addListSelectInput(category, label, ref, def, multimode, values) {
+    addListSelectInput(category, label, ref, def, multimode, header, values) {
         let el = generateField(label);
         let input = document.createElement("emc-listselect");
         input.className = "settings-input";
         input.setAttribute("type", "list");
         input.multimode = multimode;
+        input.header = header;
         input.value = def;
         input.dataset.ref = ref;
         for (let j in values) {
