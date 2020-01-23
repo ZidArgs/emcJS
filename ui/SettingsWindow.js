@@ -79,7 +79,7 @@ const TPL = new Template(`
             margin-right: 10px;
         }
         emc-listselect {
-            max-height: 300px;
+            height: 300px;
         }
         .settings-input {
             width: 50%;
@@ -346,13 +346,12 @@ export default class DeepSettingsWindow extends DeepWindow {
         this.shadowRoot.getElementById(`panel_${category}`).append(el);
     }
 
-    addListSelectInput(category, label, ref, def, multimode, header, values) {
+    addListSelectInput(category, label, ref, def, multimode, values) {
         let el = generateField(label);
         let input = document.createElement("emc-listselect");
         input.className = "settings-input";
         input.setAttribute("type", "list");
         input.multimode = multimode;
-        input.header = header;
         input.value = def;
         input.dataset.ref = ref;
         for (let j in values) {

@@ -12,7 +12,7 @@ const TPL = new Template(`
             display: flex;
             flex-direction: column;
             min-width: 200px;
-            min-height: 100px;
+            min-height: 200px;
             -webkit-user-select: none;
             -moz-user-select: none;
             user-select: none;
@@ -22,6 +22,7 @@ const TPL = new Template(`
             flex: 1;
             overflow-x: hidden;
             overflow-y: scroll;
+            background-color: #ffffff;
         }
         slot {
             display: block;
@@ -102,31 +103,50 @@ export default class ListSelect extends HTMLElement {
         this.attachShadow({mode: 'open'});
         this.shadowRoot.append(TPL.generate());
         this.shadowRoot.getElementById("container").addEventListener("slotchange", event => {
+            let all = this.querySelectorAll(`[value]`);
+            all.forEach(el => {
+                if (!!el) {
+                    el.onclick = clickOption.bind(this);
+                }
+            });
             this.calculateItems();
         });
         /* header */
         let header = this.shadowRoot.getElementById("header");
         header.addEventListener('check', event => {
-            if (event.value) {
+            if (this.multimode) {
                 let all = this.querySelectorAll(`[value]`);
                 let value = [];
-                all.forEach(el => {
-                    if (!!el && el.style.display == "") {
-                        value.push(el.value);
-                    }
-                });
+                if (event.value) {
+                    all.forEach(el => {
+                        if (!!el && el.style.display == "" || el.classList.contains("active")) {
+                            value.push(el.value);
+                        }
+                    });
+                } else {
+                    all.forEach(el => {
+                        if (!!el && el.style.display == "none" && el.classList.contains("active")) {
+                            value.push(el.value);
+                        }
+                    });
+                }
                 this.value = value;
-            } else {
-                this.value = [];
             }
         });
         header.addEventListener('filter', event => {
             let all = this.querySelectorAll(`[value]`);
+            let checked = false;
+            let unchecked = false;
             if (!!event.value) {
-                let regEx = new RegExp(`.*${event.value.split(" ").join(".*")}.*`, "i")
+                let regEx = new RegExp(`.*${event.value.split(" ").join(".*")}.*`, "i");
                 all.forEach(el => {
-                    if (el.innerHTML.match(regEx)) {
+                    if (el.innerText.match(regEx)) {
                         el.style.display = "";
+                        if (el.classList.contains("active")) {
+                            checked = true;
+                        } else {
+                            unchecked = true;
+                        }
                     } else {
                         el.style.display = "none";
                     }
@@ -134,15 +154,38 @@ export default class ListSelect extends HTMLElement {
             } else {
                 all.forEach(el => {
                     el.style.display = "";
+                    if (el.classList.contains("active")) {
+                        checked = true;
+                    } else {
+                        unchecked = true;
+                    }
                 });
+            }
+            if (this.multimode) {
+                if (checked) {
+                    if (unchecked) {
+                        header.checked = "mixed";
+                    } else {
+                        header.checked = true;
+                    }
+                } else {
+                    header.checked = false;
+                }
             }
         });
     }
 
     connectedCallback() {
-        if (!this.value) {
-            this.value = "";
+        let all = this.querySelectorAll(`[value]`);
+        if (!this.value && !!all.length) {
+            this.value = all[0].value;
         }
+        all.forEach(el => {
+            if (!!el) {
+                el.onclick = clickOption.bind(this);
+            }
+        });
+        this.calculateItems();
     }
 
     get value() {
@@ -180,17 +223,8 @@ export default class ListSelect extends HTMLElement {
         this.setAttribute('readonly', val);
     }
 
-    get header() {
-        let val = this.getAttribute('header');
-        return !!val && val != "false";
-    }
-
-    set header(val) {
-        this.setAttribute('header', val);
-    }
-
     static get observedAttributes() {
-        return ['value', 'multimode', 'header'];
+        return ['value', 'multimode'];
     }
       
     attributeChangedCallback(name, oldValue, newValue) {
@@ -218,51 +252,50 @@ export default class ListSelect extends HTMLElement {
                     header.multimode = newValue;
                 }
                 break;
-            case 'header':
-                if (oldValue != newValue) {
-                    let header = this.shadowRoot.getElementById("header");
-                    if (!!newValue && newValue != "false") {
-                        header.style.display = "";
-                    } else {
-                        header.style.display = "none";
-                    }
-                }
-                break;
         }
     }
     
     calculateItems() {
         let header = this.shadowRoot.getElementById("header");
         let all = this.querySelectorAll(`[value]`);
-        all.forEach(el => {
-            if (!!el) {
-                el.classList.remove("active");
-                el.onclick = clickOption.bind(this);
-            }
-        });
         if (this.multimode) {
-            let count = 0;
-            this.value.forEach(v => {
-                let el = this.querySelector(`[value="${v}"]`);
+            let vals = new Set(this.value);
+            let checked = false;
+            let unchecked = false;
+            all.forEach(el => {
                 if (!!el) {
-                    count++;
-                    el.classList.add("active");
+                    if (vals.has(el.value)) {
+                        el.classList.add("active");
+                        if (el.style.display == "") {
+                            checked = true;
+                        }
+                    } else {
+                        el.classList.remove("active");
+                        if (el.style.display == "") {
+                            unchecked = true;
+                        }
+                    }
                 }
             });
-            if (count > 0) {
-                if (all.length == count) {
-                    header.checked = true;
-                } else {
+            if (checked) {
+                if (unchecked) {
                     header.checked = "mixed";
+                } else {
+                    header.checked = true;
                 }
             } else {
                 header.checked = false;
             }
         } else {
-            let el = this.querySelector(`[value="${this.value}"]`);
-            if (!!el) {
-                el.classList.add("active");
-            }
+            all.forEach(el => {
+                if (!!el) {
+                    if (this.value == el.value) {
+                        el.classList.add("active");
+                    } else {
+                        el.classList.remove("active");
+                    }
+                }
+            });
         }
     }
 

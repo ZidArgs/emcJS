@@ -89,6 +89,15 @@ export default class ListHeader extends HTMLElement {
         });
     }
 
+    connectedCallback() {
+        let selection = this.shadowRoot.getElementById("selection");
+        if (!this.multimode) {
+            selection.style.visibility = "hidden";
+        } else {
+            selection.style.visibility = "";
+        }
+    }
+
     get checked() {
         return this.getAttribute('checked');
     }

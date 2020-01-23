@@ -62,17 +62,27 @@ export default class DeepChoiceSelect extends HTMLElement {
         this.attachShadow({mode: 'open'});
         this.shadowRoot.append(TPL.generate());
         this.shadowRoot.getElementById("container").addEventListener("slotchange", event => {
+            let all = this.querySelectorAll(`[value]`);
+            all.forEach(el => {
+                if (!!el) {
+                    el.onclick = clickOption.bind(this);
+                }
+            });
             this.calculateItems();
         });
     }
 
     connectedCallback() {
-        if (!this.value) {
-            let all = this.querySelectorAll("[value]");
-            if (!!all.length) {
-                this.value = all[0].value;
-            }
+        let all = this.querySelectorAll(`[value]`);
+        if (!this.value && !!all.length) {
+            this.value = all[0].value;
         }
+        all.forEach(el => {
+            if (!!el) {
+                el.onclick = clickOption.bind(this);
+            }
+        });
+        this.calculateItems();
     }
 
     get value() {
@@ -141,24 +151,28 @@ export default class DeepChoiceSelect extends HTMLElement {
     }
     
     calculateItems() {
-        this.querySelectorAll(`[value]`).forEach(el => {
-            if (!!el) {
-                el.classList.remove("active");
-                el.onclick = clickOption.bind(this);
-            }
-        });
+        let all = this.querySelectorAll(`[value]`);
         if (this.multimode) {
-            this.value.forEach(v => {
-                let el = this.querySelector(`[value="${v}"]`);
+            let vals = new Set(this.value);
+            all.forEach(el => {
                 if (!!el) {
-                    el.classList.add("active");
+                    if (vals.has(el.value)) {
+                        el.classList.add("active");
+                    } else {
+                        el.classList.remove("active");
+                    }
                 }
             });
         } else {
-            let el = this.querySelector(`[value="${this.value}"]`);
-            if (!!el) {
-                el.classList.add("active");
-            }
+            all.forEach(el => {
+                if (!!el) {
+                    if (this.value == el.value) {
+                        el.classList.add("active");
+                    } else {
+                        el.classList.remove("active");
+                    }
+                }
+            });
         }
     }
 

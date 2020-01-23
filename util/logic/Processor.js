@@ -1,16 +1,4 @@
-import AbstractElement from "./elements/AbstractElement.js";
-import "./elements/LiteralFalse.js";
-import "./elements/LiteralTrue.js";
-import "./elements/LiteralNumber.js";
-import "./elements/LiteralValue.js";
-import "./elements/OperatorAnd.js";
-import "./elements/OperatorMax.js";
-import "./elements/OperatorMin.js";
-import "./elements/OperatorNand.js";
-import "./elements/OperatorNor.js";
-import "./elements/OperatorNot.js";
-import "./elements/OperatorOr.js";
-import "./elements/OperatorXor.js";
+import Compiler from "./Compiler.js";
 
 function sortLogic(logic) {
     let value_old = new Map(logic);
@@ -32,13 +20,6 @@ function sortLogic(logic) {
     if (value_old.size > 0) {
         console.error("LOOPS");
     }
-}
-
-function buildLogic(value) {
-    let buf = AbstractElement.buildLogic(value);
-    let fn = new Function('val', `return ${buf}`);
-    Object.defineProperty(fn, 'requires', {value: buf.getDependency()});
-    return fn;
 }
 
 function mapToObj(map) {
@@ -78,7 +59,7 @@ export default class Processor {
                     logic.delete(name);
                     mem_o.delete(name);
                 } else {
-                    let fn = buildLogic(value[name]);
+                    let fn = Compiler.compile(value[name]);
                     Object.defineProperty(fn, 'name', {value: name});
                     logic.set(name, fn);
                     mem_o.set(name, false);
@@ -99,7 +80,7 @@ export default class Processor {
             logic.delete(name);
             mem_o.delete(name);
         } else {
-            let fn = buildLogic(value);
+            let fn = Compiler.compile(value);
             Object.defineProperty(fn, 'name', {value: name});
             logic.set(name, fn);
             mem_o.set(name, false);
