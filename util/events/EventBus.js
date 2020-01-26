@@ -1,10 +1,10 @@
 import EventBusAbstractModule from "./EventBusAbstractModule.js";
 
-const ALLS = new Set;
-const SUBS = new Map;
-const MUTED = new Set;
+const ALLS = new Set();
+const SUBS = new Map();
+const MUTED = new Set();
 
-const MODULES = new Set;
+const MODULES = new Set();
 
 function triggerEvent(data = {name:"",data:{}}) {
     if (SUBS.has(data.name)) {
@@ -42,14 +42,13 @@ class EventBus {
             if (Array.isArray(name)) {
                 name.forEach(n => this.register(n, fn));
             } else {
-                let subs;
                 if (!SUBS.has(name)) {
-                    subs = new Set;
+                    let subs = new Set;
+                    subs.add(fn);
                     SUBS.set(name, subs);
                 } else {
-                    subs = SUBS.get(name);
+                    SUBS.get(name).add(fn);
                 }
-                subs.add(fn);
             }
         }
     }
@@ -62,10 +61,7 @@ class EventBus {
                 name.forEach(n => this.unregister(n, fn));
             } else {
                 if (SUBS.has(name)) {
-                    let subs = SUBS.get(name);
-                    if (subs.has(fn)) {
-                        subs.delete(fn);
-                    }
+                    SUBS.get(name).delete(fn);
                 }
             }
         }
@@ -88,7 +84,6 @@ class EventBus {
         if (Array.isArray(name)) {
             name.forEach(n => this.mute(n));
         } else {
-            if (MUTED.has(name)) return;
             MUTED.add(name);
         }
     }
@@ -97,7 +92,6 @@ class EventBus {
         if (Array.isArray(name)) {
             name.forEach(n => this.unmute(n));
         } else {
-            if (!MUTED.has(name)) return;
             MUTED.delete(name);
         }
     }
