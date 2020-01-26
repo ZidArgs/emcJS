@@ -43,7 +43,7 @@
             async function init() {
                 logic = await emcJS.util.FileLoader.json(`logic.json`);
 
-                let logicProcessor = new emcJS.util.logic.Processor();
+                let logicProcessor = new emcJS.util.logic.Processor(true);
                 logicProcessor.loadLogic(logic);
 
                 logicProcessor.setAll({
