@@ -11,8 +11,7 @@ class GlobalData {
             loading.push(FileLoader.json(path).then(function(data) {
                 STORAGE[name] = data;
             }).catch(function(err) {
-                console.error(`error getting contents of file - ${path}`);
-                throw err;
+                throw new Error(`error getting contents of file - ${path}; ${err.message}`);
             }));
         }
         await Promise.all(loading);
