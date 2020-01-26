@@ -1,24 +1,44 @@
 import Compiler from "./Compiler.js";
 
+function resolveCircle(values, path = [], visited = new Set(), start = values.keys().next().value) {
+    if (values.has(start)) {
+        path.push(start);
+        if (visited.has(start)) {
+            return true;
+        }
+        visited.add(start);
+        let value = values.get(start);
+        for (let requirement of value.requires) {
+            if (resolveCircle(values, path, visited, requirement)) {
+                return true;
+            }
+        }
+        visited.delete(start);
+        path.pop();
+    }
+    return false;
+}
+
 function sortLogic(logic) {
     let value_old = new Map(logic);
     logic.clear();
     let len = 0;
     while (!!value_old.size && value_old.size != len) {
         len = value_old.size;
-        next_rule:
-        for (let rule of value_old) {
-            for (let i of rule[1].requires) {
-                if (value_old.has(i)) {
-                    continue next_rule;
+        value_old.forEach((value, key) => {
+            for (let requirement of value.requires) {
+                if (value_old.has(requirement)) {
+                    return;
                 }
             }
-            logic.set(rule[0], rule[1]);
-            value_old.delete(rule[0]);
-        }
+            logic.set(key, value);
+            value_old.delete(key);
+        });
     }
     if (value_old.size > 0) {
-        console.error("LOOPS");
+        let path = [];
+        resolveCircle(value_old, path);
+        throw new Error(`LOGIC LOOP:\n${path.join("\n=> ")}`);
     }
 }
 
