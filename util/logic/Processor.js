@@ -210,4 +210,11 @@ export default class Processor {
         return false;
     }
 
+    reset() {
+        let mem_i = MEM_I.get(this);
+        let mem_o = MEM_O.get(this);
+        mem_i.clear();
+        mem_o.clear();
+    }
+
 }
