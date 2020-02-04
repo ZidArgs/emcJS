@@ -25,7 +25,7 @@ class SessionStorage {
     }
 
     keys(filter) {
-        let keys = Object.keys(localStorage);
+        let keys = Object.keys(sessionStorage);
         if (typeof filter == "string") {
             return keys.filter(key => key.startsWith(filter));
         }
@@ -34,11 +34,9 @@ class SessionStorage {
 
     getAll(filter) {
         let res = {};
-        let k = Object.keys(sessionStorage);
+        let k = this.keys(filter);
         for (let i of k) {
-            if (i.startsWith(filter)) {
-                res[i] = JSON.parse(localStorage.getItem(i));
-            }
+            res[i] = JSON.parse(sessionStorage.getItem(i));
         }
         return res;
     }

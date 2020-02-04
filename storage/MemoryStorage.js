@@ -36,11 +36,9 @@ class MemoryStorage {
 
     getAll(filter) {
         let res = {};
-        let k = STORAGE.keys();
+        let k = this.keys(filter);
         for (let i of k) {
-            if (i.startsWith(filter)) {
-                res[i] = JSON.parse(localStorage.getItem(i));
-            }
+            res[i] = JSON.parse(STORAGE.get(i));
         }
         return res;
     }
