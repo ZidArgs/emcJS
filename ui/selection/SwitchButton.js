@@ -96,6 +96,7 @@ export default class DeepSwitchButton extends HTMLElement {
                     let event = new Event('change');
                     event.oldValue = oldValue;
                     event.newValue = newValue;
+                    event.value = newValue;
                     this.dispatchEvent(event);
                 }
                 break;
