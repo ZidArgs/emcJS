@@ -335,9 +335,6 @@ export default class AbstractElement extends HTMLElement {
                 break;
             case 'value':
                 if (oldValue != newValue) {
-                    if (this.parentElement instanceof AbstractElement) {
-                        this.parentElement.update();
-                    }
                     let event = new Event('update');
                     event.value = this.value;
                     this.dispatchEvent(event);
