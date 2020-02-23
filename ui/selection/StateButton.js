@@ -41,7 +41,7 @@ const TPL = new Template(`
     </slot>
 `);
 
-export default class DeepStateButton extends HTMLElement {
+export default class StateButton extends HTMLElement {
 
     constructor() {
         super();
@@ -141,4 +141,4 @@ export default class DeepStateButton extends HTMLElement {
 
 }
 
-customElements.define('emc-statebutton', DeepStateButton);
+customElements.define('emc-statebutton', StateButton);

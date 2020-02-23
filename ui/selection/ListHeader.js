@@ -5,13 +5,13 @@ const TPL = new Template(`
         :host {
             display: flex;
             padding: 2px 0;
-            background: #f1f1f1;
+            background: var(--list-color-border, #f1f1f1);
         }
         #filter-wrapper {
             display: flex;
             flex: 1;
             margin-right: 15px;
-            background: #ffffff;
+            background: var(--list-color-back, #ffffff);
         }
         #filter-reset {
             display: flex;
@@ -19,7 +19,7 @@ const TPL = new Template(`
             justify-content: center;
             width: 25px;
             height: 25px;
-            color: #aaaaaa;
+            color: var(--list-color-front, #000000);
             font-size: 20px;
             font-weight: bold;
             cursor: pointer;
@@ -28,7 +28,8 @@ const TPL = new Template(`
             flex: 1;
             height: 28px;
             padding: 0 4px;
-            background: #ffffff;
+            color: var(--list-color-front, #000000);
+            background: var(--list-color-back, #ffffff);
             border: none;
             -webkit-appearance: none;
             outline: none;
@@ -92,9 +93,9 @@ export default class ListHeader extends HTMLElement {
     connectedCallback() {
         let selection = this.shadowRoot.getElementById("selection");
         if (!this.multimode) {
-            selection.style.visibility = "hidden";
+            selection.style.display = "none";
         } else {
-            selection.style.visibility = "";
+            selection.style.display = "";
         }
     }
 
@@ -149,9 +150,9 @@ export default class ListHeader extends HTMLElement {
                 if (oldValue != newValue) {
                     let selection = this.shadowRoot.getElementById("selection");
                     if (newValue != "true") {
-                        selection.style.visibility = "hidden";
+                        selection.style.display = "none";
                     } else {
-                        selection.style.visibility = "";
+                        selection.style.display = "";
                     }
                 }
                 break;

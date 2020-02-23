@@ -13,9 +13,6 @@ const TPL = new Template(`
             -webkit-user-select: none;
             -moz-user-select: none;
             user-select: none;
-            border: solid 2px;
-            background-color: #222;
-            border-color: #777;
             overflow: hidden;
         }
         .placeholder {
@@ -31,13 +28,13 @@ const TPL = new Template(`
             display: flex;
             align-items: center;
             top: 0;
-            padding: 8px;
+            padding: 6px 0;
             background-color: #777;
             color: #fff;
         }
         .button {
             padding: 2px;
-            margin-left: 5px;
+            margin: 0 4px;
             background: white;
             color: black;
             cursor: pointer;

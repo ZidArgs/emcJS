@@ -114,7 +114,7 @@ const TPL = new Template(`
     </slot>
 `);
 
-export default class DeepTooltip extends HTMLElement {
+export default class Tooltip extends HTMLElement {
 
     constructor() {
         super();
@@ -132,4 +132,4 @@ export default class DeepTooltip extends HTMLElement {
 
 }
 
-customElements.define('emc-tooltip', DeepTooltip);
+customElements.define('emc-tooltip', Tooltip);

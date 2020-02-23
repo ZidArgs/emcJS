@@ -55,7 +55,7 @@ function loadLayout(layout) {
     }
 }
 
-export default class DeepLayout extends HTMLElement {
+export default class Layout extends HTMLElement {
 
     constructor() {
         super();
@@ -71,4 +71,4 @@ export default class DeepLayout extends HTMLElement {
 
 }
 
-customElements.define('emc-layout', DeepLayout);
+customElements.define('emc-layout', Layout);

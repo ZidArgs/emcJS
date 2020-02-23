@@ -9,6 +9,7 @@ const TPL = new Template(`
             position: relative;
             display: flex;
             flex-direction: column;
+            background-color: #000;
             border: solid 2px #777;
             overflow: hidden;
             -webkit-user-select: none;
@@ -26,7 +27,7 @@ const TPL = new Template(`
             position: relative;
             display: block;
             flex: 1;
-            overflow-x: hidden;
+            overflow-x: auto;
             overflow-y: auto;
         }
     </style>
@@ -34,7 +35,7 @@ const TPL = new Template(`
     <slot id="body"></slot>
 `);
 
-export default class DeepCaptionPanel extends HTMLElement {
+export default class CaptionPanel extends HTMLElement {
 
     constructor() {
         super();
@@ -73,4 +74,4 @@ export default class DeepCaptionPanel extends HTMLElement {
 
 }
 
-customElements.define('emc-captionpanel', DeepCaptionPanel);
+customElements.define('emc-captionpanel', CaptionPanel);

@@ -21,7 +21,7 @@ const TPL = new Template(`
     <slot></slot>
 `);
 
-export default class DeepOption extends HTMLElement {
+export default class Option extends HTMLElement {
 
     constructor() {
         super();
@@ -53,4 +53,4 @@ export default class DeepOption extends HTMLElement {
 
 }
 
-customElements.define('emc-option', DeepOption);
+customElements.define('emc-option', Option);

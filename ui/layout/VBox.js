@@ -33,7 +33,7 @@ const TPL = new Template(`
     </slot>
 `);
 
-export default class DeepVBox extends HTMLElement {
+export default class VBox extends HTMLElement {
 
     constructor() {
         super();
@@ -43,4 +43,4 @@ export default class DeepVBox extends HTMLElement {
 
 }
 
-customElements.define('emc-vbox', DeepVBox);
+customElements.define('emc-vbox', VBox);

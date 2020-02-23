@@ -49,7 +49,7 @@ const TPL = new Template(`
     <slot id="body"></slot>
 `);
 
-export default class DeepCollapsePanel extends HTMLElement {
+export default class CollapsePanel extends HTMLElement {
 
     constructor() {
         super();
@@ -96,4 +96,4 @@ export default class DeepCollapsePanel extends HTMLElement {
 
 }
 
-customElements.define('emc-collapsepanel', DeepCollapsePanel);
+customElements.define('emc-collapsepanel', CollapsePanel);

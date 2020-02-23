@@ -363,13 +363,13 @@ export default class AbstractElement extends HTMLElement {
                 return REG.get(ref);
             }
         }
-        return DeepLogicError;
+        return LogicError;
     }
 
     static buildLogic(logic) {
         if (typeof logic == "object" && !!logic) {
             if (Array.isArray(logic)) {
-                return new DeepLogicError();
+                return new LogicError();
             } else {
                 let cl;
                 if (!!logic.category) {
@@ -441,7 +441,7 @@ export default class AbstractElement extends HTMLElement {
 function buildVisual(logic) {
     if (typeof logic == "object" && !!logic) {
         if (Array.isArray(logic)) {
-            DeepLogicError.getSVG(logic);
+            LogicError.getSVG(logic);
         } else {
             return AbstractElement.getReference(logic.type).getSVG(logic);
         }
@@ -470,7 +470,7 @@ const SVG_E = new Template(`
     </div>
 `);
 
-class DeepLogicError extends AbstractElement {
+class LogicError extends AbstractElement {
 
     constructor() {
         super();
@@ -497,4 +497,4 @@ class DeepLogicError extends AbstractElement {
 
 }
 
-customElements.define('emc-logic-error', DeepLogicError);
+customElements.define('emc-logic-error', LogicError);

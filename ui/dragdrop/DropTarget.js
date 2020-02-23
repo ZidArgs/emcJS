@@ -34,7 +34,7 @@ function allowDrop(event) {
     }
 }
 
-export default class DeepDropTarget extends HTMLElement {
+export default class DropTarget extends HTMLElement {
 
     constructor() {
         super();
@@ -54,4 +54,4 @@ export default class DeepDropTarget extends HTMLElement {
 
 }
 
-customElements.define('emc-droptarget', DeepDropTarget);
+customElements.define('emc-droptarget', DropTarget);

@@ -33,7 +33,7 @@ const TPL = new Template(`
     </slot>
 `);
 
-export default class DeepHBox extends HTMLElement {
+export default class HBox extends HTMLElement {
 
     constructor() {
         super();
@@ -43,4 +43,4 @@ export default class DeepHBox extends HTMLElement {
 
 }
 
-customElements.define('emc-hbox', DeepHBox);
+customElements.define('emc-hbox', HBox);

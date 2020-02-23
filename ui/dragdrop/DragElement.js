@@ -21,7 +21,7 @@ function dragElement(event) {
     event.dataTransfer.setData("id", event.currentTarget.id);
 }
 
-export default class DeepDragElement extends HTMLElement {
+export default class DragElement extends HTMLElement {
 
     constructor() {
         super();
@@ -43,4 +43,4 @@ export default class DeepDragElement extends HTMLElement {
 
 }
 
-customElements.define('emc-dragelement', DeepDragElement);
+customElements.define('emc-dragelement', DragElement);

@@ -1,4 +1,4 @@
-import DeepWindow from "./Window.js";
+import Window from "./Window.js";
 import Template from "../util/Template.js";
 
 const TPL = new Template(`
@@ -85,7 +85,7 @@ function dialogCancel() {
     document.body.removeChild(this);
 }
 
-export default class DeepDialog extends DeepWindow {
+export default class Dialog extends Window {
 
     constructor(options = {}) {
         super(options.title, options.close);
@@ -150,7 +150,7 @@ export default class DeepDialog extends DeepWindow {
     
     static alert(ttl, msg) {
         return new Promise(function(resolve) {
-            let d = new DeepDialog({
+            let d = new Dialog({
                 title: ttl,
                 text: msg,
                 submit: "OK"
@@ -170,7 +170,7 @@ export default class DeepDialog extends DeepWindow {
     
     static confirm(ttl, msg) {
         return new Promise(function(resolve) {
-            let d = new DeepDialog({
+            let d = new Dialog({
                 title: ttl,
                 text: msg,
                 submit: "YES",
@@ -191,7 +191,7 @@ export default class DeepDialog extends DeepWindow {
     
     static prompt(ttl, msg, def) {
         return new Promise(function(resolve) {
-            let d = new DeepDialog({
+            let d = new Dialog({
                 title: ttl,
                 text: msg,
                 submit: "YES",
@@ -222,4 +222,4 @@ export default class DeepDialog extends DeepWindow {
 
 }
 
-customElements.define('emc-dialog', DeepDialog);
+customElements.define('emc-dialog', Dialog);

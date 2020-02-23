@@ -21,7 +21,7 @@ const TPL = new Template(`
     </slot>
 `);
 
-export default class DeepPaging extends HTMLElement {
+export default class Paging extends HTMLElement {
 
     constructor() {
         super();
@@ -55,4 +55,4 @@ export default class DeepPaging extends HTMLElement {
 
 }
 
-customElements.define('emc-paging', DeepPaging);
+customElements.define('emc-paging', Paging);

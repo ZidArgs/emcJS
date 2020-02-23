@@ -109,7 +109,7 @@ const Q_TAB = [
     '[tabindex]:not([tabindex="-1"])'
 ].join(',');
 
-export default class DeepWindow extends HTMLElement {
+export default class Window extends HTMLElement {
 
     constructor(title = "", close = "close") {
         super();
@@ -166,4 +166,4 @@ export default class DeepWindow extends HTMLElement {
 
 }
 
-customElements.define('emc-window', DeepWindow);
+customElements.define('emc-window', Window);

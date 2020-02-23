@@ -1,10 +1,10 @@
 const REG = new Map();
 
-export default class DeepPanel extends HTMLElement {
+export default class Panel extends HTMLElement {
 
     constructor() {
         super();
-        if (new.target === DeepPanel) {
+        if (new.target === Panel) {
             throw new TypeError("can not construct abstract class");
         }
     }
@@ -20,9 +20,9 @@ export default class DeepPanel extends HTMLElement {
         if (REG.has(ref)) {
             return REG.get(ref);
         }
-        //return DeepPanelError;
+        //return PanelError;
     }
 
 }
 
-customElements.define('emc-panel', DeepPanel);
+customElements.define('emc-panel', Panel);

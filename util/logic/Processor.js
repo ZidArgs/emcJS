@@ -123,6 +123,11 @@ export default class Processor {
         this.execute();
     }
 
+    clearLogic() {
+        let logic = LOGIC.get(this);
+        logic.clear();
+    }
+
     execute() {
         let res = {};
         let logic = LOGIC.get(this);

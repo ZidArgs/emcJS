@@ -41,7 +41,7 @@ const TPL = new Template(`
     </slot>
 `);
 
-export default class DeepSwitchButton extends HTMLElement {
+export default class SwitchButton extends HTMLElement {
 
     constructor() {
         super();
@@ -137,4 +137,4 @@ export default class DeepSwitchButton extends HTMLElement {
 
 }
 
-customElements.define('emc-switchbutton', DeepSwitchButton);
+customElements.define('emc-switchbutton', SwitchButton);

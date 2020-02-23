@@ -55,7 +55,7 @@ function clickOption(event) {
     }
 }
 
-export default class DeepChoiceSelect extends HTMLElement {
+export default class ChoiceSelect extends HTMLElement {
 
     constructor() {
         super();
@@ -179,4 +179,4 @@ export default class DeepChoiceSelect extends HTMLElement {
 
 }
 
-customElements.define('emc-choiceselect', DeepChoiceSelect);
+customElements.define('emc-choiceselect', ChoiceSelect);

@@ -28,7 +28,7 @@ const TPL = new Template(`
     </div>
 `);
 
-export default class DeepIcon extends HTMLElement {
+export default class Icon extends HTMLElement {
 
     constructor() {
         super();
@@ -60,4 +60,4 @@ export default class DeepIcon extends HTMLElement {
 
 }
 
-customElements.define('emc-icon', DeepIcon);
+customElements.define('emc-icon', Icon);

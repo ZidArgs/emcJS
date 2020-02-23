@@ -22,14 +22,18 @@ const TPL = new Template(`
             flex: 1;
             overflow-x: hidden;
             overflow-y: scroll;
-            background-color: #ffffff;
+            background-color: var(--list-color-back, #ffffff);
+            scrollbar-color: var(--list-color-hover, #b8b8b8) var(--list-color-border, #f1f1f1);
+        }
+        #scroll-container::-webkit-scrollbar-track {
+            background-color: var(--list-color-border, #f1f1f1);
+        }
+        #scroll-container::-webkit-scrollbar-thumb {
+            background-color: var(--list-color-hover, #b8b8b8);
         }
         slot {
             display: block;
             width: 100%;
-        }
-        ::slotted(:not([value])) {
-            display: none;
         }
         ::slotted([value]) {
             display: flex;
@@ -37,12 +41,12 @@ const TPL = new Template(`
             min-height: 30px;
             padding: 5px;
             white-space: normal;
-            color: #000000;
-            background-color: #ffffff;
+            color: var(--list-color-front, #000000);
+            background-color: var(--list-color-back, #ffffff);
             border-bottom: solid 1px #eee;
         }
         ::slotted([value]:hover) {
-            background-color: #b8b8b8;
+            background-color: var(--list-color-hover, #b8b8b8);
         }
         ::slotted([value])::before {
             margin: 0 10px 0 2px;

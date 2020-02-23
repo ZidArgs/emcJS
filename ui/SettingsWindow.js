@@ -1,4 +1,4 @@
-import DeepWindow from "./Window.js";
+import Window from "./Window.js";
 import Template from "../util/Template.js";
 import "./selection/ListSelect.js";
 
@@ -140,7 +140,7 @@ function settingsSubmit() {
     this.close();
 }
 
-export default class DeepSettingsWindow extends DeepWindow {
+export default class SettingsWindow extends Window {
 
     constructor(title = "Settings", options = {}) {
         super(title, options.close);
@@ -355,7 +355,7 @@ export default class DeepSettingsWindow extends DeepWindow {
         input.value = def;
         input.dataset.ref = ref;
         for (let j in values) {
-            input.append(createDeepOption(j, values[j]));
+            input.append(createOption(j, values[j]));
         }
         el.append(input);
         this.shadowRoot.getElementById(`panel_${category}`).append(el);
@@ -381,7 +381,7 @@ export default class DeepSettingsWindow extends DeepWindow {
 
 }
 
-customElements.define('emc-settingswindow', DeepSettingsWindow);
+customElements.define('emc-settingswindow', SettingsWindow);
 
 function generateField(label) {
     let el = document.createElement("label");
@@ -394,13 +394,6 @@ function generateField(label) {
 }
 
 function createOption(value, content) {
-    let opt = document.createElement('option');
-    opt.value = value;
-    opt.innerHTML = content;
-    return opt;
-}
-
-function createDeepOption(value, content) {
     let opt = document.createElement('emc-option');
     opt.value = value;
     opt.innerHTML = content;

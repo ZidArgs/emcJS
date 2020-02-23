@@ -54,7 +54,7 @@ function closeMenu(event) {
     return false;
 }
 
-export default class DeepContextMenu extends HTMLElement {
+export default class ContextMenu extends HTMLElement {
 
     constructor() {
         super();
@@ -92,4 +92,4 @@ export default class DeepContextMenu extends HTMLElement {
 
 }
 
-customElements.define('emc-contextmenu', DeepContextMenu);
+customElements.define('emc-contextmenu', ContextMenu);
