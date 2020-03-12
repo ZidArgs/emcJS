@@ -6,7 +6,7 @@ const OBSERVER_CONFIG = {
     subtree: true
 };
 
-const MUTATION_OBSERVER = new MutationObserver(function(mutations) {
+const MUTATION_OBSERVER_CALLBACK = function(mutations) {
     mutations.forEach(function(mutation) {
         switch(mutation.type) {
             case "childList":
@@ -35,14 +35,14 @@ const MUTATION_OBSERVER = new MutationObserver(function(mutations) {
             break;
         }
     });
-});
+};
 
-let isObserving = false;
+let observers = new Map();
 let actLang = "";
 let languages = new Map();
 
 function getTranslation(key) {
-    if (languages.has(actLang) && languages.get(actLang).has(key)) {
+    if (languages.get(actLang).has(key)) {
         return languages.get(actLang).get(key).trim();
     }
     Logger.warn(`translation for "${key}" missing`, "I18n");
@@ -50,18 +50,31 @@ function getTranslation(key) {
 }
 
 function applyLanguage() {
-    document.querySelectorAll(`[i18n-content]`).forEach(el=>{
-        el.innerHTML = getTranslation(el.getAttribute("i18n-content"));
+    getAllElements("[i18n-content],[i18n-tooltip]").forEach(el=>{
+        if (el.hasAttribute("i18n-content")) {
+            el.innerHTML = getTranslation(el.getAttribute("i18n-content"));
+        }
+        if (el.hasAttribute("i18n-tooltip")) {
+            el.setAttribute("title", getTranslation(el.getAttribute("i18n-tooltip")));
+        }
     });
-    document.querySelectorAll(`[i18n-tooltip]`).forEach(el=>{
-        el.setAttribute("title", getTranslation(el.getAttribute("i18n-tooltip")));
-    });
+}
+
+function getAllElements(selector = "*", root = document) {
+    let res = Array.from(root.querySelectorAll(selector));
+    let buf = Array.from(root.querySelectorAll("*"));
+    for (let el of buf) {
+        if (el.shadowRoot != null) {
+            res = res.concat(getAllElements(selector, el.shadowRoot));
+        }
+    }
+    return res;
 }
 
 class I18n {
 
     setLanguage(lang) {
-        if (actLang != lang) {
+        if (actLang != lang && languages.has(lang)) {
             actLang = lang;
             applyLanguage();
         }
@@ -86,24 +99,32 @@ class I18n {
     }
 
     translate(key) {
-        return getTranslation(key);
+        if (!!actLang) {
+            return getTranslation(key);
+        }
+        Logger.warn(`no translation loaded`, "I18n");
+        return key;
     }
 
     forceTranslation() {
-        applyLanguage();
-    }
-
-    connect() {
-        if (!isObserving) {
-            isObserving = true;
-            MUTATION_OBSERVER.observe(document.documentElement, OBSERVER_CONFIG);
+        if (!!actLang) {
+            applyLanguage();
         }
     }
 
-    disconnect() {
-        if (!!isObserving) {
-            isObserving = false;
-            MUTATION_OBSERVER.disconnect();
+    connect(element = document.documentElement) {
+        if (!observers.has(element)) {
+            let obs = new MutationObserver(MUTATION_OBSERVER_CALLBACK);
+            obs.observe(element, OBSERVER_CONFIG);
+            observers.set(element, obs);
+        }
+    }
+
+    disconnect(element = document.documentElement) {
+        if (!!observers.has(element)) {
+            let obs = observers.get(element);
+            obs.disconnect();
+            observers.remove(element);
         }
     }
 

@@ -337,8 +337,11 @@ export default class SettingsWindow extends Window {
         let input = document.createElement("select");
         input.className = "settings-input";
         input.setAttribute("type", "input");
-        for (let j in values) {
-            input.append(createOption(j, values[j]));
+        for (let value in values) {
+            let opt = document.createElement('option');
+            opt.value = value;
+            opt.innerHTML = values[value];
+            input.append(opt);
         }
         input.value = def;
         input.dataset.ref = ref;
@@ -354,8 +357,11 @@ export default class SettingsWindow extends Window {
         input.multimode = multimode;
         input.value = def;
         input.dataset.ref = ref;
-        for (let j in values) {
-            input.append(createOption(j, values[j]));
+        for (let value in values) {
+            let opt = document.createElement('emc-option');
+            opt.value = value;
+            opt.innerHTML = values[value];
+            input.append(opt);
         }
         el.append(input);
         this.shadowRoot.getElementById(`panel_${category}`).append(el);
@@ -391,11 +397,4 @@ function generateField(label) {
     text.className = "option-text";
     el.append(text);
     return el;
-}
-
-function createOption(value, content) {
-    let opt = document.createElement('emc-option');
-    opt.value = value;
-    opt.innerHTML = content;
-    return opt;
 }
