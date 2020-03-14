@@ -2,32 +2,26 @@ import EventBus from "./EventBus.js";
 
 const ALLS = new WeakMap();
 const SUBS = new WeakMap();
-const MUTED = new WeakMap();
 
 export default class EventBusSubset {
 
     constructor() {
         SUBS.set(this, new Map());
         ALLS.set(this, new Set());
-        MUTED.set(this, new Set());
         EventBus.register((data = {name:"",data:{}}) => {
-            if (!MUTED.get(this).has(data.name)) {
-                if (SUBS.get(this).has(data.name)) {
-                    SUBS.get(this).get(data.name).forEach(function(fn) {
-                        fn(data);
-                    });
-                }
-                ALLS.get(this).forEach(function(fn) {
+            if (SUBS.get(this).has(data.name)) {
+                SUBS.get(this).get(data.name).forEach(function(fn) {
                     fn(data);
                 });
             }
+            ALLS.get(this).forEach(function(fn) {
+                fn(data);
+            });
         });
     }
 
     trigger(name, data) {
-        if (!MUTED.get(this).has(name)) {
-            EventBus.trigger(name, data);
-        }
+        EventBus.trigger(name, data);
     }
 
     register(name, fn) {
@@ -65,22 +59,6 @@ export default class EventBusSubset {
     clear() {
         ALLS.get(this).clear();
         SUBS.get(this).clear();
-    }
-
-    mute(name) {
-        if (Array.isArray(name)) {
-            name.forEach(n => this.mute(n));
-        } else {
-            MUTED.get(this).add(name);
-        }
-    }
-
-    unmute(name) {
-        if (Array.isArray(name)) {
-            name.forEach(n => this.unmute(n));
-        } else {
-            MUTED.get(this).delete(name);
-        }
     }
 
 }

@@ -2,9 +2,8 @@ import EventBusAbstractModule from "./EventBusAbstractModule.js";
 
 const ALLS = new Set();
 const SUBS = new Map();
-const MUTED = new Set();
 
-const MODULES = new Set();
+const MODULES = new Map();
 
 function triggerEvent(data = {name:"",data:{}}) {
     if (SUBS.has(data.name)) {
@@ -19,10 +18,16 @@ function triggerEvent(data = {name:"",data:{}}) {
 
 class EventBus {
 
-    addModule(module) {
+    addModule(module, options = {}) {
         if (module instanceof EventBusAbstractModule) {
-            MODULES.add(module);
-            module.onModuleEvent = triggerEvent;
+            MODULES.set(module, options);
+            module.onModuleEvent = payload => {
+                if (!Array.isArray(options.whitelist) || options.whitelist.indexOf(name) >= 0) {
+                    if (!Array.isArray(options.blacklist) || options.blacklist.indexOf(name) < 0) {
+                        triggerEvent(payload);
+                    }
+                }
+            };
         }
     }
 
@@ -68,32 +73,18 @@ class EventBus {
     }
 
     trigger(name, data = {}) {
-        if (!MUTED.has(name)) {
-            let payload = {
-                name: name,
-                data: data
-            };
-            triggerEvent(payload);
-            for (let module of MODULES) {
-                module.triggerModuleEvent(payload);
+        let payload = {
+            name: name,
+            data: data
+        };
+        triggerEvent(payload);
+        MODULES.forEach((options, module) => {
+            if (!Array.isArray(options.whitelist) || options.whitelist.indexOf(name) >= 0) {
+                if (!Array.isArray(options.blacklist) || options.blacklist.indexOf(name) < 0) {
+                    module.triggerModuleEvent(payload);
+                }
             }
-        }
-    }
-
-    mute(name) {
-        if (Array.isArray(name)) {
-            name.forEach(n => this.mute(n));
-        } else {
-            MUTED.add(name);
-        }
-    }
-
-    unmute(name) {
-        if (Array.isArray(name)) {
-            name.forEach(n => this.unmute(n));
-        } else {
-            MUTED.delete(name);
-        }
+        });
     }
 
 }
