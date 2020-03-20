@@ -2,7 +2,7 @@ import FileLoader from "../util/FileLoader.js";
 
 const STORAGE = {};
 
-class GlobalData {
+class FileData {
 
     async load(files) {
         let loading = [];
@@ -17,23 +17,25 @@ class GlobalData {
         await Promise.all(loading);
     }
 
-    get(name, def = null) {
-        let path = name.split("/");
+    get(path, def = null) {
+        let sp = path.split("/");
         let data = STORAGE;
-        while (!!path.length) {
-            let ref = path.shift();
-            if (data.hasOwnProperty(ref)) {
-                data = data[ref];
-            } else {
-                return def;
+        while (!!sp.length) {
+            let ref = sp.shift();
+            if (typeof data == "object") {
+                if (data.hasOwnProperty(ref)) {
+                    data = data[ref];
+                } else {
+                    return def;
+                }
             }
         }
         if (typeof data == "undefined") {
             return def;
         }
-        return data;
+        return JSON.parse(JSON.stringify(data));
     }
 
 }
 
-export default new GlobalData;
+export default new FileData;

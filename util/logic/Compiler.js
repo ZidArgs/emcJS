@@ -2,6 +2,9 @@ let dependencies = null;
 
 function escape(str, def = "") {
     if (typeof str != "string") {
+        if (typeof str == "number" && !isNaN(str)) {
+            return str;
+        }
         return def;
     }
     let res = str.replace(/[\\"]/g, '\\$&');
@@ -41,8 +44,8 @@ function buildLogic(logic) {
             case 'not': return `!(${buildLogic(logic.el[0])})`;
             case 'xor': return twoElementOperation(logic.el, "^");
             /* restrictors */
-            case 'min': return `(${buildLogic(logic.el[0])}>=${escape(logic.value, 0)})`;
-            case 'max': return `(${buildLogic(logic.el[0])}<=${escape(logic.value, 0)})`;
+            case 'min': return `(${buildLogic(logic.el)}>=${escape(logic.value, 0)})`;
+            case 'max': return `(${buildLogic(logic.el)}<=${escape(logic.value, 0)})`;
             /* comparators */
             case 'eq': return twoElementOperation(logic.el, "==");
             case 'neq': return twoElementOperation(logic.el, "!=");
