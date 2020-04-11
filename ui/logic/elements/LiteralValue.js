@@ -37,12 +37,12 @@ export default class LiteralValue extends AbstractElement {
         this.setAttribute('ref', val);
     }
 
-    get expects() {
-        return this.getAttribute('expects');
+    get value() {
+        return this.getAttribute('value');
     }
 
-    set expects(val) {
-        this.setAttribute('expects', val);
+    set value(val) {
+        this.setAttribute('value', val);
     }
 
     get category() {
@@ -55,19 +55,20 @@ export default class LiteralValue extends AbstractElement {
 
     calculate(state = {}) {
         if (state.hasOwnProperty(this.ref)) {
-            let val = +(state[this.ref] == this.expects);
+            let val = !!this.value ? +(state[this.ref] == this.value) : +!!state[this.ref];
             this.shadowRoot.getElementById('header').setAttribute('value', val);
             return val;
+        } else {
+            this.shadowRoot.getElementById('header').setAttribute('value', "0");
+            return 0;
         }
-        this.shadowRoot.getElementById('header').setAttribute('value', "0");
-        return 0;
     }
 
     loadLogic(logic) {
         this.ref = logic.el;
         this.shadowRoot.getElementById("ref").innerHTML = this.ref;
-        this.expects = logic.value;
-        this.shadowRoot.getElementById('value').innerHTML = this.expects;
+        this.value = logic.value;
+        this.shadowRoot.getElementById('value').innerHTML = this.value;
         this.category = logic.category;
         if (!!logic.category) {
             this.shadowRoot.getElementById('header').innerHTML = `${TPL_CAPTION}(${logic.category.toUpperCase()})`;
@@ -79,14 +80,14 @@ export default class LiteralValue extends AbstractElement {
             return {
                 type: "value",
                 el: this.ref,
-                value: this.expects,
+                value: this.value,
                 category: this.category
             };
         } else {
             return {
                 type: "value",
                 el: this.ref,
-                value: this.expects
+                value: this.value
             };
         }
     }
