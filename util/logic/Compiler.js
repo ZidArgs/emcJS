@@ -41,7 +41,7 @@ function buildLogic(logic) {
             case 'nand': return `!(${logic.el.map(buildLogic).join("&&")||0})`;
             case 'or': return `(${logic.el.map(buildLogic).join("||")||0})`;
             case 'nor': return `!(${logic.el.map(buildLogic).join("||")||0})`;
-            case 'not': return `!(${buildLogic(logic.el[0])})`;
+            case 'not': return `!(${buildLogic(logic.el)})`;
             case 'xor': return twoElementOperation(logic.el, "^");
             /* restrictors */
             case 'min': return `(${buildLogic(logic.el)}>=${escape(logic.value, 0)})`;
