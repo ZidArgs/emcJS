@@ -2,59 +2,6 @@ import Template from "../util/Template.js";
 
 const TPL = new Template(`
 <style>
-    @media (max-width: 500px) {
-        #container {
-            display: block;
-            width: 100vw;
-        }
-        #container #hamburger-button {
-            display: inline-block;
-        }
-        #container.open #navigation > ul {
-            left: 0;
-        }
-        #navigation ul li {
-            width: 100%;
-        }
-        #navigation ul li > * {
-            height: 40px;
-        }
-        #navigation ul li > .hamburger-hide {
-            display: none;
-        }
-        #navigation > ul {
-            position: absolute;
-            width: 100vw;
-            left: -100vw;
-            padding-right: 60px;
-            flex-direction: column;
-            transition: left 0.2s;
-        }
-        #navigation > ul > li > ul {
-            display: table;
-            width: 100%;
-            padding: 0px;
-        }
-        #navigation > ul > li > ul:not(:last-child) {
-            padding-bottom: 4px;
-        }
-    }
-    @media (min-width: 501px) {
-        #navigation > ul {
-            width: 100%;
-        }
-        #navigation > ul > li:hover > ul {
-            display: table;
-        }
-        #navigation > ul > li > ul {
-            position: absolute;
-            display: none;
-            top: 100%;
-        }
-        #navigation > ul > li > ul > li {
-            display: inline-block;
-        }
-    }
     #container {
         display: content;
     }
@@ -179,6 +126,59 @@ const TPL = new Template(`
     button:disabled {
         opacity: 0.3;
     }
+    @media (max-width: 500px) {
+        #container {
+            display: block;
+            width: 100vw;
+        }
+        #container #hamburger-button {
+            display: inline-block;
+        }
+        #container.open #navigation > ul {
+            left: 0;
+        }
+        #navigation ul li {
+            width: 100%;
+        }
+        #navigation ul li > * {
+            height: 40px;
+        }
+        #navigation ul li > .hamburger-hide {
+            display: none;
+        }
+        #navigation > ul {
+            position: absolute;
+            width: 100vw;
+            left: -100vw;
+            padding-right: 60px;
+            flex-direction: column;
+            transition: left 0.2s;
+        }
+        #navigation > ul > li > ul {
+            display: table;
+            width: 100%;
+            padding: 0px;
+        }
+        #navigation > ul > li > ul:not(:last-child) {
+            padding-bottom: 4px;
+        }
+    }
+    @media (min-width: 501px) {
+        #navigation > ul {
+            width: 100%;
+        }
+        #navigation > ul > li:hover > ul {
+            display: table;
+        }
+        #navigation > ul > li > ul {
+            position: absolute;
+            display: none;
+            top: 100%;
+        }
+        #navigation > ul > li > ul > li {
+            display: inline-block;
+        }
+    }
 </style>
 <div id="container">
     <nav id="navigation">
@@ -200,9 +200,9 @@ export class NavBar extends HTMLElement {
         this.attachShadow({mode: 'open'});
         this.shadowRoot.append(TPL.generate());
 
-        this.shadowRoot.getElementById("hamburger-button").onclick = function(event) {
+        this.shadowRoot.getElementById("hamburger-button").onclick = (event) => {
             this.shadowRoot.getElementById("container").classList.toggle("open");
-        }
+        };
     }
 
     loadNavigation(config) {

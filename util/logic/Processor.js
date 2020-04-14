@@ -56,6 +56,7 @@ function valueGetter(mem, key) {
     }
 }
 
+const DIRTY = new WeakMap();
 const LOGIC = new WeakMap();
 const MEM_I = new WeakMap();
 const MEM_O = new WeakMap();
@@ -64,6 +65,7 @@ const DEBUG = new WeakMap();
 export default class Processor {
 
     constructor(debug = false) {
+        DIRTY.set(this, false);
         LOGIC.set(this, new Map());
         MEM_I.set(this, new Map());
         MEM_O.set(this, new Map());
@@ -95,7 +97,7 @@ export default class Processor {
                 console.timeEnd("build time");
                 console.groupEnd("LOGIC BUILD");
             }
-            this.execute();
+            DIRTY.set(this, true);
         }
     }
 
@@ -120,12 +122,13 @@ export default class Processor {
             console.timeEnd("build time");
             console.groupEnd("LOGIC BUILD");
         }
-        this.execute();
+        DIRTY.set(this, true);
     }
 
     clearLogic() {
         let logic = LOGIC.get(this);
         logic.clear();
+        DIRTY.set(this, true);
     }
 
     execute() {
@@ -156,6 +159,7 @@ export default class Processor {
             console.log("changes", res);
             console.groupEnd("LOGIC EXECUTION");
         }
+        DIRTY.set(this, false);
         return res;
     }
 
@@ -170,6 +174,7 @@ export default class Processor {
         if (debug) {
             console.groupEnd("LOGIC MEMORY CHANGE");
         }
+        DIRTY.set(this, true);
     }
 
     setAll(values) {
@@ -190,6 +195,7 @@ export default class Processor {
         if (debug) {
             console.groupEnd("LOGIC MEMORY CHANGE");
         }
+        DIRTY.set(this, true);
     }
 
     get(ref) {
@@ -220,6 +226,11 @@ export default class Processor {
         let mem_o = MEM_O.get(this);
         mem_i.clear();
         mem_o.clear();
+        DIRTY.set(this, true);
+    }
+
+    isDirty() {
+        return DIRTY.get(this);
     }
 
 }
