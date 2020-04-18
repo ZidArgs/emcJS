@@ -7,6 +7,7 @@ const TPL = new Template(`
         justify-content: space-between;
         top: 0;
         width: 100%;
+        min-height: 40px;
         padding: 2px 10px;
         background-color: var(--navigation-background-color, #ffffff);
         color: var(--navigation-text-color, #000000);
