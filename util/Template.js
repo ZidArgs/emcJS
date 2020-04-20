@@ -1,5 +1,4 @@
 const TEMPLATE = new WeakMap;
-const PARSER = new DOMParser;
 
 export default class Template {
 

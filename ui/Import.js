@@ -3,14 +3,8 @@ import Template from "../util/Template.js";
 
 const TPL = new Template(`
     <style>
-        * {
-            box-sizing: border-box;
-        }
         :host {
-            position: relative;
-            display: block;
-            min-width: 100%;
-            min-height: 100%;
+            display: content;
         }
     </style>
     <slot>

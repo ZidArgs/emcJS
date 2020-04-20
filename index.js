@@ -1,12 +1,11 @@
 import mixins_EventBusSubset from "./mixins/EventBusSubset.js";
 import model_type_AbstractType from "./model/type/AbstractType.js";
 import model_type_TypeString from "./model/type/TypeString.js";
-import storage_AdvancedIDBStorage from "./storage/AdvancedIDBStorage.js";
 import storage_FileData from "./storage/FileData.js";
+import storage_IDBStorage from "./storage/IDBStorage.js";
 import storage_LocalStorage from "./storage/LocalStorage.js";
 import storage_MemoryStorage from "./storage/MemoryStorage.js";
 import storage_SessionStorage from "./storage/SessionStorage.js";
-import storage_SimpleIDBStorage from "./storage/SimpleIDBStorage.js";
 import ui_BusyIndicator from "./ui/BusyIndicator.js";
 import ui_CaptionPanel from "./ui/CaptionPanel.js";
 import ui_CollapsePanel from "./ui/CollapsePanel.js";
@@ -39,6 +38,7 @@ import ui_logic_elements_OperatorNor from "./ui/logic/elements/OperatorNor.js";
 import ui_logic_elements_OperatorNot from "./ui/logic/elements/OperatorNot.js";
 import ui_logic_elements_OperatorOr from "./ui/logic/elements/OperatorOr.js";
 import ui_logic_elements_OperatorXor from "./ui/logic/elements/OperatorXor.js";
+import ui_NavBar from "./ui/NavBar.js";
 import ui_Paging from "./ui/Paging.js";
 import ui_PopOver from "./ui/PopOver.js";
 import ui_selection_ChoiceSelect from "./ui/selection/ChoiceSelect.js";
@@ -86,12 +86,11 @@ let index = {
         }
     },
     "storage": {
-        "AdvancedIDBStorage": storage_AdvancedIDBStorage,
         "FileData": storage_FileData,
+        "IDBStorage": storage_IDBStorage,
         "LocalStorage": storage_LocalStorage,
         "MemoryStorage": storage_MemoryStorage,
-        "SessionStorage": storage_SessionStorage,
-        "SimpleIDBStorage": storage_SimpleIDBStorage
+        "SessionStorage": storage_SessionStorage
     },
     "ui": {
         "BusyIndicator": ui_BusyIndicator,
@@ -134,6 +133,7 @@ let index = {
                 "OperatorXor": ui_logic_elements_OperatorXor
             }
         },
+        "NavBar": ui_NavBar,
         "Paging": ui_Paging,
         "PopOver": ui_PopOver,
         "selection": {
