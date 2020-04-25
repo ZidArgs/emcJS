@@ -1,3 +1,4 @@
+import DragDropMemory from "../../util/DragDropMemory.js";
 import Template from "../../util/Template.js";
 
 const TPL = new Template(`
@@ -16,22 +17,25 @@ const TPL = new Template(`
 `);
 
 function dropElement(event) {
-    let el = document.getElementById(event.dataTransfer.getData("id"));
-    if (!!el) {
-        this.append(el);
+    let els = DragDropMemory.get();
+    if (!!els.length) {
+        this.append(els);
     }
+    DragDropMemory.clear();
     event.preventDefault();
     event.stopPropagation();
 }
 
 function allowDrop(event) {
+    let els = DragDropMemory.get();
     if (!this.group) {
         event.preventDefault();
         event.stopPropagation();
-    } else if (!!event.dataTransfer && event.dataTransfer.getData('group') === this.group) {
+    } else if (els.every(e => e.group == this.group)) {
         event.preventDefault();
         event.stopPropagation();
     }
+    
 }
 
 export default class DropTarget extends HTMLElement {

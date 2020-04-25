@@ -1,3 +1,4 @@
+import DragDropMemory from "../../util/DragDropMemory.js";
 import UniqueGenerator from "../../util/UniqueGenerator.js";
 import Template from "../../util/Template.js";
 
@@ -17,8 +18,8 @@ const TPL = new Template(`
 `);
 
 function dragElement(event) {
-    event.dataTransfer.setData("group", event.currentTarget.group || "");
-    event.dataTransfer.setData("id", event.currentTarget.id);
+    DragDropMemory.add(event.currentTarget);
+    event.stopPropagation();
 }
 
 export default class DragElement extends HTMLElement {
