@@ -18,6 +18,7 @@ const TPL = new Template(`
 `);
 
 function dragElement(event) {
+    DragDropMemory.clear();
     DragDropMemory.add(event.currentTarget);
     event.stopPropagation();
 }
