@@ -16,6 +16,7 @@ const TPL = new Template(`
         }
         #text {
             display: block;
+            margin: 8px 0px;
             word-wrap: break-word;
             resize: none;
         }
@@ -198,7 +199,6 @@ export default class Dialog extends Window {
                 cancel: "NO"
             });   
             let el = document.createElement("input");
-            el.style.width = "100%";
             el.style.padding = "5px";
             el.style.backgroundColor = "white";
             el.style.border = "solid 1px black";

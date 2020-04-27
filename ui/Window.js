@@ -56,7 +56,8 @@ const TPL = new Template(`
             line-height: 1em;
         }
         #body {
-            display: block;
+            display: flex;
+            flex-direction: column;
             padding: 5px;
             min-height: 10vh;
             max-height: 50vh;
