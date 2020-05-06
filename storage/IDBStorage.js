@@ -58,10 +58,10 @@ export default class IDBStorage {
 			let request = transaction.get(key);
 			request.onsuccess = function(e) {
 				let res = e.target.result;
-				if (typeof res == "undefined") {
-					resolve(value);
-				} else {
+				if (res != null) {
 					resolve(res);
+				} else {
+					resolve(value);
 				}
 			};
 			request.onerror = function(e) {

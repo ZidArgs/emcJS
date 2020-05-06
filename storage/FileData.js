@@ -17,7 +17,7 @@ class FileData {
         await Promise.all(loading);
     }
 
-    get(path, def = null) {
+    get(path, value = null) {
         let sp = path.split("/");
         let data = STORAGE;
         while (!!sp.length) {
@@ -26,14 +26,14 @@ class FileData {
                 if (data.hasOwnProperty(ref)) {
                     data = data[ref];
                 } else {
-                    return def;
+                    return value;
                 }
             }
         }
-        if (typeof data == "undefined") {
-            return def;
+        if (data != null) {
+            return JSON.parse(JSON.stringify(data));
         }
-        return JSON.parse(JSON.stringify(data));
+        return value;
     }
 
 }

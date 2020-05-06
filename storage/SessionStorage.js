@@ -6,10 +6,10 @@ class SessionStorage {
 
     get(key, value) {
         let res = sessionStorage.getItem(key);
-        if (typeof res == "undefined" || res == null) {
-            return value;
+        if (res != null) {
+            return JSON.parse(res);
         }
-        return JSON.parse(res);
+        return value;
     }
 
     has(key) {
