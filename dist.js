@@ -1,10 +1,5 @@
 const fs = require('fs');
-const { execSync } = require('child_process');
 
-// TODO get version number from user
-// check new version number
-
-// TODO create index
 function resolveFiles(path, imports) {
     let result = {};
     let files = fs.readdirSync(path , {
@@ -33,15 +28,3 @@ function createIndex() {
 }
 
 createIndex();
-
-/*
-execSync('git add index.js');
-execSync('git commit -m "added index"');
-execSync('git push');
-
-// TODO set new version number
-
-
-execSync(`git tag -a ${version} -m "v${version}"`);
-execSync('git push --tags origin');
-*/
