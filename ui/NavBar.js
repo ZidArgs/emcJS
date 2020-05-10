@@ -8,7 +8,6 @@ const TPL = new Template(`
         top: 0;
         width: 100%;
         min-height: 40px;
-        padding: 2px 10px;
         background-color: var(--navigation-background-color, #ffffff);
         color: var(--navigation-text-color, #000000);
         flex-grow: 0;
@@ -19,7 +18,7 @@ const TPL = new Template(`
         box-sizing: border-box;
     }
     #container {
-        display: inline-flex;
+        display: iblock;
         margin: 0;
         z-index: 100;
     }
@@ -39,10 +38,6 @@ const TPL = new Template(`
         padding: 5px;
         background-color: var(--navigation-background-color, #ffffff);
     }
-    ul#content {
-        display: inline-flex;
-        margin: 0;
-    }     
     ul > li {
         display: inline-block;
     }
@@ -59,13 +54,18 @@ const TPL = new Template(`
         width: 100px;
         z-index: 100;
     }
+    ul#content {
+        display: inline-flex;
+        margin: 0;
+    }
     #hamburger-button {
         position: relative;
         display: none;
         width: 40px;
         height: 40px;
+        padding: 0px;
         margin: 4px;
-        transition: transform 0.2s;
+        transition: transform 0.2s ease-in-out;
         z-index: 1000;
     }
     #hamburger-button div {
@@ -87,7 +87,7 @@ const TPL = new Template(`
         transform: translateY(8px);
     }
     #container.open ~ #hamburger-button {
-        transform: translateX(calc(100vw - 60px));
+        transform: translateX(calc(100vw - 50px));
     }
     #container.open ~ #hamburger-button div:nth-child(1) {
         transform: rotate(45deg);
@@ -102,19 +102,22 @@ const TPL = new Template(`
         display: none;
     }
     button {
-        appearance: none;
+        display: flex;
+        justify-content: center;
+        align-items: center;
         height: 26px;
-        padding: 5px;
         border: none;
         border-radius: 0;
         background-color: var(--navigation-background-color, #ffffff);
         color: var(--navigation-text-color, #000000);
-        outline: none;
-        text-decoration: none;
         font-weight: bold;
         font-size: 1em;
         text-align: center;
         cursor: pointer;
+        outline: none;
+        text-decoration: none;
+        appearance: none;
+        user-select: none;
     }
     button:hover {
         box-shadow: inset 0px 0px 2px 1px;
@@ -128,6 +131,20 @@ const TPL = new Template(`
     ul li > button {
         width: 100%;
     }
+    ul#content > li.expandable > button:before {
+        display: block;
+        padding-right: 5px;
+        border-top: solid transparent 4px;
+        border-left: solid var(--navigation-text-color, #000000) 6px;
+        border-bottom: solid transparent 4px;
+        border-right: solid transparent 0px;
+        transition: transform 0.2s ease-in-out;
+        transform-origin: 3px 4px;
+        content: "";
+    }
+    ul#content > li.expandable.open > button:before {
+        transform: rotate(90deg);
+    }
     @media (max-width: 500px) {
         :host {
             display: block;
@@ -139,7 +156,7 @@ const TPL = new Template(`
             left: -100vw;
             height: 100vh;
             padding-right: 50px;
-            transition: left 0.2s;
+            transition: left 0.2s ease-in-out;
         }
         #container.open {
             left: 0;
@@ -172,22 +189,31 @@ const TPL = new Template(`
         }
         button {
             height: 40px;
-            padding: 10px;
-            text-align: left;
+            padding-left: 10px;
+            justify-content: flex-start;
         }
     }
     @media (min-width: 501px) {
-        ul#content {
-            width: 100%;
-            flex-wrap: wrap;
+        #container.cover {
+            position: absolute;
+            width: 100vw;
+            height: 100vh;
         }
-        ul#content > li:hover > ul {
-            display: table;
+        ul#content {
+            flex-wrap: wrap;
+            width: 100%;
+            padding: 2px 10px;
         }
         ul#content > li > ul {
             position: absolute;
-            display: none;
+            display: table;
             top: 100%;
+            transition: transform 0.2s ease-in-out;
+            transform-origin: center top;
+            transform: scaleY(0);
+        }
+        ul#content > li.open > ul {
+            transform: scaleY(1);
         }
         ul#content > li > ul > li {
             display: inline-block;
@@ -211,11 +237,25 @@ export class NavBar extends HTMLElement {
         super();
         this.attachShadow({mode: 'open'});
         this.shadowRoot.append(TPL.generate());
+        let container = this.shadowRoot.getElementById("container");
+        let content = this.shadowRoot.getElementById("content");
         this.shadowRoot.getElementById("hamburger-button").onclick = (event) => {
-            this.shadowRoot.getElementById("container").classList.toggle("open");
+            if (container.classList.contains("open")) {
+                container.classList.remove("open");
+                container.classList.remove("cover");
+                content.querySelectorAll(".open").forEach(function(el) {
+                    el.classList.remove("open");
+                });
+            } else {
+                container.classList.add("open");
+            }
         };
-        this.shadowRoot.getElementById("container").onclick = (event) => {
-            this.shadowRoot.getElementById("container").classList.remove("open");
+        container.onclick = (event) => {
+            container.classList.remove("open");
+            container.classList.remove("cover");
+            content.querySelectorAll(".open").forEach(function(el) {
+                el.classList.remove("open");
+            });
         };
     }
 
@@ -265,14 +305,31 @@ export class NavBar extends HTMLElement {
                     subcontent.append(subel);
                 }
                 el.append(subcontent);
+                el.classList.add("expandable");
                 btn.addEventListener("click", (event) => {
-                    el.classList.toggle("open");
+                    let container = this.shadowRoot.getElementById("container");
+                    if (el.classList.contains("open")) {
+                        el.classList.remove("open");
+                        container.classList.remove("cover");
+                    } else {
+                        content.querySelectorAll(".open").forEach(function(el) {
+                            el.classList.remove("open");
+                        });
+                        el.classList.add("open");
+                        container.classList.add("cover");
+                    }
                     event.stopPropagation();
                     return false;
                 });
             }
             content.append(el);
         }
+    }
+
+    open() {
+    }
+
+    close() {
     }
 
 }
