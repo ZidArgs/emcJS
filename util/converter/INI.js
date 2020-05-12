@@ -17,7 +17,7 @@ class INI {
             if(GROUP.test(line)) {
                 act = line.slice(1, -1);
                 if (output[act] != null) {
-                    throw new SyntaxError(`Duplicate section in INI at line ${i + 1}: ${line}`);
+                    throw new SyntaxError(`Duplicate section in INI at line ${i + 1}:\n${line}`);
                 }
                 output[act] = output[act] || {};
                 continue;
@@ -25,12 +25,12 @@ class INI {
             if(VALUE.test(line)) {
                 let data = line.split("=");
                 if (typeof output[act][data[0]] === "string") {
-                    throw new SyntaxError(`Duplicate key in INI at line ${i + 1}: ${line}`);
+                    throw new SyntaxError(`Duplicate key in INI at line ${i + 1}:\n${line}`);
                 }
                 output[act][data[0]] = data[1];
                 continue;
             }
-            throw new SyntaxError(`Unexpected token in INI at line ${i + 1}: ${line}`);
+            throw new SyntaxError(`Unexpected token in INI at line ${i + 1}:\n${line}`);
         }
         return output;
     }

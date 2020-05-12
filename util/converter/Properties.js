@@ -16,7 +16,7 @@ class Properties {
             if(!!data) {
                 let key = data[1] || data[2] || data[3];
                 if (typeof output[key] === "string") {
-                    throw new SyntaxError(`Duplicate key in Properties at line ${i + 1}: ${line}`);
+                    throw new SyntaxError(`Duplicate key in Properties at line ${i + 1}:\n${line}`);
                 }
                 output[key] = data[4];
                 while (output[key].endsWith("\\")) {
@@ -24,7 +24,7 @@ class Properties {
                 }
                 continue;
             }
-            throw new SyntaxError(`Unexpected token in Properties at line ${i + 1}: ${line}`);
+            throw new SyntaxError(`Unexpected token in Properties at line ${i + 1}:\n${line}`);
         }
         return output;
     }
