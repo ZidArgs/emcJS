@@ -4,11 +4,50 @@ const STORAGE = {};
 
 class FileData {
 
-    async load(files) {
+    async json(files) {
         let loading = [];
         for (let name in files) {
             let path = files[name];
             loading.push(FileLoader.json(path).then(function(data) {
+                STORAGE[name] = data;
+            }).catch(function(err) {
+                throw new Error(`error getting contents of file - ${path}; ${err.message}`);
+            }));
+        }
+        await Promise.all(loading);
+    }
+
+    async jsonc(files) {
+        let loading = [];
+        for (let name in files) {
+            let path = files[name];
+            loading.push(FileLoader.jsonc(path).then(function(data) {
+                STORAGE[name] = data;
+            }).catch(function(err) {
+                throw new Error(`error getting contents of file - ${path}; ${err.message}`);
+            }));
+        }
+        await Promise.all(loading);
+    }
+
+    async ini(files) {
+        let loading = [];
+        for (let name in files) {
+            let path = files[name];
+            loading.push(FileLoader.ini(path).then(function(data) {
+                STORAGE[name] = data;
+            }).catch(function(err) {
+                throw new Error(`error getting contents of file - ${path}; ${err.message}`);
+            }));
+        }
+        await Promise.all(loading);
+    }
+
+    async properties(files) {
+        let loading = [];
+        for (let name in files) {
+            let path = files[name];
+            loading.push(FileLoader.properties(path).then(function(data) {
                 STORAGE[name] = data;
             }).catch(function(err) {
                 throw new Error(`error getting contents of file - ${path}; ${err.message}`);

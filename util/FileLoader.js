@@ -1,3 +1,4 @@
+import JSONC from "./converter/JSONC.js";
 import XML from "./converter/XML.js";
 import INI from "./converter/INI.js";
 import Properties from "./converter/Properties.js";
@@ -29,24 +30,28 @@ function getJSON(input) {
 
 class FileLoader {
 
-    json(file) {
-        return getFile(file, "application/json").then(getJSON);
-    }
-
     text(file) {
         return getFile(file, "text/plain").then(getText);
     }
 
+    json(file) {
+        return getFile(file, "application/json").then(getJSON);
+    }
+
+    jsonc(file) {
+        return getFile(file).then(getText).then(JSONC.parse);
+    }
+
     xml(file) {
-        return this.text(file).then(XML.parse);
+        return this.text(file).then(getText).then(XML.parse);
     }
 
     ini(file) {
-        return this.text(file).then(INI.parse);
+        return this.text(file).then(getText).then(INI.parse);
     }
 
     properties(file) {
-        return this.text(file).then(Properties.parse);
+        return this.text(file).then(getText).then(Properties.parse);
     }
 
 }
