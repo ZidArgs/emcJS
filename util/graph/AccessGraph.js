@@ -33,8 +33,22 @@ export default class AccessGraph {
         return res;
     }
 
-    simulate(start, callback) {
-        // TODO
+    /* broad search */
+    traverse(startNode, callback) {
+        let reachableNodes = new Set();
+        let queue = [];
+        queue.push(NODES.get(this).get(startNode));
+        while(!!queue.length) {
+            let node = queue.shift();
+            reachableNodes.add(node.name)
+            for(let ch in node.children()) {
+                let child = node.get(ch);
+                if(!reachableNodes.has(ch) && callback(node, child)) {
+                    queue.push(child);
+                }
+            }
+        }
+        return reachableNodes;
     }
 
 }
