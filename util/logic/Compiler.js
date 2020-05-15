@@ -1,5 +1,37 @@
-let dependencies = null;
+const MODULES = {
+    /* literals */
+    "true":    (logic) => "1",
+    "false":   (logic) => "0",
+    "number":  (logic) => `(val("${escape(logic.el)}")||0)`,
+    "pointer": (logic) => `(val(val("${escape(logic.el)}")||"")||0)`,
+    "value":   (logic) => `(val("${escape(logic.el)}")||"")=="${escape(logic.value)}"`,
+    /* operators */
+    "and":     (logic) => multiElementOperation(logic.el, "&&"),
+    "nand":    (logic) => `!${multiElementOperation(logic.el, "&&")||0}`,
+    "or":      (logic) => multiElementOperation(logic.el, "||")||0,
+    "nor":     (logic) => `!${multiElementOperation(logic.el, "||")||0}`,
+    "not":     (logic) => `!(${buildLogic(logic.el)})`,
+    "xor":     (logic) => twoElementOperation(logic.el, "^"),
+    /* restrictors */
+    "min":     (logic) => `(${buildLogic(logic.el)}>=${escape(logic.value, 0)})`,
+    "max":     (logic) => `(${buildLogic(logic.el)}<=${escape(logic.value, 0)})`,
+    /* comparators */
+    "eq":      (logic) => twoElementOperation(logic.el, "=="),
+    "neq":     (logic) => twoElementOperation(logic.el, "!="),
+    "lt":      (logic) => twoElementOperation(logic.el, "<"),
+    "lte":     (logic) => twoElementOperation(logic.el, "<="),
+    "gt":      (logic) => twoElementOperation(logic.el, ">"),
+    "gte":     (logic) => twoElementOperation(logic.el, ">="),
+    /* math */
+    "add":     (logic) => mathOperation(logic.el, "+"),
+    "sub":     (logic) => mathOperation(logic.el, "-"),
+    "mul":     (logic) => mathOperation(logic.el, "*"),
+    "div":     (logic) => mathOperation(logic.el, "/"),
+    "mod":     (logic) => mathOperation(logic.el, "%"),
+    "pow":     (logic) => mathOperation(logic.el, "**")
+};
 
+/* STRINGS */
 function escape(str, def = "") {
     if (typeof str != "string") {
         if (typeof str == "number" && !isNaN(str)) {
@@ -7,15 +39,12 @@ function escape(str, def = "") {
         }
         return def;
     }
-    let res = str.replace(/[\\"]/g, '\\$&');
+    let res = str.replace(/[\\"]/g, "\\$&");
     dependencies.add(res);
     return res;
 }
 
-function toNumber(val) {
-    return `(parseInt(${val})||0)`
-}
-
+/* ELEMENTS */
 function twoElementOperation(els, join) {
     if (els.length == 0) {
         return 0;
@@ -26,49 +55,50 @@ function twoElementOperation(els, join) {
     return `(${buildLogic(els[0])}${join}${buildLogic(els[1])})`;
 }
 
-function buildLogic(logic) {
-    if (typeof logic == "object") {
-        switch (logic.type) {
-            default: return "0";
-            /* literals */
-            case 'true': return "1";
-            case 'false': return "0";
-            case 'number': return `(val("${escape(logic.el)}")||0)`;
-            case 'pointer': return `(val(val("${escape(logic.el)}")||"")||0)`;
-            case 'value': return `(val("${escape(logic.el)}")||"")=="${escape(logic.value)}"`;
-            /* operators */
-            case 'and': return `(${logic.el.map(buildLogic).join("&&")||0})`;
-            case 'nand': return `!(${logic.el.map(buildLogic).join("&&")||0})`;
-            case 'or': return `(${logic.el.map(buildLogic).join("||")||0})`;
-            case 'nor': return `!(${logic.el.map(buildLogic).join("||")||0})`;
-            case 'not': return `!(${buildLogic(logic.el)})`;
-            case 'xor': return twoElementOperation(logic.el, "^");
-            /* restrictors */
-            case 'min': return `(${buildLogic(logic.el)}>=${escape(logic.value, 0)})`;
-            case 'max': return `(${buildLogic(logic.el)}<=${escape(logic.value, 0)})`;
-            /* comparators */
-            case 'eq': return twoElementOperation(logic.el, "==");
-            case 'neq': return twoElementOperation(logic.el, "!=");
-            case 'lt': return twoElementOperation(logic.el, "<");
-            case 'lte': return twoElementOperation(logic.el, "<=");
-            case 'gt': return twoElementOperation(logic.el, ">");
-            case 'gte': return twoElementOperation(logic.el, ">=");
-            /* math */
-            case 'add': return `(${logic.el.map(buildLogic).map(toNumber).join("+")||0})`;
-            case 'sub': return `(${logic.el.map(buildLogic).map(toNumber).join("-")||0})`;
-            // TODO add more types
-        }
+function multiElementOperation(els, join) {
+    if (els.length == 0) {
+        return 0;
     }
-    return buildLogic({type:logic});
+    if (els.length == 1) {
+        return buildLogic(els[0]);
+    }
+    return `(${els.map(buildLogic).join(join)})`;
 }
 
+/* MATH */
+function toNumber(val) {
+    return `(parseInt(${val})||0)`
+}
+
+function mathOperation(els, join) {
+    if (els.length == 0) {
+        return 0;
+    }
+    if (els.length == 1) {
+        return buildLogic(els[0]);
+    }
+    return `(parseInt(${els.map(buildLogic).map(toNumber).join(join)})||0)`;
+}
+
+/* INITIATOR */
+function buildLogic(logic) {
+    if (typeof logic != "object") {
+        logic = {type: logic};
+    }
+    if (MODULES[logic.type] != null) {
+        return MODULES[logic.type](logic);
+    }
+    return 0;
+}
+
+let dependencies = null;
 class Compiler {
 
     compile(logic) {
         dependencies = new Set();
         let buf = buildLogic(logic);
-        let fn = new Function('val', `return ${buf}`);
-        Object.defineProperty(fn, 'requires', {value: dependencies});
+        let fn = new Function("val", `return ${buf}`);
+        Object.defineProperty(fn, "requires", {value: dependencies});
         return fn;
     }
 
