@@ -2,9 +2,14 @@ const MODULES = {
     /* literals */
     "true":    (logic) => "1",
     "false":   (logic) => "0",
-    "number":  (logic) => `(val("${escape(logic.el)}")||0)`,
+    "string":  (logic) => escape(logic.el),
+    "number":  (logic) => toNumber(logic.el),
+    "value":   (logic) => `(val("${escape(logic.el)}")||0)`,
     "pointer": (logic) => `(val(val("${escape(logic.el)}")||"")||0)`,
-    "value":   (logic) => `(val("${escape(logic.el)}")||"")=="${escape(logic.value)}"`,
+    "state":   (logic) => `(val("${escape(logic.el)}")||"")=="${escape(logic.value)}"`,
+    // deprecated
+    //"number":  (logic) => `(val("${escape(logic.el)}")||0)`,
+    //"value":   (logic) => `(val("${escape(logic.el)}")||"")=="${escape(logic.value)}"`,
     /* operators */
     "and":     (logic) => multiElementOperation(logic.el, "&&"),
     "nand":    (logic) => `!${multiElementOperation(logic.el, "&&")||0}`,

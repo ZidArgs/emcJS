@@ -66,7 +66,7 @@ function write(data) {
             if (out instanceof HTMLTextAreaElement) {
                 out.value += msg+"\n";
                 out.scrollTop = out.scrollHeight;
-            } else if (out instanceof HTMLDivElement) {
+            } else if (out instanceof HTMLElement) {
                 let el = document.createElement('span');
                 if (HTML_DEFAULT_STYLES.hasOwnProperty(data.type)) {
                     for (let i in HTML_DEFAULT_STYLES[data.type]) {
