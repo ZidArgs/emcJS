@@ -39,19 +39,19 @@ class FileLoader {
     }
 
     jsonc(file) {
-        return getFile(file).then(getText).then(JSONC.parse);
+        return getFile(file).then(JSONC.parse);
     }
 
     xml(file) {
-        return this.text(file).then(getText).then(XML.parse);
+        return this.text(file).then(XML.parse);
     }
 
     ini(file) {
-        return this.text(file).then(getText).then(INI.parse);
+        return this.text(file).then(INI.parse);
     }
 
     properties(file) {
-        return this.text(file).then(getText).then(Properties.parse);
+        return this.text(file).then(Properties.parse);
     }
 
 }
