@@ -20,6 +20,7 @@ import ui_layout_HBox from "./ui/layout/HBox.js";
 import ui_layout_Layout from "./ui/layout/Layout.js";
 import ui_layout_LayoutAbstractElement from "./ui/layout/LayoutAbstractElement.js";
 import ui_layout_Panel from "./ui/layout/Panel.js";
+import ui_layout_TabView from "./ui/layout/TabView.js";
 import ui_layout_VBox from "./ui/layout/VBox.js";
 import ui_logic_EditorClipboard from "./ui/logic/EditorClipboard.js";
 import ui_logic_EditorTrashcan from "./ui/logic/EditorTrashcan.js";
@@ -38,24 +39,29 @@ import ui_logic_elements_OperatorNor from "./ui/logic/elements/OperatorNor.js";
 import ui_logic_elements_OperatorNot from "./ui/logic/elements/OperatorNot.js";
 import ui_logic_elements_OperatorOr from "./ui/logic/elements/OperatorOr.js";
 import ui_logic_elements_OperatorXor from "./ui/logic/elements/OperatorXor.js";
+import ui_LogScreen from "./ui/LogScreen.js";
 import ui_NavBar from "./ui/NavBar.js";
 import ui_Paging from "./ui/Paging.js";
 import ui_PopOver from "./ui/PopOver.js";
 import ui_selection_ChoiceSelect from "./ui/selection/ChoiceSelect.js";
+import ui_selection_CircleSelect from "./ui/selection/CircleSelect.js";
 import ui_selection_ListHeader from "./ui/selection/ListHeader.js";
 import ui_selection_ListSelect from "./ui/selection/ListSelect.js";
 import ui_selection_Option from "./ui/selection/Option.js";
 import ui_selection_StateButton from "./ui/selection/StateButton.js";
 import ui_selection_SwitchButton from "./ui/selection/SwitchButton.js";
 import ui_SettingsWindow from "./ui/SettingsWindow.js";
+import ui_TextEditor from "./ui/TextEditor.js";
 import ui_Toast from "./ui/Toast.js";
 import ui_Tooltip from "./ui/Tooltip.js";
 import ui_Window from "./ui/Window.js";
 import util_ActionPath from "./util/ActionPath.js";
 import util_converter_INI from "./util/converter/INI.js";
+import util_converter_JSONC from "./util/converter/JSONC.js";
 import util_converter_Properties from "./util/converter/Properties.js";
 import util_converter_XML from "./util/converter/XML.js";
 import util_DateUtil from "./util/DateUtil.js";
+import util_DragDropMemory from "./util/DragDropMemory.js";
 import util_events_EventBus from "./util/events/EventBus.js";
 import util_events_EventBusAbstractModule from "./util/events/EventBusAbstractModule.js";
 import util_events_EventBusModuleGeneric from "./util/events/EventBusModuleGeneric.js";
@@ -63,6 +69,8 @@ import util_events_EventBusModuleShare from "./util/events/EventBusModuleShare.j
 import util_events_EventBusSubset from "./util/events/EventBusSubset.js";
 import util_FileLoader from "./util/FileLoader.js";
 import util_FileSystem from "./util/FileSystem.js";
+import util_graph_AccessGraph from "./util/graph/AccessGraph.js";
+import util_graph_NodeFactory from "./util/graph/NodeFactory.js";
 import util_Helper from "./util/Helper.js";
 import util_I18n from "./util/I18n.js";
 import util_ImportResources from "./util/ImportResources.js";
@@ -110,6 +118,7 @@ let index = {
             "Layout": ui_layout_Layout,
             "LayoutAbstractElement": ui_layout_LayoutAbstractElement,
             "Panel": ui_layout_Panel,
+            "TabView": ui_layout_TabView,
             "VBox": ui_layout_VBox
         },
         "logic": {
@@ -133,11 +142,13 @@ let index = {
                 "OperatorXor": ui_logic_elements_OperatorXor
             }
         },
+        "LogScreen": ui_LogScreen,
         "NavBar": ui_NavBar,
         "Paging": ui_Paging,
         "PopOver": ui_PopOver,
         "selection": {
             "ChoiceSelect": ui_selection_ChoiceSelect,
+            "CircleSelect": ui_selection_CircleSelect,
             "ListHeader": ui_selection_ListHeader,
             "ListSelect": ui_selection_ListSelect,
             "Option": ui_selection_Option,
@@ -145,6 +156,7 @@ let index = {
             "SwitchButton": ui_selection_SwitchButton
         },
         "SettingsWindow": ui_SettingsWindow,
+        "TextEditor": ui_TextEditor,
         "Toast": ui_Toast,
         "Tooltip": ui_Tooltip,
         "Window": ui_Window
@@ -153,10 +165,12 @@ let index = {
         "ActionPath": util_ActionPath,
         "converter": {
             "INI": util_converter_INI,
+            "JSONC": util_converter_JSONC,
             "Properties": util_converter_Properties,
             "XML": util_converter_XML
         },
         "DateUtil": util_DateUtil,
+        "DragDropMemory": util_DragDropMemory,
         "events": {
             "EventBus": util_events_EventBus,
             "EventBusAbstractModule": util_events_EventBusAbstractModule,
@@ -166,6 +180,10 @@ let index = {
         },
         "FileLoader": util_FileLoader,
         "FileSystem": util_FileSystem,
+        "graph": {
+            "AccessGraph": util_graph_AccessGraph,
+            "NodeFactory": util_graph_NodeFactory
+        },
         "Helper": util_Helper,
         "I18n": util_I18n,
         "ImportResources": util_ImportResources,
@@ -179,7 +197,8 @@ let index = {
         "Template": util_Template,
         "Timer": util_Timer,
         "UniqueGenerator": util_UniqueGenerator
-    }
+    },
+    "_demo": {}
 };
 
 export default index;

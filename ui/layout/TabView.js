@@ -60,7 +60,7 @@ const TPL = new Template(`
     </emc-choiceselect>
 `);
 
-class TabView extends Panel {
+export default class TabView extends Panel {
 
     constructor() {
         super();
