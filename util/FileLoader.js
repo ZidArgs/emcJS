@@ -39,7 +39,7 @@ class FileLoader {
     }
 
     jsonc(file) {
-        return getFile(file).then(JSONC.parse);
+        return this.text(file).then(JSONC.parse);
     }
 
     xml(file) {
