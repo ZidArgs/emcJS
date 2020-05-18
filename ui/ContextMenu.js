@@ -22,25 +22,26 @@ const TPL = new Template(`
             overflow-y: auto;
             max-width: 50vw;
             max-height: 50vh;
-            background: #ffffff;
-            border: solid 2px #cccccc;
+            background: var(--contextmenu-background, #ffffff);
+            border: solid 2px var(--contextmenu-border, #cccccc);
         }
         ::slotted(.item) {
             display: block;
             min-width: 150px;
             height: 30px;
             padding: 5px;
-            color: #000000;
-            background: #ffffff;
+            color: var(--contextmenu-text, #000000);
+            background: var(--contextmenu-background, #ffffff);
         }
         ::slotted(.item:hover) {
-            background: #cccccc;
+            background: var(--contextmenu-background-hover, var(--contextmenu-border, #cccccc));
+            color: var(--contextmenu-text-hover, var(--contextmenu-text, #000000));
         }
         ::slotted(.splitter) {
             display: block;
             margin: 10px 5px;
             height: 2px;
-            background: #000000;
+            background: var(--contextmenu-text, #000000);
         }
     </style>
     <slot id="menu">
