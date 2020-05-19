@@ -8,34 +8,40 @@ async function getFile(url) {
     return r;
 }
 
-class ImportResource {
+function getHTML(url) {
+    return getFile(url)
+        .then(r => r.text())
+        .then(r => PARSER.parseFromString(r, "text/html"))
+        .then(r => r.body.childNodes);
+}
 
-    importHTML(url) {
-        return getFile(url)
-            .then(r => r.text())
-            .then(r => PARSER.parseFromString(r, "text/html"))
-            .then(r => r.body.childNodes);
+class Import {
+
+    async module(url) {
+        if (Array.isArray(url)) {
+            let res = [];
+            for (let i in url) {
+                res.push(import(i).then(e=>e.default));
+            }
+            return await Promise.all(res);
+        } else {
+            return await import(url);
+        }
+    }
+
+    html(url) {
+        if (Array.isArray(url)) {
+            let res = [];
+            for (let i in url) {
+                res.push(getHTML(i));
+            }
+            return await Promise.all(res);
+        } else {
+            return await getHTML(url);
+        }
     }
     
-    importImage(url) {
-        return new Promise((res, rej) => {
-            let t = new Image();
-            t.onload = function() {
-                res(t);
-            };
-            t.onerror = function() {
-                getFile(url).then(function() {
-                    rej(`error appending image "${url}"`);
-                }, function(r) {
-                    rej(r);
-                })
-            };
-            t.src = url;
-            document.head.append(t);
-        });
-    }
-    
-    importStyle(url) {
+    addStyle(url) {
         return new Promise((res, rej) => {
             let t = document.createElement("link");
             t.rel = "stylesheet";
@@ -55,7 +61,7 @@ class ImportResource {
         });
     }
     
-    importScript(url) {
+    addScript(url) {
         return new Promise((res, rej) => {
             let t = document.createElement("script");
             t.type = "text/javascript";
@@ -74,7 +80,7 @@ class ImportResource {
         });
     }
     
-    importModule(url) {
+    addModule(url) {
         return new Promise((res, rej) => {
             let t = document.createElement("script");
             t.type = "module";
@@ -95,4 +101,4 @@ class ImportResource {
 
 }
 
-export default new ImportResource;
+export default new Import();

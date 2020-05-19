@@ -45,6 +45,9 @@ const TPL = new Template(`
             background-color: var(--list-color-back, #ffffff);
             border-bottom: solid 1px #eee;
         }
+        ::slotted([value][disabled]) {
+            display: none;
+        }
         ::slotted([value]:hover) {
             background-color: var(--list-color-hover, #b8b8b8);
         }

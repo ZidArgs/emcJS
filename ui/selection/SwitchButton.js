@@ -8,7 +8,9 @@ const TPL = new Template(`
             box-sizing: border-box;
         }
         :host {
-            display: inline-block;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
             width: 20px;
             height: 20px;
             -webkit-user-select: none;
@@ -108,10 +110,20 @@ export default class SwitchButton extends HTMLElement {
             let all = this.querySelectorAll("[value]");
             if (!!all.length) {
                 let opt = this.querySelector(`[value="${this.value}"]`);
-                if (!!opt && !!opt.nextElementSibling) {
-                    this.value = opt.nextElementSibling.getAttribute("value");
-                } else {
-                    this.value = all[0].getAttribute("value");
+                if (!!opt) {
+                    let next = opt;
+                    while (true) {
+                        if (!next.nextElementSibling) {
+                            next = all[0];
+                        } else {
+                            next = next.nextElementSibling;
+                        }
+                        let da = next.getAttribute("disabled");
+                        if  (!da || da == "false" || next == opt) {
+                            break;
+                        }
+                    }
+                    this.value = next.getAttribute("value");
                 }
             }
         }
@@ -124,10 +136,20 @@ export default class SwitchButton extends HTMLElement {
             let all = this.querySelectorAll("[value]");
             if (!!all.length) {
                 let opt = this.querySelector(`[value="${this.value}"]`);
-                if (!!opt && !!opt.previousElementSibling) {
-                    this.value = opt.previousElementSibling.getAttribute("value");
-                } else {
-                    this.value = all[all.length-1].getAttribute("value");
+                if (!!opt) {
+                    let next = opt;
+                    while (true) {
+                        if (!next.previousElementSibling) {
+                            next = all[all.length - 1];
+                        } else {
+                            next = next.previousElementSibling;
+                        }
+                        let da = next.getAttribute("disabled");
+                        if  (!da || da == "false" || next == opt) {
+                            break;
+                        }
+                    }
+                    this.value = next.getAttribute("value");
                 }
             }
         }

@@ -16,7 +16,8 @@ const TPL = new Template(`
             width: 100%;
             height: 100%;
         }
-        ::slotted(:not([value])) {
+        ::slotted(:not([value])),
+        ::slotted([value][disabled]) {
             display: none;
         }
         ::slotted([value]) {
