@@ -17,6 +17,7 @@ const MODULES = {
     "nor":     (logic) => `!${multiElementOperation(logic.el, "||")||0}`,
     "not":     (logic) => `!(${buildLogic(logic.el)})`,
     "xor":     (logic) => twoElementOperation(logic.el, "^"),
+    "xnor":    (logic) => `!(${twoElementOperation(logic.el, "^")})`,
     /* restrictors */
     "min":     (logic) => `(${buildLogic(logic.el)}>=${escape(logic.value, 0)})`,
     "max":     (logic) => `(${buildLogic(logic.el)}<=${escape(logic.value, 0)})`,
