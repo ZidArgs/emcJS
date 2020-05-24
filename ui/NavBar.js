@@ -326,12 +326,6 @@ export default class NavBar extends HTMLElement {
         }
     }
 
-    open() {
-    }
-
-    close() {
-    }
-
 }
 
 customElements.define('emc-navbar', NavBar);
