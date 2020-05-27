@@ -1,42 +1,4 @@
 
-/* LEVEL COLORS HTML */
-const HTML_DEFAULT_STYLES = {
-    SEVERE: {
-        "background": "#860000",
-        "color": "#ffffff"
-    },
-    ERROR: {
-        "background": "#222222",
-        "color": "#ff3e3e"
-    },
-    WARN: {
-        "background": "#222222",
-        "color": "#ffff00"
-    },
-    INFO: {
-        "background": "#222222",
-        "color": "#00ceff"
-    },
-    LOG: {
-        "background": "#222222",
-        "color": "#00ff00"
-    }
-};
-const HTML_DEFAULT_UNSET = {
-    "background": "#222222",
-    "color": "#dddddd"
-};
-
-/* LEVEL COLORS CONSOLE */
-const CONSOLE_DEFAULT_UNSET_STYLES = {
-    SEVERE: "background:#860000;color:#ffffff;",
-    ERROR: "background:#ffffff;color:#ff0000;",
-    WARN: "background:#ffffff;color:#dd5500;",
-    INFO: "background:#ffffff;color:#0000ff;",
-    LOG: "background:#ffffff;color:#008800;"
-};
-const CONSOLE_DEFAULT_UNSET = "background:#ffffff;color:#333333;";
-
 /* LOG LEVEL */
 const LEVEL = Object.freeze({
     SEVERE: "SEVERE",
@@ -45,6 +7,42 @@ const LEVEL = Object.freeze({
     INFO: "INFO",
     LOG: "LOG"
 });
+
+/* LEVEL COLORS HTML */
+const HTML_DEFAULT_STYLES = {};
+HTML_DEFAULT_STYLES[LEVEL.SEVERE] = {
+    "background": "#860000",
+    "color": "#ffffff"
+};
+HTML_DEFAULT_STYLES[LEVEL.ERROR] = {
+    "background": "#222222",
+    "color": "#ff3e3e"
+};
+HTML_DEFAULT_STYLES[LEVEL.WARN] = {
+    "background": "#222222",
+    "color": "#ffff00"
+};
+HTML_DEFAULT_STYLES[LEVEL.INFO] = {
+    "background": "#222222",
+    "color": "#00ceff"
+};
+HTML_DEFAULT_STYLES[LEVEL.LOG] = {
+    "background": "#222222",
+    "color": "#00ff00"
+};
+const HTML_DEFAULT_UNSET = {
+    "background": "#222222",
+    "color": "#dddddd"
+};
+
+/* LEVEL COLORS CONSOLE */
+const CONSOLE_DEFAULT_STYLES = {};
+CONSOLE_DEFAULT_STYLES[LEVEL.SEVERE] = "background:#860000;color:#ffffff;";
+CONSOLE_DEFAULT_STYLES[LEVEL.ERROR] = "background:#ffffff;color:#ff0000;";
+CONSOLE_DEFAULT_STYLES[LEVEL.WARN] = "background:#ffffff;color:#dd5500;";
+CONSOLE_DEFAULT_STYLES[LEVEL.INFO] = "background:#ffffff;color:#0000ff;";
+CONSOLE_DEFAULT_STYLES[LEVEL.LOG] = "background:#ffffff;color:#008800;";
+const CONSOLE_DEFAULT_UNSET = "background:#ffffff;color:#333333;";
 
 // TODO add function to set colors per output
 
@@ -81,40 +79,41 @@ function write(data) {
                 out.append(el);
                 out.scrollTop = out.scrollHeight;
             } else if (output === console) {
-                console.log("%c%s%c", CONSOLE_DEFAULT_UNSET_STYLES[data.type] || CONSOLE_DEFAULT_UNSET, msg, "");
+                console.log("%c%s%c", CONSOLE_DEFAULT_STYLES[data.type] || CONSOLE_DEFAULT_UNSET, msg, "");
             }
         });
     }
 }
 
-class Logger {
+window.addEventListener("error", function(msg, url, line, col, error) {
+    if (msg instanceof ErrorEvent) {
+        write({
+            target: `${!!msg.filename?msg.filename:"anonymous"} ${msg.lineno}:${msg.colno}`,
+            type: LEVEL.SEVERE,
+            time: (new Date).toJSON().replace(TIME_FND, TIME_REP),
+            message: !!msg.error ? msg.error : msg.message
+        });
+    } else {
+        write({
+            target: `${url} ${line}${!!col?":"+col:""}`,
+            type: LEVEL.SEVERE,
+            time: (new Date).toJSON().replace(TIME_FND, TIME_REP),
+            message: `${msg}${!!error?"\n"+error:""}`
+        });
+    }
+    return true;
+});
+
+// TODO add instances for specific logging
+// possibly easier achieved using private members
+
+export default class Logger {
 
     static get LEVEL() {
         return LEVEL;
     }
 
-    constructor() {
-        window.addEventListener("error", function(msg, url, line, col, error) {
-            if (msg instanceof ErrorEvent) {
-                write({
-                    target: `${!!msg.filename?msg.filename:"anonymous"} ${msg.lineno}:${msg.colno}`,
-                    type: LEVEL.SEVERE,
-                    time: (new Date).toJSON().replace(TIME_FND, TIME_REP),
-                    message: !!msg.error ? msg.error : msg.message
-                });
-            } else {
-                write({
-                    target: `${url} ${line}${!!col?":"+col:""}`,
-                    type: LEVEL.SEVERE,
-                    time: (new Date).toJSON().replace(TIME_FND, TIME_REP),
-                    message: `${msg}${!!error?"\n"+error:""}`
-                });
-            }
-            return true;
-         });
-    }
-
-    error(message, target = null) {
+    static error(message, target = null) {
         write({
             target: target,
             type: LEVEL.ERROR,
@@ -123,7 +122,7 @@ class Logger {
         });
     }
 
-    warn(message, target = null) {
+    static warn(message, target = null) {
         write({
             target: target,
             type: LEVEL.WARN,
@@ -132,7 +131,7 @@ class Logger {
         });
     }
 
-    info(message, target = null) {
+    static info(message, target = null) {
         write({
             target: target,
             type: LEVEL.INFO,
@@ -141,7 +140,7 @@ class Logger {
         });
     }
 
-    log(message, target = null) {
+    static log(message, target = null) {
         write({
             target: target,
             type: LEVEL.LOG,
@@ -150,7 +149,7 @@ class Logger {
         });
     }
 
-    message(type, message, target = null) {
+    static message(type, message, target = null) {
         write({
             target: target,
             type: type,
@@ -159,22 +158,20 @@ class Logger {
         });
     }
 
-    addLevel(value) {
+    static addLevel(value) {
         level.add(value);
     }
 
-    removeLevel(value) {
+    static removeLevel(value) {
         level.delete(value);
     }
 
-    addOutput(value) {
+    static addOutput(value) {
         output.add(value);
     }
 
-    removeOutput(value) {
+    static removeOutput(value) {
         output.delete(value);
     }
 
 }
-
-export default new Logger;
