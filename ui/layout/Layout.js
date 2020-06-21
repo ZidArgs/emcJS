@@ -9,7 +9,6 @@ const TPL = new Template(`
     <style>
         :host {
             display: flex;
-            --item-size: 40px;
             justify-content: stretch;
             align-items: stretch;
         }
