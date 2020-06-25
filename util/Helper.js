@@ -4,6 +4,11 @@ const SERIALIZER = new XMLSerializer();
 
 class Helper {
 
+    randomInt(min = 0, max = Number.MAX_SAFE_INTEGER) {
+        max -= min;
+        return parseInt(Math.random() * (max + 1)) + min;
+    }
+
     compareVersions(a = "", b = "", s = ".") {
         let c = a.split(s);
         let d = b.split(s);
