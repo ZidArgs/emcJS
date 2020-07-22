@@ -29,7 +29,7 @@ class Import {
         }
     }
 
-    html(url) {
+    async html(url) {
         if (Array.isArray(url)) {
             let res = [];
             for (let i in url) {

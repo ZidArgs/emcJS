@@ -1,6 +1,7 @@
 <html>
     <head>
         <title>emcJS sandbox</title>
+        <base href="/_demo/">
         <meta charset="UTF-8">
         <meta name="description" content="Test for emcJS components">
         <meta name="robots" content="none">
@@ -27,39 +28,15 @@
             async function init() {
 
                 let logic = await emcJS.util.FileLoader.json(`logic.json`);
-                let graph = await emcJS.util.FileLoader.json(`graph.json`);
 
                 let logicProcessor = new emcJS.util.logic.Processor(true);
-                logicProcessor.loadLogic(logic);
+                logicProcessor.loadLogic(logic.logic);
+
+                let accessGraph = new emcJS.util.graph.LogicGraph();
+                //accessGraph.load(logic.edges);
 
                 logicProcessor.setAll({
-                    "item.a": true,
-                    "item.b": true
-                })
-                logicProcessor.execute();
-
-                logicProcessor.setAll({
-                    "item.d": true,
-                    "item.c": true
-                });
-                logicProcessor.execute();
-
-                logicProcessor.setAll({
-                    "item.a": false,
-                    "item.g": true
-                });
-                logicProcessor.execute();
-
-                logicProcessor.setAll({
-                    "item.c": false,
-                    "item.d": false,
-                    "item.e": true
-                });
-                logicProcessor.execute();
-
-                logicProcessor.setAll({
-                    "item.e": false,
-                    "item.g": false,
+                    // TODO
                 });
                 logicProcessor.execute();
 

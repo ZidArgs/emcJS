@@ -1,4 +1,4 @@
-import ImportResources from "../util/ImportResources.js";
+import Import from "../util/Import.js";
 import Template from "../util/Template.js";
 
 const TPL = new Template(`
@@ -51,17 +51,17 @@ export default class HTMLImport extends HTMLElement {
         switch (name) {
             case 'style':
                 if (oldValue != newValue) {
-                    ImportResources.importStyle(newValue);
+                    Import.addStyle(newValue);
                 }
                 break;
             case 'html':
                 if (oldValue != newValue) {
-                    ImportResources.importHTML(newValue).then(appendHTML.bind(this));
+                    Import.html(newValue).then(appendHTML.bind(this));
                 }
                 break;
             case 'module':
                 if (oldValue != newValue) {
-                    ImportResources.importModule(newValue);
+                    Import.addModule(newValue);
                 }
                 break;
         }

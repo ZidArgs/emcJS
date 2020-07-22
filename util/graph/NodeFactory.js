@@ -1,34 +1,54 @@
-const CHILD = new WeakMap();
+const EDGES = new WeakMap();
 const NAME = new WeakMap();
 
 class Node {
 
     constructor(name) {
-        CHILD.set(this, new Map());
+        EDGES.set(this, new Map());
         NAME.set(this, name);
     }
 
-    get name() {
+    getName() {
         return NAME.get(this);
     }
 
-    append(node) {
+    append(node, condition) {
         if (node instanceof Node) {
-            let child = CHILD.get(this);
-            child.set(node.name, node);
+            let edges = EDGES.get(this);
+            edges.set(node.name, new Edge(node, condition));
         }
     }
 
-    children() {
-        let child = CHILD.get(this);
-        return child.keys();
+    getTargets() {
+        let edges = EDGES.get(this);
+        return edges.keys();
     }
 
-    get(name) {
-        let child = CHILD.get(this);
-        return child.get(name);
+    getEdge(name) {
+        let edges = EDGES.get(this);
+        return edges.get(name);
     }
     
+}
+
+const CONDITION = new WeakMap();
+const TARGET = new WeakMap();
+
+class Edge {
+
+    constructor(target, condition) {
+        CONDITION.set(this, name);
+        TARGET.set(this, name);
+    }
+
+    getCondition() {
+        return CONDITION.get(this);
+    }
+
+    getTarget() {
+        return TARGET.get(this);
+    }
+
 }
 
 /* node factory */

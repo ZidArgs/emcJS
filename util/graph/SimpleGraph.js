@@ -5,19 +5,19 @@ const NODES = new WeakMap();
 export default class AccessGraph {
 
     constructor() {
-        PROC.set(this, null);
         NODES.set(this, new Map());
     }
 
     load(config) {
         let nodes = NODES.get(this);
-        for (let n in config) {
-            let children = config[n];
-            let node = NodeFactory.get(n);
-            for (let c of children) {
-                node.append(NodeFactory.get(c));
+        for (let cfg in config) {
+            let children = config[cfg];
+            let node = NodeFactory.get(cfg);
+            for (let child in children) {
+                let condition = children[child];
+                node.append(NodeFactory.get(child));
             }
-            nodes.set(n, node);
+            nodes.set(cfg, node);
         }
     }
 
@@ -34,16 +34,16 @@ export default class AccessGraph {
     }
 
     /* broad search */
-    traverse(startNode, callback) {
+    traverse(startNode) {
         let reachableNodes = new Set();
         let queue = [];
         queue.push(NODES.get(this).get(startNode));
         while(!!queue.length) {
             let node = queue.shift();
-            reachableNodes.add(node.name)
-            for(let ch in node.children()) {
-                let child = node.get(ch);
-                if(!reachableNodes.has(ch) && callback(node, child)) {
+            reachableNodes.add(node.getName())
+            for (let ch in node.getTargets()) {
+                let child = node.getEdge(ch).getTarget();
+                if(!reachableNodes.has(ch)) {
                     queue.push(child);
                 }
             }
