@@ -29,18 +29,16 @@
 
                 let logic = await emcJS.util.FileLoader.json(`logic.json`);
 
-                let logicProcessor = new emcJS.util.logic.Processor(true);
-                logicProcessor.loadLogic(logic.logic);
+                let LogicSystem = new emcJS.util.logic.LogicSystem(true);
+                LogicSystem.load(logic);
 
-                let accessGraph = new emcJS.util.graph.LogicGraph();
-                //accessGraph.load(logic.edges);
-
-                logicProcessor.setAll({
-                    // TODO
+                LogicSystem.setAll({
+                    "option.starting_age": "child",
+                    "item.nut": 1
                 });
-                logicProcessor.execute();
+                LogicSystem.execute("region.root");
 
-                console.log(logicProcessor.getAll());
+                console.log(LogicSystem.getAll());
             }
 
             init();

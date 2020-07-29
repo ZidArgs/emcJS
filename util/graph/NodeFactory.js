@@ -15,7 +15,9 @@ class Node {
     append(node, condition) {
         if (node instanceof Node) {
             let edges = EDGES.get(this);
-            edges.set(node.name, new Edge(node, condition));
+            edges.set(node.getName(), new Edge(node, condition));
+        } else {
+            throw new TypeError("Expected type Node");
         }
     }
 
@@ -31,14 +33,14 @@ class Node {
     
 }
 
-const CONDITION = new WeakMap();
 const TARGET = new WeakMap();
+const CONDITION = new WeakMap();
 
 class Edge {
 
     constructor(target, condition) {
-        CONDITION.set(this, name);
-        TARGET.set(this, name);
+        TARGET.set(this, target);
+        CONDITION.set(this, condition);
     }
 
     getCondition() {
@@ -62,6 +64,7 @@ class NodeFactory {
         }
         let node = new Node(name);
         NODES.set(name, node);
+        return node;
     }
 
 }

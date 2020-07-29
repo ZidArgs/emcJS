@@ -29,39 +29,7 @@
         },
         "region.bottom_of_the_well_main_area": {
             "region.bottom_of_the_well": {
-                "type": "and",
-                "el": [
-                    {
-                        "type": "and",
-                        "el": [
-                            {
-                                "type": "value",
-                                "el": "mixin.can_become_child"
-                            },
-                            {
-                                "type": "value",
-                                "el": "function.can_play(item.song_storm)"
-                            }
-                        ]
-                    },
-                    {
-                        "type": "or",
-                        "el": [
-                            {
-                                "type": "value",
-                                "el": "mixin.can_become_child"
-                            },
-                            {
-                                "type": "not",
-                                "el": {
-                                    "type": "state",
-                                    "el": "option.entrance_shuffle",
-                                    "value": "entrance_shuffle_off"
-                                }
-                            }
-                        ]
-                    }
-                ]
+                "type": "true"
             },
             "logic.location.well_mq.c_compass_chest": {
                 "type": "or",
@@ -577,26 +545,7 @@
         },
         "region.deku_tree_lobby": {
             "region.kf_outside_deku_tree": {
-                "type": "or",
-                "el": [
-                    {
-                        "type": "value",
-                        "el": "mixin.can_become_adult"
-                    },
-                    {
-                        "type": "and",
-                        "el": [
-                            {
-                                "type": "value",
-                                "el": "item.sword_kokiri"
-                            },
-                            {
-                                "type": "value",
-                                "el": "item.shield_kokiri"
-                            }
-                        ]
-                    }
-                ]
+                "type": "true"
             },
             "region.deku_tree_compass_room": {
                 "type": "and",
@@ -636,34 +585,48 @@
                 ]
             },
             "region.deku_tree_basement_water_room": {
-                "type": "or",
+                "type": "and",
                 "el": [
                     {
-                        "type": "value",
-                        "el": "function.can_use(item.sword_kokiri)"
+                        "type": "here",
+                        "el": {
+                            "type": "or",
+                            "el": [
+                                {
+                                    "type": "value",
+                                    "el": "function.can_use(item.slingshot)"
+                                },
+                                {
+                                    "type": "value",
+                                    "el": "function.can_use(item.bow)"
+                                }
+                            ]
+                        }
                     },
                     {
-                        "type": "value",
-                        "el": "mixin.can_use_projectile"
-                    },
-                    {
-                        "type": "and",
-                        "el": [
-                            {
-                                "type": "value",
-                                "el": "item.nut"
-                            },
-                            {
-                                "type": "value",
-                                "el": "function.can_use(item.stick)"
-                            }
-                        ]
+                        "type": "here",
+                        "el": {
+                            "type": "value",
+                            "el": "mixin.has_fire_source_with_torch"
+                        }
                     }
                 ]
             },
             "region.deku_tree_basement_ledge": {
-                "type": "value",
-                "el": "mixin.can_become_child"
+                "type": "or",
+                "el": [
+                    {
+                        "type": "value",
+                        "el": "skip.deku_tree_B1_skip"
+                    },
+                    {
+                        "type": "here",
+                        "el": {
+                            "type": "value",
+                            "el": "mixin.can_become_adult"
+                        }
+                    }
+                ]
             },
             "region.deku_tree_slingshot_room": {
                 "type": "here",
@@ -1074,39 +1037,7 @@
         },
         "region.deku_tree_compass_room": {
             "region.deku_tree_lobby": {
-                "type": "or",
-                "el": [
-                    {
-                        "type": "value",
-                        "el": "mixin.can_become_child"
-                    },
-                    {
-                        "type": "and",
-                        "el": [
-                            {
-                                "type": "not",
-                                "el": {
-                                    "type": "state",
-                                    "el": "option.entrance_shuffle",
-                                    "value": "entrance_shuffle_off"
-                                }
-                            },
-                            {
-                                "type": "and",
-                                "el": [
-                                    {
-                                        "type": "value",
-                                        "el": "item.sword_kokiri"
-                                    },
-                                    {
-                                        "type": "value",
-                                        "el": "item.shield_kokiri"
-                                    }
-                                ]
-                            }
-                        ]
-                    }
-                ]
+                "type": "true"
             },
             "logic.location.deku_mq.c_compass": {
                 "type": "true"
@@ -1166,43 +1097,10 @@
         },
         "region.deku_tree_basement_water_room": {
             "region.deku_tree_basement_back_room": {
-                "type": "value",
-                "el": "mixin.can_become_child"
+                "type": "true"
             },
             "region.deku_tree_lobby": {
-                "type": "or",
-                "el": [
-                    {
-                        "type": "value",
-                        "el": "mixin.can_become_child"
-                    },
-                    {
-                        "type": "and",
-                        "el": [
-                            {
-                                "type": "not",
-                                "el": {
-                                    "type": "state",
-                                    "el": "option.entrance_shuffle",
-                                    "value": "entrance_shuffle_off"
-                                }
-                            },
-                            {
-                                "type": "and",
-                                "el": [
-                                    {
-                                        "type": "value",
-                                        "el": "item.sword_kokiri"
-                                    },
-                                    {
-                                        "type": "value",
-                                        "el": "item.shield_kokiri"
-                                    }
-                                ]
-                            }
-                        ]
-                    }
-                ]
+                "type": "true"
             },
             "logic.location.deku_mq.c_before_log": {
                 "type": "true"
@@ -1306,39 +1204,7 @@
                 "el": "mixin.can_become_child"
             },
             "region.deku_tree_lobby": {
-                "type": "or",
-                "el": [
-                    {
-                        "type": "value",
-                        "el": "mixin.can_become_child"
-                    },
-                    {
-                        "type": "and",
-                        "el": [
-                            {
-                                "type": "not",
-                                "el": {
-                                    "type": "state",
-                                    "el": "option.entrance_shuffle",
-                                    "value": "entrance_shuffle_off"
-                                }
-                            },
-                            {
-                                "type": "and",
-                                "el": [
-                                    {
-                                        "type": "value",
-                                        "el": "item.sword_kokiri"
-                                    },
-                                    {
-                                        "type": "value",
-                                        "el": "item.shield_kokiri"
-                                    }
-                                ]
-                            }
-                        ]
-                    }
-                ]
+                "type": "true"
             },
             "logic.location.deku_mq.c_basement_salesman": {
                 "type": "value",
@@ -1372,43 +1238,40 @@
                         ]
                     }
                 ]
-            }
-        },
-        "region.deku_tree_slingshot_room": {
-            "region.deku_tree_lobby": {
-                "type": "or",
+            },
+            "event.deku_tree_clear": {
+                "type": "and",
                 "el": [
                     {
-                        "type": "value",
-                        "el": "mixin.can_become_child"
+                        "type": "here",
+                        "el": {
+                            "type": "value",
+                            "el": "mixin.has_shield"
+                        }
                     },
                     {
-                        "type": "and",
+                        "type": "or",
                         "el": [
                             {
-                                "type": "not",
-                                "el": {
-                                    "type": "state",
-                                    "el": "option.entrance_shuffle",
-                                    "value": "entrance_shuffle_off"
-                                }
+                                "type": "value",
+                                "el": "mixin.can_become_adult"
                             },
                             {
-                                "type": "and",
-                                "el": [
-                                    {
-                                        "type": "value",
-                                        "el": "item.sword_kokiri"
-                                    },
-                                    {
-                                        "type": "value",
-                                        "el": "item.shield_kokiri"
-                                    }
-                                ]
+                                "type": "value",
+                                "el": "item.sword_kokiri"
+                            },
+                            {
+                                "type": "value",
+                                "el": "item.stick"
                             }
                         ]
                     }
                 ]
+            }
+        },
+        "region.deku_tree_slingshot_room": {
+            "region.deku_tree_lobby": {
+                "type": "true"
             },
             "logic.location.deku.c_slingshot": {
                 "type": "true"
@@ -1419,41 +1282,38 @@
         },
         "region.deku_tree_boss_room": {
             "region.deku_tree_lobby": {
-                "type": "or",
+                "type": "true"
+            },
+            "logic.location.deku.c_gohma": {
+                "type": "and",
                 "el": [
                     {
-                        "type": "value",
-                        "el": "mixin.can_become_child"
+                        "type": "here",
+                        "el": {
+                            "type": "value",
+                            "el": "mixin.has_shield"
+                        }
                     },
                     {
-                        "type": "and",
+                        "type": "or",
                         "el": [
                             {
-                                "type": "not",
-                                "el": {
-                                    "type": "state",
-                                    "el": "option.entrance_shuffle",
-                                    "value": "entrance_shuffle_off"
-                                }
+                                "type": "value",
+                                "el": "mixin.can_become_adult"
                             },
                             {
-                                "type": "and",
-                                "el": [
-                                    {
-                                        "type": "value",
-                                        "el": "item.sword_kokiri"
-                                    },
-                                    {
-                                        "type": "value",
-                                        "el": "item.shield_kokiri"
-                                    }
-                                ]
+                                "type": "value",
+                                "el": "item.sword_kokiri"
+                            },
+                            {
+                                "type": "value",
+                                "el": "item.stick"
                             }
                         ]
                     }
                 ]
             },
-            "logic.location.deku.c_gohma": {
+            "event.deku_tree_clear": {
                 "type": "and",
                 "el": [
                     {
@@ -1485,59 +1345,93 @@
         },
         "region.dodongos_cavern_beginning": {
             "region.dodongos_cavern_entryway": {
+                "type": "true"
+            },
+            "region.dodongos_cavern_lobby": {
                 "type": "or",
                 "el": [
                     {
-                        "type": "value",
-                        "el": "mixin.has_explosives"
+                        "type": "here",
+                        "el": {
+                            "type": "value",
+                            "el": "mixin.can_blast_or_smash"
+                        }
                     },
                     {
                         "type": "value",
                         "el": "item.glove"
-                    },
-                    {
-                        "type": "value",
-                        "el": "mixin.can_become_adult"
                     }
                 ]
-            },
-            "region.dodongos_cavern_lobby": {
-                "type": "true"
             }
         },
         "region.dodongos_cavern_lobby": {
             "region.dodongos_cavern_lower_right_side": {
-                "type": "true"
+                "type": "here",
+                "el": {
+                    "type": "or",
+                    "el": [
+                        {
+                            "type": "value",
+                            "el": "mixin.can_blast_or_smash"
+                        },
+                        {
+                            "type": "and",
+                            "el": [
+                                {
+                                    "type": "or",
+                                    "el": [
+                                        {
+                                            "type": "value",
+                                            "el": "function.can_use(item.stick)"
+                                        },
+                                        {
+                                            "type": "value",
+                                            "el": "function.can_use(item.magic_din)"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "type": "or",
+                                    "el": [
+                                        {
+                                            "type": "not",
+                                            "el": {
+                                                "type": "state",
+                                                "el": "option.damage_multiplier",
+                                                "value": "damage_multiplier_ohko"
+                                            }
+                                        },
+                                        {
+                                            "type": "value",
+                                            "el": "item.fairy"
+                                        },
+                                        {
+                                            "type": "value",
+                                            "el": "function.can_use(item.magic_nayru)"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
             },
             "region.dodongos_cavern_bomb_bag_area": {
-                "type": "and",
+                "type": "or",
                 "el": [
                     {
-                        "type": "or",
+                        "type": "value",
+                        "el": "mixin.can_become_adult"
+                    },
+                    {
+                        "type": "and",
                         "el": [
                             {
                                 "type": "here",
                                 "el": {
-                                    "type": "and",
-                                    "el": [
-                                        {
-                                            "type": "value",
-                                            "el": "mixin.can_become_adult"
-                                        },
-                                        {
-                                            "type": "value",
-                                            "el": "function.can_use(item.bow)"
-                                        }
-                                    ]
+                                    "type": "value",
+                                    "el": "mixin.can_become_adult"
                                 }
-                            },
-                            {
-                                "type": "value",
-                                "el": "item.glove"
-                            },
-                            {
-                                "type": "value",
-                                "el": "function.can_use(item.magic_din)"
                             },
                             {
                                 "type": "value",
@@ -1546,8 +1440,47 @@
                         ]
                     },
                     {
-                        "type": "value",
-                        "el": "function.can_use(item.slingshot)"
+                        "type": "and",
+                        "el": [
+                            {
+                                "type": "value",
+                                "el": "skip.dodongomq_early_bombbag_child"
+                            },
+                            {
+                                "type": "or",
+                                "el": [
+                                    {
+                                        "type": "value",
+                                        "el": "item.sword_kokiri"
+                                    },
+                                    {
+                                        "type": "value",
+                                        "el": "item.stick"
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "or",
+                                "el": [
+                                    {
+                                        "type": "not",
+                                        "el": {
+                                            "type": "state",
+                                            "el": "option.damage_multiplier",
+                                            "value": "damage_multiplier_ohko"
+                                        }
+                                    },
+                                    {
+                                        "type": "value",
+                                        "el": "item.fairy"
+                                    },
+                                    {
+                                        "type": "value",
+                                        "el": "function.can_use(item.magic_nayru)"
+                                    }
+                                ]
+                            }
+                        ]
                     }
                 ]
             },
@@ -2270,48 +2203,7 @@
         },
         "region.fire_temple_lower": {
             "region.fire_temple_entrance": {
-                "type": "or",
-                "el": [
-                    {
-                        "type": "and",
-                        "el": [
-                            {
-                                "type": "value",
-                                "el": "mixin.can_become_child"
-                            },
-                            {
-                                "type": "not",
-                                "el": {
-                                    "type": "state",
-                                    "el": "option.entrance_shuffle",
-                                    "value": "entrance_shuffle_off"
-                                }
-                            }
-                        ]
-                    },
-                    {
-                        "type": "and",
-                        "el": [
-                            {
-                                "type": "value",
-                                "el": "mixin.can_become_adult"
-                            },
-                            {
-                                "type": "or",
-                                "el": [
-                                    {
-                                        "type": "value",
-                                        "el": "skip.fewer_tunic"
-                                    },
-                                    {
-                                        "type": "value",
-                                        "el": "function.can_use(item.tunic_fire)"
-                                    }
-                                ]
-                            }
-                        ]
-                    }
-                ]
+                "type": "true"
             },
             "region.fire_boss_room": {
                 "type": "and",
@@ -2955,7 +2847,7 @@
         },
         "region.fire_upper_maze": {
             "region.fire_temple_upper": {
-                "type": "or",
+                "type": "and",
                 "el": [
                     {
                         "type": "min",
@@ -2963,42 +2855,11 @@
                             "type": "value",
                             "el": "item.key_small_fire"
                         },
-                        "value": 8
+                        "value": 3
                     },
                     {
-                        "type": "and",
-                        "el": [
-                            {
-                                "type": "min",
-                                "el": {
-                                    "type": "value",
-                                    "el": "item.key_small_fire"
-                                },
-                                "value": 7
-                            },
-                            {
-                                "type": "or",
-                                "el": [
-                                    {
-                                        "type": "and",
-                                        "el": [
-                                            {
-                                                "type": "value",
-                                                "el": "function.can_use(item.boots_hover)"
-                                            },
-                                            {
-                                                "type": "value",
-                                                "el": "function.can_use(item.hammer)"
-                                            }
-                                        ]
-                                    },
-                                    {
-                                        "type": "value",
-                                        "el": "skip.fit_fire_maze_skip"
-                                    }
-                                ]
-                            }
-                        ]
+                        "type": "value",
+                        "el": "item.bow"
                     }
                 ]
             },
@@ -3567,10 +3428,30 @@
                 ]
             },
             "region.forest_temple_nw_outdoors": {
-                "type": "true"
+                "type": "or",
+                "el": [
+                    {
+                        "type": "value",
+                        "el": "function.can_play(item.song_time)"
+                    },
+                    {
+                        "type": "value",
+                        "el": "mixin.can_become_child"
+                    }
+                ]
             },
             "region.forest_temple_ne_outdoors": {
-                "type": "true"
+                "type": "or",
+                "el": [
+                    {
+                        "type": "value",
+                        "el": "function.can_use(item.bow)"
+                    },
+                    {
+                        "type": "value",
+                        "el": "function.can_use(item.slingshot)"
+                    }
+                ]
             },
             "region.forest_temple_block_push_room": {
                 "type": "min",
@@ -3709,10 +3590,30 @@
         },
         "region.forest_temple_central_area": {
             "region.forest_temple_nw_outdoors": {
-                "type": "true"
+                "type": "or",
+                "el": [
+                    {
+                        "type": "value",
+                        "el": "function.can_use(item.bow)"
+                    },
+                    {
+                        "type": "value",
+                        "el": "function.can_use(item.slingshot)"
+                    }
+                ]
             },
             "region.forest_temple_ne_outdoors": {
-                "type": "true"
+                "type": "or",
+                "el": [
+                    {
+                        "type": "value",
+                        "el": "function.can_use(item.bow)"
+                    },
+                    {
+                        "type": "value",
+                        "el": "function.can_use(item.slingshot)"
+                    }
+                ]
             },
             "region.forest_temple_after_block_puzzle": {
                 "type": "or",
@@ -3750,12 +3651,48 @@
                 ]
             },
             "region.forest_temple_outdoor_ledge": {
-                "type": "min",
-                "el": {
-                    "type": "value",
-                    "el": "item.key_small_forest"
-                },
-                "value": 3
+                "type": "or",
+                "el": [
+                    {
+                        "type": "value",
+                        "el": "function.can_use(item.boots_hover)"
+                    },
+                    {
+                        "type": "and",
+                        "el": [
+                            {
+                                "type": "value",
+                                "el": "function.can_use(item.hookshot)"
+                            },
+                            {
+                                "type": "or",
+                                "el": [
+                                    {
+                                        "type": "value",
+                                        "el": "item.glove"
+                                    },
+                                    {
+                                        "type": "value",
+                                        "el": "skip.fotmq_hallway_hook"
+                                    },
+                                    {
+                                        "type": "and",
+                                        "el": [
+                                            {
+                                                "type": "value",
+                                                "el": "mixin.has_bombchus"
+                                            },
+                                            {
+                                                "type": "value",
+                                                "el": "skip.fotmq_puzzle_bombchu"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
             },
             "region.forest_temple_boss_region": {
                 "type": "and",
@@ -3850,25 +3787,12 @@
         },
         "region.forest_temple_after_block_puzzle": {
             "region.forest_temple_bow_region": {
-                "type": "and",
-                "el": [
-                    {
-                        "type": "value",
-                        "el": "item.glove"
-                    },
-                    {
-                        "type": "min",
-                        "el": {
-                            "type": "value",
-                            "el": "item.key_small_forest"
-                        },
-                        "value": 3
-                    },
-                    {
-                        "type": "value",
-                        "el": "mixin.can_become_adult"
-                    }
-                ]
+                "type": "min",
+                "el": {
+                    "type": "value",
+                    "el": "item.key_small_forest"
+                },
+                "value": 4
             },
             "region.forest_temple_outdoor_ledge": {
                 "type": "min",
@@ -3897,55 +3821,95 @@
         },
         "region.forest_temple_nw_outdoors": {
             "region.forest_temple_ne_outdoors": {
-                "type": "true"
-            },
-            "region.forest_temple_outdoors_top_ledges": {
-                "type": "and",
-                "el": [
-                    {
-                        "type": "value",
-                        "el": "function.can_use(item.hookshot)"
-                    },
-                    {
-                        "type": "or",
-                        "el": [
-                            {
-                                "type": "value",
-                                "el": "function.can_use(mixin.longshot)"
-                            },
-                            {
-                                "type": "value",
-                                "el": "function.can_use(item.boots_hover)"
-                            },
-                            {
-                                "type": "value",
-                                "el": "function.can_play(item.song_time)"
-                            },
-                            {
-                                "type": "value",
-                                "el": "skip.fot_east_vines_hook"
-                            }
-                        ]
-                    }
-                ]
-            },
-            "region.forest_temple_outdoors_high_balconies": {
                 "type": "or",
                 "el": [
                     {
                         "type": "value",
+                        "el": "function.can_use(item.boots_iron)"
+                    },
+                    {
+                        "type": "value",
                         "el": "function.can_use(mixin.longshot)"
+                    },
+                    {
+                        "type": "min",
+                        "el": {
+                            "type": "value",
+                            "el": "item.scale"
+                        },
+                        "value": 2
                     },
                     {
                         "type": "and",
                         "el": [
                             {
                                 "type": "value",
-                                "el": "skip.fot_east_vines_hook"
+                                "el": "skip.fotmq_well_hook"
                             },
                             {
                                 "type": "value",
                                 "el": "function.can_use(item.hookshot)"
+                            }
+                        ]
+                    }
+                ]
+            },
+            "region.forest_temple_outdoors_top_ledges": {
+                "type": "value",
+                "el": "function.can_use(item.arrow_fire)"
+            },
+            "region.forest_temple_outdoors_high_balconies": {
+                "type": "or",
+                "el": [
+                    {
+                        "type": "value",
+                        "el": "mixin.can_become_adult"
+                    },
+                    {
+                        "type": "or",
+                        "el": [
+                            {
+                                "type": "value",
+                                "el": "mixin.has_explosives"
+                            },
+                            {
+                                "type": "and",
+                                "el": [
+                                    {
+                                        "type": "or",
+                                        "el": [
+                                            {
+                                                "type": "value",
+                                                "el": "function.can_use(item.boomerang)"
+                                            },
+                                            {
+                                                "type": "value",
+                                                "el": "item.nut"
+                                            },
+                                            {
+                                                "type": "value",
+                                                "el": "item.shield_kokiri"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "type": "or",
+                                        "el": [
+                                            {
+                                                "type": "value",
+                                                "el": "item.stick"
+                                            },
+                                            {
+                                                "type": "value",
+                                                "el": "item.sword_kokiri"
+                                            },
+                                            {
+                                                "type": "value",
+                                                "el": "function.can_use(item.slingshot)"
+                                            }
+                                        ]
+                                    }
+                                ]
                             }
                         ]
                     }
@@ -4082,7 +4046,8 @@
                 ]
             },
             "region.forest_temple_ne_outdoors_ledge": {
-                "type": "true"
+                "type": "value",
+                "el": "function.can_use(mixin.longshot)"
             },
             "region.forest_temple_outdoors_high_balconies": {
                 "type": "or",
@@ -4107,11 +4072,24 @@
                 ]
             },
             "region.forest_temple_nw_outdoors": {
-                "type": "true"
+                "type": "or",
+                "el": [
+                    {
+                        "type": "value",
+                        "el": "function.can_use(item.boots_iron)"
+                    },
+                    {
+                        "type": "min",
+                        "el": {
+                            "type": "value",
+                            "el": "item.scale"
+                        },
+                        "value": 2
+                    }
+                ]
             },
             "region.forest_temple_lobby": {
-                "type": "value",
-                "el": "function.can_use(item.hookshot)"
+                "type": "true"
             },
             "logic.location.temple_forest_mq.c_well_chest": {
                 "type": "or",
@@ -4328,7 +4306,17 @@
                 "type": "true"
             },
             "region.forest_temple_ne_outdoors_ledge": {
-                "type": "true"
+                "type": "and",
+                "el": [
+                    {
+                        "type": "value",
+                        "el": "skip.forest_temple_ledge"
+                    },
+                    {
+                        "type": "value",
+                        "el": "function.can_use(item.boots_hover)"
+                    }
+                ]
             },
             "logic.location.temple_forest_mq.c_ne_outdoors_upper": {
                 "type": "true"
@@ -4339,30 +4327,8 @@
                 "type": "true"
             },
             "region.forest_temple_falling_room": {
-                "type": "and",
-                "el": [
-                    {
-                        "type": "min",
-                        "el": {
-                            "type": "value",
-                            "el": "item.key_small_forest"
-                        },
-                        "value": 5
-                    },
-                    {
-                        "type": "or",
-                        "el": [
-                            {
-                                "type": "value",
-                                "el": "item.bow"
-                            },
-                            {
-                                "type": "value",
-                                "el": "function.can_use(item.magic_din)"
-                            }
-                        ]
-                    }
-                ]
+                "type": "value",
+                "el": "function.can_play(item.song_time)"
             },
             "logic.location.temple_forest_mq.c_ne_outdoors_lower": {
                 "type": "true"
@@ -4416,6 +4382,10 @@
             "logic.location.temple_forest.c_poe_blue": {
                 "type": "value",
                 "el": "function.can_use(item.bow)"
+            },
+            "event.forest_temple_jo_and_beth": {
+                "type": "value",
+                "el": "function.can_use(item.bow)"
             }
         },
         "region.forest_temple_falling_room": {
@@ -4430,6 +4400,10 @@
             },
             "logic.location.temple_forest.c_falling_room": {
                 "type": "true"
+            },
+            "event.forest_temple_amy_and_meg": {
+                "type": "value",
+                "el": "function.can_use(item.bow)"
             }
         },
         "region.forest_temple_boss_region": {
@@ -4468,25 +4442,16 @@
                 "type": "and",
                 "el": [
                     {
-                        "type": "min",
-                        "el": {
-                            "type": "value",
-                            "el": "item.key_small_forest"
-                        },
-                        "value": 5
+                        "type": "value",
+                        "el": "skip.forest_temple_pierre_early"
                     },
                     {
-                        "type": "or",
-                        "el": [
-                            {
-                                "type": "value",
-                                "el": "item.bow"
-                            },
-                            {
-                                "type": "value",
-                                "el": "function.can_use(item.magic_din)"
-                            }
-                        ]
+                        "type": "value",
+                        "el": "function.can_use(item.boots_hover)"
+                    },
+                    {
+                        "type": "value",
+                        "el": "function.can_use(mixin.scarecrow)"
                     }
                 ]
             },
@@ -4499,7 +4464,30 @@
         },
         "region.forest_temple_block_push_room": {
             "region.forest_temple_outside_upper_ledge": {
-                "type": "true"
+                "type": "or",
+                "el": [
+                    {
+                        "type": "value",
+                        "el": "function.can_use(item.boots_hover)"
+                    },
+                    {
+                        "type": "and",
+                        "el": [
+                            {
+                                "type": "value",
+                                "el": "skip.forest_temple_floormaster_strength"
+                            },
+                            {
+                                "type": "value",
+                                "el": "mixin.can_become_adult"
+                            },
+                            {
+                                "type": "value",
+                                "el": "item.glove"
+                            }
+                        ]
+                    }
+                ]
             },
             "region.forest_temple_bow_region": {
                 "type": "and",
@@ -4588,8 +4576,7 @@
         },
         "region.ganons_castle_lobby": {
             "region.ganons_castle_grounds": {
-                "type": "value",
-                "el": "mixin.can_become_adult"
+                "type": "true"
             },
             "region.ganons_castle_forest_trial": {
                 "type": "true"
@@ -4773,6 +4760,51 @@
             },
             "logic.location.castle_ganon.c_forest_trial": {
                 "type": "true"
+            },
+            "event.forest_trial_clear": {
+                "type": "and",
+                "el": [
+                    {
+                        "type": "value",
+                        "el": "function.can_use(item.arrow_light)"
+                    },
+                    {
+                        "type": "or",
+                        "el": [
+                            {
+                                "type": "value",
+                                "el": "item.arrow_fire"
+                            },
+                            {
+                                "type": "value",
+                                "el": "item.magic_din"
+                            }
+                        ]
+                    }
+                ]
+            }
+        },
+        "region.ganons_castle_fire_trial": {
+            "event.fire_trial_clear": {
+                "type": "and",
+                "el": [
+                    {
+                        "type": "value",
+                        "el": "function.can_use(item.tunic_fire)"
+                    },
+                    {
+                        "type": "value",
+                        "el": "function.can_use(mixin.golden_gauntlets)"
+                    },
+                    {
+                        "type": "value",
+                        "el": "function.can_use(item.arrow_light)"
+                    },
+                    {
+                        "type": "value",
+                        "el": "function.can_use(mixin.longshot)"
+                    }
+                ]
             }
         },
         "region.ganons_castle_water_trial": {
@@ -4817,6 +4849,23 @@
                     {
                         "type": "value",
                         "el": "function.can_play(item.song_time)"
+                    }
+                ]
+            },
+            "event.water_trial_clear": {
+                "type": "and",
+                "el": [
+                    {
+                        "type": "value",
+                        "el": "item.blue_fire"
+                    },
+                    {
+                        "type": "value",
+                        "el": "item.hammer"
+                    },
+                    {
+                        "type": "value",
+                        "el": "function.can_use(item.arrow_light)"
                     }
                 ]
             }
@@ -4986,6 +5035,86 @@
                                     {
                                         "type": "value",
                                         "el": "function.can_use(item.magic_din)"
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+            "event.shadow_trial_clear": {
+                "type": "and",
+                "el": [
+                    {
+                        "type": "value",
+                        "el": "function.can_use(item.arrow_light)"
+                    },
+                    {
+                        "type": "value",
+                        "el": "item.hammer"
+                    },
+                    {
+                        "type": "or",
+                        "el": [
+                            {
+                                "type": "and",
+                                "el": [
+                                    {
+                                        "type": "value",
+                                        "el": "item.arrow_fire"
+                                    },
+                                    {
+                                        "type": "or",
+                                        "el": [
+                                            {
+                                                "type": "value",
+                                                "el": "skip.lens_required_never"
+                                            },
+                                            {
+                                                "type": "value",
+                                                "el": "function.can_use(item.lens)"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "and",
+                                "el": [
+                                    {
+                                        "type": "value",
+                                        "el": "function.can_use(mixin.longshot)"
+                                    },
+                                    {
+                                        "type": "or",
+                                        "el": [
+                                            {
+                                                "type": "value",
+                                                "el": "item.boots_hover"
+                                            },
+                                            {
+                                                "type": "and",
+                                                "el": [
+                                                    {
+                                                        "type": "value",
+                                                        "el": "item.magic_din"
+                                                    },
+                                                    {
+                                                        "type": "or",
+                                                        "el": [
+                                                            {
+                                                                "type": "value",
+                                                                "el": "skip.lens_required_never"
+                                                            },
+                                                            {
+                                                                "type": "value",
+                                                                "el": "function.can_use(item.lens)"
+                                                            }
+                                                        ]
+                                                    }
+                                                ]
+                                            }
+                                        ]
                                     }
                                 ]
                             }
@@ -5190,6 +5319,36 @@
                         ]
                     }
                 ]
+            },
+            "event.spirit_trial_clear": {
+                "type": "and",
+                "el": [
+                    {
+                        "type": "value",
+                        "el": "function.can_use(item.arrow_light)"
+                    },
+                    {
+                        "type": "value",
+                        "el": "item.shield_mirror"
+                    },
+                    {
+                        "type": "value",
+                        "el": "mixin.has_bombchus"
+                    },
+                    {
+                        "type": "or",
+                        "el": [
+                            {
+                                "type": "value",
+                                "el": "skip.spirit_trial_without_hookshot"
+                            },
+                            {
+                                "type": "value",
+                                "el": "item.hookshot"
+                            }
+                        ]
+                    }
+                ]
             }
         },
         "region.ganons_castle_light_trial": {
@@ -5244,6 +5403,40 @@
                         "value": 1
                     }
                 ]
+            },
+            "event.light_trial_clear": {
+                "type": "and",
+                "el": [
+                    {
+                        "type": "value",
+                        "el": "function.can_use(item.arrow_light)"
+                    },
+                    {
+                        "type": "value",
+                        "el": "item.hookshot"
+                    },
+                    {
+                        "type": "min",
+                        "el": {
+                            "type": "value",
+                            "el": "item.key_small_ganon"
+                        },
+                        "value": 2
+                    },
+                    {
+                        "type": "or",
+                        "el": [
+                            {
+                                "type": "value",
+                                "el": "skip.lens_required_never"
+                            },
+                            {
+                                "type": "value",
+                                "el": "function.can_use(item.lens)"
+                            }
+                        ]
+                    }
+                ]
             }
         },
         "region.gerudo_training_grounds_lobby": {
@@ -5258,8 +5451,20 @@
                 }
             },
             "region.gerudo_training_grounds_right_side": {
-                "type": "value",
-                "el": "function.can_use(item.hookshot)"
+                "type": "here",
+                "el": {
+                    "type": "or",
+                    "el": [
+                        {
+                            "type": "value",
+                            "el": "function.can_use(item.bow)"
+                        },
+                        {
+                            "type": "value",
+                            "el": "function.can_use(item.slingshot)"
+                        }
+                    ]
+                }
             },
             "region.gerudo_training_grounds_heavy_block_room": {
                 "type": "and",
@@ -5293,7 +5498,29 @@
                 ]
             },
             "region.gerudo_training_grounds_lava_room": {
-                "type": "true"
+                "type": "here",
+                "el": {
+                    "type": "and",
+                    "el": [
+                        {
+                            "type": "value",
+                            "el": "mixin.has_explosives"
+                        },
+                        {
+                            "type": "or",
+                            "el": [
+                                {
+                                    "type": "value",
+                                    "el": "mixin.can_become_adult"
+                                },
+                                {
+                                    "type": "value",
+                                    "el": "item.sword_kokiri"
+                                }
+                            ]
+                        }
+                    ]
+                }
             },
             "region.gerudo_training_grounds_central_maze": {
                 "type": "true"
@@ -5395,24 +5622,24 @@
         },
         "region.gerudo_training_grounds_right_side": {
             "region.gerudo_training_grounds_underwater": {
-                "type": "or",
+                "type": "and",
                 "el": [
                     {
-                        "type": "value",
-                        "el": "function.can_use(mixin.longshot)"
-                    },
-                    {
-                        "type": "and",
+                        "type": "or",
                         "el": [
                             {
                                 "type": "value",
-                                "el": "function.can_use(item.hookshot)"
+                                "el": "item.bow"
                             },
                             {
                                 "type": "value",
-                                "el": "item.bow"
+                                "el": "function.can_use(mixin.longshot)"
                             }
                         ]
+                    },
+                    {
+                        "type": "value",
+                        "el": "function.can_use(item.boots_hover)"
                     }
                 ]
             },
@@ -5588,21 +5815,12 @@
         },
         "region.gerudo_training_grounds_back_areas": {
             "region.gerudo_training_grounds_central_maze_right": {
-                "type": "or",
-                "el": [
-                    {
-                        "type": "value",
-                        "el": "function.can_play(item.song_time)"
-                    },
-                    {
-                        "type": "value",
-                        "el": "mixin.can_become_child"
-                    }
-                ]
+                "type": "value",
+                "el": "item.hammer"
             },
             "region.gerudo_training_grounds_right_side": {
                 "type": "value",
-                "el": "function.can_use(item.hookshot)"
+                "el": "function.can_use(mixin.longshot)"
             },
             "logic.location.training_grounds_mq.c_eye_statue": {
                 "type": "value",
@@ -5657,7 +5875,8 @@
                 "el": "function.can_use(item.hookshot)"
             },
             "region.gerudo_training_grounds_hammer_room": {
-                "type": "true"
+                "type": "value",
+                "el": "function.can_use(item.hookshot)"
             },
             "region.gerudo_training_grounds_lava_room": {
                 "type": "true"
@@ -5688,17 +5907,12 @@
         },
         "region.gerudo_training_grounds_central_maze": {
             "region.gerudo_training_grounds_central_maze_right": {
-                "type": "or",
-                "el": [
-                    {
-                        "type": "value",
-                        "el": "function.can_play(item.song_time)"
-                    },
-                    {
-                        "type": "value",
-                        "el": "mixin.can_become_child"
-                    }
-                ]
+                "type": "min",
+                "el": {
+                    "type": "value",
+                    "el": "item.key_small_training"
+                },
+                "value": 9
             },
             "logic.location.training_grounds.c_hidden_ceiling": {
                 "type": "and",
@@ -5774,7 +5988,26 @@
                 ]
             },
             "region.gerudo_training_grounds_hammer_room": {
-                "type": "true"
+                "type": "or",
+                "el": [
+                    {
+                        "type": "value",
+                        "el": "function.can_use(mixin.longshot)"
+                    },
+                    {
+                        "type": "and",
+                        "el": [
+                            {
+                                "type": "value",
+                                "el": "function.can_use(item.hookshot)"
+                            },
+                            {
+                                "type": "value",
+                                "el": "function.can_use(item.boots_hover)"
+                            }
+                        ]
+                    }
+                ]
             },
             "logic.location.training_grounds.c_underwater_silver": {
                 "type": "and",
@@ -5809,7 +6042,17 @@
         },
         "region.gerudo_training_grounds_hammer_room": {
             "region.gerudo_training_grounds_eye_statue_lower": {
-                "type": "true"
+                "type": "and",
+                "el": [
+                    {
+                        "type": "value",
+                        "el": "function.can_use(item.hammer)"
+                    },
+                    {
+                        "type": "value",
+                        "el": "item.bow"
+                    }
+                ]
             },
             "region.gerudo_training_grounds_lava_room": {
                 "type": "true"
@@ -6357,7 +6600,8 @@
                 "type": "true"
             },
             "region.jabu_jabus_belly_main": {
-                "type": "true"
+                "type": "value",
+                "el": "mixin.can_use_projectile"
             },
             "logic.location.woods.c_deku_theater_1": {
                 "type": "true"
@@ -6373,32 +6617,22 @@
         },
         "region.jabu_jabus_belly_main": {
             "region.jabu_jabus_belly_beginning": {
-                "type": "and",
-                "el": [
-                    {
-                        "type": "value",
-                        "el": "mixin.can_become_child"
-                    },
-                    {
-                        "type": "value",
-                        "el": "item.fish"
-                    }
-                ]
+                "type": "true"
             },
             "region.jabu_jabus_belly_depths": {
                 "type": "value",
                 "el": "function.can_use(item.boomerang)"
             },
             "region.jabu_jabus_belly_boss_area": {
-                "type": "or",
+                "type": "and",
                 "el": [
                     {
                         "type": "value",
-                        "el": "item.stick"
+                        "el": "skip.jabu_boss_gs_adult"
                     },
                     {
                         "type": "value",
-                        "el": "item.sword_kokiri"
+                        "el": "function.can_use(item.boots_hover)"
                     }
                 ]
             },
@@ -6647,82 +6881,84 @@
         },
         "region.root_exits": {
             "region.kf_links_house": {
-                "type": "true"
+                "type": "value",
+                "el": "mixin.can_become_child"
             },
             "region.temple_of_time": {
-                "type": "true"
-            },
-            "region.sacred_forest_meadow": {
-                "type": "true"
-            },
-            "region.dmc_central_local": {
-                "type": "value",
-                "el": "function.can_use(item.tunic_fire)"
-            },
-            "region.lake_hylia": {
-                "type": "true"
-            },
-            "region.graveyard_warp_pad_region": {
-                "type": "true"
-            },
-            "region.desert_colossus": {
                 "type": "or",
                 "el": [
                     {
-                        "type": "and",
-                        "el": [
-                            {
-                                "type": "value",
-                                "el": "mixin.can_become_child"
-                            },
-                            {
-                                "type": "min",
-                                "el": {
-                                    "type": "value",
-                                    "el": "item.key_small_spirit"
-                                },
-                                "value": 5
-                            }
-                        ]
+                        "type": "value",
+                        "el": "mixin.can_become_adult"
                     },
                     {
                         "type": "and",
                         "el": [
                             {
                                 "type": "value",
-                                "el": "function.can_use(mixin.silver_gauntlets)"
+                                "el": "function.can_play(item.warp_light)"
                             },
                             {
-                                "type": "or",
-                                "el": [
-                                    {
-                                        "type": "and",
-                                        "el": [
-                                            {
-                                                "type": "min",
-                                                "el": {
-                                                    "type": "value",
-                                                    "el": "item.key_small_spirit"
-                                                },
-                                                "value": 3
-                                            },
-                                            {
-                                                "type": "value",
-                                                "el": "mixin.has_explosives"
-                                            }
-                                        ]
-                                    },
-                                    {
-                                        "type": "min",
-                                        "el": {
-                                            "type": "value",
-                                            "el": "item.key_small_spirit"
-                                        },
-                                        "value": 5
-                                    }
-                                ]
+                                "type": "value",
+                                "el": "mixin.can_leave_forest"
                             }
                         ]
+                    }
+                ]
+            },
+            "region.sacred_forest_meadow": {
+                "type": "value",
+                "el": "function.can_play(item.warp_forest)"
+            },
+            "region.dmc_central_local": {
+                "type": "and",
+                "el": [
+                    {
+                        "type": "value",
+                        "el": "function.can_play(item.warp_fire)"
+                    },
+                    {
+                        "type": "value",
+                        "el": "mixin.can_leave_forest"
+                    }
+                ]
+            },
+            "region.lake_hylia": {
+                "type": "and",
+                "el": [
+                    {
+                        "type": "value",
+                        "el": "function.can_play(item.warp_water)"
+                    },
+                    {
+                        "type": "value",
+                        "el": "mixin.can_leave_forest"
+                    }
+                ]
+            },
+            "region.graveyard_warp_pad_region": {
+                "type": "and",
+                "el": [
+                    {
+                        "type": "value",
+                        "el": "function.can_play(item.warp_shadow)"
+                    },
+                    {
+                        "type": "value",
+                        "el": "mixin.can_leave_forest"
+                    }
+                ]
+            },
+            "region.desert_colossus": {
+                "type": "and",
+                "el": [
+                    {
+                        "type": "value",
+                        "el": "function.can_play(item.warp_spirit)"
+                    },
+                    {
+                        "type": "value",
+                        "el": "mixin.can_leave_forest"
                     }
                 ]
             }
@@ -6895,6 +7131,32 @@
                     {
                         "type": "value",
                         "el": "item.bottle"
+                    }
+                ]
+            },
+            "event.showed_mido_sword_&_shield": {
+                "type": "or",
+                "el": [
+                    {
+                        "type": "state",
+                        "el": "option.doors_open_forest"
+                    },
+                    {
+                        "type": "and",
+                        "el": [
+                            {
+                                "type": "value",
+                                "el": "mixin.can_become_child"
+                            },
+                            {
+                                "type": "value",
+                                "el": "item.sword_kokiri"
+                            },
+                            {
+                                "type": "value",
+                                "el": "item.shield_kokiri"
+                            }
+                        ]
                     }
                 ]
             }
@@ -7120,26 +7382,79 @@
                 "type": "true"
             },
             "region.gc_woods_warp": {
+                "type": "true"
+            },
+            "region.lw_bridge": {
                 "type": "and",
                 "el": [
                     {
                         "type": "value",
-                        "el": "mixin.can_blast_or_smash"
+                        "el": "mixin.can_become_adult"
                     },
                     {
-                        "type": "value",
-                        "el": "function.can_use(item.magic_din)"
+                        "type": "or",
+                        "el": [
+                            {
+                                "type": "value",
+                                "el": "function.can_use(item.boots_hover)"
+                            },
+                            {
+                                "type": "value",
+                                "el": "function.can_use(mixin.longshot)"
+                            },
+                            {
+                                "type": "here",
+                                "el": {
+                                    "type": "value",
+                                    "el": "mixin.can_plant_bean"
+                                }
+                            },
+                            {
+                                "type": "value",
+                                "el": "skip.lost_woods_bridge_jump"
+                            }
+                        ]
                     }
                 ]
             },
-            "region.lw_bridge": {
-                "type": "true"
-            },
             "region.zora_river": {
-                "type": "true"
+                "type": "and",
+                "el": [
+                    {
+                        "type": "value",
+                        "el": "mixin.can_leave_forest"
+                    },
+                    {
+                        "type": "or",
+                        "el": [
+                            {
+                                "type": "value",
+                                "el": "mixin.can_dive"
+                            },
+                            {
+                                "type": "value",
+                                "el": "function.can_use(item.boots_iron)"
+                            }
+                        ]
+                    }
+                ]
             },
             "region.lw_beyond_mido": {
-                "type": "true"
+                "type": "or",
+                "el": [
+                    {
+                        "type": "value",
+                        "el": "mixin.can_become_child"
+                    },
+                    {
+                        "type": "value",
+                        "el": "skip.mido_skip"
+                    },
+                    {
+                        "type": "value",
+                        "el": "function.can_play(item.song_saria)"
+                    }
+                ]
             },
             "region.lw_near_shortcuts_grotto": {
                 "type": "here",
@@ -7232,6 +7547,41 @@
                         "el": "item.bottle"
                     }
                 ]
+            },
+            "event.odd_mushroom_access": {
+                "type": "and",
+                "el": [
+                    {
+                        "type": "value",
+                        "el": "mixin.can_become_adult"
+                    },
+                    {
+                        "type": "or",
+                        "el": [
+                            {
+                                "type": "value",
+                                "el": "'Cojiro Access'"
+                            },
+                            {
+                                "type": "value",
+                                "el": "Cojiro"
+                            }
+                        ]
+                    }
+                ]
+            },
+            "event.poachers_saw_access": {
+                "type": "and",
+                "el": [
+                    {
+                        "type": "value",
+                        "el": "mixin.can_become_adult"
+                    },
+                    {
+                        "type": "value",
+                        "el": "'Odd Potion Access'"
+                    }
+                ]
             }
         },
         "region.lw_beyond_mido": {
@@ -7239,7 +7589,17 @@
                 "type": "true"
             },
             "region.lost_woods": {
-                "type": "true"
+                "type": "or",
+                "el": [
+                    {
+                        "type": "value",
+                        "el": "mixin.can_become_child"
+                    },
+                    {
+                        "type": "value",
+                        "el": "function.can_play(item.song_saria)"
+                    }
+                ]
             },
             "region.sfm_entryway": {
                 "type": "true"
@@ -7390,7 +7750,29 @@
                 "type": "true"
             },
             "region.sacred_forest_meadow": {
-                "type": "true"
+                "type": "or",
+                "el": [
+                    {
+                        "type": "value",
+                        "el": "mixin.can_become_adult"
+                    },
+                    {
+                        "type": "value",
+                        "el": "item.slingshot"
+                    },
+                    {
+                        "type": "value",
+                        "el": "item.stick"
+                    },
+                    {
+                        "type": "value",
+                        "el": "item.sword_kokiri"
+                    },
+                    {
+                        "type": "value",
+                        "el": "function.can_use(item.magic_din)"
+                    }
+                ]
             },
             "region.sfm_wolfos_grotto": {
                 "type": "value",
@@ -7485,7 +7867,8 @@
                 "type": "true"
             },
             "region.lost_woods": {
-                "type": "true"
+                "type": "value",
+                "el": "function.can_use(mixin.longshot)"
             }
         },
         "region.hyrule_field": {
@@ -7617,7 +8000,17 @@
                 "type": "true"
             },
             "region.zoras_domain": {
-                "type": "true"
+                "type": "and",
+                "el": [
+                    {
+                        "type": "value",
+                        "el": "mixin.can_become_child"
+                    },
+                    {
+                        "type": "value",
+                        "el": "mixin.can_dive"
+                    }
+                ]
             },
             "region.lh_owl_flight": {
                 "type": "value",
@@ -7911,6 +8304,19 @@
                         "el": "item.bottle"
                     }
                 ]
+            },
+            "event.bonooru": {
+                "type": "and",
+                "el": [
+                    {
+                        "type": "value",
+                        "el": "mixin.can_become_child"
+                    },
+                    {
+                        "type": "value",
+                        "el": "item.ocarina"
+                    }
+                ]
             }
         },
         "region.lh_owl_flight": {
@@ -7964,6 +8370,54 @@
                         "el": "function.can_use(item.hookshot)"
                     }
                 ]
+            },
+            "event.eyedrops_access": {
+                "type": "and",
+                "el": [
+                    {
+                        "type": "value",
+                        "el": "mixin.can_become_adult"
+                    },
+                    {
+                        "type": "or",
+                        "el": [
+                            {
+                                "type": "value",
+                                "el": "'Eyeball Frog Access'"
+                            },
+                            {
+                                "type": "and",
+                                "el": [
+                                    {
+                                        "type": "value",
+                                        "el": "Eyeball_Frog"
+                                    },
+                                    {
+                                        "type": "and",
+                                        "el": [
+                                            {
+                                                "type": "not",
+                                                "el": {
+                                                    "type": "state",
+                                                    "el": "option.entrance_shuffle",
+                                                    "value": "entrance_shuffle_off"
+                                                }
+                                            },
+                                            {
+                                                "type": "not",
+                                                "el": {
+                                                    "type": "state",
+                                                    "el": "option.entrance_shuffle",
+                                                    "value": "entrance_shuffle_dungeon"
+                                                }
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
             }
         },
         "region.lh_fishing_hole": {
@@ -7987,36 +8441,15 @@
                 "type": "true"
             },
             "region.gv_crate_ledge": {
-                "type": "and",
+                "type": "or",
                 "el": [
                     {
                         "type": "value",
-                        "el": "skip.gerudo_crate_hovers"
+                        "el": "mixin.can_become_child"
                     },
                     {
                         "type": "value",
-                        "el": "function.can_use(item.boots_hover)"
-                    },
-                    {
-                        "type": "or",
-                        "el": [
-                            {
-                                "type": "not",
-                                "el": {
-                                    "type": "state",
-                                    "el": "option.damage_multiplier",
-                                    "value": "damage_multiplier_ohko"
-                                }
-                            },
-                            {
-                                "type": "value",
-                                "el": "item.fairy"
-                            },
-                            {
-                                "type": "value",
-                                "el": "function.can_use(item.magic_nayru)"
-                            }
-                        ]
+                        "el": "function.can_use(mixin.longshot)"
                     }
                 ]
             },
@@ -8025,7 +8458,34 @@
                 "el": "function.can_use(mixin.silver_gauntlets)"
             },
             "region.gv_fortress_side": {
-                "type": "true"
+                "type": "and",
+                "el": [
+                    {
+                        "type": "value",
+                        "el": "mixin.can_become_adult"
+                    },
+                    {
+                        "type": "or",
+                        "el": [
+                            {
+                                "type": "value",
+                                "el": "mixin.can_ride_epona"
+                            },
+                            {
+                                "type": "value",
+                                "el": "function.can_use(mixin.longshot)"
+                            },
+                            {
+                                "type": "state",
+                                "el": "option.gerudo_fortress_open"
+                            },
+                            {
+                                "type": "value",
+                                "el": "'Carpenter Rescue'"
+                            }
+                        ]
+                    }
+                ]
             },
             "logic.location.gerudo_valley.s_gerudo_wood_plank_child_night": {
                 "type": "and",
@@ -8177,7 +8637,29 @@
                 ]
             },
             "region.gerudo_valley": {
-                "type": "true"
+                "type": "or",
+                "el": [
+                    {
+                        "type": "value",
+                        "el": "mixin.can_become_child"
+                    },
+                    {
+                        "type": "value",
+                        "el": "mixin.can_ride_epona"
+                    },
+                    {
+                        "type": "value",
+                        "el": "function.can_use(mixin.longshot)"
+                    },
+                    {
+                        "type": "state",
+                        "el": "option.gerudo_fortress_open"
+                    },
+                    {
+                        "type": "value",
+                        "el": "'Carpenter Rescue'"
+                    }
+                ]
             },
             "region.gv_carpenter_tent": {
                 "type": "value",
@@ -8225,6 +8707,28 @@
                         "el": "mixin.is_night"
                     }
                 ]
+            },
+            "event.broken_sword_access": {
+                "type": "and",
+                "el": [
+                    {
+                        "type": "value",
+                        "el": "mixin.can_become_adult"
+                    },
+                    {
+                        "type": "or",
+                        "el": [
+                            {
+                                "type": "value",
+                                "el": "'Poachers Saw Access'"
+                            },
+                            {
+                                "type": "value",
+                                "el": "Poachers_Saw"
+                            }
+                        ]
+                    }
+                ]
             }
         },
         "region.gv_carpenter_tent": {
@@ -8237,7 +8741,8 @@
                 "type": "true"
             },
             "region.gf_outside_gate": {
-                "type": "true"
+                "type": "value",
+                "el": "'GF Gate Open'"
             },
             "region.gerudo_training_grounds_lobby": {
                 "type": "and",
@@ -8464,13 +8969,107 @@
                         ]
                     }
                 ]
+            },
+            "event.carpenter_rescue": {
+                "type": "value",
+                "el": "mixin.can_finish_gerudofortress"
+            },
+            "event.gf_gate_open": {
+                "type": "and",
+                "el": [
+                    {
+                        "type": "value",
+                        "el": "mixin.can_become_adult"
+                    },
+                    {
+                        "type": "value",
+                        "el": "item.membership"
+                    },
+                    {
+                        "type": "or",
+                        "el": [
+                            {
+                                "type": "value",
+                                "el": "shuffle_gerudo_card"
+                            },
+                            {
+                                "type": "state",
+                                "el": "option.entrance_shuffle",
+                                "value": "entrance_shuffle_all"
+                            },
+                            {
+                                "type": "value",
+                                "el": "shuffle_special_indoor_entrances"
+                            }
+                        ]
+                    }
+                ]
             }
         },
         "region.gf_outside_gate": {
             "region.gerudo_fortress": {
-                "type": "true"
+                "type": "or",
+                "el": [
+                    {
+                        "type": "value",
+                        "el": "mixin.can_become_adult"
+                    },
+                    {
+                        "type": "and",
+                        "el": [
+                            {
+                                "type": "state",
+                                "el": "option.entrance_shuffle",
+                                "value": "entrance_shuffle_all"
+                            },
+                            {
+                                "type": "value",
+                                "el": "'GF Gate Open'"
+                            }
+                        ]
+                    }
+                ]
             },
             "region.wasteland_near_fortress": {
+                "type": "true"
+            },
+            "event.gf_gate_open": {
+                "type": "and",
+                "el": [
+                    {
+                        "type": "value",
+                        "el": "mixin.can_become_adult"
+                    },
+                    {
+                        "type": "value",
+                        "el": "item.membership"
+                    },
+                    {
+                        "type": "or",
+                        "el": [
+                            {
+                                "type": "value",
+                                "el": "shuffle_gerudo_card"
+                            },
+                            {
+                                "type": "state",
+                                "el": "option.entrance_shuffle",
+                                "value": "entrance_shuffle_all"
+                            },
+                            {
+                                "type": "value",
+                                "el": "shuffle_special_indoor_entrances"
+                            }
+                        ]
+                    }
+                ]
+            }
+        },
+        "region.wasteland_near_fortress": {
+            "region.gf_outside_gate": {
+                "type": "true"
+            },
+            "region.haunted_wasteland": {
                 "type": "or",
                 "el": [
                     {
@@ -8488,18 +9087,19 @@
                 ]
             }
         },
-        "region.wasteland_near_fortress": {
-            "region.gf_outside_gate": {
-                "type": "true"
-            },
-            "region.haunted_wasteland": {
-                "type": "value",
-                "el": "skip.reverse_wasteland"
-            }
-        },
         "region.haunted_wasteland": {
             "region.wasteland_near_colossus": {
-                "type": "true"
+                "type": "or",
+                "el": [
+                    {
+                        "type": "value",
+                        "el": "skip.lens_required_never"
+                    },
+                    {
+                        "type": "value",
+                        "el": "function.can_use(item.lens)"
+                    }
+                ]
             },
             "region.wasteland_near_fortress": {
                 "type": "or",
@@ -8541,65 +9141,7 @@
         },
         "region.wasteland_near_colossus": {
             "region.desert_colossus": {
-                "type": "or",
-                "el": [
-                    {
-                        "type": "and",
-                        "el": [
-                            {
-                                "type": "value",
-                                "el": "mixin.can_become_child"
-                            },
-                            {
-                                "type": "min",
-                                "el": {
-                                    "type": "value",
-                                    "el": "item.key_small_spirit"
-                                },
-                                "value": 5
-                            }
-                        ]
-                    },
-                    {
-                        "type": "and",
-                        "el": [
-                            {
-                                "type": "value",
-                                "el": "function.can_use(mixin.silver_gauntlets)"
-                            },
-                            {
-                                "type": "or",
-                                "el": [
-                                    {
-                                        "type": "and",
-                                        "el": [
-                                            {
-                                                "type": "min",
-                                                "el": {
-                                                    "type": "value",
-                                                    "el": "item.key_small_spirit"
-                                                },
-                                                "value": 3
-                                            },
-                                            {
-                                                "type": "value",
-                                                "el": "mixin.has_explosives"
-                                            }
-                                        ]
-                                    },
-                                    {
-                                        "type": "min",
-                                        "el": {
-                                            "type": "value",
-                                            "el": "item.key_small_spirit"
-                                        },
-                                        "value": 5
-                                    }
-                                ]
-                            }
-                        ]
-                    }
-                ]
+                "type": "true"
             },
             "region.haunted_wasteland": {
                 "type": "value",
@@ -8762,65 +9304,7 @@
         },
         "region.colossus_great_fairy_fountain": {
             "region.desert_colossus": {
-                "type": "or",
-                "el": [
-                    {
-                        "type": "and",
-                        "el": [
-                            {
-                                "type": "value",
-                                "el": "mixin.can_become_child"
-                            },
-                            {
-                                "type": "min",
-                                "el": {
-                                    "type": "value",
-                                    "el": "item.key_small_spirit"
-                                },
-                                "value": 5
-                            }
-                        ]
-                    },
-                    {
-                        "type": "and",
-                        "el": [
-                            {
-                                "type": "value",
-                                "el": "function.can_use(mixin.silver_gauntlets)"
-                            },
-                            {
-                                "type": "or",
-                                "el": [
-                                    {
-                                        "type": "and",
-                                        "el": [
-                                            {
-                                                "type": "min",
-                                                "el": {
-                                                    "type": "value",
-                                                    "el": "item.key_small_spirit"
-                                                },
-                                                "value": 3
-                                            },
-                                            {
-                                                "type": "value",
-                                                "el": "mixin.has_explosives"
-                                            }
-                                        ]
-                                    },
-                                    {
-                                        "type": "min",
-                                        "el": {
-                                            "type": "value",
-                                            "el": "item.key_small_spirit"
-                                        },
-                                        "value": 5
-                                    }
-                                ]
-                            }
-                        ]
-                    }
-                ]
+                "type": "true"
             },
             "logic.location.desert.c_colossus_fairy": {
                 "type": "value",
@@ -8829,7 +9313,17 @@
         },
         "region.market_entrance": {
             "region.hyrule_field": {
-                "type": "true"
+                "type": "or",
+                "el": [
+                    {
+                        "type": "value",
+                        "el": "mixin.can_become_adult"
+                    },
+                    {
+                        "type": "value",
+                        "el": "mixin.is_day"
+                    }
+                ]
             },
             "region.market": {
                 "type": "true"
@@ -8930,7 +9424,7 @@
                     }
                 ]
             },
-            "region.market_market_dog_lady": {
+            "region.market_dog_lady": {
                 "type": "value",
                 "el": "mixin.can_become_child"
             },
@@ -9038,7 +9532,8 @@
                 "type": "true"
             },
             "region.hyrule_castle_grounds": {
-                "type": "true"
+                "type": "value",
+                "el": "mixin.can_become_child"
             },
             "region.ganons_castle_grounds": {
                 "type": "value",
@@ -9046,7 +9541,7 @@
             }
         },
         "region.hyrule_castle_grounds": {
-            "region.market": {
+            "region.castle_grounds": {
                 "type": "true"
             },
             "region.hc_garden": {
@@ -9154,7 +9649,8 @@
         },
         "region.ganons_castle_grounds": {
             "region.castle_grounds": {
-                "type": "true"
+                "type": "value",
+                "el": "mixin.is_night"
             },
             "region.ogc_great_fairy_fountain": {
                 "type": "and",
@@ -9219,6 +9715,19 @@
             "logic.location.castle_town.s_pot_room_child": {
                 "type": "value",
                 "el": "mixin.can_become_child"
+            },
+            "event.sell_big_poe": {
+                "type": "and",
+                "el": [
+                    {
+                        "type": "value",
+                        "el": "mixin.can_become_adult"
+                    },
+                    {
+                        "type": "value",
+                        "el": "item.poe_big"
+                    }
+                ]
             }
         },
         "region.market_bazaar": {
@@ -9253,6 +9762,114 @@
         "region.market_mask_shop": {
             "region.market": {
                 "type": "true"
+            },
+            "event.skull_mask": {
+                "type": "and",
+                "el": [
+                    {
+                        "type": "min",
+                        "el": {
+                            "type": "value",
+                            "el": "item.egg"
+                        },
+                        "value": 3
+                    },
+                    {
+                        "type": "or",
+                        "el": [
+                            {
+                                "type": "value",
+                                "el": "complete_mask_quest"
+                            },
+                            {
+                                "type": "at",
+                                "node": "region.kakariko_village",
+                                "el": {
+                                    "type": "value",
+                                    "el": "mixin.can_become_child"
+                                }
+                            }
+                        ]
+                    }
+                ]
+            },
+            "event.mask_of_truth": {
+                "type": "and",
+                "el": [
+                    {
+                        "type": "min",
+                        "el": {
+                            "type": "value",
+                            "el": "item.egg"
+                        },
+                        "value": 5
+                    },
+                    {
+                        "type": "or",
+                        "el": [
+                            {
+                                "type": "value",
+                                "el": "complete_mask_quest"
+                            },
+                            {
+                                "type": "and",
+                                "el": [
+                                    {
+                                        "type": "at",
+                                        "node": "region.lost_woods",
+                                        "el": {
+                                            "type": "and",
+                                            "el": [
+                                                {
+                                                    "type": "value",
+                                                    "el": "mixin.can_become_child"
+                                                },
+                                                {
+                                                    "type": "value",
+                                                    "el": "function.can_play(item.song_saria)"
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "type": "at",
+                                        "node": "region.graveyard",
+                                        "el": {
+                                            "type": "and",
+                                            "el": [
+                                                {
+                                                    "type": "value",
+                                                    "el": "mixin.can_become_child"
+                                                },
+                                                {
+                                                    "type": "value",
+                                                    "el": "mixin.is_day"
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "type": "at",
+                                        "node": "region.hyrule_field",
+                                        "el": {
+                                            "type": "and",
+                                            "el": [
+                                                {
+                                                    "type": "value",
+                                                    "el": "mixin.can_become_child"
+                                                },
+                                                {
+                                                    "type": "value",
+                                                    "el": "mixin.has_all_stones"
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
             }
         },
         "region.market_shooting_gallery": {
@@ -9348,7 +9965,7 @@
                 "type": "true"
             }
         },
-        "region.market_market_dog_lady": {
+        "region.market_dog_lady": {
             "region.market": {
                 "type": "true"
             },
@@ -9376,17 +9993,7 @@
                 "type": "true"
             },
             "region.kak_windmill": {
-                "type": "and",
-                "el": [
-                    {
-                        "type": "value",
-                        "el": "mixin.can_become_adult"
-                    },
-                    {
-                        "type": "value",
-                        "el": "function.can_play(item.song_time)"
-                    }
-                ]
+                "type": "true"
             },
             "region.kak_bazaar": {
                 "type": "and",
@@ -9450,14 +10057,56 @@
                 ]
             },
             "region.kak_potion_shop_front": {
-                "type": "true"
+                "type": "or",
+                "el": [
+                    {
+                        "type": "value",
+                        "el": "mixin.can_become_child"
+                    },
+                    {
+                        "type": "value",
+                        "el": "mixin.is_day"
+                    }
+                ]
             },
             "region.kak_redead_grotto": {
                 "type": "value",
                 "el": "mixin.can_open_bomb_grotto"
             },
             "region.kak_impas_ledge": {
-                "type": "true"
+                "type": "or",
+                "el": [
+                    {
+                        "type": "and",
+                        "el": [
+                            {
+                                "type": "value",
+                                "el": "mixin.can_become_child"
+                            },
+                            {
+                                "type": "value",
+                                "el": "mixin.is_day"
+                            }
+                        ]
+                    },
+                    {
+                        "type": "and",
+                        "el": [
+                            {
+                                "type": "value",
+                                "el": "mixin.can_become_adult"
+                            },
+                            {
+                                "type": "value",
+                                "el": "skip.one_way_pass"
+                            }
+                        ]
+                    },
+                    {
+                        "type": "value",
+                        "el": "function.can_use(item.hookshot)"
+                    }
+                ]
             },
             "region.kak_rooftop": {
                 "type": "or",
@@ -9542,13 +10191,42 @@
                 ]
             },
             "region.kak_backyard": {
-                "type": "true"
+                "type": "or",
+                "el": [
+                    {
+                        "type": "value",
+                        "el": "mixin.can_become_adult"
+                    },
+                    {
+                        "type": "and",
+                        "el": [
+                            {
+                                "type": "value",
+                                "el": "mixin.can_become_child"
+                            },
+                            {
+                                "type": "value",
+                                "el": "mixin.is_day"
+                            }
+                        ]
+                    }
+                ]
             },
             "region.graveyard": {
                 "type": "true"
             },
             "region.kak_behind_gate": {
-                "type": "true"
+                "type": "or",
+                "el": [
+                    {
+                        "type": "value",
+                        "el": "mixin.can_become_adult"
+                    },
+                    {
+                        "type": "value",
+                        "el": "'Kakariko Village Gate Open'"
+                    }
+                ]
             },
             "logic.location.kakariko.c_warp": {
                 "type": "and",
@@ -9752,11 +10430,51 @@
                         "el": "item.bottle"
                     }
                 ]
+            },
+            "event.cojiro_access": {
+                "type": "and",
+                "el": [
+                    {
+                        "type": "value",
+                        "el": "mixin.can_become_adult"
+                    },
+                    {
+                        "type": "value",
+                        "el": "'Wake Up Adult Talon'"
+                    }
+                ]
+            },
+            "event.kakariko_village_gate_open": {
+                "type": "and",
+                "el": [
+                    {
+                        "type": "value",
+                        "el": "mixin.can_become_child"
+                    },
+                    {
+                        "type": "or",
+                        "el": [
+                            {
+                                "type": "min",
+                                "el": {
+                                    "type": "value",
+                                    "el": "item.egg"
+                                },
+                                "value": 3
+                            },
+                            {
+                                "type": "state",
+                                "el": "open_kakariko",
+                                "value": "open"
+                            }
+                        ]
+                    }
+                ]
             }
         },
         "region.kak_impas_ledge": {
             "region.kak_impas_house_back": {
-                "type": "false"
+                "type": "true"
             },
             "region.kakariko_village": {
                 "type": "true"
@@ -9782,13 +10500,44 @@
                 "el": "mixin.can_become_adult"
             },
             "region.kak_potion_shop_back": {
-                "type": "value",
-                "el": "mixin.can_become_adult"
+                "type": "and",
+                "el": [
+                    {
+                        "type": "value",
+                        "el": "mixin.can_become_adult"
+                    },
+                    {
+                        "type": "value",
+                        "el": "mixin.is_day"
+                    }
+                ]
             }
         },
         "region.kak_carpenter_boss_house": {
             "region.kakariko_village": {
                 "type": "true"
+            },
+            "event.wake_up_adult_talon": {
+                "type": "and",
+                "el": [
+                    {
+                        "type": "value",
+                        "el": "mixin.can_become_adult"
+                    },
+                    {
+                        "type": "or",
+                        "el": [
+                            {
+                                "type": "value",
+                                "el": "Pocket_Egg"
+                            },
+                            {
+                                "type": "value",
+                                "el": "Pocket_Cucco"
+                            }
+                        ]
+                    }
+                ]
             }
         },
         "region.kak_house_of_skulltula": {
@@ -9915,6 +10664,19 @@
                         "el": "item.ocarina"
                     }
                 ]
+            },
+            "event.drain_well": {
+                "type": "and",
+                "el": [
+                    {
+                        "type": "value",
+                        "el": "mixin.can_become_child"
+                    },
+                    {
+                        "type": "value",
+                        "el": "function.can_play(item.song_storm)"
+                    }
+                ]
             }
         },
         "region.kak_bazaar": {
@@ -10007,7 +10769,8 @@
         },
         "region.kak_potion_shop_back": {
             "region.kak_backyard": {
-                "type": "true"
+                "type": "value",
+                "el": "mixin.can_become_adult"
             },
             "region.kak_potion_shop_front": {
                 "type": "true"
@@ -10016,6 +10779,54 @@
         "region.kak_odd_medicine_building": {
             "region.kak_backyard": {
                 "type": "true"
+            },
+            "event.odd_potion_access": {
+                "type": "and",
+                "el": [
+                    {
+                        "type": "value",
+                        "el": "mixin.can_become_adult"
+                    },
+                    {
+                        "type": "or",
+                        "el": [
+                            {
+                                "type": "value",
+                                "el": "'Odd Mushroom Access'"
+                            },
+                            {
+                                "type": "and",
+                                "el": [
+                                    {
+                                        "type": "value",
+                                        "el": "Odd_Mushroom"
+                                    },
+                                    {
+                                        "type": "and",
+                                        "el": [
+                                            {
+                                                "type": "not",
+                                                "el": {
+                                                    "type": "state",
+                                                    "el": "option.entrance_shuffle",
+                                                    "value": "entrance_shuffle_off"
+                                                }
+                                            },
+                                            {
+                                                "type": "not",
+                                                "el": {
+                                                    "type": "state",
+                                                    "el": "option.entrance_shuffle",
+                                                    "value": "entrance_shuffle_dungeon"
+                                                }
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
             }
         },
         "region.graveyard": {
@@ -10290,6 +11101,19 @@
             },
             "logic.location.woods.c_deku_theater_1": {
                 "type": "true"
+            },
+            "event.dampes_windmill_access": {
+                "type": "and",
+                "el": [
+                    {
+                        "type": "value",
+                        "el": "mixin.can_become_adult"
+                    },
+                    {
+                        "type": "value",
+                        "el": "function.can_play(item.song_time)"
+                    }
+                ]
             }
         },
         "region.graveyard_dampes_house": {
@@ -10302,7 +11126,26 @@
                 "type": "true"
             },
             "region.shadow_temple_entryway": {
-                "type": "true"
+                "type": "or",
+                "el": [
+                    {
+                        "type": "value",
+                        "el": "function.can_use(item.magic_din)"
+                    },
+                    {
+                        "type": "and",
+                        "el": [
+                            {
+                                "type": "value",
+                                "el": "skip.shadow_temple_entry_fire_arrow"
+                            },
+                            {
+                                "type": "value",
+                                "el": "function.can_use(item.arrow_fire)"
+                            }
+                        ]
+                    }
+                ]
             },
             "logic.location.kakariko.g_gossip_graveyard": {
                 "type": "true"
@@ -10323,7 +11166,26 @@
         },
         "region.kak_behind_gate": {
             "region.kakariko_village": {
-                "type": "true"
+                "type": "or",
+                "el": [
+                    {
+                        "type": "value",
+                        "el": "mixin.can_become_adult"
+                    },
+                    {
+                        "type": "value",
+                        "el": "skip.one_way_pass"
+                    },
+                    {
+                        "type": "value",
+                        "el": "'Kakariko Village Gate Open'"
+                    },
+                    {
+                        "type": "state",
+                        "el": "open_kakariko",
+                        "value": "open"
+                    }
+                ]
             },
             "region.death_mountain": {
                 "type": "true"
@@ -10337,7 +11199,41 @@
                 "type": "true"
             },
             "region.death_mountain_summit": {
-                "type": "true"
+                "type": "or",
+                "el": [
+                    {
+                        "type": "here",
+                        "el": {
+                            "type": "value",
+                            "el": "mixin.can_blast_or_smash"
+                        }
+                    },
+                    {
+                        "type": "and",
+                        "el": [
+                            {
+                                "type": "value",
+                                "el": "mixin.can_become_adult"
+                            },
+                            {
+                                "type": "here",
+                                "el": {
+                                    "type": "and",
+                                    "el": [
+                                        {
+                                            "type": "value",
+                                            "el": "mixin.can_plant_bean"
+                                        },
+                                        {
+                                            "type": "value",
+                                            "el": "item.glove"
+                                        }
+                                    ]
+                                }
+                            }
+                        ]
+                    }
+                ]
             },
             "region.dodongos_cavern_entryway": {
                 "type": "or",
@@ -10737,6 +11633,28 @@
                         "el": "item.bottle"
                     }
                 ]
+            },
+            "event.prescription_access": {
+                "type": "and",
+                "el": [
+                    {
+                        "type": "value",
+                        "el": "mixin.can_become_adult"
+                    },
+                    {
+                        "type": "or",
+                        "el": [
+                            {
+                                "type": "value",
+                                "el": "'Broken Sword Access'"
+                            },
+                            {
+                                "type": "value",
+                                "el": "Broken_Sword"
+                            }
+                        ]
+                    }
+                ]
             }
         },
         "region.dmt_owl_flight": {
@@ -10858,7 +11776,70 @@
                 ]
             },
             "region.gc_darunias_chamber": {
-                "type": "true"
+                "type": "or",
+                "el": [
+                    {
+                        "type": "and",
+                        "el": [
+                            {
+                                "type": "value",
+                                "el": "mixin.can_become_adult"
+                            },
+                            {
+                                "type": "and",
+                                "el": [
+                                    {
+                                        "type": "value",
+                                        "el": "mixin.can_become_adult"
+                                    },
+                                    {
+                                        "type": "value",
+                                        "el": "item.glove"
+                                    },
+                                    {
+                                        "type": "or",
+                                        "el": [
+                                            {
+                                                "type": "value",
+                                                "el": "mixin.has_explosives"
+                                            },
+                                            {
+                                                "type": "value",
+                                                "el": "item.bow"
+                                            },
+                                            {
+                                                "type": "and",
+                                                "el": [
+                                                    {
+                                                        "type": "value",
+                                                        "el": "skip.linkthegoron_dins"
+                                                    },
+                                                    {
+                                                        "type": "value",
+                                                        "el": "function.can_use(item.magic_din)"
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "type": "and",
+                        "el": [
+                            {
+                                "type": "value",
+                                "el": "mixin.can_become_child"
+                            },
+                            {
+                                "type": "value",
+                                "el": "function.can_play(item.song_zelda)"
+                            }
+                        ]
+                    }
+                ]
             },
             "region.gc_grotto": {
                 "type": "and",
@@ -11219,14 +12200,102 @@
             "logic.location.woods.c_deku_theater_1": {
                 "type": "value",
                 "el": "mixin.can_become_child"
+            },
+            "event.goron_city_child_fire": {
+                "type": "value",
+                "el": "function.can_use(item.stick)"
+            },
+            "event.gc_woods_warp_open": {
+                "type": "or",
+                "el": [
+                    {
+                        "type": "value",
+                        "el": "mixin.can_blast_or_smash"
+                    },
+                    {
+                        "type": "value",
+                        "el": "function.can_use(item.magic_din)"
+                    }
+                ]
+            },
+            "event.stop_gc_rolling_goron_as_adult": {
+                "type": "and",
+                "el": [
+                    {
+                        "type": "value",
+                        "el": "mixin.can_become_adult"
+                    },
+                    {
+                        "type": "or",
+                        "el": [
+                            {
+                                "type": "value",
+                                "el": "item.glove"
+                            },
+                            {
+                                "type": "value",
+                                "el": "mixin.has_explosives"
+                            },
+                            {
+                                "type": "value",
+                                "el": "item.bow"
+                            },
+                            {
+                                "type": "and",
+                                "el": [
+                                    {
+                                        "type": "value",
+                                        "el": "skip.linkthegoron_dins"
+                                    },
+                                    {
+                                        "type": "value",
+                                        "el": "function.can_use(item.magic_din)"
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
             }
         },
         "region.gc_woods_warp": {
             "region.goron_city": {
-                "type": "true"
+                "type": "and",
+                "el": [
+                    {
+                        "type": "value",
+                        "el": "mixin.can_leave_forest"
+                    },
+                    {
+                        "type": "and",
+                        "el": [
+                            {
+                                "type": "value",
+                                "el": "mixin.can_blast_or_smash"
+                            },
+                            {
+                                "type": "value",
+                                "el": "function.can_use(item.magic_din)"
+                            }
+                        ]
+                    }
+                ]
             },
             "region.lost_woods": {
                 "type": "true"
+            },
+            "event.gc_woods_warp_open": {
+                "type": "or",
+                "el": [
+                    {
+                        "type": "value",
+                        "el": "mixin.can_blast_or_smash"
+                    },
+                    {
+                        "type": "value",
+                        "el": "function.can_use(item.magic_din)"
+                    }
+                ]
             }
         },
         "region.gc_darunias_chamber": {
@@ -11234,7 +12303,8 @@
                 "type": "true"
             },
             "region.dmc_lower_local": {
-                "type": "true"
+                "type": "value",
+                "el": "mixin.can_become_adult"
             },
             "logic.location.goron.c_darunia": {
                 "type": "and",
@@ -11248,6 +12318,10 @@
                         "el": "function.can_play(item.song_saria)"
                     }
                 ]
+            },
+            "event.goron_city_child_fire": {
+                "type": "value",
+                "el": "function.can_use(item.stick)"
             }
         },
         "region.gc_shop": {
@@ -11281,7 +12355,8 @@
         },
         "region.dmc_upper_nearby": {
             "region.dmc_upper_local": {
-                "type": "true"
+                "type": "value",
+                "el": "function.can_use(item.tunic_fire)"
             },
             "region.death_mountain_summit": {
                 "type": "true"
@@ -11296,26 +12371,73 @@
         },
         "region.dmc_upper_local": {
             "region.dmc_upper_nearby": {
-                "type": "and",
-                "el": [
-                    {
-                        "type": "value",
-                        "el": "mixin.can_become_adult"
-                    },
-                    {
-                        "type": "here",
-                        "el": {
-                            "type": "value",
-                            "el": "mixin.can_plant_bean"
-                        }
-                    }
-                ]
+                "type": "true"
             },
             "region.dmc_ladder_area_nearby": {
                 "type": "true"
             },
             "region.dmc_central_nearby": {
-                "type": "true"
+                "type": "and",
+                "el": [
+                    {
+                        "type": "value",
+                        "el": "function.can_use(item.tunic_fire)"
+                    },
+                    {
+                        "type": "value",
+                        "el": "function.can_use(mixin.longshot)"
+                    },
+                    {
+                        "type": "or",
+                        "el": [
+                            {
+                                "type": "and",
+                                "el": [
+                                    {
+                                        "type": "not",
+                                        "el": {
+                                            "type": "state",
+                                            "el": "option.damage_multiplier",
+                                            "value": "damage_multiplier_ohko"
+                                        }
+                                    },
+                                    {
+                                        "type": "not",
+                                        "el": {
+                                            "type": "state",
+                                            "el": "option.damage_multiplier",
+                                            "value": "damage_multiplier_quadruple"
+                                        }
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "and",
+                                "el": [
+                                    {
+                                        "type": "value",
+                                        "el": "item.fairy"
+                                    },
+                                    {
+                                        "type": "not",
+                                        "el": {
+                                            "type": "not",
+                                            "el": {
+                                                "type": "state",
+                                                "el": "option.entrance_shuffle",
+                                                "value": "entrance_shuffle_off"
+                                            }
+                                        }
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "value",
+                                "el": "function.can_use(item.magic_nayru)"
+                            }
+                        ]
+                    }
+                ]
             },
             "logic.location.mountain.c_crater_wall": {
                 "type": "true"
@@ -11353,45 +12475,26 @@
         },
         "region.dmc_ladder_area_nearby": {
             "region.dmc_upper_nearby": {
-                "type": "and",
-                "el": [
-                    {
-                        "type": "value",
-                        "el": "mixin.can_become_adult"
-                    },
-                    {
-                        "type": "here",
-                        "el": {
-                            "type": "value",
-                            "el": "mixin.can_plant_bean"
-                        }
-                    }
-                ]
+                "type": "value",
+                "el": "mixin.can_become_adult"
             },
             "region.dmc_lower_nearby": {
-                "type": "and",
+                "type": "or",
                 "el": [
                     {
                         "type": "value",
-                        "el": "mixin.can_become_adult"
+                        "el": "function.can_use(item.boots_hover)"
                     },
                     {
-                        "type": "or",
+                        "type": "and",
                         "el": [
                             {
                                 "type": "value",
-                                "el": "function.can_use(item.boots_hover)"
+                                "el": "skip.dmc_mash_hammer"
                             },
                             {
                                 "type": "value",
-                                "el": "function.can_use(item.hookshot)"
-                            },
-                            {
-                                "type": "here",
-                                "el": {
-                                    "type": "value",
-                                    "el": "mixin.can_plant_bean"
-                                }
+                                "el": "function.can_use(item.hammer)"
                             }
                         ]
                     }
@@ -11413,7 +12516,8 @@
         },
         "region.dmc_lower_nearby": {
             "region.dmc_lower_local": {
-                "type": "true"
+                "type": "value",
+                "el": "function.can_use(item.tunic_fire)"
             },
             "region.gc_darunias_chamber": {
                 "type": "true"
@@ -11429,12 +12533,27 @@
         },
         "region.dmc_lower_local": {
             "region.dmc_lower_nearby": {
-                "type": "and",
+                "type": "true"
+            },
+            "region.dmc_ladder_area_nearby": {
+                "type": "true"
+            },
+            "region.dmc_central_nearby": {
+                "type": "or",
                 "el": [
                     {
                         "type": "value",
-                        "el": "mixin.can_become_adult"
+                        "el": "function.can_use(item.boots_hover)"
                     },
+                    {
+                        "type": "value",
+                        "el": "function.can_use(item.hookshot)"
+                    }
+                ]
+            },
+            "region.fire_temple_entrance": {
+                "type": "and",
+                "el": [
                     {
                         "type": "or",
                         "el": [
@@ -11445,63 +12564,19 @@
                             {
                                 "type": "value",
                                 "el": "function.can_use(item.hookshot)"
-                            },
-                            {
-                                "type": "here",
-                                "el": {
-                                    "type": "value",
-                                    "el": "mixin.can_plant_bean"
-                                }
-                            }
-                        ]
-                    }
-                ]
-            },
-            "region.dmc_ladder_area_nearby": {
-                "type": "true"
-            },
-            "region.dmc_central_nearby": {
-                "type": "true"
-            },
-            "region.fire_temple_entrance": {
-                "type": "or",
-                "el": [
-                    {
-                        "type": "and",
-                        "el": [
-                            {
-                                "type": "value",
-                                "el": "mixin.can_become_child"
-                            },
-                            {
-                                "type": "not",
-                                "el": {
-                                    "type": "state",
-                                    "el": "option.entrance_shuffle",
-                                    "value": "entrance_shuffle_off"
-                                }
                             }
                         ]
                     },
                     {
-                        "type": "and",
+                        "type": "or",
                         "el": [
                             {
                                 "type": "value",
-                                "el": "mixin.can_become_adult"
+                                "el": "skip.fewer_tunic"
                             },
                             {
-                                "type": "or",
-                                "el": [
-                                    {
-                                        "type": "value",
-                                        "el": "skip.fewer_tunic"
-                                    },
-                                    {
-                                        "type": "value",
-                                        "el": "function.can_use(item.tunic_fire)"
-                                    }
-                                ]
+                                "type": "value",
+                                "el": "function.can_use(item.tunic_fire)"
                             }
                         ]
                     }
@@ -11701,7 +12776,17 @@
         },
         "region.zr_front": {
             "region.zora_river": {
-                "type": "true"
+                "type": "or",
+                "el": [
+                    {
+                        "type": "value",
+                        "el": "mixin.can_become_adult"
+                    },
+                    {
+                        "type": "value",
+                        "el": "mixin.has_explosives"
+                    }
+                ]
             },
             "region.hyrule_field": {
                 "type": "true"
@@ -11735,14 +12820,56 @@
                 }
             },
             "region.lost_woods": {
-                "type": "true"
+                "type": "or",
+                "el": [
+                    {
+                        "type": "value",
+                        "el": "mixin.can_dive"
+                    },
+                    {
+                        "type": "value",
+                        "el": "function.can_use(item.boots_iron)"
+                    }
+                ]
             },
             "region.zr_storms_grotto": {
                 "type": "value",
                 "el": "mixin.can_open_storm_grotto"
             },
             "region.zr_behind_waterfall": {
-                "type": "true"
+                "type": "or",
+                "el": [
+                    {
+                        "type": "value",
+                        "el": "function.can_play(item.song_zelda)"
+                    },
+                    {
+                        "type": "and",
+                        "el": [
+                            {
+                                "type": "value",
+                                "el": "function.can_use(item.boots_hover)"
+                            },
+                            {
+                                "type": "value",
+                                "el": "skip.zora_hover"
+                            }
+                        ]
+                    },
+                    {
+                        "type": "and",
+                        "el": [
+                            {
+                                "type": "value",
+                                "el": "mixin.can_become_child"
+                            },
+                            {
+                                "type": "value",
+                                "el": "skip.zora_cucco"
+                            }
+                        ]
+                    }
+                ]
             },
             "logic.location.river.c_zora_bean_salesman": {
                 "type": "value",
@@ -11935,10 +13062,44 @@
                 "type": "true"
             },
             "region.lake_hylia": {
-                "type": "true"
+                "type": "and",
+                "el": [
+                    {
+                        "type": "value",
+                        "el": "mixin.can_become_child"
+                    },
+                    {
+                        "type": "value",
+                        "el": "mixin.can_dive"
+                    }
+                ]
             },
             "region.zd_behind_king_zora": {
-                "type": "true"
+                "type": "or",
+                "el": [
+                    {
+                        "type": "value",
+                        "el": "Deliver_Letter"
+                    },
+                    {
+                        "type": "state",
+                        "el": "option.doors_open_zora",
+                        "value": "doors_open_zora_both"
+                    },
+                    {
+                        "type": "and",
+                        "el": [
+                            {
+                                "type": "state",
+                                "el": "option.doors_open_zora"
+                            },
+                            {
+                                "type": "value",
+                                "el": "mixin.can_become_adult"
+                            }
+                        ]
+                    }
+                ]
             },
             "region.zd_shop": {
                 "type": "or",
@@ -12026,11 +13187,95 @@
                         "el": "item.bottle"
                     }
                 ]
+            },
+            "event.king_zora_thawed": {
+                "type": "and",
+                "el": [
+                    {
+                        "type": "value",
+                        "el": "mixin.can_become_adult"
+                    },
+                    {
+                        "type": "value",
+                        "el": "item.blue_fire"
+                    }
+                ]
+            },
+            "event.eyeball_frog_access": {
+                "type": "and",
+                "el": [
+                    {
+                        "type": "value",
+                        "el": "mixin.can_become_adult"
+                    },
+                    {
+                        "type": "and",
+                        "el": [
+                            {
+                                "type": "value",
+                                "el": "mixin.can_become_adult"
+                            },
+                            {
+                                "type": "value",
+                                "el": "item.blue_fire"
+                            }
+                        ]
+                    },
+                    {
+                        "type": "or",
+                        "el": [
+                            {
+                                "type": "min",
+                                "el": {
+                                    "type": "value",
+                                    "el": "item.cojiro"
+                                },
+                                "value": 9
+                            },
+                            {
+                                "type": "value",
+                                "el": "Eyeball_Frog"
+                            },
+                            {
+                                "type": "value",
+                                "el": "Prescription"
+                            },
+                            {
+                                "type": "value",
+                                "el": "'Prescription Access'"
+                            }
+                        ]
+                    }
+                ]
             }
         },
         "region.zd_behind_king_zora": {
             "region.zoras_domain": {
-                "type": "true"
+                "type": "or",
+                "el": [
+                    {
+                        "type": "value",
+                        "el": "Deliver_Letter"
+                    },
+                    {
+                        "type": "state",
+                        "el": "option.doors_open_zora",
+                        "value": "doors_open_zora_both"
+                    },
+                    {
+                        "type": "and",
+                        "el": [
+                            {
+                                "type": "state",
+                                "el": "option.doors_open_zora"
+                            },
+                            {
+                                "type": "value",
+                                "el": "mixin.can_become_adult"
+                            }
+                        ]
+                    }
+                ]
             },
             "region.zoras_fountain": {
                 "type": "true"
@@ -12292,6 +13537,40 @@
                     {
                         "type": "value",
                         "el": "mixin.is_night"
+                    }
+                ]
+            },
+            "event.epona": {
+                "type": "and",
+                "el": [
+                    {
+                        "type": "value",
+                        "el": "function.can_play(item.song_epona)"
+                    },
+                    {
+                        "type": "value",
+                        "el": "mixin.can_become_adult"
+                    },
+                    {
+                        "type": "value",
+                        "el": "mixin.is_day"
+                    }
+                ]
+            },
+            "event.links_cow": {
+                "type": "and",
+                "el": [
+                    {
+                        "type": "value",
+                        "el": "function.can_play(item.song_epona)"
+                    },
+                    {
+                        "type": "value",
+                        "el": "mixin.can_become_adult"
+                    },
+                    {
+                        "type": "value",
+                        "el": "mixin.is_day"
                     }
                 ]
             }
@@ -13171,65 +14450,7 @@
         },
         "region.colossus_grotto": {
             "region.desert_colossus": {
-                "type": "or",
-                "el": [
-                    {
-                        "type": "and",
-                        "el": [
-                            {
-                                "type": "value",
-                                "el": "mixin.can_become_child"
-                            },
-                            {
-                                "type": "min",
-                                "el": {
-                                    "type": "value",
-                                    "el": "item.key_small_spirit"
-                                },
-                                "value": 5
-                            }
-                        ]
-                    },
-                    {
-                        "type": "and",
-                        "el": [
-                            {
-                                "type": "value",
-                                "el": "function.can_use(mixin.silver_gauntlets)"
-                            },
-                            {
-                                "type": "or",
-                                "el": [
-                                    {
-                                        "type": "and",
-                                        "el": [
-                                            {
-                                                "type": "min",
-                                                "el": {
-                                                    "type": "value",
-                                                    "el": "item.key_small_spirit"
-                                                },
-                                                "value": 3
-                                            },
-                                            {
-                                                "type": "value",
-                                                "el": "mixin.has_explosives"
-                                            }
-                                        ]
-                                    },
-                                    {
-                                        "type": "min",
-                                        "el": {
-                                            "type": "value",
-                                            "el": "item.key_small_spirit"
-                                        },
-                                        "value": 5
-                                    }
-                                ]
-                            }
-                        ]
-                    }
-                ]
+                "type": "true"
             },
             "logic.location.desert.c_colossus_grotto_salesman_2": {
                 "type": "value",
@@ -13426,6 +14647,10 @@
                 "type": "and",
                 "el": [
                     {
+                        "type": "value",
+                        "el": "item.boots_hover"
+                    },
+                    {
                         "type": "or",
                         "el": [
                             {
@@ -13448,7 +14673,7 @@
                             "type": "value",
                             "el": "item.key_small_shadow"
                         },
-                        "value": 3
+                        "value": 4
                     }
                 ]
             },
@@ -13966,65 +15191,7 @@
         },
         "region.spirit_temple_lobby": {
             "region.desert_colossus": {
-                "type": "or",
-                "el": [
-                    {
-                        "type": "and",
-                        "el": [
-                            {
-                                "type": "value",
-                                "el": "mixin.can_become_child"
-                            },
-                            {
-                                "type": "min",
-                                "el": {
-                                    "type": "value",
-                                    "el": "item.key_small_spirit"
-                                },
-                                "value": 5
-                            }
-                        ]
-                    },
-                    {
-                        "type": "and",
-                        "el": [
-                            {
-                                "type": "value",
-                                "el": "function.can_use(mixin.silver_gauntlets)"
-                            },
-                            {
-                                "type": "or",
-                                "el": [
-                                    {
-                                        "type": "and",
-                                        "el": [
-                                            {
-                                                "type": "min",
-                                                "el": {
-                                                    "type": "value",
-                                                    "el": "item.key_small_spirit"
-                                                },
-                                                "value": 3
-                                            },
-                                            {
-                                                "type": "value",
-                                                "el": "mixin.has_explosives"
-                                            }
-                                        ]
-                                    },
-                                    {
-                                        "type": "min",
-                                        "el": {
-                                            "type": "value",
-                                            "el": "item.key_small_spirit"
-                                        },
-                                        "value": 5
-                                    }
-                                ]
-                            }
-                        ]
-                    }
-                ]
+                "type": "true"
             },
             "region.child_spirit_temple": {
                 "type": "value",
@@ -14107,10 +15274,29 @@
         },
         "region.child_spirit_temple": {
             "region.spirit_temple_shared": {
-                "type": "true"
+                "type": "and",
+                "el": [
+                    {
+                        "type": "value",
+                        "el": "mixin.has_bombchus"
+                    },
+                    {
+                        "type": "min",
+                        "el": {
+                            "type": "value",
+                            "el": "item.key_small_spirit"
+                        },
+                        "value": 2
+                    }
+                ]
             },
             "region.child_spirit_temple_climb": {
-                "type": "true"
+                "type": "min",
+                "el": {
+                    "type": "value",
+                    "el": "item.key_small_spirit"
+                },
+                "value": 1
             },
             "logic.location.temple_spirit_mq.c_child_center": {
                 "type": "at",
@@ -14729,16 +15915,25 @@
                         "type": "and",
                         "el": [
                             {
-                                "type": "value",
-                                "el": "mixin.can_become_child"
-                            },
-                            {
                                 "type": "min",
                                 "el": {
                                     "type": "value",
                                     "el": "item.key_small_spirit"
                                 },
-                                "value": 5
+                                "value": 7
+                            },
+                            {
+                                "type": "or",
+                                "el": [
+                                    {
+                                        "type": "value",
+                                        "el": "function.can_play(item.song_time)"
+                                    },
+                                    {
+                                        "type": "value",
+                                        "el": "mixin.can_become_adult"
+                                    }
+                                ]
                             }
                         ]
                     },
@@ -14746,38 +15941,33 @@
                         "type": "and",
                         "el": [
                             {
+                                "type": "min",
+                                "el": {
+                                    "type": "value",
+                                    "el": "item.key_small_spirit"
+                                },
+                                "value": 4
+                            },
+                            {
                                 "type": "value",
-                                "el": "function.can_use(mixin.silver_gauntlets)"
+                                "el": "function.can_play(item.song_time)"
                             },
                             {
                                 "type": "or",
                                 "el": [
                                     {
-                                        "type": "and",
-                                        "el": [
-                                            {
-                                                "type": "min",
-                                                "el": {
-                                                    "type": "value",
-                                                    "el": "item.key_small_spirit"
-                                                },
-                                                "value": 3
-                                            },
-                                            {
-                                                "type": "value",
-                                                "el": "mixin.has_explosives"
-                                            }
-                                        ]
+                                        "type": "value",
+                                        "el": "skip.lens_required_never"
                                     },
                                     {
-                                        "type": "min",
-                                        "el": {
-                                            "type": "value",
-                                            "el": "item.key_small_spirit"
-                                        },
-                                        "value": 5
+                                        "type": "value",
+                                        "el": "function.can_use(item.lens)"
                                     }
                                 ]
+                            },
+                            {
+                                "type": "value",
+                                "el": "mixin.can_become_adult"
                             }
                         ]
                     }
@@ -15065,12 +16255,8 @@
         },
         "region.child_spirit_temple_climb": {
             "region.spirit_temple_central_chamber": {
-                "type": "min",
-                "el": {
-                    "type": "value",
-                    "el": "item.key_small_spirit"
-                },
-                "value": 1
+                "type": "value",
+                "el": "mixin.has_explosives"
             },
             "logic.location.temple_spirit.c_child_climb_north": {
                 "type": "or",
@@ -16446,26 +17632,8 @@
                         ]
                     },
                     {
-                        "type": "or",
-                        "el": [
-                            {
-                                "type": "and",
-                                "el": [
-                                    {
-                                        "type": "value",
-                                        "el": "skip.wt_torch_longshot"
-                                    },
-                                    {
-                                        "type": "value",
-                                        "el": "function.can_use(mixin.longshot)"
-                                    }
-                                ]
-                            },
-                            {
-                                "type": "value",
-                                "el": "item.boots_iron"
-                            }
-                        ]
+                        "type": "value",
+                        "el": "function.can_use(item.boots_iron)"
                     }
                 ]
             },
@@ -16473,16 +17641,12 @@
                 "type": "and",
                 "el": [
                     {
-                        "type": "min",
-                        "el": {
-                            "type": "value",
-                            "el": "item.key_small_water"
-                        },
-                        "value": 5
+                        "type": "value",
+                        "el": "item.key_small_water"
                     },
                     {
                         "type": "value",
-                        "el": "function.can_use(item.hookshot)"
+                        "el": "function.can_use(mixin.longshot)"
                     }
                 ]
             },
@@ -16502,6 +17666,23 @@
                         "el": "function.can_use(mixin.longshot)"
                     }
                 ]
+            },
+            "event.water_temple_clear": {
+                "type": "and",
+                "el": [
+                    {
+                        "type": "value",
+                        "el": "item.key_boss_water"
+                    },
+                    {
+                        "type": "value",
+                        "el": "function.can_use(mixin.longshot)"
+                    }
+                ]
+            },
+            "event.child_water_temple": {
+                "type": "value",
+                "el": "mixin.can_become_child"
             }
         },
         "region.water_temple_dive": {
@@ -16510,7 +17691,48 @@
                 "el": "function.can_play(item.song_zelda)"
             },
             "region.water_temple_cracked_wall": {
-                "type": "true"
+                "type": "and",
+                "el": [
+                    {
+                        "type": "value",
+                        "el": "function.can_play(item.song_zelda)"
+                    },
+                    {
+                        "type": "or",
+                        "el": [
+                            {
+                                "type": "value",
+                                "el": "function.can_use(item.hookshot)"
+                            },
+                            {
+                                "type": "value",
+                                "el": "function.can_use(item.boots_hover)"
+                            }
+                        ]
+                    },
+                    {
+                        "type": "or",
+                        "el": [
+                            {
+                                "type": "value",
+                                "el": "skip.wt_cracked_noitems"
+                            },
+                            {
+                                "type": "and",
+                                "el": [
+                                    {
+                                        "type": "value",
+                                        "el": "skip.wt_cracked_wall_hovers"
+                                    },
+                                    {
+                                        "type": "value",
+                                        "el": "function.can_use(item.boots_hover)"
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
             },
             "region.water_temple_middle_water_level": {
                 "type": "and",
@@ -16616,20 +17838,12 @@
                 "type": "and",
                 "el": [
                     {
-                        "type": "min",
-                        "el": {
-                            "type": "value",
-                            "el": "item.key_small_water"
-                        },
-                        "value": 6
+                        "type": "value",
+                        "el": "function.can_play(item.song_zelda)"
                     },
                     {
                         "type": "value",
-                        "el": "function.can_play(item.song_time)"
-                    },
-                    {
-                        "type": "value",
-                        "el": "item.bow"
+                        "el": "item.glove"
                     },
                     {
                         "type": "or",
@@ -16642,23 +17856,10 @@
                                         "el": "item.boots_iron"
                                     },
                                     {
-                                        "type": "or",
-                                        "el": [
-                                            {
-                                                "type": "value",
-                                                "el": "function.can_use(item.tunic_water)"
-                                            },
-                                            {
-                                                "type": "value",
-                                                "el": "skip.fewer_tunic"
-                                            }
-                                        ]
+                                        "type": "value",
+                                        "el": "function.can_use(item.hookshot)"
                                     }
                                 ]
-                            },
-                            {
-                                "type": "value",
-                                "el": "skip.wt_dragon_jump_dive"
                             },
                             {
                                 "type": "and",
@@ -17374,6 +18575,19 @@
                         "el": "function.can_play(item.song_time)"
                     }
                 ]
+            },
+            "event.water_temple_clear": {
+                "type": "and",
+                "el": [
+                    {
+                        "type": "value",
+                        "el": "item.key_boss_water"
+                    },
+                    {
+                        "type": "value",
+                        "el": "function.can_use(mixin.longshot)"
+                    }
+                ]
             }
         },
         "region.water_temple_north_basement": {
@@ -18043,21 +19257,8 @@
                     "el": "mixin.can_become_adult"
                 },
                 {
-                    "type": "and",
-                    "el": [
-                        {
-                            "type": "value",
-                            "el": "function.can_play(item.song_epona"
-                        },
-                        {
-                            "type": "value",
-                            "el": "mixin.can_become_adult"
-                        },
-                        {
-                            "type": "value",
-                            "el": "mixin.is_day"
-                        }
-                    ]
+                    "type": "value",
+                    "el": "event.epona"
                 },
                 {
                     "type": "or",
@@ -18452,37 +19653,6 @@
                 }
             ]
         },
-        "mixin.has_shield": {
-            "type": "or",
-            "el": [
-                {
-                    "type": "and",
-                    "el": [
-                        {
-                            "type": "value",
-                            "el": "mixin.can_become_adult"
-                        },
-                        {
-                            "type": "value",
-                            "el": "mixin.hylian_shield"
-                        }
-                    ]
-                },
-                {
-                    "type": "and",
-                    "el": [
-                        {
-                            "type": "value",
-                            "el": "mixin.can_become_child"
-                        },
-                        {
-                            "type": "value",
-                            "el": "item.shield_kokiri"
-                        }
-                    ]
-                }
-            ]
-        },
         "mixin.can_use_projectile": {
             "type": "or",
             "el": [
@@ -18536,12 +19706,21 @@
                 }
             ]
         },
-        "mixin.has_fire_source_with_torch": {
+        "mixin.has_shield": {
             "type": "or",
             "el": [
                 {
-                    "type": "value",
-                    "el": "mixin.has_fire_source"
+                    "type": "and",
+                    "el": [
+                        {
+                            "type": "value",
+                            "el": "mixin.can_become_adult"
+                        },
+                        {
+                            "type": "value",
+                            "el": "mixin.hylian_shield"
+                        }
+                    ]
                 },
                 {
                     "type": "and",
@@ -18552,7 +19731,7 @@
                         },
                         {
                             "type": "value",
-                            "el": "item.stick"
+                            "el": "item.shield_kokiri"
                         }
                     ]
                 }
@@ -18572,6 +19751,28 @@
                     "el": [
                         {
                             "type": "true"
+                        }
+                    ]
+                }
+            ]
+        },
+        "mixin.has_fire_source_with_torch": {
+            "type": "or",
+            "el": [
+                {
+                    "type": "value",
+                    "el": "mixin.has_fire_source"
+                },
+                {
+                    "type": "and",
+                    "el": [
+                        {
+                            "type": "value",
+                            "el": "mixin.can_become_child"
+                        },
+                        {
+                            "type": "value",
+                            "el": "item.stick"
                         }
                     ]
                 }
@@ -18743,27 +19944,6 @@
                 }
             ]
         },
-        "function.can_use(item.arrow_light)": {
-            "type": "and",
-            "el": [
-                {
-                    "type": "value",
-                    "el": "item.arrow_light"
-                },
-                {
-                    "type": "value",
-                    "el": "item.bow"
-                },
-                {
-                    "type": "value",
-                    "el": "item.magic_power"
-                },
-                {
-                    "type": "value",
-                    "el": "mixin.can_become_adult"
-                }
-            ]
-        },
         "function.can_use(mixin.distant_scarecrow)": {
             "type": "and",
             "el": [
@@ -18816,6 +19996,84 @@
                 }
             ]
         },
+        "function.can_play(item.warp_spirit)": {
+            "type": "and",
+            "el": [
+                {
+                    "type": "value",
+                    "el": "item.ocarina"
+                },
+                {
+                    "type": "value",
+                    "el": "item.warp_spirit"
+                }
+            ]
+        },
+        "function.can_play(item.warp_shadow)": {
+            "type": "and",
+            "el": [
+                {
+                    "type": "value",
+                    "el": "item.ocarina"
+                },
+                {
+                    "type": "value",
+                    "el": "item.warp_shadow"
+                }
+            ]
+        },
+        "function.can_play(item.warp_water)": {
+            "type": "and",
+            "el": [
+                {
+                    "type": "value",
+                    "el": "item.ocarina"
+                },
+                {
+                    "type": "value",
+                    "el": "item.warp_water"
+                }
+            ]
+        },
+        "function.can_play(item.warp_fire)": {
+            "type": "and",
+            "el": [
+                {
+                    "type": "value",
+                    "el": "item.ocarina"
+                },
+                {
+                    "type": "value",
+                    "el": "item.warp_fire"
+                }
+            ]
+        },
+        "function.can_play(item.warp_forest)": {
+            "type": "and",
+            "el": [
+                {
+                    "type": "value",
+                    "el": "item.ocarina"
+                },
+                {
+                    "type": "value",
+                    "el": "item.warp_forest"
+                }
+            ]
+        },
+        "function.can_play(item.warp_light)": {
+            "type": "and",
+            "el": [
+                {
+                    "type": "value",
+                    "el": "item.ocarina"
+                },
+                {
+                    "type": "value",
+                    "el": "item.warp_light"
+                }
+            ]
+        },
         "function.can_play(item.song_epona)": {
             "type": "and",
             "el": [
@@ -18855,6 +20113,27 @@
                 }
             ]
         },
+        "function.can_use(item.arrow_light)": {
+            "type": "and",
+            "el": [
+                {
+                    "type": "value",
+                    "el": "item.arrow_light"
+                },
+                {
+                    "type": "value",
+                    "el": "item.bow"
+                },
+                {
+                    "type": "value",
+                    "el": "item.magic_power"
+                },
+                {
+                    "type": "value",
+                    "el": "mixin.can_become_adult"
+                }
+            ]
+        },
         "function.can_use(mixin.golden_gauntlets)": {
             "type": "and",
             "el": [
@@ -18878,19 +20157,6 @@
                 {
                     "type": "value",
                     "el": "mixin.can_become_adult"
-                }
-            ]
-        },
-        "function.can_use(item.magic_nayru)": {
-            "type": "and",
-            "el": [
-                {
-                    "type": "value",
-                    "el": "item.magic_nayru"
-                },
-                {
-                    "type": "value",
-                    "el": "item.magic_power"
                 }
             ]
         },
@@ -18967,38 +20233,25 @@
                 }
             ]
         },
+        "function.can_use(item.magic_nayru)": {
+            "type": "and",
+            "el": [
+                {
+                    "type": "value",
+                    "el": "item.magic_nayru"
+                },
+                {
+                    "type": "value",
+                    "el": "item.magic_power"
+                }
+            ]
+        },
         "function.can_use(mixin.longshot)": {
             "type": "and",
             "el": [
                 {
                     "type": "value",
                     "el": "mixin.longshot"
-                },
-                {
-                    "type": "value",
-                    "el": "mixin.can_become_adult"
-                }
-            ]
-        },
-        "function.can_use(item.boomerang)": {
-            "type": "and",
-            "el": [
-                {
-                    "type": "value",
-                    "el": "item.boomerang"
-                },
-                {
-                    "type": "value",
-                    "el": "mixin.can_become_child"
-                }
-            ]
-        },
-        "function.can_use(item.hookshot)": {
-            "type": "and",
-            "el": [
-                {
-                    "type": "value",
-                    "el": "item.hookshot"
                 },
                 {
                     "type": "value",
@@ -19029,6 +20282,32 @@
                 {
                     "type": "value",
                     "el": "mixin.can_become_child"
+                }
+            ]
+        },
+        "function.can_use(item.boomerang)": {
+            "type": "and",
+            "el": [
+                {
+                    "type": "value",
+                    "el": "item.boomerang"
+                },
+                {
+                    "type": "value",
+                    "el": "mixin.can_become_child"
+                }
+            ]
+        },
+        "function.can_use(item.hookshot)": {
+            "type": "and",
+            "el": [
+                {
+                    "type": "value",
+                    "el": "item.hookshot"
+                },
+                {
+                    "type": "value",
+                    "el": "mixin.can_become_adult"
                 }
             ]
         },

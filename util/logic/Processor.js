@@ -38,7 +38,7 @@ function sortLogic(logic) {
     if (value_old.size > 0) {
         let path = [];
         resolveCircle(value_old, path);
-        throw new Error(`LOGIC LOOP:\n${path.join("\n=> ")}`);
+        throw new Error(`PROCESSOR LOGIC LOOP:\n${path.join("\n=> ")}`);
     }
 }
 
@@ -78,7 +78,7 @@ export default class Processor {
             let logic = LOGIC.get(this);
             let mem_o = MEM_O.get(this);
             if (debug) {
-                console.group("LOGIC BUILD");
+                console.group("PROCESSOR LOGIC BUILD");
                 console.time("build time");
             }
             for (let name in value) {
@@ -95,7 +95,7 @@ export default class Processor {
             sortLogic(logic);
             if (debug) {
                 console.timeEnd("build time");
-                console.groupEnd("LOGIC BUILD");
+                console.groupEnd("PROCESSOR LOGIC BUILD");
             }
             DIRTY.set(this, true);
         }
@@ -104,7 +104,7 @@ export default class Processor {
     setLogic(name, value) {
         let debug = DEBUG.get(this);
         if (debug) {
-            console.group("LOGIC BUILD");
+            console.group("PROCESSOR LOGIC BUILD");
             console.time("build time");
         }
         let logic = LOGIC.get(this);
@@ -120,7 +120,7 @@ export default class Processor {
         sortLogic(logic);
         if (debug) {
             console.timeEnd("build time");
-            console.groupEnd("LOGIC BUILD");
+            console.groupEnd("PROCESSOR LOGIC BUILD");
         }
         DIRTY.set(this, true);
     }
@@ -138,7 +138,7 @@ export default class Processor {
         let mem_o = MEM_O.get(this);
         let debug = DEBUG.get(this);
         if (debug) {
-            console.group("LOGIC EXECUTION");
+            console.group("PROCESSOR LOGIC EXECUTION");
             console.log("input", mapToObj(mem_i));
             console.log("executing logic...");
             console.time("execution time");
@@ -157,7 +157,7 @@ export default class Processor {
             console.timeEnd("execution time");
             console.log("output", mapToObj(mem_i));
             console.log("changes", res);
-            console.groupEnd("LOGIC EXECUTION");
+            console.groupEnd("PROCESSOR LOGIC EXECUTION");
         }
         DIRTY.set(this, false);
         return res;
@@ -166,13 +166,13 @@ export default class Processor {
     set(key, value) {
         let debug = DEBUG.get(this);
         if (debug) {
-            console.group("LOGIC MEMORY CHANGE");
+            console.group("PROCESSOR LOGIC MEMORY CHANGE");
             console.log("change", `${key} => ${value}`);
         }
         let mem_i = MEM_I.get(this);
         mem_i.set(key, value);
         if (debug) {
-            console.groupEnd("LOGIC MEMORY CHANGE");
+            console.groupEnd("PROCESSOR LOGIC MEMORY CHANGE");
         }
         DIRTY.set(this, true);
     }
@@ -180,7 +180,7 @@ export default class Processor {
     setAll(values) {
         let debug = DEBUG.get(this);
         if (debug) {
-            console.group("LOGIC MEMORY CHANGE");
+            console.group("PROCESSOR LOGIC MEMORY CHANGE");
             console.log("changes", values);
         }
         let mem_i = MEM_I.get(this);
@@ -193,7 +193,7 @@ export default class Processor {
             }
         }
         if (debug) {
-            console.groupEnd("LOGIC MEMORY CHANGE");
+            console.groupEnd("PROCESSOR LOGIC MEMORY CHANGE");
         }
         DIRTY.set(this, true);
     }
