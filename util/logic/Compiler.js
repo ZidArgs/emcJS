@@ -9,13 +9,13 @@ const TRANSPILERS = {
     "state":   (logic) => `(val("${escape(logic.el)}")||"")=="${escape(logic.value)}"`,
 
     /* operators */
-    "and":     (logic) => multiElementOperation(logic.el, "&&"),
-    "nand":    (logic) => `!${multiElementOperation(logic.el, "&&")||0}`,
-    "or":      (logic) => multiElementOperation(logic.el, "||")||0,
-    "nor":     (logic) => `!${multiElementOperation(logic.el, "||")||0}`,
+    "and":     (logic) => `${multiElementOperation(logic.el, "&&")}`,
+    "nand":    (logic) => `!${multiElementOperation(logic.el, "&&")}`,
+    "or":      (logic) => `${multiElementOperation(logic.el, "||")}`,
+    "nor":     (logic) => `!${multiElementOperation(logic.el, "||")}`,
     "not":     (logic) => `!(${buildLogic(logic.el)})`,
-    "xor":     (logic) => twoElementOperation(logic.el, "^"),
-    "xnor":    (logic) => `!(${twoElementOperation(logic.el, "^")})`,
+    "xor":     (logic) => `${twoElementOperation(logic.el, "^")||1}`,
+    "xnor":    (logic) => `!${twoElementOperation(logic.el, "^")||1}`,
 
     /* restrictors */
     "min":     (logic) => `(${buildLogic(logic.el)}>=${escape(logic.value, 0)})`,

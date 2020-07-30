@@ -112,35 +112,33 @@ export default class Graph {
                 console.log("traverse nodes...");
                 console.time("execution time");
             }
-            for (let n of mem_i.keys()) {
-                if (!!mem_i.get(n)) {
-                    reachableNodes.add(n);
-                }
-            }
             let val = valueGetter.bind(this, mem_i);
             let queue = [];
-            queue.push(start);
+            for (let ch of start.getTargets()) {
+                let edge = start.getEdge(ch);
+                queue.push(edge);
+            }
             let changed = true;
             while(!!queue.length && !!changed) {
                 changed = false;
                 let counts = queue.length;
                 while (!!counts--) {
-                    let node = queue.shift();
-                    reachableNodes.add(node.getName());
-                    let targets = node.getTargets();
-                    for (let ch of targets) {
-                        let edge = node.getEdge(ch);
-                        let condition = edge.getCondition();
-                        if(!reachableNodes.has(ch)) {
-                            if (checkConditionRequirements(reachableNodes, condition.requires)) {
-                                if (condition(val)) {
-                                    changed = true;
-                                    queue.push(edge.getTarget());
-                                } else {
-                                    queue.push(node);
-                                }
+                    let edge = queue.shift();
+                    let condition = edge.getCondition();
+                    if (condition(val)) {
+                        changed = true;
+                        let node = edge.getTarget();
+                        let n = node.getName();
+                        if(!reachableNodes.has(n)) {
+                            reachableNodes.add(n);
+                            let targets = node.getTargets();
+                            for (let ch of targets) {
+                                let edge = node.getEdge(ch);
+                                queue.push(edge);
                             }
                         }
+                    } else {
+                        queue.push(edge);
                     }
                 }
             }

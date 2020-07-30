@@ -1,0 +1,18 @@
+{
+    "edges": {
+        "root": {
+            "A": {
+                "type": "or",
+                "el": [{
+                    "type": "value",
+                    "el": "test_1"
+                },{
+                    "type": "value",
+                    "el": "test_2"
+                }]
+            }
+        }
+    },
+    "logic": {
+    }
+}

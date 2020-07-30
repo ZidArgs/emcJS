@@ -12,14 +12,12 @@
 
             emcJS.util.I18n.connect();
             emcJS.util.I18n.setTranslation("en_us", {
-                down: "DOWN",
-                down_tooltip: "this is a down tooltip",
-                up_tooltip: "this is a up tooltip"
+                run: "RUN",
+                run_tooltip: "Run logic"
             });
             emcJS.util.I18n.setTranslation("de_de", {
-                down: "RUNTER",
-                down_tooltip: "dies ist ein runter tooltip",
-                up_tooltip: "dies ist ein hoch tooltip"
+                run: "AUSFÜHREN",
+                run_tooltip: "Logik ausführen"
             });
             window.setLang = function(lang) {
                 emcJS.util.I18n.setLanguage(lang);
@@ -41,19 +39,13 @@
                 console.log(LogicSystem.getAll());
             }
 
-            init();
+            //init();
 
-            document.getElementById('savelogic').onclick = downloadLogic;
-
-            async function downloadLogic() {
-                emcJS.util.FileSystem.save(JSON.stringify(logic, " ", 4), `logic.json`);
-            }
-
-
+            document.getElementById('runlogic').onclick = init;
 
         </script>
     </head>
     <body>
-        <button id="savelogic" i18n-content="down" i18n-tooltip="down_tooltip"></button>
+        <button id="runlogic" i18n-content="run" i18n-tooltip="run_tooltip"></button>
     </body>
 </html>
