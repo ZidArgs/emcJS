@@ -1,5 +1,5 @@
-import NodeFactory from "../graph/NodeFactory.js";
-import Compiler from "./Compiler.js";
+import NodeFactory from "./NodeFactory.js";
+import Compiler from "./EdgeLogicCompiler.js";
 
 function mapToObj(map) {
     let res = {};
@@ -11,49 +11,54 @@ function mapToObj(map) {
 
 const DIRTY = new WeakMap();
 const NODES = new WeakMap();
+const MIXINS = new WeakMap();
 const MEM_I = new WeakMap();
 const MEM_O = new WeakMap();
 const DEBUG = new WeakMap();
 
-export default class Graph {
+export default class LogicGraph {
 
     constructor(debug = false) {
         DIRTY.set(this, false);
         NODES.set(this, new Map());
+        MIXINS.set(this, new Map());
         MEM_I.set(this, new Map());
         MEM_O.set(this, new Map());
         DEBUG.set(this, !!debug);
     }
 
-    loadEdges(config) {
-        if (typeof config == "object" && !Array.isArray(config)) {
-            let debug = DEBUG.get(this);
-            let nodes = NODES.get(this);
-            let mem_o = MEM_O.get(this);
-            mem_o.clear();
-            if (debug) {
-                console.group("PROCESSOR LOGIC BUILD");
-                console.time("build time");
-            }
-            for (let cfg in config) {
-                let children = config[cfg];
-                let node = NodeFactory.get(cfg);
-                for (let child in children) {
-                    let logic = children[child];
-                    let fn = Compiler.compile(logic);
-                    node.append(NodeFactory.get(child), fn);
-                    if (!mem_o.has(child)) {
-                        mem_o.set(child, false);
-                    }
-                }
-                nodes.set(cfg, node);
-            }
-            if (debug) {
-                console.timeEnd("build time");
-                console.groupEnd("PROCESSOR LOGIC BUILD");
-            }
-            DIRTY.set(this, true);
+    load(config) {
+        let debug = DEBUG.get(this);
+        let nodes = NODES.get(this);
+        let mixins = MIXINS.get(this);
+        let mem_o = MEM_O.get(this);
+        if (debug) {
+            console.group("PROCESSOR LOGIC BUILD");
+            console.time("build time");
         }
+        for (let name in config.edges) {
+            let children = config.edges[name];
+            let node = NodeFactory.get(name);
+            for (let child in children) {
+                let logic = children[child];
+                let fn = Compiler.compile(logic);
+                node.append(NodeFactory.get(child), fn);
+                if (!mem_o.has(child)) {
+                    mem_o.set(child, false);
+                }
+            }
+            nodes.set(name, node);
+        }
+        for (let name in config.logic) {
+            let logic = config.logic[name];
+            let fn = Compiler.compile(logic);
+            mixins.set(name, fn);
+        }
+        if (debug) {
+            console.timeEnd("build time");
+            console.groupEnd("PROCESSOR LOGIC BUILD");
+        }
+        DIRTY.set(this, true);
     }
 
     getEdges() {
@@ -87,6 +92,7 @@ export default class Graph {
         let reachableNodes = new Set();
         let changes = {};
         let nodes = NODES.get(this);
+        let mixins = MIXINS.get(this);
         let mem_o = MEM_O.get(this);
         let mem_i = MEM_I.get(this);
         let debug = DEBUG.get(this);
@@ -106,14 +112,20 @@ export default class Graph {
                     return mem_i.get(key);
                 }
             }
-            
-            function checkConditionRequirements(required) {
-                for (let key of required) {
-                    if (allTargets.has(key) && !reachableNodes.has(key)) {
-                        return false;
+
+            function execute(name) {
+                if (mixins.has(name)) {
+                    let fn = mixins.get(name);
+                    let res = fn(valueGetter, execute);
+                    if (debug) {
+                        console.groupCollapsed(`execute mixin [${name}]`);
+                        console.log(fn.toString());
+                        console.log(`result: ${res}`);
+                        console.groupEnd(`execute mixin [${name}]`);
                     }
+                    return res;
                 }
-                return true;
+                return 0;
             }
 
             let queue = [];
@@ -128,18 +140,23 @@ export default class Graph {
                 while (!!counts--) {
                     let edge = queue.shift();
                     let condition = edge.getCondition();
-                    if (checkConditionRequirements(condition.requires)) {
-                        if (condition(valueGetter)) {
-                            changed = true;
-                            let node = edge.getTarget();
-                            let n = node.getName();
-                            if(!reachableNodes.has(n)) {
-                                reachableNodes.add(n);
-                                let targets = node.getTargets();
-                                for (let ch of targets) {
-                                    let edge = node.getEdge(ch);
-                                    queue.push(edge);
-                                }
+                    let cRes = condition(valueGetter, execute);
+                    if (debug) {
+                        console.groupCollapsed(`traverse edge [${edge}]`);
+                        console.log(condition.toString());
+                        console.log(`result: ${cRes}`);
+                        console.groupEnd(`traverse edge [${edge}]`);
+                    }
+                    if (cRes) {
+                        changed = true;
+                        let node = edge.getTarget();
+                        let n = node.getName();
+                        if(!reachableNodes.has(n)) {
+                            reachableNodes.add(n);
+                            let targets = node.getTargets();
+                            for (let ch of targets) {
+                                let edge = node.getEdge(ch);
+                                queue.push(edge);
                             }
                         }
                     } else {

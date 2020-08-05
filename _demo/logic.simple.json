@@ -23,9 +23,20 @@
             "C": {
                 "type": "value",
                 "el": "test_3"
+            },
+            "D": {
+                "type": "mixin",
+                "el": "mix.foobar"
             }
         }
     },
     "logic": {
+        "mix.foobar": {
+            "type": "at",
+            "node": "B",
+            "el": {
+                "type": "true"
+            }
+        }
     }
 }

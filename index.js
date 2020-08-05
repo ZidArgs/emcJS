@@ -71,6 +71,8 @@ import util_events_EventBusModuleShare from "./util/events/EventBusModuleShare.j
 import util_events_EventBusSubset from "./util/events/EventBusSubset.js";
 import util_FileLoader from "./util/FileLoader.js";
 import util_FileSystem from "./util/FileSystem.js";
+import util_graph_EdgeLogicCompiler from "./util/graph/EdgeLogicCompiler.js";
+import util_graph_LogicGraph from "./util/graph/LogicGraph.js";
 import util_graph_NodeFactory from "./util/graph/NodeFactory.js";
 import util_graph_SimpleGraph from "./util/graph/SimpleGraph.js";
 import util_Helper from "./util/Helper.js";
@@ -79,8 +81,6 @@ import util_Import from "./util/Import.js";
 import util_Logger from "./util/Logger.js";
 import util_LoggerRaw from "./util/LoggerRaw.js";
 import util_logic_Compiler from "./util/logic/Compiler.js";
-import util_logic_Graph from "./util/logic/Graph.js";
-import util_logic_LogicSystem from "./util/logic/LogicSystem.js";
 import util_logic_Processor from "./util/logic/Processor.js";
 import util_Path from "./util/Path.js";
 import util_Request from "./util/Request.js";
@@ -189,6 +189,8 @@ let index = {
         "FileLoader": util_FileLoader,
         "FileSystem": util_FileSystem,
         "graph": {
+            "EdgeLogicCompiler": util_graph_EdgeLogicCompiler,
+            "LogicGraph": util_graph_LogicGraph,
             "NodeFactory": util_graph_NodeFactory,
             "SimpleGraph": util_graph_SimpleGraph
         },
@@ -199,8 +201,6 @@ let index = {
         "LoggerRaw": util_LoggerRaw,
         "logic": {
             "Compiler": util_logic_Compiler,
-            "Graph": util_logic_Graph,
-            "LogicSystem": util_logic_LogicSystem,
             "Processor": util_logic_Processor
         },
         "Path": util_Path,
