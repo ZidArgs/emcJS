@@ -11,6 +11,19 @@
                     "el": "test_2"
                 }]
             }
+        },
+        "A": {
+            "B": {
+                "type": "at",
+                "node": "C",
+                "el": {
+                    "type": "true"
+                }
+            },
+            "C": {
+                "type": "value",
+                "el": "test_3"
+            }
         }
     },
     "logic": {

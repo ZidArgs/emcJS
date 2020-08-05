@@ -25,16 +25,23 @@
 
             async function init() {
 
-                let logic = await emcJS.util.FileLoader.json(`logic.json`);
+                let logic = await emcJS.util.FileLoader.json(`logic.simple.json`);
 
                 let LogicSystem = new emcJS.util.logic.LogicSystem(true);
                 LogicSystem.load(logic);
 
                 LogicSystem.setAll({
-                    "option.starting_age": "child",
-                    "item.nut": 1
+                    "test_1": 1,
+                    "test_2": 1
                 });
-                LogicSystem.execute("region.root");
+                LogicSystem.execute("root");
+
+                console.log(LogicSystem.getAll());
+
+                LogicSystem.setAll({
+                    "test_3": 1
+                });
+                LogicSystem.execute("root");
 
                 console.log(LogicSystem.getAll());
             }

@@ -9,21 +9,6 @@ function mapToObj(map) {
     return res;
 }
 
-function valueGetter(mem, key) {
-    if (mem.has(key)) {
-        return mem.get(key);
-    }
-}
-
-function checkConditionRequirements(reached, required) {
-    for (let i of required) {
-        if (!reached.has(i)) {
-            return false;
-        }
-    }
-    return true;
-}
-
 const DIRTY = new WeakMap();
 const NODES = new WeakMap();
 const MEM_I = new WeakMap();
@@ -98,6 +83,7 @@ export default class Graph {
 
     /* broad search */
     traverse(startNode) {
+        let allTargets = this.getTargetNodes();
         let reachableNodes = new Set();
         let changes = {};
         let nodes = NODES.get(this);
@@ -112,7 +98,24 @@ export default class Graph {
                 console.log("traverse nodes...");
                 console.time("execution time");
             }
-            let val = valueGetter.bind(this, mem_i);
+
+            function valueGetter(key) {
+                if (allTargets.has(key)) {
+                    return +reachableNodes.has(key);
+                } else if (mem_i.has(key)) {
+                    return mem_i.get(key);
+                }
+            }
+            
+            function checkConditionRequirements(required) {
+                for (let key of required) {
+                    if (allTargets.has(key) && !reachableNodes.has(key)) {
+                        return false;
+                    }
+                }
+                return true;
+            }
+
             let queue = [];
             for (let ch of start.getTargets()) {
                 let edge = start.getEdge(ch);
@@ -125,16 +128,18 @@ export default class Graph {
                 while (!!counts--) {
                     let edge = queue.shift();
                     let condition = edge.getCondition();
-                    if (condition(val)) {
-                        changed = true;
-                        let node = edge.getTarget();
-                        let n = node.getName();
-                        if(!reachableNodes.has(n)) {
-                            reachableNodes.add(n);
-                            let targets = node.getTargets();
-                            for (let ch of targets) {
-                                let edge = node.getEdge(ch);
-                                queue.push(edge);
+                    if (checkConditionRequirements(condition.requires)) {
+                        if (condition(valueGetter)) {
+                            changed = true;
+                            let node = edge.getTarget();
+                            let n = node.getName();
+                            if(!reachableNodes.has(n)) {
+                                reachableNodes.add(n);
+                                let targets = node.getTargets();
+                                for (let ch of targets) {
+                                    let edge = node.getEdge(ch);
+                                    queue.push(edge);
+                                }
                             }
                         }
                     } else {
@@ -143,7 +148,7 @@ export default class Graph {
                 }
             }
             DIRTY.set(this, false);
-            for (let ch of this.getTargetNodes()) {
+            for (let ch of allTargets) {
                 let v = reachableNodes.has(ch);
                 if (mem_o.get(ch) != v) {
                     mem_o.set(ch, v);
