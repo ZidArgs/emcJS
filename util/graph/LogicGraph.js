@@ -1,6 +1,8 @@
 import NodeFactory from "./NodeFactory.js";
 import Compiler from "./EdgeLogicCompiler.js";
 
+const nodeFactory = new NodeFactory();
+
 function mapToObj(map) {
     let res = {};
     map.forEach((v, k) => {
@@ -10,44 +12,43 @@ function mapToObj(map) {
 }
 
 const DIRTY = new WeakMap();
-const NODES = new WeakMap();
 const MIXINS = new WeakMap();
 const MEM_I = new WeakMap();
 const MEM_O = new WeakMap();
 const DEBUG = new WeakMap();
 
+const TRANSLATION_MATRIX = new WeakMap();
+
 export default class LogicGraph {
 
     constructor(debug = false) {
         DIRTY.set(this, false);
-        NODES.set(this, new Map());
         MIXINS.set(this, new Map());
         MEM_I.set(this, new Map());
         MEM_O.set(this, new Map());
+        TRANSLATION_MATRIX.set(this, new Map());
         DEBUG.set(this, !!debug);
     }
 
     load(config) {
         let debug = DEBUG.get(this);
-        let nodes = NODES.get(this);
         let mixins = MIXINS.get(this);
         let mem_o = MEM_O.get(this);
         if (debug) {
-            console.group("PROCESSOR LOGIC BUILD");
+            console.group("GRAPH LOGIC BUILD");
             console.time("build time");
         }
         for (let name in config.edges) {
             let children = config.edges[name];
-            let node = NodeFactory.get(name);
+            let node = nodeFactory.get(name);
             for (let child in children) {
                 let logic = children[child];
                 let fn = Compiler.compile(logic);
-                node.append(NodeFactory.get(child), fn);
+                node.append(nodeFactory.get(child), fn);
                 if (!mem_o.has(child)) {
                     mem_o.set(child, false);
                 }
             }
-            nodes.set(name, node);
         }
         for (let name in config.logic) {
             let logic = config.logic[name];
@@ -56,16 +57,80 @@ export default class LogicGraph {
         }
         if (debug) {
             console.timeEnd("build time");
-            console.groupEnd("PROCESSOR LOGIC BUILD");
+            console.groupEnd("GRAPH LOGIC BUILD");
         }
         DIRTY.set(this, true);
     }
 
+    setEdge(source, target, value) {
+        let debug = DEBUG.get(this);
+        if (debug) {
+            console.group("GRAPH LOGIC BUILD");
+            console.time("build time");
+        }
+        let node = nodeFactory.get(source);
+        let child = nodeFactory.get(target);
+        if (typeof value == "undefined" || value == null) {
+            node.remove(child);
+            DIRTY.set(this, true);
+        } else {
+            let fn = Compiler.compile(value);
+            node.append(child, fn);
+            DIRTY.set(this, true);
+        }
+        DIRTY.set(this, true);
+        if (debug) {
+            console.timeEnd("build time");
+            console.groupEnd("GRAPH LOGIC BUILD");
+        }
+    }
+
+    setMixin(name, value) {
+        let debug = DEBUG.get(this);
+        let mixins = MIXINS.get(this);
+        if (debug) {
+            console.group("GRAPH LOGIC BUILD");
+            console.time("build time");
+        }
+        if (typeof value == "undefined" || value == null) {
+            mixins.delete(name);
+            DIRTY.set(this, true);
+        } else {
+            let fn = Compiler.compile(value);
+            mixins.set(name, fn);
+            DIRTY.set(this, true);
+        }
+        sortLogic(logic);
+        if (debug) {
+            console.timeEnd("build time");
+            console.groupEnd("GRAPH LOGIC BUILD");
+        }
+        DIRTY.set(this, true);
+    }
+
+    setTranslation(source, target, reroute) {
+        let translationMatrix = TRANSLATION_MATRIX.get(this);
+        if (!reroute) {
+            translationMatrix.delete(`${source} => ${target}`);
+        } else {
+            translationMatrix.set(`${source} => ${target}`, reroute);
+        }
+    }
+
+    getTranslation(source, target) {
+        let translationMatrix = TRANSLATION_MATRIX.get(this);
+        if (translationMatrix.has(`${source} => ${target}`)) {
+            return translationMatrix.get(`${source} => ${target}`);
+        }
+        return target;
+    }
+
     getEdges() {
-        let nodes = NODES.get(this);
+        let nodes = nodeFactory.getNames();
         let res = [];
-        for (let name of nodes.keys()) {
-            let children = nodes.get(name).getTargets();
+        for (let name of nodes) {
+            let node = nodeFactory.get(name);
+            let children = node.getTargets();
             for (let ch of children) {
                 res.push([name, ch]);
             }
@@ -74,10 +139,10 @@ export default class LogicGraph {
     }
 
     getTargetNodes() {
-        let nodes = NODES.get(this);
+        let nodes = nodeFactory.getNames();
         let res = new Set();
-        for (let name of nodes.keys()) {
-            let node = nodes.get(name);
+        for (let name of nodes) {
+            let node = nodeFactory.get(name);
             let children = node.getTargets();
             for (let ch of children) {
                 res.add(ch);
@@ -91,12 +156,11 @@ export default class LogicGraph {
         let allTargets = this.getTargetNodes();
         let reachableNodes = new Set();
         let changes = {};
-        let nodes = NODES.get(this);
         let mixins = MIXINS.get(this);
         let mem_o = MEM_O.get(this);
         let mem_i = MEM_I.get(this);
         let debug = DEBUG.get(this);
-        let start = nodes.get(startNode);
+        let start = nodeFactory.get(startNode);
         if (start != null) {
             if (debug) {
                 console.group("GRAPH LOGIC EXECUTION");
@@ -117,12 +181,12 @@ export default class LogicGraph {
                 if (mixins.has(name)) {
                     let fn = mixins.get(name);
                     let res = fn(valueGetter, execute);
-                    if (debug) {
+                    /*if (debug) {
                         console.groupCollapsed(`execute mixin [${name}]`);
                         console.log(fn.toString());
                         console.log(`result: ${res}`);
                         console.groupEnd(`execute mixin [${name}]`);
-                    }
+                    }*/
                     return res;
                 }
                 return 0;
@@ -141,16 +205,16 @@ export default class LogicGraph {
                     let edge = queue.shift();
                     let condition = edge.getCondition();
                     let cRes = condition(valueGetter, execute);
-                    if (debug) {
+                    /*if (debug) {
                         console.groupCollapsed(`traverse edge [${edge}]`);
                         console.log(condition.toString());
                         console.log(`result: ${cRes}`);
                         console.groupEnd(`traverse edge [${edge}]`);
-                    }
+                    }*/
                     if (cRes) {
                         changed = true;
-                        let node = edge.getTarget();
-                        let n = node.getName();
+                        let n = this.getTranslation(edge.getSource().getName(), edge.getTarget().getName());
+                        let node = nodeFactory.get(n);
                         if(!reachableNodes.has(n)) {
                             reachableNodes.add(n);
                             let targets = node.getTargets();

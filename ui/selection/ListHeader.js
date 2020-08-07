@@ -10,7 +10,6 @@ const TPL = new Template(`
         #filter-wrapper {
             display: flex;
             flex: 1;
-            margin-right: 15px;
             background: var(--list-color-back, #ffffff);
         }
         #filter-reset {

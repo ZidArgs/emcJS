@@ -21,7 +21,7 @@ const TPL = new Template(`
         #scroll-container {
             flex: 1;
             overflow-x: hidden;
-            overflow-y: scroll;
+            overflow-y: auto;
             background-color: var(--list-color-back, #ffffff);
             scrollbar-color: var(--list-color-hover, #b8b8b8) var(--list-color-border, #f1f1f1);
         }
@@ -52,7 +52,7 @@ const TPL = new Template(`
             background-color: var(--list-color-hover, #b8b8b8);
         }
         ::slotted([value])::before {
-            margin: 0 10px 0 2px;
+            margin: 0 10px 0 4px;
             font-size: 18px;
             content: "☐";
         }
@@ -64,6 +64,10 @@ const TPL = new Template(`
         :host([multimode]:not([multimode="false"]):not([readonly])) ::slotted([value].active),
         :host([readonly="false"][multimode]:not([multimode="false"])) ::slotted([value].active) {
             cursor: pointer;
+        }
+        #header {
+            padding-right: 2px;
+            padding-left: 2px;
         }
         #empty {
             display: flex;

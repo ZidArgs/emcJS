@@ -21,6 +21,14 @@ class Node {
         }
     }
 
+    remove(node) {
+        if (node instanceof Node) {
+            edges.delete(node.getName());
+        } else {
+            throw new TypeError("Expected type Node");
+        }
+    }
+
     getTargets() {
         let edges = EDGES.get(this);
         return edges.keys();
@@ -68,19 +76,27 @@ class Edge {
 }
 
 /* node factory */
-const NODES = new Map();
+const NODES = new WeakMap();
 
-class NodeFactory {
+export default class NodeFactory {
+
+    constructor() {
+        NODES.set(this, new Map());
+    }
 
     get(name) {
-        if (NODES.has(name)) {
-            return NODES.get(name);
+        let nodes = NODES.get(this);
+        if (nodes.has(name)) {
+            return nodes.get(name);
         }
         let node = new Node(name);
-        NODES.set(name, node);
+        nodes.set(name, node);
         return node;
     }
 
-}
+    getNames() {
+        let nodes = NODES.get(this);
+        return nodes.keys();
+    }
 
-export default new NodeFactory();
+}

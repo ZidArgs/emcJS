@@ -69,6 +69,7 @@ export default class FilteredList extends HTMLElement {
         /* header */
         header.addEventListener('filter', event => {
             let all = this.querySelectorAll(`[data-filtervalue]`);
+            let panels = this.querySelectorAll(`emc-collapsepanel`);
             if (!!event.value) {
                 let regEx = new RegExp(`.*${event.value.split(" ").join(".*")}.*`, "i");
                 all.forEach(el => {
@@ -78,8 +79,21 @@ export default class FilteredList extends HTMLElement {
                         el.style.display = "none";
                     }
                 });
+                panels.forEach(el => {
+                    let children = el.querySelectorAll(`[data-filtervalue]`);
+                    for (let ch of children) {
+                        if (ch.style.display == "") {
+                            el.style.display = "";
+                            return;
+                        }
+                    }
+                    el.style.display = "none";
+                });
             } else {
                 all.forEach(el => {
+                    el.style.display = "";
+                });
+                panels.forEach(el => {
                     el.style.display = "";
                 });
             }
