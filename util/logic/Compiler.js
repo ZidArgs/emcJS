@@ -1,45 +1,45 @@
 const TRANSPILERS = {
     /* literals */
-    "true":    (logic) => "1",
-    "false":   (logic) => "0",
-    "string":  (logic) => escape(logic.el),
-    "number":  (logic) => toNumber(logic.el),
-    "value":   (logic) => `(val("${escape(logic.el)}")||0)`,
-    "pointer": (logic) => `(val(val("${escape(logic.el)}")||"")||0)`,
-    "state":   (logic) => `(val("${escape(logic.el)}")||"")=="${escape(logic.value)}"`,
+    "true":     (logic) => "1",
+    "false":    (logic) => "0",
+    "string":   (logic) => escape(logic.el),
+    "number":   (logic) => toNumber(logic.el),
+    "value":    (logic) => `(val("${escape(logic.el)}")||0)`,
+    "pointer":  (logic) => `(val(val("${escape(logic.el)}")||"")||0)`,
+    "state":    (logic) => `(val("${escape(logic.el)}")||"")=="${escape(logic.value)}"`,
 
     /* operators */
-    "and":     (logic) => `${multiElementOperation(logic.el, "&&")}`,
-    "nand":    (logic) => `!${multiElementOperation(logic.el, "&&")}`,
-    "or":      (logic) => `${multiElementOperation(logic.el, "||")}`,
-    "nor":     (logic) => `!${multiElementOperation(logic.el, "||")}`,
-    "not":     (logic) => `!(${buildLogic(logic.el)})`,
-    "xor":     (logic) => `${twoElementOperation(logic.el, "^")||1}`,
-    "xnor":    (logic) => `!${twoElementOperation(logic.el, "^")||1}`,
+    "and":      (logic) => `${multiElementOperation(logic.el, "&&")}`,
+    "nand":     (logic) => `!${multiElementOperation(logic.el, "&&")}`,
+    "or":       (logic) => `${multiElementOperation(logic.el, "||")}`,
+    "nor":      (logic) => `!${multiElementOperation(logic.el, "||")}`,
+    "not":      (logic) => `!(${buildLogic(logic.el)})`,
+    "xor":      (logic) => `${twoElementOperation(logic.el, "^")||1}`,
+    "xnor":     (logic) => `!${twoElementOperation(logic.el, "^")||1}`,
 
     /* restrictors */
-    "min":     (logic) => `(${buildLogic(logic.el)}>=${escape(logic.value, 0)})`,
-    "max":     (logic) => `(${buildLogic(logic.el)}<=${escape(logic.value, 0)})`,
+    "min":      (logic) => `(${buildLogic(logic.el)}>=${escape(logic.value, 0)})`,
+    "max":      (logic) => `(${buildLogic(logic.el)}<=${escape(logic.value, 0)})`,
 
     /* comparators */
-    "eq":      (logic) => twoElementOperation(logic.el, "=="),
-    "neq":     (logic) => twoElementOperation(logic.el, "!="),
-    "lt":      (logic) => twoElementOperation(logic.el, "<"),
-    "lte":     (logic) => twoElementOperation(logic.el, "<="),
-    "gt":      (logic) => twoElementOperation(logic.el, ">"),
-    "gte":     (logic) => twoElementOperation(logic.el, ">="),
+    "eq":       (logic) => twoElementOperation(logic.el, "=="),
+    "neq":      (logic) => twoElementOperation(logic.el, "!="),
+    "lt":       (logic) => twoElementOperation(logic.el, "<"),
+    "lte":      (logic) => twoElementOperation(logic.el, "<="),
+    "gt":       (logic) => twoElementOperation(logic.el, ">"),
+    "gte":      (logic) => twoElementOperation(logic.el, ">="),
 
     /* math */
-    "add":     (logic) => mathOperation(logic.el, "+"),
-    "sub":     (logic) => mathOperation(logic.el, "-"),
-    "mul":     (logic) => mathOperation(logic.el, "*"),
-    "div":     (logic) => mathOperation(logic.el, "/"),
-    "mod":     (logic) => mathOperation(logic.el, "%"),
-    "pow":     (logic) => mathOperation(logic.el, "**"),
+    "add":      (logic) => mathOperation(logic.el, "+"),
+    "sub":      (logic) => mathOperation(logic.el, "-"),
+    "mul":      (logic) => mathOperation(logic.el, "*"),
+    "div":      (logic) => mathOperation(logic.el, "/"),
+    "mod":      (logic) => mathOperation(logic.el, "%"),
+    "pow":      (logic) => mathOperation(logic.el, "**"),
 
     /* special */
-    "at":      (logic) => !!logic.el ? `((val("${escape(logic.node)}")||0)&&${buildLogic(logic.el)})` : `(val("${escape(logic.node)}")||0)`,
-    "here":    (logic) => buildLogic(logic.el)
+    "at":       (logic) => !!logic.el ? `((val("${escape(logic.node)}")||0)&&${buildLogic(logic.el)})` : `(val("${escape(logic.node)}")||0)`,
+    "mixin":    (logic) => `(val("${escape(logic.el)}")||0)`
 };
 
 let dependencies = null;
