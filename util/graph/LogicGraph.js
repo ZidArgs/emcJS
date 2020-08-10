@@ -30,6 +30,10 @@ export default class LogicGraph {
         DEBUG.set(this, !!debug);
     }
 
+    clearGraph() {
+        nodeFactory.reset();
+    }
+
     load(config) {
         let debug = DEBUG.get(this);
         let mixins = MIXINS.get(this);

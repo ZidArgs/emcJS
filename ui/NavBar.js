@@ -265,6 +265,7 @@ export default class NavBar extends HTMLElement {
         for (let item of config) {
             let el = document.createElement('li');
             let btn = document.createElement('button');
+            const context = createContextObject(btn);
             if (item.hasOwnProperty("content")) {
                 btn.innerHTML = item["content"];
             }
@@ -278,7 +279,12 @@ export default class NavBar extends HTMLElement {
                 btn.setAttribute("i18n-tooltip", item["i18n-tooltip"]);
             }
             if (item.hasOwnProperty("handler") && typeof item.handler == "function") {
-                btn.addEventListener("click", item.handler);
+                btn.addEventListener("click", function() {
+                    item.handler(context);
+                });
+            }
+            if (item.hasOwnProperty("visible")) {
+                btn.style.setProperty("display", !item["visible"] ? "none" : "");
             }
             el.append(btn);
             if (item.hasOwnProperty("submenu")) {
@@ -286,6 +292,7 @@ export default class NavBar extends HTMLElement {
                 for (let subitem of item.submenu) {
                     let subel = document.createElement('li');
                     let subbtn = document.createElement('button');
+                    const subContext = createContextObject(btn);
                     if (subitem.hasOwnProperty("content")) {
                         subbtn.innerHTML = subitem["content"];
                     }
@@ -299,7 +306,9 @@ export default class NavBar extends HTMLElement {
                         subbtn.setAttribute("i18n-tooltip", subitem["i18n-tooltip"]);
                     }
                     if (subitem.hasOwnProperty("handler") && typeof subitem.handler == "function") {
-                        subbtn.addEventListener("click", subitem.handler);
+                        subbtn.addEventListener("click", function() {
+                            subitem.handler(subContext);
+                        });
                     }
                     subel.append(subbtn);
                     subcontent.append(subel);
@@ -329,3 +338,39 @@ export default class NavBar extends HTMLElement {
 }
 
 customElements.define('emc-navbar', NavBar);
+
+// helper functions
+function createContextObject(button) {
+    return {
+        setContent: function(value) {
+            button.innerHTML = value;
+        },
+        getContent: function() {
+            return button.innerHTML;
+        },
+        setTooltip: function(value) {
+            button.setAttribute("title", value);
+        },
+        getTooltip: function() {
+            return button.getAttribute("title");
+        },
+        setI18nContent: function(value) {
+            button.setAttribute("i18n-content", value);
+        },
+        getI18nContent: function() {
+            return button.getAttribute("i18n-content");
+        },
+        setI18nTooltip: function(value) {
+            button.setAttribute("i18n-title", value);
+        },
+        getI18nTooltip: function() {
+            return button.getAttribute("i18n-title");
+        },
+        setVisible(value = true) {
+            button.style.setProperty("display", !value ? "none" : "");
+        },
+        getVisible() {
+            return button.style.getPropertyValue("display") == "";
+        }
+    };
+}

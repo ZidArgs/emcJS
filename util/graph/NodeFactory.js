@@ -84,6 +84,11 @@ export default class NodeFactory {
         NODES.set(this, new Map());
     }
 
+    reset() {
+        let nodes = NODES.get(this);
+        nodes.clear();
+    }
+
     get(name) {
         let nodes = NODES.get(this);
         if (nodes.has(name)) {
