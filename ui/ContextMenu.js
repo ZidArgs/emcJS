@@ -15,6 +15,7 @@ const TPL = new Template(`
             top: 0;
             bottom: 0;
             z-index: 99999;
+            cursor: default;
         }
         :host([active]:not([active="false"])) {
             display: block;
