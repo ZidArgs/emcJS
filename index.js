@@ -49,6 +49,7 @@ import ui_selection_CircleSelect from "./ui/selection/CircleSelect.js";
 import ui_selection_ListHeader from "./ui/selection/ListHeader.js";
 import ui_selection_ListSelect from "./ui/selection/ListSelect.js";
 import ui_selection_Option from "./ui/selection/Option.js";
+import ui_selection_SearchSelect from "./ui/selection/SearchSelect.js";
 import ui_selection_StateButton from "./ui/selection/StateButton.js";
 import ui_selection_SwitchButton from "./ui/selection/SwitchButton.js";
 import ui_SettingsWindow from "./ui/SettingsWindow.js";
@@ -76,6 +77,7 @@ import util_graph_LogicGraph from "./util/graph/LogicGraph.js";
 import util_graph_NodeFactory from "./util/graph/NodeFactory.js";
 import util_graph_SimpleGraph from "./util/graph/SimpleGraph.js";
 import util_Helper from "./util/Helper.js";
+import util_HotkeyHandler from "./util/HotkeyHandler.js";
 import util_I18n from "./util/I18n.js";
 import util_Import from "./util/Import.js";
 import util_Logger from "./util/Logger.js";
@@ -84,6 +86,7 @@ import util_logic_Compiler from "./util/logic/Compiler.js";
 import util_logic_Processor from "./util/logic/Processor.js";
 import util_Path from "./util/Path.js";
 import util_Request from "./util/Request.js";
+import util_Router from "./util/Router.js";
 import util_Template from "./util/Template.js";
 import util_Timer from "./util/Timer.js";
 import util_UniqueGenerator from "./util/UniqueGenerator.js";
@@ -159,6 +162,7 @@ let index = {
             "ListHeader": ui_selection_ListHeader,
             "ListSelect": ui_selection_ListSelect,
             "Option": ui_selection_Option,
+            "SearchSelect": ui_selection_SearchSelect,
             "StateButton": ui_selection_StateButton,
             "SwitchButton": ui_selection_SwitchButton
         },
@@ -195,6 +199,7 @@ let index = {
             "SimpleGraph": util_graph_SimpleGraph
         },
         "Helper": util_Helper,
+        "HotkeyHandler": util_HotkeyHandler,
         "I18n": util_I18n,
         "Import": util_Import,
         "Logger": util_Logger,
@@ -205,6 +210,7 @@ let index = {
         },
         "Path": util_Path,
         "Request": util_Request,
+        "Router": util_Router,
         "Template": util_Template,
         "Timer": util_Timer,
         "UniqueGenerator": util_UniqueGenerator,
