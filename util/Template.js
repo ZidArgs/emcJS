@@ -1,19 +1,22 @@
 const TEMPLATE = new WeakMap;
 
+function createTemplate(src) {
+    if (src instanceof HTMLTemplateElement) {
+        return src;
+    }
+    let buf = document.createElement('template');
+    if (src instanceof HTMLElement) {
+        buf.append(src);
+    } else if (typeof src === "string") {
+        buf.innerHTML = src;
+    }
+    return buf;
+}
+
 export default class Template {
 
     constructor(template) {
-        if (template instanceof HTMLTemplateElement) {
-            TEMPLATE.set(this, template);
-        } else {
-            let buf = document.createElement('template');
-            if (template instanceof HTMLElement) {
-                buf.append(template);
-            } else if (typeof template === "string") {
-                buf.innerHTML = template;
-            }
-            TEMPLATE.set(this, buf);
-        }
+        TEMPLATE.set(this, createTemplate(template));
     }
 
     generate() {
@@ -21,10 +24,13 @@ export default class Template {
     }
 
     static generate(template) {
-        if (template instanceof HTMLTemplateElement) {
-            return document.importNode(template.content, true);
+        if (template instanceof Template) {
+            return template.generate(target);
         }
-        return "";
+        if (!(template instanceof HTMLTemplateElement)) {
+            template = createTemplate(template);
+        }
+        return document.importNode(template.content, true);
     }
 
 }

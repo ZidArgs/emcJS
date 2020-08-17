@@ -3,6 +3,10 @@ import "./selection/ListSelect.js";
 
 const TPL = new Template(`
     <style>
+        * {
+            position: relative;
+            box-sizing: border-box;
+        }
         :host {
             position: fixed !important;
             display: none;
@@ -26,12 +30,16 @@ const TPL = new Template(`
             border: solid 2px var(--contextmenu-border, #cccccc);
         }
         ::slotted(.item) {
-            display: block;
+            display: flex;
+            align-items: center;
             min-width: 150px;
-            height: 30px;
+            min-height: 40px;
             padding: 5px;
             color: var(--contextmenu-text, #000000);
             background: var(--contextmenu-background, #ffffff);
+            cursor: pointer;
+            user-select: none;
+            box-sizing: border-box;
         }
         ::slotted(.item:hover) {
             background: var(--contextmenu-background-hover, var(--contextmenu-border, #cccccc));
@@ -42,6 +50,9 @@ const TPL = new Template(`
             margin: 10px 5px;
             height: 2px;
             background: var(--contextmenu-text, #000000);
+            cursor: default;
+            user-select: none;
+            box-sizing: border-box;
         }
     </style>
     <slot id="menu">
@@ -55,15 +66,28 @@ function closeMenu(event) {
     return false;
 }
 
+const TOP = new WeakMap();
+const LEFT = new WeakMap();
+
 export default class ContextMenu extends HTMLElement {
 
     constructor() {
         super();
+        TOP.set(this, 0);
+        LEFT.set(this, 0);
         this.attachShadow({mode: 'open'});
         this.shadowRoot.append(TPL.generate());
         this.addEventListener("click", closeMenu.bind(this));
         this.addEventListener("contextmenu", closeMenu.bind(this));
         this.shadowRoot.getElementById('menu').addEventListener("click", closeMenu.bind(this));
+    }
+
+    get top() {
+        return TOP.get(this);
+    }
+
+    get left() {
+        return LEFT.get(this);
     }
 
     get active() {
@@ -75,6 +99,8 @@ export default class ContextMenu extends HTMLElement {
     }
 
     show(posX, posY) {
+        LEFT.set(this, posX);
+        TOP.set(this, posY);
         this.active = true;
         let menu = this.shadowRoot.getElementById('menu');
         if (posX < 25) {
