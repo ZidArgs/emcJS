@@ -62,18 +62,31 @@ class Helper {
         return c;
     }
     
-    deepEquals(a, b) {
+    isEqual(a, b) {
         if (Object.is(a,b)) {
             return true;
+        }
+        if (typeof a != "object") {
+            return false;
         }
         if (a instanceof Date && b instanceof Date) {
             return a.getTime() == b.getTime();
         }
-        let c = Object.keys(a);
-        if (c.length != Object.keys(b).length) {
-            return false;
+        if (Array.isArray(a)) {
+            if (!Array.isArray(b) || a.length != b.length) {
+                return false;
+            }
+            return a.every((i, j) => this.isEqual(i, b[j]))
+        } else {
+            if (Array.isArray(b)) {
+                return false;
+            }
+            let c = Object.keys(a);
+            if (c.length != Object.keys(b).length) {
+                return false;
+            }
+            return c.every(i => b.hasOwnProperty(i) && this.isEqual(a[i], b[i]));
         }
-        return c.every(i => b.hasOwnProperty(i) && this.deepEquals(a[i], b[i]));
     }
     
     svg2png(svg) {
