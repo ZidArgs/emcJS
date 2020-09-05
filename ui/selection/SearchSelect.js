@@ -1,4 +1,4 @@
-import Template from "../util/Template.js";
+import Template from "../../util/Template.js";
 import "./ListHeader.js";
 import "./Option.js";
 
@@ -89,6 +89,10 @@ function clickOption(event) {
         this.value = event.currentTarget.getAttribute("value");
         let container = this.shadowRoot.getElementById("scroll-container");
         container.style.display = "";
+        let all = this.querySelectorAll(`[value]`);
+        all.forEach(el => {
+            el.style.display = "";
+        });
     }
 }
 
@@ -122,6 +126,10 @@ export default class SearchSelect extends HTMLElement {
         this.addEventListener("blur", event => {
             input.value = this.value;
             container.style.display = "";
+            let all = this.querySelectorAll(`[value]`);
+            all.forEach(el => {
+                el.style.display = "";
+            });
         });
         input.addEventListener("keyup", event => {
             let all = this.querySelectorAll(`[value]`);
