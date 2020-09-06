@@ -32,6 +32,7 @@ const TPL = new Template(`
             background-color: var(--list-color-back, #ffffff);
             scrollbar-color: var(--list-color-hover, #b8b8b8) var(--list-color-border, #f1f1f1);
             z-index: 1000;
+            box-shadow: black 5px 5px 5px;
         }
         #scroll-container::-webkit-scrollbar-track {
             background-color: var(--list-color-border, #f1f1f1);
