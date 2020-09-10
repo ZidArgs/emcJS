@@ -108,6 +108,9 @@ export default class SearchSelect extends HTMLElement {
             all.forEach(el => {
                 if (!!el) {
                     el.onclick = clickOption.bind(this);
+                    if (el.value == this.value) {
+                        this.shadowRoot.getElementById("view").value = el.innerHTML;
+                    }
                 }
             });
         });
@@ -125,7 +128,12 @@ export default class SearchSelect extends HTMLElement {
             }
         });
         this.addEventListener("blur", event => {
-            input.value = this.value;
+            let el = this.querySelector(`[value="${this.value}"]`);
+            if (el != null) {
+                input.value = el.innerHTML;
+            } else {
+                input.value = this.value;
+            }
             container.style.display = "";
             let all = this.querySelectorAll(`[value]`);
             all.forEach(el => {
@@ -183,7 +191,12 @@ export default class SearchSelect extends HTMLElement {
         switch (name) {
             case 'value':
                 if (oldValue != newValue) {
-                    this.shadowRoot.getElementById("view").value = newValue;
+                    let el = this.querySelector(`[value="${newValue}"]`);
+                    if (el != null) {
+                        this.shadowRoot.getElementById("view").value = el.innerHTML;
+                    } else {
+                        this.shadowRoot.getElementById("view").value = newValue;
+                    }
                     let event = new Event('change');
                     event.oldValue = oldValue;
                     event.newValue = newValue;
@@ -194,6 +207,11 @@ export default class SearchSelect extends HTMLElement {
             case 'readonly':
                 if (oldValue != newValue) {
                     this.shadowRoot.getElementById("view").readonly = newValue;
+                    if (newValue != null && newValue != "false") {
+                        this.shadowRoot.getElementById("view").disabled = true;
+                    } else {
+                        this.shadowRoot.getElementById("view").disabled = false;
+                    }
                 }
                 break;
         }

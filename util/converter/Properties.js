@@ -1,6 +1,14 @@
 const LNBR_SEQ = /(?:\r\n|\n|\r)/g;
-const VALUE = /^(?:([^=]+?) *=|([^:]+?) *:|([^ ]+)) *(.+?) *$/;
 const COMMENT = /^(?:!|#).*$/;
+
+function processLine(line) {
+    return line.trim()
+                .replace(/\\ /g, "\\u0020")
+                .replace(/\\=/g, "\\u003D")
+                .replace(/\\:/g, "\\u003A")
+                .replace(/"/g, "\\u0022")
+                .split(/(=|:| )/);
+}
 
 class Properties {
 
@@ -12,15 +20,16 @@ class Properties {
             if(!line.length || COMMENT.test(line)) {
                 continue;
             }
-            let data = VALUE.exec(line);
-            if(!!data) {
-                let key = data[1] || data[2] || data[3];
+            let [key, s, ...value] = processLine(line);
+            key = JSON.parse(`"${key}"`);
+            value = JSON.parse(`"${value.join("")}"`);
+            if (!!key) {
                 if (typeof output[key] === "string") {
                     throw new SyntaxError(`Duplicate key in Properties at line ${i + 1}:\n${line}`);
                 }
-                output[key] = data[4];
+                output[key] = value;
                 while (output[key].endsWith("\\")) {
-                    output[key] += lines[++i].trim();
+                    output[key] += JSON.parse(`"${lines[++i].trim()}"`);
                 }
                 continue;
             }
