@@ -18,15 +18,20 @@ const TPL = new Template(`
         }
         #title {
             display: flex;
+            align-items: center;
             top: 0;
             padding: 8px;
             background-color: #777;
             color: #fff;
+            overflow: hidden;
         }
         #title:before {
-            display: inline-block;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             width: 20px;
             height: 20px;
+            flex-shrink: 0;
             margin-right: 8px;
             font-weight: bold;
             text-align: center;
@@ -34,6 +39,12 @@ const TPL = new Template(`
         }
         :host([expanded]:not([expanded="false"])) #title:before {
             content:"-"
+        }
+        #text {
+            line-height: 1.4em;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
         }
         #body {
             position: relative;
@@ -45,7 +56,9 @@ const TPL = new Template(`
             display: block;
         }
     </style>
-    <div id="title"></div>
+    <div id="title">
+        <div id="text"></div>
+    </div>
     <slot id="body"></slot>
 `);
 
@@ -88,7 +101,8 @@ export default class CollapsePanel extends HTMLElement {
         switch (name) {
             case 'caption':
                 if (oldValue != newValue) {
-                    this.shadowRoot.getElementById('title').innerHTML = newValue;
+                    this.shadowRoot.getElementById('text').innerHTML = newValue;
+                    this.shadowRoot.getElementById('title').title = newValue;
                 }
                 break;
         }
