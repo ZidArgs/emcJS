@@ -1,4 +1,4 @@
-import Template from "../../util/Template.js";
+import Template from "../util/Template.js";
 
 const TPL = new Template(`
     <style>

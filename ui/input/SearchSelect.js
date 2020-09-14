@@ -1,5 +1,4 @@
 import Template from "../../util/Template.js";
-import "./ListHeader.js";
 import "./Option.js";
 
 const TPL = new Template(`
@@ -20,19 +19,19 @@ const TPL = new Template(`
             height: 30px;
             padding: 0px 7px;
             font-size: inherit;
+            border: solid 1px var(--primary-color-border, #000000);
         }
         #scroll-container {
-            position: absolute;
+            position: fixed;
             display: none;
-            height: 300px;
-            width: 100%;
-            margin-top: 30px;
+            max-height: 300px;
             overflow-x: hidden;
             overflow-y: auto;
             background-color: var(--list-color-back, #ffffff);
             scrollbar-color: var(--list-color-hover, #b8b8b8) var(--list-color-border, #f1f1f1);
+            border: solid 1px var(--primary-color-border, #000000);
             z-index: 1000;
-            box-shadow: black 5px 5px 5px;
+            box-shadow: black 2px 2px 2px;
         }
         #scroll-container::-webkit-scrollbar-track {
             background-color: var(--list-color-border, #f1f1f1);
@@ -85,18 +84,6 @@ const TPL = new Template(`
     </div>
 `);
 
-function clickOption(event) {
-    if (!this.readonly) {
-        this.value = event.currentTarget.getAttribute("value");
-        let container = this.shadowRoot.getElementById("scroll-container");
-        container.style.display = "";
-        let all = this.querySelectorAll(`[value]`);
-        all.forEach(el => {
-            el.style.display = "";
-        });
-    }
-}
-
 export default class SearchSelect extends HTMLElement {
 
     constructor() {
@@ -124,22 +111,25 @@ export default class SearchSelect extends HTMLElement {
         input.addEventListener("focus", event => {
             if (!this.readonly) {
                 input.value = "";
+                let thisRect = this.getBoundingClientRect();
                 container.style.display = "block";
+                container.style.width = `${thisRect.width}px`;
+                let containerRect = container.getBoundingClientRect();
+                if (thisRect.bottom + containerRect.height > window.innerHeight - 25) {
+                    container.style.bottom = `${window.innerHeight - thisRect.top}px`;
+                } else {
+                    container.style.top = `${thisRect.bottom}px`;
+                }
             }
         });
-        this.addEventListener("blur", event => {
-            let el = this.querySelector(`[value="${this.value}"]`);
-            if (el != null) {
-                input.value = el.innerHTML;
-            } else {
-                input.value = this.value;
-            }
-            container.style.display = "";
-            let all = this.querySelectorAll(`[value]`);
-            all.forEach(el => {
-                el.style.display = "";
-            });
+        window.addEventListener("wheel", event => {
+            input.blur();
         });
+        container.addEventListener("wheel", event => {
+            event.stopPropagation();
+            return false;
+        });
+        this.addEventListener("blur", cancelSelection.bind(this));
         input.addEventListener("keyup", event => {
             let all = this.querySelectorAll(`[value]`);
             let regEx = new RegExp(`.*${input.value.split(" ").join(".*")}.*`, "i");
@@ -220,3 +210,37 @@ export default class SearchSelect extends HTMLElement {
 }
 
 customElements.define('emc-searchselect', SearchSelect);
+
+function clickOption(event) {
+    if (!this.readonly) {
+        this.value = event.currentTarget.getAttribute("value");
+        let container = this.shadowRoot.getElementById("scroll-container");
+        container.style.display = "";
+        container.style.bottom = "";
+        container.style.top = "";
+        let all = this.querySelectorAll(`[value]`);
+        all.forEach(el => {
+            el.style.display = "";
+        });
+    }
+}
+
+function cancelSelection(event) {
+    let container = this.shadowRoot.getElementById("scroll-container");
+    if (container.style.display != "") {
+        let input = this.shadowRoot.getElementById("view");
+        let selected = this.querySelector(`[value="${this.value}"]`);
+        if (selected != null) {
+            input.value = selected.innerHTML;
+        } else {
+            input.value = this.value;
+        }
+        container.style.display = "";
+        container.style.bottom = "";
+        container.style.top = "";
+        let all = this.querySelectorAll(`[value]`);
+        all.forEach(el => {
+            el.style.display = "";
+        });
+    }
+}

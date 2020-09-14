@@ -1,5 +1,5 @@
 import Template from "../../util/Template.js";
-import "./ListHeader.js";
+import "../ListHeader.js";
 import "./Option.js";
 
 const TPL = new Template(`

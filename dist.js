@@ -6,7 +6,7 @@ function resolveFiles(path, imports) {
         withFileTypes: true
     });
     for (let file of files) {
-        if (file.isDirectory() && file.name != ".git") {
+        if (file.isDirectory() && file.name != ".git" && file.name != "_demo") {
             result[file.name] = resolveFiles(`${path}/${file.name}`, imports);
         } else if (path.length > 1 && file.isFile() && file.name != "index.js" && file.name.endsWith(".js") && !file.name.endsWith(".worker.js")) {
             let filename = file.name.slice(0, -3);

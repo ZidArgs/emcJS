@@ -1,5 +1,4 @@
 import Template from "../util/Template.js";
-import "./selection/ListSelect.js";
 
 const TPL = new Template(`
     <style>

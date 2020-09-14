@@ -2,6 +2,7 @@ import mixins_EventBusSubset from "./mixins/EventBusSubset.js";
 import model_type_AbstractType from "./model/type/AbstractType.js";
 import model_type_TypeString from "./model/type/TypeString.js";
 import storage_Cookie from "./storage/Cookie.js";
+import storage_DebouncedState from "./storage/DebouncedState.js";
 import storage_FileData from "./storage/FileData.js";
 import storage_IDBStorage from "./storage/IDBStorage.js";
 import storage_LocalStorage from "./storage/LocalStorage.js";
@@ -17,41 +18,28 @@ import ui_dragdrop_DropTarget from "./ui/dragdrop/DropTarget.js";
 import ui_FilteredList from "./ui/FilteredList.js";
 import ui_Icon from "./ui/Icon.js";
 import ui_Import from "./ui/Import.js";
+import ui_input_Button from "./ui/input/Button.js";
+import ui_input_ChoiceSelect from "./ui/input/ChoiceSelect.js";
+import ui_input_CircleSelect from "./ui/input/CircleSelect.js";
+import ui_input_ListSelect from "./ui/input/ListSelect.js";
+import ui_input_Number from "./ui/input/Number.js";
+import ui_input_Option from "./ui/input/Option.js";
+import ui_input_SearchSelect from "./ui/input/SearchSelect.js";
+import ui_input_Select from "./ui/input/Select.js";
+import ui_input_StateButton from "./ui/input/StateButton.js";
+import ui_input_SwitchButton from "./ui/input/SwitchButton.js";
+import ui_input_Text from "./ui/input/Text.js";
 import ui_layout_HBox from "./ui/layout/HBox.js";
 import ui_layout_Layout from "./ui/layout/Layout.js";
 import ui_layout_LayoutAbstractElement from "./ui/layout/LayoutAbstractElement.js";
 import ui_layout_Panel from "./ui/layout/Panel.js";
 import ui_layout_TabView from "./ui/layout/TabView.js";
 import ui_layout_VBox from "./ui/layout/VBox.js";
-import ui_logic_EditorClipboard from "./ui/logic/EditorClipboard.js";
-import ui_logic_EditorTrashcan from "./ui/logic/EditorTrashcan.js";
-import ui_logic_EditorWorkingarea from "./ui/logic/EditorWorkingarea.js";
-import ui_logic_elements_AbstractElement from "./ui/logic/elements/AbstractElement.js";
-import ui_logic_elements_LiteralFalse from "./ui/logic/elements/LiteralFalse.js";
-import ui_logic_elements_LiteralNumber from "./ui/logic/elements/LiteralNumber.js";
-import ui_logic_elements_LiteralPointer from "./ui/logic/elements/LiteralPointer.js";
-import ui_logic_elements_LiteralTrue from "./ui/logic/elements/LiteralTrue.js";
-import ui_logic_elements_LiteralValue from "./ui/logic/elements/LiteralValue.js";
-import ui_logic_elements_OperatorAnd from "./ui/logic/elements/OperatorAnd.js";
-import ui_logic_elements_OperatorMax from "./ui/logic/elements/OperatorMax.js";
-import ui_logic_elements_OperatorMin from "./ui/logic/elements/OperatorMin.js";
-import ui_logic_elements_OperatorNand from "./ui/logic/elements/OperatorNand.js";
-import ui_logic_elements_OperatorNor from "./ui/logic/elements/OperatorNor.js";
-import ui_logic_elements_OperatorNot from "./ui/logic/elements/OperatorNot.js";
-import ui_logic_elements_OperatorOr from "./ui/logic/elements/OperatorOr.js";
-import ui_logic_elements_OperatorXor from "./ui/logic/elements/OperatorXor.js";
+import ui_ListHeader from "./ui/ListHeader.js";
 import ui_LogScreen from "./ui/LogScreen.js";
 import ui_NavBar from "./ui/NavBar.js";
 import ui_Paging from "./ui/Paging.js";
 import ui_PopOver from "./ui/PopOver.js";
-import ui_selection_ChoiceSelect from "./ui/selection/ChoiceSelect.js";
-import ui_selection_CircleSelect from "./ui/selection/CircleSelect.js";
-import ui_selection_ListHeader from "./ui/selection/ListHeader.js";
-import ui_selection_ListSelect from "./ui/selection/ListSelect.js";
-import ui_selection_Option from "./ui/selection/Option.js";
-import ui_selection_SearchSelect from "./ui/selection/SearchSelect.js";
-import ui_selection_StateButton from "./ui/selection/StateButton.js";
-import ui_selection_SwitchButton from "./ui/selection/SwitchButton.js";
 import ui_SettingsWindow from "./ui/SettingsWindow.js";
 import ui_TextEditor from "./ui/TextEditor.js";
 import ui_Toast from "./ui/Toast.js";
@@ -104,6 +92,7 @@ let index = {
     },
     "storage": {
         "Cookie": storage_Cookie,
+        "DebouncedState": storage_DebouncedState,
         "FileData": storage_FileData,
         "IDBStorage": storage_IDBStorage,
         "LocalStorage": storage_LocalStorage,
@@ -123,6 +112,19 @@ let index = {
         "FilteredList": ui_FilteredList,
         "Icon": ui_Icon,
         "Import": ui_Import,
+        "input": {
+            "Button": ui_input_Button,
+            "ChoiceSelect": ui_input_ChoiceSelect,
+            "CircleSelect": ui_input_CircleSelect,
+            "ListSelect": ui_input_ListSelect,
+            "Number": ui_input_Number,
+            "Option": ui_input_Option,
+            "SearchSelect": ui_input_SearchSelect,
+            "Select": ui_input_Select,
+            "StateButton": ui_input_StateButton,
+            "SwitchButton": ui_input_SwitchButton,
+            "Text": ui_input_Text
+        },
         "layout": {
             "HBox": ui_layout_HBox,
             "Layout": ui_layout_Layout,
@@ -131,41 +133,11 @@ let index = {
             "TabView": ui_layout_TabView,
             "VBox": ui_layout_VBox
         },
-        "logic": {
-            "EditorClipboard": ui_logic_EditorClipboard,
-            "EditorTrashcan": ui_logic_EditorTrashcan,
-            "EditorWorkingarea": ui_logic_EditorWorkingarea,
-            "elements": {
-                "AbstractElement": ui_logic_elements_AbstractElement,
-                "LiteralFalse": ui_logic_elements_LiteralFalse,
-                "LiteralNumber": ui_logic_elements_LiteralNumber,
-                "LiteralPointer": ui_logic_elements_LiteralPointer,
-                "LiteralTrue": ui_logic_elements_LiteralTrue,
-                "LiteralValue": ui_logic_elements_LiteralValue,
-                "OperatorAnd": ui_logic_elements_OperatorAnd,
-                "OperatorMax": ui_logic_elements_OperatorMax,
-                "OperatorMin": ui_logic_elements_OperatorMin,
-                "OperatorNand": ui_logic_elements_OperatorNand,
-                "OperatorNor": ui_logic_elements_OperatorNor,
-                "OperatorNot": ui_logic_elements_OperatorNot,
-                "OperatorOr": ui_logic_elements_OperatorOr,
-                "OperatorXor": ui_logic_elements_OperatorXor
-            }
-        },
+        "ListHeader": ui_ListHeader,
         "LogScreen": ui_LogScreen,
         "NavBar": ui_NavBar,
         "Paging": ui_Paging,
         "PopOver": ui_PopOver,
-        "selection": {
-            "ChoiceSelect": ui_selection_ChoiceSelect,
-            "CircleSelect": ui_selection_CircleSelect,
-            "ListHeader": ui_selection_ListHeader,
-            "ListSelect": ui_selection_ListSelect,
-            "Option": ui_selection_Option,
-            "SearchSelect": ui_selection_SearchSelect,
-            "StateButton": ui_selection_StateButton,
-            "SwitchButton": ui_selection_SwitchButton
-        },
         "SettingsWindow": ui_SettingsWindow,
         "TextEditor": ui_TextEditor,
         "Toast": ui_Toast,
@@ -215,8 +187,7 @@ let index = {
         "Timer": util_Timer,
         "UniqueGenerator": util_UniqueGenerator,
         "ViewSwitcher": util_ViewSwitcher
-    },
-    "_demo": {}
+    }
 };
 
 export default index;
