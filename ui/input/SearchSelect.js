@@ -1,6 +1,11 @@
 import Template from "../../util/Template.js";
 import "./Option.js";
 
+/* TODO
+ * use same method as contextmenu for overlay
+ * maybe even use an additional input for search and not remove value from view input
+ */
+
 const TPL = new Template(`
     <style>
         * {
