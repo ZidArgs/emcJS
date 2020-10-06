@@ -223,6 +223,7 @@ export default class LogicGraph {
                             reachableNodes.add(n);
                             let targets = node.getTargets();
                             for (let ch of targets) {
+                                // TODO test if checking for already reached target here is better
                                 let edge = node.getEdge(ch);
                                 queue.push(edge);
                             }
