@@ -14,7 +14,7 @@ class Node {
 
     append(node, condition) {
         if (node instanceof Node) {
-            let edges = EDGES.get(this);
+            const edges = EDGES.get(this);
             edges.set(node.getName(), new Edge(this, node, condition));
         } else {
             throw new TypeError("Expected type Node");
@@ -30,12 +30,12 @@ class Node {
     }
 
     getTargets() {
-        let edges = EDGES.get(this);
+        const edges = EDGES.get(this);
         return edges.keys();
     }
 
     getEdge(name) {
-        let edges = EDGES.get(this);
+        const edges = EDGES.get(this);
         return edges.get(name);
     }
 

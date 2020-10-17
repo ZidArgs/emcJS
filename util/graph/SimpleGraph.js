@@ -5,29 +5,35 @@ const NODES = new WeakMap();
 export default class AccessGraph {
 
     constructor() {
-        NODES.set(this, new Map());
+        NODES.set(this, new NodeFactory());
+    }
+
+    clearGraph() {
+        const nodeFactory = NODES.get(this);
+        nodeFactory.reset();
     }
 
     load(config) {
-        let nodes = NODES.get(this);
-        for (let cfg in config) {
-            let children = config[cfg];
-            let node = NodeFactory.get(cfg);
-            for (let child in children) {
-                let condition = children[child];
-                node.append(NodeFactory.get(child));
+        const nodeFactory = NODES.get(this);
+        for (const cfg in config) {
+            const children = config[cfg];
+            const node = nodeFactory.get(cfg);
+            for (const child in children) {
+                const condition = children[child];
+                node.append(nodeFactory.get(child), condition);
             }
-            nodes.set(cfg, node);
         }
     }
 
     getEdges() {
-        let nodes = NODES.get(this);
-        let res = [];
-        for (let name of nodes.keys()) {
-            let children = nodes.get(name).children();
-            for (let ch of children) {
-                res.push([name, ch.name]);
+        const nodeFactory = NODES.get(this);
+        const nodes = nodeFactory.getNames();
+        const res = [];
+        for (const name of nodes) {
+            const node = nodeFactory.get(name);
+            const children = node.getTargets();
+            for (const ch of children) {
+                res.push([name, ch]);
             }
         }
         return res;
@@ -35,20 +41,24 @@ export default class AccessGraph {
 
     /* broad search */
     traverse(startNode) {
-        let reachableNodes = new Set();
-        let queue = [];
-        queue.push(NODES.get(this).get(startNode));
-        while(!!queue.length) {
-            let node = queue.shift();
-            reachableNodes.add(node.getName())
-            for (let ch in node.getTargets()) {
-                let child = node.getEdge(ch).getTarget();
-                if(!reachableNodes.has(ch)) {
-                    queue.push(child);
+        const nodeFactory = NODES.get(this);
+        const reachableNodes = new Set();
+        const start = nodeFactory.get(startNode);
+        if (start != null) {
+            const queue = [];
+            queue.push(start);
+            while(!!queue.length) {
+                const node = queue.shift();
+                reachableNodes.add(node.getName())
+                for (const ch in node.getTargets()) {
+                    const child = node.getEdge(ch).getTarget();
+                    if(!reachableNodes.has(ch)) {
+                        queue.push(child);
+                    }
                 }
             }
         }
-        return reachableNodes;
+        return Array.from(reachableNodes);
     }
 
 }

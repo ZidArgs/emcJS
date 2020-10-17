@@ -1,8 +1,6 @@
 import NodeFactory from "./NodeFactory.js";
 import Compiler from "./EdgeLogicCompiler.js";
 
-const nodeFactory = new NodeFactory();
-
 function mapToObj(map) {
     let res = {};
     map.forEach((v, k) => {
@@ -16,28 +14,32 @@ const MIXINS = new WeakMap();
 const MEM_I = new WeakMap();
 const MEM_O = new WeakMap();
 const DEBUG = new WeakMap();
+const NODES = new WeakMap();
 
 const TRANSLATION_MATRIX = new WeakMap();
 
 export default class LogicGraph {
 
     constructor(debug = false) {
-        DIRTY.set(this, false);
+        NODES.set(this, new NodeFactory());
         MIXINS.set(this, new Map());
         MEM_I.set(this, new Map());
         MEM_O.set(this, new Map());
         TRANSLATION_MATRIX.set(this, new Map());
+        DIRTY.set(this, false);
         DEBUG.set(this, !!debug);
     }
 
     clearGraph() {
+        const nodeFactory = NODES.get(this);
         nodeFactory.reset();
     }
 
     load(config) {
-        let debug = DEBUG.get(this);
-        let mixins = MIXINS.get(this);
-        let mem_o = MEM_O.get(this);
+        const debug = DEBUG.get(this);
+        const nodeFactory = NODES.get(this);
+        const mixins = MIXINS.get(this);
+        const mem_o = MEM_O.get(this);
         if (debug) {
             console.group("GRAPH LOGIC BUILD");
             console.time("build time");
@@ -67,13 +69,14 @@ export default class LogicGraph {
     }
 
     setEdge(source, target, value) {
-        let debug = DEBUG.get(this);
+        const debug = DEBUG.get(this);
+        const nodeFactory = NODES.get(this);
         if (debug) {
             console.group("GRAPH LOGIC BUILD");
             console.time("build time");
         }
-        let node = nodeFactory.get(source);
-        let child = nodeFactory.get(target);
+        const node = nodeFactory.get(source);
+        const child = nodeFactory.get(target);
         if (typeof value == "undefined" || value == null) {
             node.remove(child);
             DIRTY.set(this, true);
@@ -90,8 +93,9 @@ export default class LogicGraph {
     }
 
     setMixin(name, value) {
-        let debug = DEBUG.get(this);
-        let mixins = MIXINS.get(this);
+        const debug = DEBUG.get(this);
+        const nodeFactory = NODES.get(this);
+        const mixins = MIXINS.get(this);
         if (debug) {
             console.group("GRAPH LOGIC BUILD");
             console.time("build time");
@@ -130,12 +134,13 @@ export default class LogicGraph {
     }
 
     getEdges() {
-        let nodes = nodeFactory.getNames();
-        let res = [];
-        for (let name of nodes) {
-            let node = nodeFactory.get(name);
-            let children = node.getTargets();
-            for (let ch of children) {
+        const nodeFactory = NODES.get(this);
+        const nodes = nodeFactory.getNames();
+        const res = [];
+        for (const name of nodes) {
+            const node = nodeFactory.get(name);
+            const children = node.getTargets();
+            for (const ch of children) {
                 res.push([name, ch]);
             }
         }
@@ -143,12 +148,13 @@ export default class LogicGraph {
     }
 
     getTargetNodes() {
-        let nodes = nodeFactory.getNames();
-        let res = new Set();
-        for (let name of nodes) {
-            let node = nodeFactory.get(name);
-            let children = node.getTargets();
-            for (let ch of children) {
+        const nodeFactory = NODES.get(this);
+        const nodes = nodeFactory.getNames();
+        const res = new Set();
+        for (const name of nodes) {
+            const node = nodeFactory.get(name);
+            const children = node.getTargets();
+            for (const ch of children) {
                 res.add(ch);
             }
         }
@@ -157,14 +163,15 @@ export default class LogicGraph {
 
     /* broad search */
     traverse(startNode) {
-        let allTargets = this.getTargetNodes();
-        let reachableNodes = new Set();
-        let changes = {};
-        let mixins = MIXINS.get(this);
-        let mem_o = MEM_O.get(this);
-        let mem_i = MEM_I.get(this);
-        let debug = DEBUG.get(this);
-        let start = nodeFactory.get(startNode);
+        const nodeFactory = NODES.get(this);
+        const allTargets = this.getTargetNodes();
+        const reachableNodes = new Set();
+        const changes = {};
+        const mixins = MIXINS.get(this);
+        const mem_o = MEM_O.get(this);
+        const mem_i = MEM_I.get(this);
+        const debug = DEBUG.get(this);
+        const start = nodeFactory.get(startNode);
         if (start != null) {
             if (debug) {
                 console.group("GRAPH LOGIC EXECUTION");
@@ -183,8 +190,8 @@ export default class LogicGraph {
 
             function execute(name) {
                 if (mixins.has(name)) {
-                    let fn = mixins.get(name);
-                    let res = fn(valueGetter, execute);
+                    const fn = mixins.get(name);
+                    const res = fn(valueGetter, execute);
                     /*if (debug) {
                         console.groupCollapsed(`execute mixin [${name}]`);
                         console.log(fn.toString());
@@ -196,9 +203,9 @@ export default class LogicGraph {
                 return 0;
             }
 
-            let queue = [];
-            for (let ch of start.getTargets()) {
-                let edge = start.getEdge(ch);
+            const queue = [];
+            for (const ch of start.getTargets()) {
+                const edge = start.getEdge(ch);
                 queue.push(edge);
             }
             let changed = true;
@@ -206,9 +213,9 @@ export default class LogicGraph {
                 changed = false;
                 let counts = queue.length;
                 while (!!counts--) {
-                    let edge = queue.shift();
-                    let condition = edge.getCondition();
-                    let cRes = condition(valueGetter, execute);
+                    const edge = queue.shift();
+                    const condition = edge.getCondition();
+                    const cRes = condition(valueGetter, execute);
                     /*if (debug) {
                         console.groupCollapsed(`traverse edge [${edge}]`);
                         console.log(condition.toString());
@@ -217,15 +224,15 @@ export default class LogicGraph {
                     }*/
                     if (cRes) {
                         changed = true;
-                        let n = this.getTranslation(edge.getSource().getName(), edge.getTarget().getName());
-                        let node = nodeFactory.get(n);
-                        if(!reachableNodes.has(n)) {
-                            reachableNodes.add(n);
-                            let targets = node.getTargets();
-                            for (let ch of targets) {
-                                // TODO test if checking for already reached target here is better
-                                let edge = node.getEdge(ch);
-                                queue.push(edge);
+                        const name = this.getTranslation(edge.getSource().getName(), edge.getTarget().getName());
+                        const node = nodeFactory.get(name);
+                        reachableNodes.add(name);
+                        const targets = node.getTargets();
+                        for (const ch of targets) {
+                            const chEdge = node.getEdge(ch);
+                            const chName = this.getTranslation(chEdge.getSource().getName(), chEdge.getTarget().getName());
+                            if(!reachableNodes.has(chName)) {
+                                queue.push(chEdge);
                             }
                         }
                     } else {
@@ -234,8 +241,8 @@ export default class LogicGraph {
                 }
             }
             DIRTY.set(this, false);
-            for (let ch of allTargets) {
-                let v = reachableNodes.has(ch);
+            for (const ch of allTargets) {
+                const v = reachableNodes.has(ch);
                 if (mem_o.get(ch) != v) {
                     mem_o.set(ch, v);
                     changes[ch] = v;
@@ -253,12 +260,12 @@ export default class LogicGraph {
     }
 
     set(key, value) {
-        let debug = DEBUG.get(this);
+        const debug = DEBUG.get(this);
         if (debug) {
             console.group("GRAPH LOGIC MEMORY CHANGE");
             console.log("change", `${key} => ${value}`);
         }
-        let mem_i = MEM_I.get(this);
+        const mem_i = MEM_I.get(this);
         mem_i.set(key, value);
         if (debug) {
             console.groupEnd("GRAPH LOGIC MEMORY CHANGE");
@@ -267,17 +274,17 @@ export default class LogicGraph {
     }
 
     setAll(values) {
-        let debug = DEBUG.get(this);
+        const debug = DEBUG.get(this);
         if (debug) {
             console.group("GRAPH LOGIC MEMORY CHANGE");
             console.log("changes", values);
         }
-        let mem_i = MEM_I.get(this);
+        const mem_i = MEM_I.get(this);
         if (values instanceof Map) {
             values.forEach((v, k) => mem_i.set(k, v));
         } else if (typeof values == "object" && !Array.isArray(values)) {
-            for (let k in values) {
-                let v = values[k];
+            for (const k in values) {
+                const v = values[k];
                 mem_i.set(k, v);
             }
         }
@@ -288,7 +295,7 @@ export default class LogicGraph {
     }
 
     get(ref) {
-        let mem_o = MEM_O.get(this);
+        const mem_o = MEM_O.get(this);
         if (mem_o.has(ref)) {
             return mem_o.get(ref);
         }
@@ -296,14 +303,14 @@ export default class LogicGraph {
     }
 
     getAll() {
-        let mem_o = MEM_O.get(this);
-        let obj = {};
+        const mem_o = MEM_O.get(this);
+        const obj = {};
         mem_o.forEach((v,k) => {obj[k] = v});
         return obj;
     }
 
     has(ref) {
-        let mem_o = MEM_O.get(this);
+        const mem_o = MEM_O.get(this);
         if (mem_o.has(ref)) {
             return true;
         }
@@ -311,8 +318,8 @@ export default class LogicGraph {
     }
 
     reset() {
-        let mem_i = MEM_I.get(this);
-        let mem_o = MEM_O.get(this);
+        const mem_i = MEM_I.get(this);
+        const mem_o = MEM_O.get(this);
         mem_i.clear();
         mem_o.clear();
         DIRTY.set(this, true);

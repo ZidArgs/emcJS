@@ -42,7 +42,7 @@ const TRANSPILERS = {
     "mixin":    (logic) => `execute("${escape(logic.el)}")`
 };
 
-let dependencies = null;
+const dependencies = new Set();
 
 /* STRINGS */
 function escape(str, def = "") {
@@ -52,7 +52,7 @@ function escape(str, def = "") {
         }
         return def;
     }
-    let res = str.replace(/[\\"]/g, "\\$&");
+    const res = str.replace(/[\\"]/g, "\\$&");
     dependencies.add(res);
     return res;
 }
@@ -107,10 +107,10 @@ function buildLogic(logic) {
 class Compiler {
 
     compile(logic) {
-        dependencies = new Set();
-        let buf = buildLogic(logic);
-        let fn = new Function("val", "execute", `return ${buf}`);
+        const buf = buildLogic(logic);
+        const fn = new Function("val", "execute", `return ${buf}`);
         Object.defineProperty(fn, "requires", {value: dependencies});
+        dependencies.clear();
         return fn;
     }
 
