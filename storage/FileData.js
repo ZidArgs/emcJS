@@ -5,8 +5,8 @@ const STORAGE = {};
 class FileData {
 
     async load(files) {
-        let loading = [];
-        for (let name in files) {
+        const loading = [];
+        for (const name in files) {
             let path = files[name];
             let type = "text";
             if (typeof path == "object") {
@@ -29,10 +29,11 @@ class FileData {
     }
 
     get(path, value = null) {
-        let sp = path.split("/");
+        const sp = path.split("/");
         let data = STORAGE;
         while (!!sp.length) {
-            let ref = sp.shift();
+            const ref = sp.shift();
+            if (!ref) continue;
             if (typeof data == "object") {
                 if (data.hasOwnProperty(ref)) {
                     data = data[ref];
