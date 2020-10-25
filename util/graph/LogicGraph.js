@@ -116,6 +116,11 @@ export default class LogicGraph {
         DIRTY.set(this, true);
     }
 
+    clearTranslations() {
+        let translationMatrix = TRANSLATION_MATRIX.get(this);
+        translationMatrix.clear();
+    }
+
     setTranslation(source, target, reroute) {
         let translationMatrix = TRANSLATION_MATRIX.get(this);
         if (!reroute) {
