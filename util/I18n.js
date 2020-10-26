@@ -42,6 +42,7 @@ let actLang = "";
 let languages = new Map();
 
 function getTranslation(key) {
+    if (!key || typeof key != "string") return "";
     if (languages.get(actLang).has(key)) {
         return languages.get(actLang).get(key).trim();
     }
