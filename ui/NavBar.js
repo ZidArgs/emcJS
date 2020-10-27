@@ -118,6 +118,7 @@ const TPL = new Template(`
         text-decoration: none;
         appearance: none;
         user-select: none;
+        white-space: pre;
     }
     button:hover {
         box-shadow: inset 0px 0px 2px 1px;
@@ -217,6 +218,7 @@ const TPL = new Template(`
         }
         ul#content > li > ul > li {
             display: inline-block;
+            width: 100%;
         }
     }
 </style>
