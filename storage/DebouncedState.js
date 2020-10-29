@@ -163,25 +163,42 @@ export default class DebouncedState extends EventTarget {
     }
 
     clearImmediate() {
-        let state = STATE.get(this);
-        let changes = CHANGES.get(this);
-        for (let [key, value] of state) {
-            if (value != null) {
-                changes.set(key, undefined);
-            }
-        }
-        for (let [key, value] of changes) {
-            if (value != null) {
-                if (state[key] == null) {
-                    changes.delete(key);
-                } else {
+        const state = STATE.get(this);
+        const changes = CHANGES.get(this);
+        if (DEBOUNCE_TIMER.has(this)) {
+            for (let [key, value] of state) {
+                if (value != null) {
                     changes.set(key, undefined);
                 }
             }
-        }
-        if (!changes.size && DEBOUNCE_TIMER.has(this)) {
-            clearTimeout(DEBOUNCE_TIMER.get(this));
-            DEBOUNCE_TIMER.delete(this);
+            for (let [key, value] of changes) {
+                if (value != null) {
+                    if (state[key] == null) {
+                        changes.delete(key);
+                    } else {
+                        changes.set(key, undefined);
+                    }
+                }
+            }
+            if (!changes.size && DEBOUNCE_TIMER.has(this)) {
+                clearTimeout(DEBOUNCE_TIMER.get(this));
+                DEBOUNCE_TIMER.delete(this);
+            }
+        } else {
+            const changed = {};
+            for (let [key, value] of state) {
+                if (value != null) {
+                    changed[key] = {
+                        oldValue: state.get(key),
+                        newValue: undefined
+                    };
+                    state.set(key, undefined);
+                }
+            }
+            const event = new Event("change");
+            event.category = CATEGORY.get(this);
+            event.data = changed;
+            this.dispatchEvent(event);
         }
         state.clear();
     }
@@ -189,33 +206,62 @@ export default class DebouncedState extends EventTarget {
     setImmediate(key, value) {
         const state = STATE.get(this);
         const changes = CHANGES.get(this);
-        state.set(key, value);
-        if (changes.has(key)) {
-            if (Helper.isEqual(changes.get(key), value)) {
-                changes.delete(key);
-            }
-        }
-        if (!changes.size && DEBOUNCE_TIMER.has(this)) {
-            clearTimeout(DEBOUNCE_TIMER.get(this));
-            DEBOUNCE_TIMER.delete(this);
-        }
-    }
-
-    setImmediateAll(data) {
-        const state = STATE.get(this);
-        const changes = CHANGES.get(this);
-        for (const key in data) {
-            const value = data[key];
+        if (DEBOUNCE_TIMER.has(this)) {
             state.set(key, value);
             if (changes.has(key)) {
                 if (Helper.isEqual(changes.get(key), value)) {
                     changes.delete(key);
                 }
             }
+            if (!changes.size) {
+                clearTimeout(DEBOUNCE_TIMER.get(this));
+                DEBOUNCE_TIMER.delete(this);
+            }
+        } else {
+            const changed = {};
+            changed[key] = {
+                oldValue: state.get(key),
+                newValue: value
+            };
+            state.set(key, value);
+            const event = new Event("change");
+            event.category = CATEGORY.get(this);
+            event.data = changed;
+            this.dispatchEvent(event);
         }
-        if (!changes.size && DEBOUNCE_TIMER.has(this)) {
-            clearTimeout(DEBOUNCE_TIMER.get(this));
-            DEBOUNCE_TIMER.delete(this);
+    }
+
+    setImmediateAll(data) {
+        const state = STATE.get(this);
+        const changes = CHANGES.get(this);
+        if (DEBOUNCE_TIMER.has(this)) {
+            for (const key in data) {
+                const value = data[key];
+                state.set(key, value);
+                if (changes.has(key)) {
+                    if (Helper.isEqual(changes.get(key), value)) {
+                        changes.delete(key);
+                    }
+                }
+            }
+            if (!changes.size) {
+                clearTimeout(DEBOUNCE_TIMER.get(this));
+                DEBOUNCE_TIMER.delete(this);
+            }
+        } else {
+            const changed = {};
+            for (const key in data) {
+                const value = data[key];
+                changed[key] = {
+                    oldValue: state.get(key),
+                    newValue: value
+                };
+                state.set(key, value);
+            }
+            const event = new Event("change");
+            event.category = CATEGORY.get(this);
+            event.data = changed;
+            this.dispatchEvent(event);
         }
     }
 
