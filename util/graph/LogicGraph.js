@@ -179,8 +179,10 @@ export default class LogicGraph {
         const start = nodeFactory.get(startNode);
         if (start != null) {
             if (debug) {
+                let translationMatrix = TRANSLATION_MATRIX.get(this);
                 console.group("GRAPH LOGIC EXECUTION");
                 console.log("input", mapToObj(mem_i));
+                console.log("translations", mapToObj(translationMatrix));
                 console.log("traverse nodes...");
                 console.time("execution time");
             }
