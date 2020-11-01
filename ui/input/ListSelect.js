@@ -91,10 +91,10 @@ const TPL = new Template(`
 
 function clickOption(event) {
     if (!this.readonly) {
-        let value = event.currentTarget.getAttribute("value");
+        const value = event.currentTarget.getAttribute("value");
         if (this.multimode) {
-            let arr = this.value;
-            let set = new Set(arr);
+            const arr = this.value;
+            const set = new Set(arr);
             if (set.has(value)) {
                 set.delete(value);
             } else {
@@ -114,7 +114,7 @@ export default class ListSelect extends HTMLElement {
         this.attachShadow({mode: 'open'});
         this.shadowRoot.append(TPL.generate());
         this.shadowRoot.getElementById("container").addEventListener("slotchange", event => {
-            let all = this.querySelectorAll(`[value]`);
+            const all = this.querySelectorAll(`[value]`);
             all.forEach(el => {
                 if (!!el) {
                     el.onclick = clickOption.bind(this);
@@ -123,11 +123,11 @@ export default class ListSelect extends HTMLElement {
             this.calculateItems();
         });
         /* header */
-        let header = this.shadowRoot.getElementById("header");
+        const header = this.shadowRoot.getElementById("header");
         header.addEventListener('check', event => {
             if (this.multimode) {
-                let all = this.querySelectorAll(`[value]`);
-                let value = [];
+                const all = this.querySelectorAll(`[value]`);
+                const value = [];
                 if (event.value) {
                     all.forEach(el => {
                         if (!!el && el.style.display == "" || el.classList.contains("active")) {
@@ -145,11 +145,11 @@ export default class ListSelect extends HTMLElement {
             }
         });
         header.addEventListener('filter', event => {
-            let all = this.querySelectorAll(`[value]`);
+            const all = this.querySelectorAll(`[value]`);
             let checked = false;
             let unchecked = false;
             if (!!event.value) {
-                let regEx = new RegExp(`.*${event.value.split(" ").join(".*")}.*`, "i");
+                const regEx = new RegExp(`.*${event.value.split(" ").join(".*")}.*`, "i");
                 all.forEach(el => {
                     if (el.innerText.match(regEx)) {
                         el.style.display = "";
@@ -187,7 +187,7 @@ export default class ListSelect extends HTMLElement {
     }
 
     connectedCallback() {
-        let all = this.querySelectorAll(`[value]`);
+        const all = this.querySelectorAll(`[value]`);
         if (!this.value && !!all.length) {
             this.value = all[0].value;
         }
@@ -226,7 +226,7 @@ export default class ListSelect extends HTMLElement {
     }
 
     get readonly() {
-        let val = this.getAttribute('readonly');
+        const val = this.getAttribute('readonly');
         return !!val && val != "false";
     }
 
@@ -243,7 +243,7 @@ export default class ListSelect extends HTMLElement {
             case 'value':
                 if (oldValue != newValue) {
                     this.calculateItems();
-                    let event = new Event('change');
+                    const event = new Event('change');
                     event.oldValue = oldValue;
                     event.newValue = newValue;
                     event.value = newValue;
@@ -253,25 +253,30 @@ export default class ListSelect extends HTMLElement {
             case 'multimode':
                 if (oldValue != newValue) {
                     if (newValue != "true") {
-                        let arr = JSON.parse(this.getAttribute('value'));
+                        const arr = JSON.parse(this.getAttribute('value'));
                         if (arr.length > 1) {
                             this.value = arr[0];
                         }
                     } else {
                         this.value = [this.getAttribute('value')];
                     }
-                    let header = this.shadowRoot.getElementById("header");
+                    const header = this.shadowRoot.getElementById("header");
                     header.multimode = newValue;
                 }
                 break;
         }
     }
+
+    resetSearch() {
+        const header = this.shadowRoot.getElementById("header");
+        header.search = "";
+    }
     
     calculateItems() {
-        let header = this.shadowRoot.getElementById("header");
-        let all = this.querySelectorAll(`[value]`);
+        const header = this.shadowRoot.getElementById("header");
+        const all = this.querySelectorAll(`[value]`);
         if (this.multimode) {
-            let vals = new Set(this.value);
+            const vals = new Set(this.value);
             let checked = false;
             let unchecked = false;
             all.forEach(el => {

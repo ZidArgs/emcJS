@@ -59,10 +59,12 @@ const TPL = new Template(`
     </slot>
 `);
 
-function closeMenu(event) {
+function closeMenu(ev) {
+    const event = new Event('close');
+    this.dispatchEvent(event);
     this.active = false;
-    event.preventDefault();
-    event.stopPropagation();
+    ev.preventDefault();
+    ev.stopPropagation();
     return false;
 }
 
@@ -102,7 +104,7 @@ export default class ContextMenu extends HTMLElement {
         LEFT.set(this, posX);
         TOP.set(this, posY);
         this.active = true;
-        let menu = this.shadowRoot.getElementById('menu');
+        const menu = this.shadowRoot.getElementById('menu');
         if (posX < 25) {
             posX = 25;
         } else if (menu.clientWidth + posX > window.innerWidth - 25) {
