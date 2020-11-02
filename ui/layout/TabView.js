@@ -102,10 +102,32 @@ export default class TabView extends Panel {
             }
             choice.append(opt);
         });
-        if (all.length > 0) {
-            choice.value = all[0].getAttribute("ref");
-        } else {
-            choice.value = "";
+    }
+
+    get active() {
+        return this.getAttribute('active');
+    }
+
+    set active(val) {
+        this.setAttribute('active', val);
+    }
+
+    static get observedAttributes() {
+        return ['active'];
+    }
+      
+    attributeChangedCallback(name, oldValue, newValue) {
+        switch (name) {
+            case 'active':
+                if (oldValue != newValue) {
+                    const choice = this.shadowRoot.getElementById("view-choice");
+                    const container = this.shadowRoot.getElementById("container");
+                    if (typeof newValue == "string") {
+                        container.name = newValue;
+                        choice.value = newValue;
+                    }
+                }
+                break;
         }
     }
 

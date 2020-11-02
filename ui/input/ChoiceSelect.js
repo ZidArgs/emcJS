@@ -56,31 +56,40 @@ function clickOption(event) {
     }
 }
 
+const CLICK_HANDLER = new WeakMap();
+
 export default class ChoiceSelect extends HTMLElement {
 
     constructor() {
         super();
+        const onClickOption = clickOption.bind(this);
+        CLICK_HANDLER.set(this, onClickOption);
         this.attachShadow({mode: 'open'});
         this.shadowRoot.append(TPL.generate());
         this.shadowRoot.getElementById("container").addEventListener("slotchange", event => {
-            let all = this.querySelectorAll(`[value]`);
+            const all = this.querySelectorAll(`[value]`);
             all.forEach(el => {
                 if (!!el) {
-                    el.onclick = clickOption.bind(this);
+                    el.onclick = onClickOption;
                 }
             });
-            this.calculateItems();
+            if (!this.value && !!all.length) {
+                this.value = all[0].value;
+            } else {
+                this.calculateItems();
+            }
         });
     }
 
     connectedCallback() {
-        let all = this.querySelectorAll(`[value]`);
+        const onClickOption = CLICK_HANDLER.get(this);
+        const all = this.querySelectorAll(`[value]`);
         if (!this.value && !!all.length) {
             this.value = all[0].value;
         }
         all.forEach(el => {
             if (!!el) {
-                el.onclick = clickOption.bind(this);
+                el.onclick = onClickOption;
             }
         });
         this.calculateItems();
@@ -113,7 +122,7 @@ export default class ChoiceSelect extends HTMLElement {
     }
 
     get readonly() {
-        let val = this.getAttribute('readonly');
+        const val = this.getAttribute('readonly');
         return !!val && val != "false";
     }
 
@@ -130,7 +139,7 @@ export default class ChoiceSelect extends HTMLElement {
             case 'value':
                 if (oldValue != newValue) {
                     this.calculateItems();
-                    let event = new Event('change');
+                    const event = new Event('change');
                     event.oldValue = oldValue;
                     event.newValue = newValue;
                     event.value = newValue;
@@ -140,7 +149,7 @@ export default class ChoiceSelect extends HTMLElement {
             case 'multimode':
                 if (oldValue != newValue) {
                     if (newValue != "true") {
-                        let arr = JSON.parse(this.getAttribute('value'));
+                        const arr = JSON.parse(this.getAttribute('value'));
                         if (arr.length > 1) {
                             this.value = arr[0];
                         }
@@ -153,28 +162,22 @@ export default class ChoiceSelect extends HTMLElement {
     }
     
     calculateItems() {
-        let all = this.querySelectorAll(`[value]`);
+        const all = this.querySelectorAll("[value]");
+        all.forEach(el => {
+            if (!!el) {
+                el.classList.remove("active");
+            }
+        });
         if (this.multimode) {
-            let vals = new Set(this.value);
-            all.forEach(el => {
-                if (!!el) {
-                    if (vals.has(el.value)) {
-                        el.classList.add("active");
-                    } else {
-                        el.classList.remove("active");
-                    }
-                }
-            });
+            for (const value of this.value) {
+                const el = this.querySelector(`[value="${value}"]`);
+                el.classList.add("active");
+            }
         } else {
-            all.forEach(el => {
-                if (!!el) {
-                    if (this.value == el.value) {
-                        el.classList.add("active");
-                    } else {
-                        el.classList.remove("active");
-                    }
-                }
-            });
+            const el = this.querySelector(`[value="${this.value}"]`);
+            if (!!el) {
+                el.classList.add("active");
+            }
         }
     }
 
