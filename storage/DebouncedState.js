@@ -4,17 +4,28 @@ import Helper from "../util/Helper.js";
 const CATEGORY = new WeakMap();
 const STATE = new WeakMap();
 const CHANGES = new WeakMap();
-const DEBOUNCE_TIME = new WeakMap();
 const DEBOUNCE_TIMER = new WeakMap();
+
+let DEBOUNCE_TIME = 500;
 
 export default class DebouncedState extends EventTarget {
 
-    constructor(category, debounceTime = 500) {
+    static get debounceTime() {
+        return DEBOUNCE_TIME;
+    }
+
+    static set debounceTime(value) {
+        value = parseInt(value);
+        if (isNaN(value)) throw new TypeError("value must be a number");
+        if (value < 0 || value > 60000) throw new RangeError("value must be between 0 and 60000");
+        DEBOUNCE_TIME = value;
+    }
+
+    constructor(category) {
         super();
         CATEGORY.set(this, category);
         CHANGES.set(this, new Map());
         STATE.set(this, new Map());
-        DEBOUNCE_TIME.set(this, debounceTime);
     }
 
     overwrite(data) {
@@ -59,7 +70,7 @@ export default class DebouncedState extends EventTarget {
                 event.category = CATEGORY.get(this);
                 event.data = changed;
                 this.dispatchEvent(event);
-            }, DEBOUNCE_TIME.get(this)));
+            }, DEBOUNCE_TIME));
         }
         state.clear();
     }
@@ -91,7 +102,7 @@ export default class DebouncedState extends EventTarget {
                 event.category = CATEGORY.get(this);
                 event.data = changed;
                 this.dispatchEvent(event);
-            }, DEBOUNCE_TIME.get(this)));
+            }, DEBOUNCE_TIME));
         }
     }
 
@@ -125,7 +136,7 @@ export default class DebouncedState extends EventTarget {
                 event.category = CATEGORY.get(this);
                 event.data = changed;
                 this.dispatchEvent(event);
-            }, DEBOUNCE_TIME.get(this)));
+            }, DEBOUNCE_TIME));
         }
     }
 
