@@ -4,17 +4,17 @@ import Helper from "../util/Helper.js";
 const CATEGORY = new WeakMap();
 const STATE = new WeakMap();
 const CHANGES = new WeakMap();
+const DEBOUNCE_TIME = new WeakMap();
 const DEBOUNCE_TIMER = new WeakMap();
-
-const DEBOUNCE_TIME = 500;
 
 export default class DebouncedState extends EventTarget {
 
-    constructor(category) {
+    constructor(category, debounceTime = 500) {
         super();
         CATEGORY.set(this, category);
         CHANGES.set(this, new Map());
         STATE.set(this, new Map());
+        DEBOUNCE_TIME.set(this, debounceTime);
     }
 
     overwrite(data) {
@@ -59,7 +59,7 @@ export default class DebouncedState extends EventTarget {
                 event.category = CATEGORY.get(this);
                 event.data = changed;
                 this.dispatchEvent(event);
-            }, DEBOUNCE_TIME));
+            }, DEBOUNCE_TIME.get(this)));
         }
         state.clear();
     }
@@ -91,7 +91,7 @@ export default class DebouncedState extends EventTarget {
                 event.category = CATEGORY.get(this);
                 event.data = changed;
                 this.dispatchEvent(event);
-            }, DEBOUNCE_TIME));
+            }, DEBOUNCE_TIME.get(this)));
         }
     }
 
@@ -125,7 +125,7 @@ export default class DebouncedState extends EventTarget {
                 event.category = CATEGORY.get(this);
                 event.data = changed;
                 this.dispatchEvent(event);
-            }, DEBOUNCE_TIME));
+            }, DEBOUNCE_TIME.get(this)));
         }
     }
 
