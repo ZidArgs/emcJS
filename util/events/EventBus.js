@@ -16,16 +16,34 @@ function triggerEvent(data = {name:"",data:{}}) {
     }
 }
 
+function checkList(list, value) {
+    if (!!value && typeof value == "string") {
+        if (Array.isArray(list)) {
+            return list.some((needle) => checkList(needle, value));
+        }
+        if (typeof list == "string") {
+            return list === value;
+        }
+        if (list instanceof RegExp) {
+            return list.test(value);
+        }
+    }
+    return false;
+}
+
 class EventBus {
+
+    checkLists(module, name) {
+        const options = MODULES.get(module);
+        return checkList(options.whitelist, name) && !checkList(options.blacklist, name)
+    }
 
     addModule(module, options = {}) {
         if (module instanceof EventBusAbstractModule) {
             MODULES.set(module, options);
             module.onModuleEvent = payload => {
-                if (!Array.isArray(options.whitelist) || options.whitelist.indexOf(name) >= 0) {
-                    if (!Array.isArray(options.blacklist) || options.blacklist.indexOf(name) < 0) {
-                        triggerEvent(payload);
-                    }
+                if (checkList(options.whitelist, payload.name) && !checkList(options.blacklist, payload.name)) {
+                    triggerEvent(payload);
                 }
             };
         }
@@ -79,10 +97,8 @@ class EventBus {
         };
         triggerEvent(payload);
         MODULES.forEach((options, module) => {
-            if (!Array.isArray(options.whitelist) || options.whitelist.indexOf(name) >= 0) {
-                if (!Array.isArray(options.blacklist) || options.blacklist.indexOf(name) < 0) {
-                    module.triggerModuleEvent(payload);
-                }
+            if (checkList(options.whitelist, name) && !checkList(options.blacklist, name)) {
+                module.triggerModuleEvent(payload);
             }
         });
     }
