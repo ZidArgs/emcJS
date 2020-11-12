@@ -34,7 +34,7 @@ class EventBusModuleGeneric extends EventBusAbstractModule {
     }
 
     trigger(name, data = {}) {
-        let payload = {
+        const payload = {
             name: name,
             data: data
         };

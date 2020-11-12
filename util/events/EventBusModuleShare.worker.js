@@ -2,7 +2,7 @@ const PORTS = new Set;
 let MAIN = null;
 
 function handleConnect(event) {
-    let port = event.ports[0];
+    const port = event.ports[0];
     if (MAIN == null) {
         MAIN = port;
     } else {
@@ -18,8 +18,8 @@ function handleDisconnect(event) {
 }
 
 function handleMessage(event) {
-    let msg = event.data;
-    for (let port of PORTS) {
+    const msg = event.data;
+    for (const port of PORTS) {
         if (port == this) continue;
         port.postMessage(msg);
     }

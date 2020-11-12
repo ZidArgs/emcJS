@@ -32,7 +32,7 @@ export default class EventBusSubset {
                 name.forEach(n => this.register(n, fn));
             } else {
                 if (!SUBS.get(this).has(name)) {
-                    let subs = new Set;
+                    const subs = new Set;
                     subs.add(fn);
                     SUBS.get(this).set(name, subs);
                 } else {

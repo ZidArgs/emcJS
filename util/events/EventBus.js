@@ -17,6 +17,7 @@ function triggerEvent(data = {name:"",data:{}}) {
 }
 
 function checkList(list, value) {
+    if (list == null) return true;
     if (!!value && typeof value == "string") {
         if (Array.isArray(list)) {
             return list.some((needle) => checkList(needle, value));
@@ -31,18 +32,26 @@ function checkList(list, value) {
     return false;
 }
 
+function checkLists(whitelist, blacklist, name) {
+    const whitelistResult = whitelist == null || checkList(whitelist, name);
+    const blacklistResult = blacklist == null || !checkList(blacklist, name);
+    return whitelistResult && blacklistResult;
+}
+
 class EventBus {
 
     checkLists(module, name) {
         const options = MODULES.get(module);
-        return checkList(options.whitelist, name) && !checkList(options.blacklist, name)
+        const whitelist = options.whitelist;
+        const blacklist = options.blacklist;
+        return checkLists(whitelist, blacklist, name);
     }
 
     addModule(module, options = {}) {
         if (module instanceof EventBusAbstractModule) {
             MODULES.set(module, options);
             module.onModuleEvent = payload => {
-                if (checkList(options.whitelist, payload.name) && !checkList(options.blacklist, payload.name)) {
+                if (checkLists(options.whitelist, options.blacklist, payload.name)) {
                     triggerEvent(payload);
                 }
             };
@@ -91,13 +100,13 @@ class EventBus {
     }
 
     trigger(name, data = {}) {
-        let payload = {
+        const payload = {
             name: name,
             data: data
         };
         triggerEvent(payload);
         MODULES.forEach((options, module) => {
-            if (checkList(options.whitelist, name) && !checkList(options.blacklist, name)) {
+            if (checkLists(options.whitelist, options.blacklist, name)) {
                 module.triggerModuleEvent(payload);
             }
         });
