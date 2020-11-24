@@ -1,6 +1,6 @@
 function openDB(name) {
     return new Promise(function(resolve, reject) {
-		let request = indexedDB.open(name);
+		const request = indexedDB.open(name);
 		request.onupgradeneeded = function(event) {
 			let db = request.result;
 			if(!db.objectStoreNames.contains("data")){
@@ -41,8 +41,8 @@ export default class IDBStorage {
     
 	set(key, value) {
 		return new Promise(async function(resolve, reject) {
-			let transaction = await getStoreWritable(this);
-			let request = transaction.put(value, key);
+			const transaction = await getStoreWritable(this);
+			const request = transaction.put(value, key);
 			request.onsuccess = function(e) {
 				resolve();
 			};
@@ -54,10 +54,10 @@ export default class IDBStorage {
 
 	get(key, value) {
 		return new Promise(async function(resolve, reject) {
-			let transaction = await getStoreReadonly(this);
-			let request = transaction.get(key);
+			const transaction = await getStoreReadonly(this);
+			const request = transaction.get(key);
 			request.onsuccess = function(e) {
-				let res = e.target.result;
+				const res = e.target.result;
 				if (res != null) {
 					resolve(res);
 				} else {
@@ -72,8 +72,8 @@ export default class IDBStorage {
 
 	has(key) {
 		return new Promise(async function(resolve, reject) {
-			let transaction = await getStoreReadonly(this);
-			let request = transaction.getKey(key);
+			const transaction = await getStoreReadonly(this);
+			const request = transaction.getKey(key);
 			request.onsuccess = function(e) {
 				resolve(e.target.result === key);
 			};
@@ -85,8 +85,8 @@ export default class IDBStorage {
 
 	delete(key) {
 		return new Promise(async function(resolve, reject) {
-			let transaction = await getStoreWritable(this);
-			let request = transaction.delete(key);
+			const transaction = await getStoreWritable(this);
+			const request = transaction.delete(key);
 			request.onsuccess = function(e) {
 				resolve();
 			};
@@ -98,8 +98,8 @@ export default class IDBStorage {
 
     clear() {
 		return new Promise(async function(resolve, reject) {
-			let transaction = await getStoreWritable(this);
-			let request = transaction.clear();
+			const transaction = await getStoreWritable(this);
+			const request = transaction.clear();
 			request.onsuccess = function(e) {
 				resolve();
 			};
@@ -111,10 +111,10 @@ export default class IDBStorage {
 
 	keys(filter) {
 		return new Promise(async function(resolve, reject) {
-			let transaction = await getStoreReadonly(this);
-			let request = transaction.getAllKeys();
+			const transaction = await getStoreReadonly(this);
+			const request = transaction.getAllKeys();
 			request.onsuccess = function(e) {
-				let res = e.target.result;
+				const res = e.target.result;
 				if (typeof filter == "string") {
 					resolve(res.filter(key => key.startsWith(filter)));
 				} else {
@@ -129,11 +129,11 @@ export default class IDBStorage {
 
     getAll(filter) {
 		return new Promise(async function(resolve, reject) {
-			let transaction = await getStoreReadonly(this);
-			let request = transaction.openCursor();
-			let res = {};
+			const transaction = await getStoreReadonly(this);
+			const request = transaction.openCursor();
+			const res = {};
 			request.onsuccess = function(e) {
-				let el = e.target.result;
+				const el = e.target.result;
 				if (el) {
 					res[el.key] = el.value;
 					el.continue();
@@ -153,11 +153,11 @@ export default class IDBStorage {
     
 	setAll(values) {
 		return new Promise(async function(resolve, reject) {
-			let transaction = await getStoreWritable(this);
-			let all = [];
-			for (let key in values) {
+			const transaction = await getStoreWritable(this);
+			const all = [];
+			for (const key in values) {
 				all.push(new Promise(function(res, rej) {
-					let request = transaction.put(values[key], key);
+					const request = transaction.put(values[key], key);
 					request.onsuccess = function(e) {
 						res();
 					};

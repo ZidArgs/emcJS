@@ -7,8 +7,8 @@ const APPLIED = new WeakMap();
 
 const EventBusSubsetMixin = (CLAZZ) => class extends CLAZZ {
 
-    constructor() {
-        super();
+    constructor(...args) {
+        super(...args);
         SUBS.set(this, new Map());
         ALLS.set(this, new Set());
         EVENTS.set(this, new EventBusSubset());
@@ -30,7 +30,7 @@ const EventBusSubsetMixin = (CLAZZ) => class extends CLAZZ {
                 name.forEach(n => this.registerGlobal(n, fn));
             } else {
                 if (!SUBS.get(this).has(name)) {
-                    let subs = new Set;
+                    const subs = new Set;
                     subs.add(fn);
                     SUBS.get(this).set(name, subs);
                 } else {
@@ -67,7 +67,7 @@ const EventBusSubsetMixin = (CLAZZ) => class extends CLAZZ {
         if (super.connectedCallback) {
             super.connectedCallback();
         }
-        let events = EVENTS.get(this);
+        const events = EVENTS.get(this);
         SUBS.get(this).forEach(function(subs, name) {
             subs.forEach(function(fn) {
                 events.register(name, fn);

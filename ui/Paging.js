@@ -1,24 +1,25 @@
 import Template from "../util/Template.js";
+import GlobalStyle from "../util/GlobalStyle.js";
 
 const TPL = new Template(`
-    <style>
-        * {
-            box-sizing: border-box;
-        }
-        :host {
-            position: relative;
-            display: flex;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-        }
-        :slotted:not(.active),
-        :slotted:not(emc-page) {
-            display: none;
-        }
-    </style>
-    <slot id="container">
-    </slot>
+<slot id="container"></slot>
+`);
+
+const STYLE = new GlobalStyle(`
+* {
+    box-sizing: border-box;
+}
+:host {
+    position: relative;
+    display: flex;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+:slotted:not(.active),
+:slotted:not(emc-page) {
+    display: none;
+}
 `);
 
 export default class Paging extends HTMLElement {
@@ -27,6 +28,8 @@ export default class Paging extends HTMLElement {
         super();
         this.attachShadow({mode: 'open'});
         this.shadowRoot.append(TPL.generate());
+        STYLE.apply(this.shadowRoot);
+        /* --- */
     }
 
     get active() {

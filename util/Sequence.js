@@ -13,11 +13,11 @@ export default class Sequence {
         return this;
     }
 
-    async run() {
-        let sequence = SEQUENCES.get(this);
+    async run(value) {
+        const sequence = SEQUENCES.get(this);
         while (sequence.length) {
             const step = sequence.shift();
-            await step();
+            value = await step(value);
         }
     }
 

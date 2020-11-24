@@ -4,15 +4,15 @@ class CSV {
 
     parse(input, split = ",") {
         return input.split(LNBR_SEQ).map(item => {
-            let output = [];
-            let entries = item.split(split);
+            const output = [];
+            const entries = item.split(split);
             parseEntries:
             while (entries.length) {
-                let act = entries.shift();
+                const act = entries.shift();
                 if (!act.startsWith('"')) {
                     output.push(act);
                 } else {
-                    let buf = [act];
+                    const buf = [act];
                     while (entries.length) {
                         act = entries.shift();
                         buf.push(act);

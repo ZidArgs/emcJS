@@ -5,8 +5,8 @@ const PARSER = new DOMParser();
 class XML {
 
     parse(input) {
-        let output = {};
-        let xml = PARSER.parseFromString(input,"text/xml");
+      const output = {};
+      const xml = PARSER.parseFromString(input,"text/xml");
         // TODO match xml to object like shown below
         return output;
     }

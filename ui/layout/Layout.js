@@ -1,30 +1,29 @@
 import Template from "../../util/Template.js";
+import GlobalStyle from "../../util/GlobalStyle.js";
 import"./HBox.js";
 import"./VBox.js";
 import Panel from "./Panel.js";
 
-// TODO WebKit - add a wrapper with hbox abilities around panels residing inside a vbox
-
 const TPL = new Template(`
-    <style>
-        :host {
-            display: flex;
-            justify-content: stretch;
-            align-items: stretch;
-        }
-        ::slotted(:not(:first-child)) {
-            display: none;
-        }
-        ::slotted(.panel) {
-            padding: 5px;
-            border-style: solid;
-            border-width: 2px;
-            border-color: var(--page-border-color, #ffffff);
-            overflow: hidden;
-        }
-    </style>
-    <slot>
-    </slot>
+<slot></slot>
+`);
+
+const STYLE = new GlobalStyle(`
+:host {
+    display: flex;
+    justify-content: stretch;
+    align-items: stretch;
+}
+::slotted(:not(:first-child)) {
+    display: none;
+}
+::slotted(.panel) {
+    padding: 5px;
+    border-style: solid;
+    border-width: 2px;
+    border-color: var(--page-border-color, #ffffff);
+    overflow: hidden;
+}
 `);
 
 function loadLayout(layout) {
@@ -60,6 +59,8 @@ export default class Layout extends HTMLElement {
         super();
         this.attachShadow({mode: 'open'});
         this.shadowRoot.append(TPL.generate());
+        STYLE.apply(this.shadowRoot);
+        /* --- */
     }
 
     loadLayout(layout) {

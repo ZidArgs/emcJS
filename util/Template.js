@@ -4,7 +4,7 @@ function createTemplate(src) {
     if (src instanceof HTMLTemplateElement) {
         return src;
     }
-    let buf = document.createElement('template');
+    const buf = document.createElement('template');
     if (src instanceof HTMLElement) {
         buf.append(src);
     } else if (typeof src === "string") {

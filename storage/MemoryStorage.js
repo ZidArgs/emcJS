@@ -1,4 +1,4 @@
-let STORAGE = new Map();
+const STORAGE = new Map();
 
 class MemoryStorage {
 
@@ -7,7 +7,7 @@ class MemoryStorage {
     }
 
     get(key, value) {
-        let res = STORAGE.get(key);
+        const res = STORAGE.get(key);
         if (res != null) {
             return JSON.parse(res);
         }
@@ -27,7 +27,7 @@ class MemoryStorage {
     }
 
     keys(filter) {
-        let keys = STORAGE.keys();
+        const keys = STORAGE.keys();
         if (typeof filter == "string") {
             return keys.filter(key => key.startsWith(filter));
         }
@@ -35,9 +35,9 @@ class MemoryStorage {
     }
 
     getAll(filter) {
-        let res = {};
-        let k = this.keys(filter);
-        for (let i of k) {
+        const res = {};
+        const k = this.keys(filter);
+        for (const i of k) {
             res[i] = JSON.parse(STORAGE.get(i));
         }
         return res;

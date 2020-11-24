@@ -1,7 +1,7 @@
 const PARSER = new DOMParser();
 
 async function getFile(url) {
-    let r = await fetch(url);
+    const r = await fetch(url);
     if (r.status < 200 || r.status >= 300) {
         throw new Error(`error loading file "${url}" - status: ${r.status}`);
     }
@@ -19,20 +19,20 @@ class Import {
 
     async module(url) {
         if (Array.isArray(url)) {
-            let res = [];
-            for (let i in url) {
-                res.push(import(i).then(e=>e.default));
+            const res = [];
+            for (const i in url) {
+                res.push(import(i).then(e=>e.default).catch(err=>{throw new Error(`Error appending module "${url}" ${err}`)}));
             }
             return await Promise.all(res);
         } else {
-            return await import(url).then(e=>e.default);
+            return await import(url).then(e=>e.default).catch(err=>{throw new Error(`Error appending module "${url}" ${err}`)});
         }
     }
 
     async html(url) {
         if (Array.isArray(url)) {
-            let res = [];
-            for (let i in url) {
+            const res = [];
+            for (const i in url) {
                 res.push(getHTML(i));
             }
             return await Promise.all(res);
@@ -43,7 +43,7 @@ class Import {
     
     addStyle(url) {
         return new Promise((res, rej) => {
-            let t = document.createElement("link");
+            const t = document.createElement("link");
             t.rel = "stylesheet";
             t.type = "text/css";
             t.onload = function() {
@@ -63,7 +63,7 @@ class Import {
     
     addScript(url) {
         return new Promise((res, rej) => {
-            let t = document.createElement("script");
+            const t = document.createElement("script");
             t.type = "text/javascript";
             t.onload = function() {
                 res(t);
@@ -82,7 +82,7 @@ class Import {
     
     addModule(url) {
         return new Promise((res, rej) => {
-            let t = document.createElement("script");
+            const t = document.createElement("script");
             t.type = "module";
             t.onload = function() {
                 res(t);

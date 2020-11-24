@@ -1,31 +1,32 @@
 import Template from "../util/Template.js";
+import GlobalStyle from "../util/GlobalStyle.js";
 
 const TPL = new Template(`
-    <style>
-        * {
-            position: relative;
-            box-sizing: border-box;
-        }
-        :host {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            user-select: none;
-        }
-        div {
-            width: 100%;
-            height: 100%;
-            background-repeat: no-repeat;
-            background-size: contain;
-            background-position: center;
-            background-origin: content-box;
-            pointer-events: none;
-        }
-    </style>
-    <div>
-    </div>
+<div></div>
+`);
+
+const STYLE = new GlobalStyle(`
+* {
+    position: relative;
+    box-sizing: border-box;
+}
+:host {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+}
+div {
+    width: 100%;
+    height: 100%;
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+    background-origin: content-box;
+    pointer-events: none;
+}
 `);
 
 export default class Icon extends HTMLElement {
@@ -34,6 +35,8 @@ export default class Icon extends HTMLElement {
         super();
         this.attachShadow({mode: 'open'});
         this.shadowRoot.append(TPL.generate());
+        STYLE.apply(this.shadowRoot);
+        /* --- */
     }
 
     get src() {

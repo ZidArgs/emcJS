@@ -1,92 +1,94 @@
 import Template from "../../util/Template.js";
+import GlobalStyle from "../../util/GlobalStyle.js";
 import "../ListHeader.js";
 import "./Option.js";
 
 const TPL = new Template(`
-    <style>
-        * {
-            position: relative;
-            box-sizing: border-box;
-        }
-        :host {
-            display: flex;
-            flex-direction: column;
-            min-width: 200px;
-            min-height: 200px;
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            user-select: none;
-            overflow: hidden;
-        }
-        #scroll-container {
-            flex: 1;
-            overflow-x: hidden;
-            overflow-y: auto;
-            background-color: var(--list-color-back, #ffffff);
-            scrollbar-color: var(--list-color-hover, #b8b8b8) var(--list-color-border, #f1f1f1);
-        }
-        #scroll-container::-webkit-scrollbar-track {
-            background-color: var(--list-color-border, #f1f1f1);
-        }
-        #scroll-container::-webkit-scrollbar-thumb {
-            background-color: var(--list-color-hover, #b8b8b8);
-        }
-        slot {
-            display: block;
-            width: 100%;
-        }
-        ::slotted([value]) {
-            display: flex;
-            align-items: center;
-            min-height: 30px;
-            padding: 5px;
-            white-space: normal;
-            color: var(--list-color-front, #000000);
-            background-color: var(--list-color-back, #ffffff);
-            border-bottom: solid 1px #eee;
-        }
-        ::slotted([value][disabled]) {
-            display: none;
-        }
-        ::slotted([value]:hover) {
-            background-color: var(--list-color-hover, #b8b8b8);
-        }
-        ::slotted([value])::before {
-            margin: 0 10px 0 4px;
-            font-size: 18px;
-            content: "☐";
-        }
-        ::slotted([value].active)::before {
-            content: "☑";
-        }
-        :host(:not([readonly])) ::slotted([value]:not(.active)),
-        :host([readonly="false"]) ::slotted([value]:not(.active)),
-        :host([multimode]:not([multimode="false"]):not([readonly])) ::slotted([value].active),
-        :host([readonly="false"][multimode]:not([multimode="false"])) ::slotted([value].active) {
-            cursor: pointer;
-        }
-        #header {
-            padding-right: 2px;
-            padding-left: 2px;
-        }
-        #empty {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-style: italic;
-            min-height: 30px;
-            padding: 5px;
-            margin: 5px 2px;
-            white-space: normal;
-        }
-    </style>
-    <emc-listheader id="header">
-    </emc-listheader>
-    <div id="scroll-container">
-        <slot id="container">
-            <div id="empty">no entries</div>
-        </slot>
-    </div>
+<emc-listheader id="header">
+</emc-listheader>
+<div id="scroll-container">
+    <slot id="container">
+        <div id="empty">no entries</div>
+    </slot>
+</div>
+`);
+
+const STYLE = new GlobalStyle(`
+* {
+    position: relative;
+    box-sizing: border-box;
+}
+:host {
+    display: flex;
+    flex-direction: column;
+    min-width: 200px;
+    min-height: 200px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+    overflow: hidden;
+}
+#scroll-container {
+    flex: 1;
+    overflow-x: hidden;
+    overflow-y: auto;
+    background-color: var(--list-color-back, #ffffff);
+    scrollbar-color: var(--list-color-hover, #b8b8b8) var(--list-color-border, #f1f1f1);
+}
+#scroll-container::-webkit-scrollbar-track {
+    background-color: var(--list-color-border, #f1f1f1);
+}
+#scroll-container::-webkit-scrollbar-thumb {
+    background-color: var(--list-color-hover, #b8b8b8);
+}
+slot {
+    display: block;
+    width: 100%;
+}
+::slotted([value]) {
+    display: flex;
+    align-items: center;
+    min-height: 30px;
+    padding: 5px;
+    white-space: normal;
+    color: var(--list-color-front, #000000);
+    background-color: var(--list-color-back, #ffffff);
+    border-bottom: solid 1px #eee;
+}
+::slotted([value][disabled]) {
+    display: none;
+}
+::slotted([value]:hover) {
+    background-color: var(--list-color-hover, #b8b8b8);
+}
+::slotted([value])::before {
+    margin: 0 10px 0 4px;
+    font-size: 18px;
+    content: "☐";
+}
+::slotted([value].active)::before {
+    content: "☑";
+}
+:host(:not([readonly])) ::slotted([value]:not(.active)),
+:host([readonly="false"]) ::slotted([value]:not(.active)),
+:host([multimode]:not([multimode="false"]):not([readonly])) ::slotted([value].active),
+:host([readonly="false"][multimode]:not([multimode="false"])) ::slotted([value].active) {
+    cursor: pointer;
+}
+#header {
+    padding-right: 2px;
+    padding-left: 2px;
+}
+#empty {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-style: italic;
+    min-height: 30px;
+    padding: 5px;
+    margin: 5px 2px;
+    white-space: normal;
+}
 `);
 
 function clickOption(event) {
@@ -113,6 +115,8 @@ export default class ListSelect extends HTMLElement {
         super();
         this.attachShadow({mode: 'open'});
         this.shadowRoot.append(TPL.generate());
+        STYLE.apply(this.shadowRoot);
+        /* --- */
         this.shadowRoot.getElementById("container").addEventListener("slotchange", event => {
             const all = this.querySelectorAll(`[value]`);
             all.forEach(el => {

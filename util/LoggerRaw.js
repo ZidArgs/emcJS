@@ -31,7 +31,7 @@ HTML_DEFAULT_STYLES[LEVEL.LOG] = {
 const TIME_FND = /(....)-(..)-(..)T(..:..:..\....)Z/;
 const TIME_REP = "$3.$2.$1-$4";
 
-let output = new Set;
+const output = new Set;
 
 function write(data) {
     if (!!output.size) {
@@ -46,8 +46,8 @@ function write(data) {
                 out.value += msg+"\n";
                 out.scrollTop = out.scrollHeight;
             } else if (out instanceof HTMLElement) {
-                let el = document.createElement('span');
-                for (let i in HTML_DEFAULT_STYLES[data.type]) {
+                const el = document.createElement('span');
+                for (const i in HTML_DEFAULT_STYLES[data.type]) {
                     el.style[i] = HTML_DEFAULT_STYLES[data.type][i];
                 }
                 el.append(document.createTextNode(msg));

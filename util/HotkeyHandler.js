@@ -43,7 +43,7 @@ class HotkeyHandler {
     
     callHotkey(key, ctrlKey = false, altKey = false, shiftKey = false) {
         let called = false;
-        for (let [name, value] of CONFIG) {
+        for (const [name, value] of CONFIG) {
             if (key == value.key && ctrlKey == value.ctrlKey && altKey == value.altKey && shiftKey == value.shiftKey) {
                 ACTION.get(name)();
                 called = true;

@@ -1,56 +1,60 @@
 import Template from "../../util/Template.js";
+import GlobalStyle from "../../util/GlobalStyle.js";
 import "./Option.js";
 
 const TPL = new Template(`
-    <style>
-        * {
-            position: relative;
-            box-sizing: border-box;
-        }
-        :host {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 20px;
-            height: 20px;
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            user-select: none;
-        }
-        :host(:not([readonly])),
-        :host([readonly="false"]) {
-            cursor: pointer;
-        }
-        slot {
-            width: 100%;
-            height: 100%;
-        }
-        ::slotted(:not([value])),
-        ::slotted([value]:not(.active)) {
-            display: none !important;
-        }
-        ::slotted([value]) {
-            width: 100%;
-            height: 100%;
-            min-height: auto;
-            background-repeat: no-repeat;
-            background-size: contain;
-            background-position: center;
-            background-origin: content-box;
-        }
-    </style>
-    <slot>
-    </slot>
+<slot></slot>
+`);
+
+const STYLE = new GlobalStyle(`
+* {
+    position: relative;
+    box-sizing: border-box;
+}
+:host {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+}
+:host(:not([readonly])),
+:host([readonly="false"]) {
+    cursor: pointer;
+}
+slot {
+    width: 100%;
+    height: 100%;
+}
+::slotted(:not([value])),
+::slotted([value]:not(.active)) {
+    display: none !important;
+}
+::slotted([value]) {
+    width: 100%;
+    height: 100%;
+    min-height: auto;
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+    background-origin: content-box;
+}
 `);
 
 export default class StateButton extends HTMLElement {
 
     constructor() {
         super();
-        this.addEventListener("click", this.next);
-        this.addEventListener("contextmenu", this.prev);
+        super();
         this.attachShadow({mode: 'open'});
         this.shadowRoot.append(TPL.generate());
+        STYLE.apply(this.shadowRoot);
+        /* --- */
+        this.addEventListener("click", this.next);
+        this.addEventListener("contextmenu", this.prev);
     }
 
     connectedCallback() {

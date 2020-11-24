@@ -9,7 +9,7 @@ export default class ActionPath {
 
     put(step) {
         let pointer = POINTER.get(this);
-        let actions = ACTION_LIST.get(this);
+        const actions = ACTION_LIST.get(this);
         actions[pointer++] = step;
         if (pointer < actions.length) {
             actions = actions.slice(0, pointer);
@@ -25,9 +25,9 @@ export default class ActionPath {
 
     redo() {
         let pointer = POINTER.get(this);
-        let actions = ACTION_LIST.get(this);
+        const actions = ACTION_LIST.get(this);
         if (actions.length > 0 && pointer < actions.length) {
-            let res = actions[pointer++];
+            const res = actions[pointer++];
             POINTER.set(this, pointer);
             return res;
         }
@@ -35,9 +35,9 @@ export default class ActionPath {
 
     undo() {
         let pointer = POINTER.get(this);
-        let actions = ACTION_LIST.get(this);
+        const actions = ACTION_LIST.get(this);
         if (actions.length > 0 && pointer > 0) {
-            let res = actions[--pointer];
+            const res = actions[--pointer];
             POINTER.set(this, pointer);
             return res;
         }

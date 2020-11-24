@@ -1,109 +1,111 @@
 import Window from "./Window.js";
-import Template from "../util/Template.js";
-import "./input/ListSelect.js";
+import Template from "../../util/Template.js";
+import GlobalStyle from "../../util/GlobalStyle.js";
+import "../input/ListSelect.js";
 
 const TPL = new Template(`
-    <style>
-        * {
-            position: relative;
-            box-sizing: border-box;
-        }
-        #footer,
-        #submit,
-        #cancel {
-            display: flex;
-        }
-        #categories {
-            padding: 5px;
-            overflow-x: auto;
-            overflow-y: none;
-            border-bottom: solid 2px #cccccc;
-        }
-        .category {
-            display: inline-flex;
-            margin: 0 2px;
-        }
-        .panel {
-            display: none;
-            word-wrap: break-word;
-            resize: none;
-        }
-        .panel.active {
-            display: block;
-        }
-        #footer {
-            height: 50px;
-            padding: 10px 30px 10px;
-            justify-content: flex-end;
-            border-top: solid 2px #cccccc;
-        }
-        #submit,
-        #cancel {
-            margin-left: 10px;
-            padding: 5px;
-            border: solid 1px black;
-            border-radius: 2px;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            -webkit-appearance: none;
-        }
-        .category {
-            padding: 5px;
-            border: solid 1px black;
-            border-radius: 2px;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            -webkit-appearance: none;
-        }
-        .category:hover {
-            background-color: gray;
-        }
-        #submit:hover,
-        #cancel:hover,
-        .category.active {
-            color: white;
-            background-color: black;
-        }
-        label.settings-option {
-            display: flex;
-            padding: 10px;
-            align-items: center;
-            justify-content: flex-start;
-        }
-        label.settings-option:hover {
-            background-color: lightgray;
-        }
-        input[type="checkbox"] {
-            margin-right: 10px;
-        }
-        emc-listselect {
-            height: 300px;
-        }
-        .settings-input {
-            width: 50%;
-        }
-        .option-text {
-            display: inline-block;
-            flex-basis: 500px;
-            flex-shrink: 1;
-            margin-right: 10px;
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            user-select: none;
-        }
-    </style>
-    <div id="categories">
-    </div>
-    <div id="footer">
-        <button id="submit" title="submit">
-            submit
-        </button>
-        <button id="cancel" title="cancel">
-            cancel
-        </button>
-    </div>
+<div id="categories">
+</div>
+<div id="footer">
+    <button id="submit" title="submit">
+        submit
+    </button>
+    <button id="cancel" title="cancel">
+        cancel
+    </button>
+</div>
+`);
+
+const STYLE = new GlobalStyle(`
+* {
+    position: relative;
+    box-sizing: border-box;
+}
+#footer,
+#submit,
+#cancel {
+    display: flex;
+}
+#categories {
+    padding: 5px;
+    overflow-x: auto;
+    overflow-y: none;
+    border-bottom: solid 2px #cccccc;
+}
+.category {
+    display: inline-flex;
+    margin: 0 2px;
+}
+.panel {
+    display: none;
+    word-wrap: break-word;
+    resize: none;
+}
+.panel.active {
+    display: block;
+}
+#footer {
+    height: 50px;
+    padding: 10px 30px 10px;
+    justify-content: flex-end;
+    border-top: solid 2px #cccccc;
+}
+#submit,
+#cancel {
+    margin-left: 10px;
+    padding: 5px;
+    border: solid 1px black;
+    border-radius: 2px;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    -webkit-appearance: none;
+}
+.category {
+    padding: 5px;
+    border: solid 1px black;
+    border-radius: 2px;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    -webkit-appearance: none;
+}
+.category:hover {
+    background-color: gray;
+}
+#submit:hover,
+#cancel:hover,
+.category.active {
+    color: white;
+    background-color: black;
+}
+label.settings-option {
+    display: flex;
+    padding: 10px;
+    align-items: center;
+    justify-content: flex-start;
+}
+label.settings-option:hover {
+    background-color: lightgray;
+}
+input[type="checkbox"] {
+    margin-right: 10px;
+}
+emc-listselect {
+    height: 300px;
+}
+.settings-input {
+    width: 50%;
+}
+.option-text {
+    display: inline-block;
+    flex-basis: 500px;
+    flex-shrink: 1;
+    margin-right: 10px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+}
 `);
 
 const Q_TAB = [
@@ -116,7 +118,7 @@ const Q_TAB = [
 ].join(',');
 
 function settingsSubmit() {
-    let data = {};
+    const data = {};
     Array.from(this.shadowRoot.querySelectorAll('.panel[data-ref]')).forEach(i => {
         data[i.dataset.ref] = data[i.dataset.ref] || {};
         Array.from(i.querySelectorAll('.settings-input[data-ref]')).forEach(j => {
@@ -134,7 +136,7 @@ function settingsSubmit() {
             }
         });
     });
-    let ev = new Event('submit');
+    const ev = new Event('submit');
     ev.data = data;
     this.dispatchEvent(ev);
     this.close();
@@ -144,16 +146,17 @@ export default class SettingsWindow extends Window {
 
     constructor(title = "Settings", options = {}) {
         super(title, options.close);
-        let els = TPL.generate();
-        let window = this.shadowRoot.getElementById('window');
+        const els = TPL.generate();
+        STYLE.apply(this.shadowRoot);
+        /* --- */
+        const window = this.shadowRoot.getElementById('window');
         this.shadowRoot.getElementById('body').innerHTML = "";
-        this.shadowRoot.insertBefore(els.children[0], this.shadowRoot.getElementById('focus_catcher_top'));
-        let ctgrs = els.getElementById('categories');
+        const ctgrs = els.getElementById('categories');
         window.insertBefore(ctgrs, this.shadowRoot.getElementById('body'));
         window.append(els.getElementById('footer'));
 
         ctgrs.onclick = (event) => {
-            let t = event.target.getAttribute('target');
+            const t = event.target.getAttribute('target');
             if (!!t) {
                 this.active = t;
                 event.preventDefault();
@@ -161,14 +164,14 @@ export default class SettingsWindow extends Window {
             }
         }
 
-        let sbm = this.shadowRoot.getElementById('submit');
+        const sbm = this.shadowRoot.getElementById('submit');
         if (!!options.submit && typeof options.submit === "string") {
             sbm.innerHTML = options.submit;
             sbm.setAttribute("title", options.submit);
         }
         sbm.onclick = settingsSubmit.bind(this);
 
-        let ccl = this.shadowRoot.getElementById('cancel');
+        const ccl = this.shadowRoot.getElementById('cancel');
         if (!!options.cancel && typeof options.cancel === "string") {
             ccl.innerHTML = options.cancel;
             ccl.setAttribute("title", options.cancel);
@@ -194,20 +197,20 @@ export default class SettingsWindow extends Window {
     attributeChangedCallback(name, oldValue, newValue) {
         if (oldValue != newValue) {
             if (!!oldValue) {
-                let ol = this.shadowRoot.getElementById(`panel_${oldValue}`);
+                const ol = this.shadowRoot.getElementById(`panel_${oldValue}`);
                 if (!!ol) {
                     ol.classList.remove("active");
                 }
-                let ob = this.shadowRoot.querySelector(`[target="${oldValue}"]`);
+                const ob = this.shadowRoot.querySelector(`[target="${oldValue}"]`);
                 if (!!ob) {
                     ob.classList.remove("active");
                 }
             }
-            let nl = this.shadowRoot.getElementById(`panel_${newValue}`);
+            const nl = this.shadowRoot.getElementById(`panel_${newValue}`);
             if (!!nl) {
                 nl.classList.add("active");
             }
-            let nb = this.shadowRoot.querySelector(`[target="${newValue}"]`);
+            const nb = this.shadowRoot.querySelector(`[target="${newValue}"]`);
             if (!!nb) {
                 nb.classList.add("active");
             }
@@ -216,11 +219,11 @@ export default class SettingsWindow extends Window {
 
     show(data = {}, category) {
         super.show();
-        for (let i in data) {
-            let b = this.shadowRoot.getElementById(`panel_${i}`);
+        for (const i in data) {
+            const b = this.shadowRoot.getElementById(`panel_${i}`);
             if (!b) continue;
-            for (let j in data[i]) {
-                let e = b.querySelector(`[data-ref="${j}"]`);
+            for (const j in data[i]) {
+                const e = b.querySelector(`[data-ref="${j}"]`);
                 if (!e) continue;
                 if (e.type === "checkbox") {
                     e.checked = !!data[i][j];
@@ -240,7 +243,7 @@ export default class SettingsWindow extends Window {
     }
 
     initialFocus() {
-        let a = Array.from(this.querySelectorAll(Q_TAB));
+        const a = Array.from(this.querySelectorAll(Q_TAB));
         a.push(this.shadowRoot.getElementById('submit'));
         a.push(this.shadowRoot.getElementById('cancel'));
         a.push(this.shadowRoot.getElementById('close'));
@@ -248,7 +251,7 @@ export default class SettingsWindow extends Window {
     }
 
     focusFirst() {
-        let a = Array.from(this.querySelectorAll(Q_TAB));
+        const a = Array.from(this.querySelectorAll(Q_TAB));
         a.push(this.shadowRoot.getElementById('submit'));
         a.push(this.shadowRoot.getElementById('cancel'));
         a.unshift(this.shadowRoot.getElementById('close'));
@@ -256,7 +259,7 @@ export default class SettingsWindow extends Window {
     }
     
     focusLast() {
-        let a = Array.from(this.querySelectorAll(Q_TAB));
+        const a = Array.from(this.querySelectorAll(Q_TAB));
         a.push(this.shadowRoot.getElementById('submit'));
         a.push(this.shadowRoot.getElementById('cancel'));
         a.unshift(this.shadowRoot.getElementById('close'));
@@ -264,12 +267,12 @@ export default class SettingsWindow extends Window {
     }
 
     addTab(title, id) {
-        let pnl = document.createElement('div');
+        const pnl = document.createElement('div');
         pnl.className = "panel";
         pnl.id = `panel_${id}`;
         pnl.dataset.ref = id;
         this.shadowRoot.getElementById('body').append(pnl);
-        let cb = document.createElement('div');
+        const cb = document.createElement('div');
         cb.className = "category";
         cb.setAttribute('target', id);
         cb.innerHTML = title;
@@ -277,8 +280,8 @@ export default class SettingsWindow extends Window {
     }
 
     addStringInput(category, label, ref, def) {
-        let el = generateField(label);
-        let input = document.createElement("input");
+        const el = generateField(label);
+        const input = document.createElement("input");
         input.className = "settings-input";
         input.setAttribute("type", "text");
         input.value = def;
@@ -288,8 +291,8 @@ export default class SettingsWindow extends Window {
     }
 
     addNumberInput(category, label, ref, def, min, max) {
-        let el = generateField(label);
-        let input = document.createElement("input");
+        const el = generateField(label);
+        const input = document.createElement("input");
         input.className = "settings-input";
         input.setAttribute("type", "number");
         input.value = def;
@@ -305,8 +308,8 @@ export default class SettingsWindow extends Window {
     }
 
     addRangeInput(category, label, ref, def, min, max) {
-        let el = generateField(label);
-        let input = document.createElement("input");
+        const el = generateField(label);
+        const input = document.createElement("input");
         input.className = "settings-input";
         input.setAttribute("type", "range");
         input.value = def;
@@ -322,8 +325,8 @@ export default class SettingsWindow extends Window {
     }
 
     addCheckInput(category, label, ref, def) {
-        let el = generateField(label);
-        let input = document.createElement("input");
+        const el = generateField(label);
+        const input = document.createElement("input");
         input.className = "settings-input";
         input.setAttribute("type", "checkbox");
         input.checked = !!def;
@@ -333,12 +336,12 @@ export default class SettingsWindow extends Window {
     }
 
     addChoiceInput(category, label, ref, def, values) {
-        let el = generateField(label);
-        let input = document.createElement("select");
+        const el = generateField(label);
+        const input = document.createElement("select");
         input.className = "settings-input";
         input.setAttribute("type", "input");
-        for (let value in values) {
-            let opt = document.createElement('option');
+        for (const value in values) {
+            const opt = document.createElement('option');
             opt.value = value;
             opt.innerHTML = values[value];
             input.append(opt);
@@ -350,15 +353,15 @@ export default class SettingsWindow extends Window {
     }
 
     addListSelectInput(category, label, ref, def, multimode, values) {
-        let el = generateField(label);
-        let input = document.createElement("emc-listselect");
+        const el = generateField(label);
+        const input = document.createElement("emc-listselect");
         input.className = "settings-input";
         input.setAttribute("type", "list");
         input.multimode = multimode;
         input.value = def;
         input.dataset.ref = ref;
-        for (let value in values) {
-            let opt = document.createElement('emc-option');
+        for (const value in values) {
+            const opt = document.createElement('emc-option');
             opt.value = value;
             opt.innerHTML = values[value];
             input.append(opt);
@@ -368,8 +371,8 @@ export default class SettingsWindow extends Window {
     }
 
     addButton(category, label, ref, text = "", callback) {
-        let el = generateField(label);
-        let input = document.createElement("button");
+        const el = generateField(label);
+        const input = document.createElement("button");
         input.className = "settings-button";
         input.setAttribute("type", "button");
         input.dataset.ref = ref;
@@ -390,9 +393,9 @@ export default class SettingsWindow extends Window {
 customElements.define('emc-settingswindow', SettingsWindow);
 
 function generateField(label) {
-    let el = document.createElement("label");
+    const el = document.createElement("label");
     el.className = "settings-option";
-    let text = document.createElement("span");
+    const text = document.createElement("span");
     text.innerHTML = label;
     text.className = "option-text";
     el.append(text);

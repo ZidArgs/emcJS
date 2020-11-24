@@ -10,7 +10,7 @@ export default class Timer {
     }
 
 	setTime(h = 0, m = 0, s = 0, ms = 0) {
-        let t = time_stored.get(this);
+        const t = time_stored.get(this);
 		t.setHours(h);
 		t.setMinutes(m);
 		t.setSeconds(s);
@@ -21,9 +21,9 @@ export default class Timer {
 	}
 	
 	getTime() {
-        let t = time_stored.get(this);
+        const t = time_stored.get(this);
 		if (time_started.has(this)) {
-			let time_buffer = new Date;
+			const time_buffer = new Date;
 			t.setTime(t.getTime() + time_buffer.getTime() - time_started.get(this).getTime());
 			time_started.set(this, new Date(time_buffer));
 		}
@@ -38,9 +38,9 @@ export default class Timer {
 	}
 	
 	getMilliseconds() {
-        let t = time_stored.get(this);
+        const t = time_stored.get(this);
 		if (time_started.has(this)) {
-			let time_buffer = new Date;
+			const time_buffer = new Date;
 			t.setTime(t.getTime() + time_buffer.getTime() - time_started.get(this).getTime());
 			time_started.set(this, new Date(time_buffer));
 		}
@@ -59,8 +59,8 @@ export default class Timer {
 	
 	stop() {
 		if (time_started.has(this)) {
-            let t = time_stored.get(this);
-			let time_buffer = new Date;
+            const t = time_stored.get(this);
+			const time_buffer = new Date;
 			t.setTime(t.getTime() + time_buffer.getTime() - time_started.get(this).getTime());
 			time_started.delete(this);
 		}
@@ -68,8 +68,8 @@ export default class Timer {
 	
 	toggle() {
 		if (time_started.has(this)) {
-            let t = time_stored.get(this);
-			let time_buffer = new Date;
+            const t = time_stored.get(this);
+			const time_buffer = new Date;
 			t.setTime(t.getTime() + time_buffer.getTime() - time_started.get(this).getTime());
 			time_started.delete(this);
 			return false;

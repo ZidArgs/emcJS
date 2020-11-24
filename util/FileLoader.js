@@ -4,7 +4,7 @@ import INI from "./converter/INI.js";
 import Properties from "./converter/Properties.js";
 
 async function getFile(file, contentType) {
-    let r = await fetch(new Request(file, {
+    const r = await fetch(new Request(file, {
         method: 'GET',
         headers: new Headers({
             "Content-Type": contentType,

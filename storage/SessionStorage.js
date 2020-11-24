@@ -5,7 +5,7 @@ class SessionStorage {
     }
 
     get(key, value) {
-        let res = sessionStorage.getItem(key);
+        const res = sessionStorage.getItem(key);
         if (res != null) {
             return JSON.parse(res);
         }
@@ -25,7 +25,7 @@ class SessionStorage {
     }
 
     keys(filter) {
-        let keys = Object.keys(sessionStorage);
+        const keys = Object.keys(sessionStorage);
         if (typeof filter == "string") {
             return keys.filter(key => key.startsWith(filter));
         }
@@ -33,9 +33,9 @@ class SessionStorage {
     }
 
     getAll(filter) {
-        let res = {};
-        let k = this.keys(filter);
-        for (let i of k) {
+        const res = {};
+        const k = this.keys(filter);
+        for (const i of k) {
             res[i] = JSON.parse(sessionStorage.getItem(i));
         }
         return res;

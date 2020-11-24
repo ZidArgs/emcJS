@@ -1,14 +1,15 @@
 import Import from "../util/Import.js";
 import Template from "../util/Template.js";
+import GlobalStyle from "../util/GlobalStyle.js";
 
 const TPL = new Template(`
-    <style>
-        :host {
-            display: content;
-        }
-    </style>
-    <slot>
-    </slot>
+<slot></slot>
+`);
+
+const STYLE = new GlobalStyle(`
+:host {
+    display: content;
+}
 `);
 
 function appendHTML(r) {
@@ -18,6 +19,14 @@ function appendHTML(r) {
 }
 
 export default class HTMLImport extends HTMLElement {
+
+    constructor() {
+        super();
+        this.attachShadow({mode: 'open'});
+        this.shadowRoot.append(TPL.generate());
+        STYLE.apply(this.shadowRoot);
+        /* --- */
+    }
 
     get style() {
         return this.getAttribute('style');

@@ -1,4 +1,5 @@
 import Template from "../../util/Template.js";
+import GlobalStyle from "../../util/GlobalStyle.js";
 import "./Option.js";
 
 /* TODO
@@ -7,86 +8,87 @@ import "./Option.js";
  */
 
 const TPL = new Template(`
-    <style>
-        * {
-            position: relative;
-            box-sizing: border-box;
-        }
-        :host {
-            display: flex;
-            flex-direction: column;
-            min-width: 200px;
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            user-select: none;
-        }
-        #view {
-            height: 30px;
-            padding: 0px 7px;
-            font-size: inherit;
-            border: solid 1px var(--primary-color-border, #000000);
-        }
-        #scroll-container {
-            position: fixed;
-            display: none;
-            max-height: 300px;
-            overflow-x: hidden;
-            overflow-y: auto;
-            background-color: var(--list-color-back, #ffffff);
-            scrollbar-color: var(--list-color-hover, #b8b8b8) var(--list-color-border, #f1f1f1);
-            border: solid 1px var(--primary-color-border, #000000);
-            z-index: 1000;
-            box-shadow: black 2px 2px 2px;
-        }
-        #scroll-container::-webkit-scrollbar-track {
-            background-color: var(--list-color-border, #f1f1f1);
-        }
-        #scroll-container::-webkit-scrollbar-thumb {
-            background-color: var(--list-color-hover, #b8b8b8);
-        }
-        slot {
-            display: block;
-            width: 100%;
-        }
-        ::slotted([value]) {
-            display: flex;
-            align-items: center;
-            min-height: 30px;
-            padding: 5px 10px;
-            white-space: normal;
-            color: var(--list-color-front, #000000);
-            background-color: var(--list-color-back, #ffffff);
-            border-bottom: solid 1px #eee;
-        }
-        ::slotted([value][disabled]) {
-            display: none;
-        }
-        ::slotted([value]:hover) {
-            background-color: var(--list-color-hover, #b8b8b8);
-        }
-        :host(:not([readonly])) ::slotted([value]:not(.active)),
-        :host([readonly="false"]) ::slotted([value]:not(.active)),
-        :host([multimode]:not([multimode="false"]):not([readonly])) ::slotted([value].active),
-        :host([readonly="false"][multimode]:not([multimode="false"])) ::slotted([value].active) {
-            cursor: pointer;
-        }
-        #empty {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-style: italic;
-            min-height: 30px;
-            padding: 5px;
-            margin: 5px 2px;
-            white-space: normal;
-        }
-    </style>
-    <input id="view" placeholder="Search..."></input>
-    <div id="scroll-container">
-        <slot id="container">
-            <div id="empty">no entries</div>
-        </slot>
-    </div>
+<input id="view" placeholder="Search..."></input>
+<div id="scroll-container">
+    <slot id="container">
+        <div id="empty">no entries</div>
+    </slot>
+</div>
+`);
+
+const STYLE = new GlobalStyle(`
+* {
+    position: relative;
+    box-sizing: border-box;
+}
+:host {
+    display: flex;
+    flex-direction: column;
+    min-width: 200px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+}
+#view {
+    height: 30px;
+    padding: 0px 7px;
+    font-size: inherit;
+    border: solid 1px var(--primary-color-border, #000000);
+}
+#scroll-container {
+    position: fixed;
+    display: none;
+    max-height: 300px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    background-color: var(--list-color-back, #ffffff);
+    scrollbar-color: var(--list-color-hover, #b8b8b8) var(--list-color-border, #f1f1f1);
+    border: solid 1px var(--primary-color-border, #000000);
+    z-index: 1000;
+    box-shadow: black 2px 2px 2px;
+}
+#scroll-container::-webkit-scrollbar-track {
+    background-color: var(--list-color-border, #f1f1f1);
+}
+#scroll-container::-webkit-scrollbar-thumb {
+    background-color: var(--list-color-hover, #b8b8b8);
+}
+slot {
+    display: block;
+    width: 100%;
+}
+::slotted([value]) {
+    display: flex;
+    align-items: center;
+    min-height: 30px;
+    padding: 5px 10px;
+    white-space: normal;
+    color: var(--list-color-front, #000000);
+    background-color: var(--list-color-back, #ffffff);
+    border-bottom: solid 1px #eee;
+}
+::slotted([value][disabled]) {
+    display: none;
+}
+::slotted([value]:hover) {
+    background-color: var(--list-color-hover, #b8b8b8);
+}
+:host(:not([readonly])) ::slotted([value]:not(.active)),
+:host([readonly="false"]) ::slotted([value]:not(.active)),
+:host([multimode]:not([multimode="false"]):not([readonly])) ::slotted([value].active),
+:host([readonly="false"][multimode]:not([multimode="false"])) ::slotted([value].active) {
+    cursor: pointer;
+}
+#empty {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-style: italic;
+    min-height: 30px;
+    padding: 5px;
+    margin: 5px 2px;
+    white-space: normal;
+}
 `);
 
 export default class SearchSelect extends HTMLElement {
@@ -95,6 +97,8 @@ export default class SearchSelect extends HTMLElement {
         super();
         this.attachShadow({mode: 'open'});
         this.shadowRoot.append(TPL.generate());
+        STYLE.apply(this.shadowRoot);
+        /* --- */
         this.shadowRoot.getElementById("container").addEventListener("slotchange", event => {
             let all = this.querySelectorAll(`[value]`);
             all.forEach(el => {

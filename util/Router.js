@@ -59,9 +59,9 @@ async function callReciever(recievers, path, method, query, body) {
 
 */
 function callRoute(loc) {
-    let path = loc.pathname;
-    for (let [uri, callback] of ROUTES) {
-        let regEx = new RegExp(`^${uri}$`);
+    const path = loc.pathname;
+    for (const [uri, callback] of ROUTES) {
+        const regEx = new RegExp(`^${uri}$`);
         if (path.match(regEx)) {
             callback(uri, resolveParams(loc.search));
         }
@@ -89,7 +89,7 @@ class Router {
     }
 
     navigate(uri) {
-        let loc = new URL(uri, location);
+        const loc = new URL(uri, location);
         history.pushState(null, null, loc);
         callRoute(loc);
     }

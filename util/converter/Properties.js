@@ -13,10 +13,10 @@ function processLine(line) {
 class Properties {
 
     parse(input) {
-        let output = {};
-        let lines = input.split(LNBR_SEQ);
+        const output = {};
+        const lines = input.split(LNBR_SEQ);
         for(let i = 0; i < lines.length; ++i) {
-            let line = lines[i];
+            const line = lines[i];
             if(!line.length || COMMENT.test(line)) {
                 continue;
             }

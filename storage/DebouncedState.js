@@ -50,7 +50,7 @@ export default class DebouncedState extends EventTarget {
             clearTimeout(DEBOUNCE_TIMER.get(this));
             DEBOUNCE_TIMER.delete(this);
         }
-        for (let [key, value] of state) {
+        for (const [key, value] of state) {
             if (value != null) {
                 changes[key] = undefined;
             }
@@ -154,10 +154,10 @@ export default class DebouncedState extends EventTarget {
         const state = STATE.get(this);
         const changes = CHANGES.get(this);
         const data = {};
-        for (let [key, value] of state) {
+        for (const [key, value] of state) {
             data[key] = value;
         }
-        for (let [key, value] of changes) {
+        for (const [key, value] of changes) {
             data[key] = value;
         }
         return data;
@@ -177,7 +177,7 @@ export default class DebouncedState extends EventTarget {
         const state = STATE.get(this);
         const changes = CHANGES.get(this);
         const changed = {};
-        for (let [key, value] of state) {
+        for (const [key, value] of state) {
             if (value != null) {
                 changed[key] = {
                     oldValue: state.get(key),

@@ -22,7 +22,7 @@ class FileSystem {
                 ul.setAttribute("accept", extensions.join(","));
             }
             ul.onchange = function(event) {
-                let reader = new FileReader();
+                const reader = new FileReader();
                 reader.onload = function(e) {
                     resolve(convertData(e.target.result));
                 };
@@ -37,7 +37,7 @@ class FileSystem {
     }
 
     save(data, fileName) {
-        let url = window.URL.createObjectURL(new Blob([data], {type: "octet/stream"}));
+        const url = window.URL.createObjectURL(new Blob([data], {type: "octet/stream"}));
         dl.href = url;
         dl.download = fileName;
         document.body.append(dl);
@@ -51,8 +51,8 @@ class FileSystem {
 export default new FileSystem;
 
 function convertData(dataUrl) {
-    let pos = dataUrl.indexOf(',') + 1;
-    let mime = dataUrl.slice(5, pos-8);
+    const pos = dataUrl.indexOf(',') + 1;
+    const mime = dataUrl.slice(5, pos-8);
     let res = dataUrl.slice(pos);
     switch(mime) {
         case "application/json":

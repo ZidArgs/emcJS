@@ -6,11 +6,11 @@ const COMMENT = /^;.*$/;
 class INI {
 
     parse(input) {
-        let output = {"":{}};
+        const output = {"":{}};
         let act = "";
-        let lines = input.split(LNBR_SEQ);
+        const lines = input.split(LNBR_SEQ);
         for(let i = 0; i < lines.length; ++i) {
-            let line = lines[i];
+            const line = lines[i];
             if(!line.length || COMMENT.test(line)) {
                 continue;
             }
@@ -23,7 +23,7 @@ class INI {
                 continue;
             }
             if(VALUE.test(line)) {
-                let data = line.split("=");
+                const data = line.split("=");
                 if (typeof output[act][data[0]] === "string") {
                     throw new SyntaxError(`Duplicate key in INI at line ${i + 1}:\n${line}`);
                 }

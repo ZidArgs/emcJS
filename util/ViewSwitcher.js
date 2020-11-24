@@ -23,8 +23,8 @@ export default class ViewSwitcher {
     }
 
     switch(name) {
-        let navbar = NAVBAR.get(this);
-        let paging = PAGING.get(this);
+        const navbar = NAVBAR.get(this);
+        const paging = PAGING.get(this);
         paging.active = name;
         if (NAVIGATION.has(name)) {
             navbar.loadNavigation(NAVIGATION.get(name));

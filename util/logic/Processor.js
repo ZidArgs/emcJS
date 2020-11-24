@@ -7,8 +7,8 @@ function resolveCircle(values, path = [], visited = new Set(), start = values.ke
             return true;
         }
         visited.add(start);
-        let value = values.get(start);
-        for (let requirement of value.requires) {
+        const value = values.get(start);
+        for (const requirement of value.requires) {
             if (resolveCircle(values, path, visited, requirement)) {
                 return true;
             }
@@ -20,13 +20,13 @@ function resolveCircle(values, path = [], visited = new Set(), start = values.ke
 }
 
 function sortLogic(logic) {
-    let value_old = new Map(logic);
+    const value_old = new Map(logic);
     logic.clear();
     let len = 0;
     while (!!value_old.size && value_old.size != len) {
         len = value_old.size;
         value_old.forEach((value, key) => {
-            for (let requirement of value.requires) {
+            for (const requirement of value.requires) {
                 if (value_old.has(requirement)) {
                     return;
                 }
@@ -36,14 +36,14 @@ function sortLogic(logic) {
         });
     }
     if (value_old.size > 0) {
-        let path = [];
+        const path = [];
         resolveCircle(value_old, path);
         throw new Error(`PROCESSOR LOGIC LOOP:\n${path.join("\n=> ")}`);
     }
 }
 
 function mapToObj(map) {
-    let res = {};
+    const res = {};
     map.forEach((v, k) => {
         res[k] = v;
     });
@@ -74,19 +74,19 @@ export default class Processor {
     
     loadLogic(value) {
         if (typeof value == "object" && !Array.isArray(value)) {
-            let debug = DEBUG.get(this);
-            let logic = LOGIC.get(this);
-            let mem_o = MEM_O.get(this);
+            const debug = DEBUG.get(this);
+            const logic = LOGIC.get(this);
+            const mem_o = MEM_O.get(this);
             if (debug) {
                 console.group("PROCESSOR LOGIC BUILD");
                 console.time("build time");
             }
-            for (let name in value) {
+            for (const name in value) {
                 if (value[name] == null) {
                     logic.delete(name);
                     mem_o.delete(name);
                 } else {
-                    let fn = Compiler.compile(value[name]);
+                    const fn = Compiler.compile(value[name]);
                     Object.defineProperty(fn, 'name', {value: name});
                     logic.set(name, fn);
                     mem_o.set(name, false);
@@ -102,17 +102,18 @@ export default class Processor {
     }
 
     setLogic(name, value) {
-        let debug = DEBUG.get(this);
+        const debug = DEBUG.get(this);
+        const logic = LOGIC.get(this);
+        const mem_o = MEM_O.get(this);
         if (debug) {
             console.group("PROCESSOR LOGIC BUILD");
             console.time("build time");
         }
-        let logic = LOGIC.get(this);
         if (typeof value == "undefined" || value == null) {
             logic.delete(name);
             mem_o.delete(name);
         } else {
-            let fn = Compiler.compile(value);
+            const fn = Compiler.compile(value);
             Object.defineProperty(fn, 'name', {value: name});
             logic.set(name, fn);
             mem_o.set(name, false);
@@ -126,26 +127,26 @@ export default class Processor {
     }
 
     clearLogic() {
-        let logic = LOGIC.get(this);
+        const logic = LOGIC.get(this);
         logic.clear();
         DIRTY.set(this, true);
     }
 
     execute() {
-        let res = {};
-        let logic = LOGIC.get(this);
-        let mem_i = MEM_I.get(this);
-        let mem_o = MEM_O.get(this);
-        let debug = DEBUG.get(this);
+        const res = {};
+        const logic = LOGIC.get(this);
+        const mem_i = MEM_I.get(this);
+        const mem_o = MEM_O.get(this);
+        const debug = DEBUG.get(this);
         if (debug) {
             console.group("PROCESSOR LOGIC EXECUTION");
             console.log("input", mapToObj(mem_i));
             console.log("executing logic...");
             console.time("execution time");
         }
-        let val = valueGetter.bind(this, mem_i);
+        const val = valueGetter.bind(this, mem_i);
         logic.forEach((v, k) => {
-            let r = !!v(val);
+            const r = !!v(val);
             mem_i.set(k, r);
             if (r != mem_o.get(k)) {
                 mem_o.set(k, r);
@@ -164,12 +165,12 @@ export default class Processor {
     }
 
     set(key, value) {
-        let debug = DEBUG.get(this);
+        const debug = DEBUG.get(this);
         if (debug) {
             console.group("PROCESSOR LOGIC MEMORY CHANGE");
             console.log("change", `${key} => ${value}`);
         }
-        let mem_i = MEM_I.get(this);
+        const mem_i = MEM_I.get(this);
         mem_i.set(key, value);
         if (debug) {
             console.groupEnd("PROCESSOR LOGIC MEMORY CHANGE");
@@ -178,17 +179,17 @@ export default class Processor {
     }
 
     setAll(values) {
-        let debug = DEBUG.get(this);
+        const debug = DEBUG.get(this);
         if (debug) {
             console.group("PROCESSOR LOGIC MEMORY CHANGE");
             console.log("changes", values);
         }
-        let mem_i = MEM_I.get(this);
+        const mem_i = MEM_I.get(this);
         if (values instanceof Map) {
             values.forEach((v, k) => mem_i.set(k, v));
         } else if (typeof values == "object" && !Array.isArray(values)) {
-            for (let k in values) {
-                let v = values[k];
+            for (const k in values) {
+                const v = values[k];
                 mem_i.set(k, v);
             }
         }
@@ -199,7 +200,7 @@ export default class Processor {
     }
 
     get(ref) {
-        let mem_o = MEM_O.get(this);
+        const mem_o = MEM_O.get(this);
         if (mem_o.has(ref)) {
             return mem_o.get(ref);
         }
@@ -207,14 +208,14 @@ export default class Processor {
     }
 
     getAll() {
-        let mem_o = MEM_O.get(this);
-        let obj = {};
+        const mem_o = MEM_O.get(this);
+        const obj = {};
         mem_o.forEach((v,k) => {obj[k] = v});
         return obj;
     }
 
     has(ref) {
-        let mem_o = MEM_O.get(this);
+        const mem_o = MEM_O.get(this);
         if (mem_o.has(ref)) {
             return true;
         }
@@ -222,8 +223,8 @@ export default class Processor {
     }
 
     reset() {
-        let mem_i = MEM_I.get(this);
-        let mem_o = MEM_O.get(this);
+        const mem_i = MEM_I.get(this);
+        const mem_o = MEM_O.get(this);
         mem_i.clear();
         mem_o.clear();
         DIRTY.set(this, true);

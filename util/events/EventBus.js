@@ -7,11 +7,11 @@ const MODULES = new Map();
 
 function triggerEvent(data = {name:"",data:{}}) {
     if (SUBS.has(data.name)) {
-        for (let fn of SUBS.get(data.name)) {
+        for (const fn of SUBS.get(data.name)) {
             fn(data);
         }
     }
-    for (let fn of ALLS) {
+    for (const fn of ALLS) {
         fn(data);
     }
 }
@@ -75,7 +75,7 @@ class EventBus {
                 name.forEach(n => this.register(n, fn));
             } else {
                 if (!SUBS.has(name)) {
-                    let subs = new Set;
+                    const subs = new Set;
                     subs.add(fn);
                     SUBS.set(name, subs);
                 } else {

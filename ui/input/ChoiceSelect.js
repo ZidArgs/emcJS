@@ -1,41 +1,42 @@
 import Template from "../../util/Template.js";
+import GlobalStyle from "../../util/GlobalStyle.js";
 import "./Option.js";
 
 const TPL = new Template(`
-    <style>
-        * {
-            position: relative;
-            box-sizing: border-box;
-        }
-        :host {
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            user-select: none;
-        }
-        slot {
-            width: 100%;
-            height: 100%;
-        }
-        ::slotted(:not([value])),
-        ::slotted([value][disabled]) {
-            display: none;
-        }
-        ::slotted([value]) {
-            display: inline-block;
-            min-height: auto;
-        }
-        ::slotted([value]:not(.active)) {
-            opacity: 0.5;
-        }
-        :host(:not([readonly])) ::slotted([value]:not(.active)),
-        :host([readonly="false"]) ::slotted([value]:not(.active)),
-        :host([multimode]:not([multimode="false"]):not([readonly])) ::slotted([value].active),
-        :host([readonly="false"][multimode]:not([multimode="false"])) ::slotted([value].active) {
-            cursor: pointer;
-        }
-    </style>
-    <slot id="container">
-    </slot>
+<slot id="container"></slot>
+`);
+
+const STYLE = new GlobalStyle(`
+* {
+    position: relative;
+    box-sizing: border-box;
+}
+:host {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+}
+slot {
+    width: 100%;
+    height: 100%;
+}
+::slotted(:not([value])),
+::slotted([value][disabled]) {
+    display: none;
+}
+::slotted([value]) {
+    display: inline-block;
+    min-height: auto;
+}
+::slotted([value]:not(.active)) {
+    opacity: 0.5;
+}
+:host(:not([readonly])) ::slotted([value]:not(.active)),
+:host([readonly="false"]) ::slotted([value]:not(.active)),
+:host([multimode]:not([multimode="false"]):not([readonly])) ::slotted([value].active),
+:host([readonly="false"][multimode]:not([multimode="false"])) ::slotted([value].active) {
+    cursor: pointer;
+}
 `);
 
 function clickOption(event) {
@@ -62,10 +63,12 @@ export default class ChoiceSelect extends HTMLElement {
 
     constructor() {
         super();
-        const onClickOption = clickOption.bind(this);
-        CLICK_HANDLER.set(this, onClickOption);
         this.attachShadow({mode: 'open'});
         this.shadowRoot.append(TPL.generate());
+        STYLE.apply(this.shadowRoot);
+        /* --- */
+        const onClickOption = clickOption.bind(this);
+        CLICK_HANDLER.set(this, onClickOption);
         this.shadowRoot.getElementById("container").addEventListener("slotchange", event => {
             const all = this.querySelectorAll(`[value]`);
             all.forEach(el => {

@@ -24,5 +24,3 @@ export default class Panel extends HTMLElement {
     }
 
 }
-
-customElements.define('emc-panel', Panel);

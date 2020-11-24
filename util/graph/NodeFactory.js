@@ -85,22 +85,22 @@ export default class NodeFactory {
     }
 
     reset() {
-        let nodes = NODES.get(this);
+        const nodes = NODES.get(this);
         nodes.clear();
     }
 
     get(name) {
-        let nodes = NODES.get(this);
+        const nodes = NODES.get(this);
         if (nodes.has(name)) {
             return nodes.get(name);
         }
-        let node = new Node(name);
+        const node = new Node(name);
         nodes.set(name, node);
         return node;
     }
 
     getNames() {
-        let nodes = NODES.get(this);
+        const nodes = NODES.get(this);
         return nodes.keys();
     }
 

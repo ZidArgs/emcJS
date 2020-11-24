@@ -2,7 +2,7 @@ import NodeFactory from "./NodeFactory.js";
 import Compiler from "./EdgeLogicCompiler.js";
 
 function mapToObj(map) {
-    let res = {};
+    const res = {};
     map.forEach((v, k) => {
         res[k] = v;
     });
@@ -44,21 +44,21 @@ export default class LogicGraph {
             console.group("GRAPH LOGIC BUILD");
             console.time("build time");
         }
-        for (let name in config.edges) {
-            let children = config.edges[name];
-            let node = nodeFactory.get(name);
-            for (let child in children) {
-                let logic = children[child];
-                let fn = Compiler.compile(logic);
+        for (const name in config.edges) {
+            const children = config.edges[name];
+            const node = nodeFactory.get(name);
+            for (const child in children) {
+                const logic = children[child];
+                const fn = Compiler.compile(logic);
                 node.append(nodeFactory.get(child), fn);
                 if (!mem_o.has(child)) {
                     mem_o.set(child, false);
                 }
             }
         }
-        for (let name in config.logic) {
-            let logic = config.logic[name];
-            let fn = Compiler.compile(logic);
+        for (const name in config.logic) {
+            const logic = config.logic[name];
+            const fn = Compiler.compile(logic);
             mixins.set(name, fn);
         }
         if (debug) {
@@ -117,12 +117,12 @@ export default class LogicGraph {
     }
 
     clearTranslations() {
-        let translationMatrix = TRANSLATION_MATRIX.get(this);
+        const translationMatrix = TRANSLATION_MATRIX.get(this);
         translationMatrix.clear();
     }
 
     setTranslation(source, target, reroute) {
-        let translationMatrix = TRANSLATION_MATRIX.get(this);
+        const translationMatrix = TRANSLATION_MATRIX.get(this);
         if (!reroute) {
             translationMatrix.delete(`${source} => ${target}`);
         } else {
@@ -131,7 +131,7 @@ export default class LogicGraph {
     }
 
     getTranslation(source, target) {
-        let translationMatrix = TRANSLATION_MATRIX.get(this);
+        const translationMatrix = TRANSLATION_MATRIX.get(this);
         if (translationMatrix.has(`${source} => ${target}`)) {
             return translationMatrix.get(`${source} => ${target}`);
         }
@@ -179,7 +179,7 @@ export default class LogicGraph {
         const start = nodeFactory.get(startNode);
         if (start != null) {
             if (debug) {
-                let translationMatrix = TRANSLATION_MATRIX.get(this);
+                const translationMatrix = TRANSLATION_MATRIX.get(this);
                 console.group("GRAPH LOGIC EXECUTION");
                 console.log("input", mapToObj(mem_i));
                 console.log("translations", mapToObj(translationMatrix));

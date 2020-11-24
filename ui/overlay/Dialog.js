@@ -1,70 +1,72 @@
 import Window from "./Window.js";
-import Template from "../util/Template.js";
+import Template from "../../util/Template.js";
+import GlobalStyle from "../../util/GlobalStyle.js";
 
 const TPL = new Template(`
-    <style>
-        * {
-            position: relative;
-            box-sizing: border-box;
-        }
-        #footer,
-        #submit,
-        #cancel {
-            display: -webkit-box;
-            display: -ms-flexbox;
-            display: flex;
-        }
-        #text {
-            display: block;
-            margin: 8px 0px;
-            word-wrap: break-word;
-            resize: none;
-        }
-        #footer {
-            height: 50px;
-            margin-top: 20px;
-            padding: 10px 30px 10px;
-            -webkit-box-pack: end;
-                -ms-flex-pack: end;
-                    justify-content: flex-end;
-            border-top: solid 2px #cccccc;
-        }
-        #submit,
-        #cancel {
-            margin-left: 10px;
-            padding: 5px;
-            border: solid 1px black;
-            border-radius: 2px;
-            -webkit-box-align: center;
-                -ms-flex-align: center;
-                    align-items: center;
-            -webkit-box-pack: center;
-                -ms-flex-pack: center;
-                    justify-content: center;
-            cursor: pointer;
-            -webkit-appearance: none;
-        }
-        #submit:hover,
-        #cancel:hover {
-            color: white;
-            background-color: black;
-        }
-        #window {
-            width: auto;
-            min-width: 20vw;
-        }
-    </style>
-    <div id="text">
-        [text]
-    </div>
-    <div id="footer">
-        <button id="submit" title="submit">
-            submit
-        </button>
-        <button id="cancel" title="cancel">
-            cancel
-        </button>
-    </div>
+<div id="text">
+    [text]
+</div>
+<div id="footer">
+    <button id="submit" title="submit">
+        submit
+    </button>
+    <button id="cancel" title="cancel">
+        cancel
+    </button>
+</div>
+`);
+
+const STYLE = new GlobalStyle(`
+* {
+    position: relative;
+    box-sizing: border-box;
+}
+#footer,
+#submit,
+#cancel {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+}
+#text {
+    display: block;
+    margin: 8px 0px;
+    word-wrap: break-word;
+    resize: none;
+}
+#footer {
+    height: 50px;
+    margin-top: 20px;
+    padding: 10px 30px 10px;
+    -webkit-box-pack: end;
+        -ms-flex-pack: end;
+            justify-content: flex-end;
+    border-top: solid 2px #cccccc;
+}
+#submit,
+#cancel {
+    margin-left: 10px;
+    padding: 5px;
+    border: solid 1px black;
+    border-radius: 2px;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    cursor: pointer;
+    -webkit-appearance: none;
+}
+#submit:hover,
+#cancel:hover {
+    color: white;
+    background-color: black;
+}
+#window {
+    width: auto;
+    min-width: 20vw;
+}
 `);
 
 const Q_TAB = [
@@ -90,19 +92,20 @@ export default class Dialog extends Window {
 
     constructor(options = {}) {
         super(options.title, options.close);
-        let els = TPL.generate();
-        let window = this.shadowRoot.getElementById('window');
-        this.shadowRoot.insertBefore(els.children[0], this.shadowRoot.getElementById('focus_catcher_top'));
-        window.append(els.getElementById('footer'));
+        const els = TPL.generate();
+        STYLE.apply(this.shadowRoot);
+        /* --- */
+        const window = this.shadowRoot.getElementById('window');
+        const footer = els.getElementById('footer');
+        window.append(footer);
 
         if (!!options.text && typeof options.text === "string") {
-            let text = els.getElementById('text');
+            const text = els.getElementById('text');
             this.shadowRoot.getElementById('body').insertBefore(text, this.shadowRoot.getElementById('body').children[0]);
             text.innerHTML = options.text;
         }
-        let footer = this.shadowRoot.getElementById('footer');
 
-        let sbm = this.shadowRoot.getElementById('submit');
+        const sbm = this.shadowRoot.getElementById('submit');
         if (!!options.submit) {
             if (typeof options.submit === "string") {
                 sbm.innerHTML = options.submit;
@@ -113,7 +116,7 @@ export default class Dialog extends Window {
             footer.removeChild(sbm);
         }
 
-        let ccl = this.shadowRoot.getElementById('cancel');
+        const ccl = this.shadowRoot.getElementById('cancel');
         if (!!options.cancel) {
             if (typeof options.cancel === "string") {
                 ccl.innerHTML = options.cancel;
@@ -126,7 +129,7 @@ export default class Dialog extends Window {
     }
 
     initialFocus() {
-        let a = Array.from(this.querySelectorAll(Q_TAB));
+        const a = Array.from(this.querySelectorAll(Q_TAB));
         a.push(this.shadowRoot.getElementById('submit'));
         a.push(this.shadowRoot.getElementById('cancel'));
         a.push(this.shadowRoot.getElementById('close'));
@@ -134,7 +137,7 @@ export default class Dialog extends Window {
     }
 
     focusFirst() {
-        let a = Array.from(this.querySelectorAll(Q_TAB));
+        const a = Array.from(this.querySelectorAll(Q_TAB));
         a.push(this.shadowRoot.getElementById('submit'));
         a.push(this.shadowRoot.getElementById('cancel'));
         a.unshift(this.shadowRoot.getElementById('close'));
@@ -142,7 +145,7 @@ export default class Dialog extends Window {
     }
     
     focusLast() {
-        let a = Array.from(this.querySelectorAll(Q_TAB));
+        const a = Array.from(this.querySelectorAll(Q_TAB));
         a.push(this.shadowRoot.getElementById('submit'));
         a.push(this.shadowRoot.getElementById('cancel'));
         a.unshift(this.shadowRoot.getElementById('close'));
@@ -151,7 +154,7 @@ export default class Dialog extends Window {
     
     static alert(ttl, msg) {
         return new Promise(function(resolve) {
-            let d = new Dialog({
+            const d = new Dialog({
                 title: ttl,
                 text: msg,
                 submit: "OK"
@@ -171,7 +174,7 @@ export default class Dialog extends Window {
     
     static confirm(ttl, msg) {
         return new Promise(function(resolve) {
-            let d = new Dialog({
+            const d = new Dialog({
                 title: ttl,
                 text: msg,
                 submit: "YES",
@@ -192,13 +195,13 @@ export default class Dialog extends Window {
     
     static prompt(ttl, msg, def) {
         return new Promise(function(resolve) {
-            let d = new Dialog({
+            const d = new Dialog({
                 title: ttl,
                 text: msg,
                 submit: "YES",
                 cancel: "NO"
             });   
-            let el = document.createElement("input");
+            const el = document.createElement("input");
             el.style.padding = "5px";
             el.style.backgroundColor = "white";
             el.style.border = "solid 1px black";

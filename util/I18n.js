@@ -37,9 +37,9 @@ const MUTATION_OBSERVER_CALLBACK = function(mutations) {
     });
 };
 
-let observers = new Map();
+const observers = new Map();
+const languages = new Map();
 let actLang = "";
-let languages = new Map();
 
 function getTranslation(key) {
     if (!key || typeof key != "string") return "";
@@ -63,8 +63,8 @@ function applyLanguage() {
 
 function getAllElements(selector = "*", root = document) {
     let res = Array.from(root.querySelectorAll(selector));
-    let buf = Array.from(root.querySelectorAll("*"));
-    for (let el of buf) {
+    const buf = Array.from(root.querySelectorAll("*"));
+    for (const el of buf) {
         if (el.shadowRoot != null) {
             res = res.concat(getAllElements(selector, el.shadowRoot));
         }
@@ -89,7 +89,7 @@ class I18n {
         if (!actLang) {
             actLang = lang;
         }
-        for (let key in values) {
+        for (const key in values) {
             if (typeof key != "string") continue;
             if (typeof values[key] != "string") continue;
             languages.get(lang).set(key, values[key]);
@@ -115,7 +115,7 @@ class I18n {
 
     connect(element = document.documentElement) {
         if (!observers.has(element)) {
-            let obs = new MutationObserver(MUTATION_OBSERVER_CALLBACK);
+            const obs = new MutationObserver(MUTATION_OBSERVER_CALLBACK);
             obs.observe(element, OBSERVER_CONFIG);
             observers.set(element, obs);
         }
@@ -123,7 +123,7 @@ class I18n {
 
     disconnect(element = document.documentElement) {
         if (!!observers.has(element)) {
-            let obs = observers.get(element);
+            const obs = observers.get(element);
             obs.disconnect();
             observers.remove(element);
         }

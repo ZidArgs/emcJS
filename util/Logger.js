@@ -49,8 +49,8 @@ const CONSOLE_DEFAULT_UNSET = "background:#ffffff;color:#333333;";
 const TIME_FND = /(....)-(..)-(..)T(..:..:..\....)Z/;
 const TIME_REP = "$3.$2.$1-$4";
 
-let output = new Set;
-let level = new Set(["ERROR", "WARN", "INFO", "LOG"]);
+const output = new Set;
+const level = new Set(["ERROR", "WARN", "INFO", "LOG"]);
 
 function write(data) {
     if (!!output.size && level.has(data.type)) {
@@ -65,13 +65,13 @@ function write(data) {
                 out.value += msg+"\n";
                 out.scrollTop = out.scrollHeight;
             } else if (out instanceof HTMLElement) {
-                let el = document.createElement('span');
+                const el = document.createElement('span');
                 if (HTML_DEFAULT_STYLES.hasOwnProperty(data.type)) {
-                    for (let i in HTML_DEFAULT_STYLES[data.type]) {
+                    for (const i in HTML_DEFAULT_STYLES[data.type]) {
                         el.style[i] = HTML_DEFAULT_STYLES[data.type][i];
                     }
                 } else {
-                    for (let i in HTML_DEFAULT_UNSET) {
+                    for (const i in HTML_DEFAULT_UNSET) {
                         el.style[i] = HTML_DEFAULT_UNSET[i];
                     }
                 }

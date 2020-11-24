@@ -1,51 +1,51 @@
 import Template from "../util/Template.js";
-
-// TODO WebKit - add a wrapper with hbox abilities around panels residing inside a vbox
+import GlobalStyle from "../util/GlobalStyle.js";
 
 const TPL = new Template(`
-    <style>
-        * {
-            position: relative;
-            box-sizing: border-box;
-        }
-        :host {
-            display: flex;
-            flex-direction: column;
-            width: 100%;
-            height: 100%;
-            padding: 10px;
-        }
-        #title {
-            margin: 10px 0;
-            font-size: 2em;
-            line-height: 1em;
-        }
-        #container {
-            display: block;
-            flex: 1;
-            padding: 5px;
-            resize: none;
-            overflow: scroll;
-            background-color: var(--edit-background-color, #ffffff);
-            color: var(--edit-text-color, #000000);
-            word-wrap: unset;
-            white-space: pre;
-            user-select: text;
-            font-family: monospace;
-        }
-        ::slotted(*) {
-            display: block;
-            padding: 2px;
-            user-select: text;
-            border: transparent;
-            border-bottom: solid 1px rgba(255,255,255,0.1);
-        }
-        ::slotted(:first-child) {
-            border-top: solid 1px rgba(255,255,255,0.1);
-        }
-    </style>
-    <div id="title">Title</div>
-    <slot id="container"></slot>
+<div id="title">Title</div>
+<slot id="container"></slot>
+`);
+
+const STYLE = new GlobalStyle(`
+* {
+    position: relative;
+    box-sizing: border-box;
+}
+:host {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    padding: 10px;
+}
+#title {
+    margin: 10px 0;
+    font-size: 2em;
+    line-height: 1em;
+}
+#container {
+    display: block;
+    flex: 1;
+    padding: 5px;
+    resize: none;
+    overflow: scroll;
+    background-color: var(--edit-background-color, #ffffff);
+    color: var(--edit-text-color, #000000);
+    word-wrap: unset;
+    white-space: pre;
+    user-select: text;
+    font-family: monospace;
+}
+::slotted(*) {
+    display: block;
+    padding: 2px;
+    user-select: text;
+    border: transparent;
+    border-bottom: solid 1px rgba(255,255,255,0.1);
+}
+::slotted(:first-child) {
+    border-top: solid 1px rgba(255,255,255,0.1);
+}
 `);
 
 export default class LogScreen extends HTMLElement {
@@ -54,6 +54,8 @@ export default class LogScreen extends HTMLElement {
         super();
         this.attachShadow({mode: 'open'});
         this.shadowRoot.append(TPL.generate());
+        STYLE.apply(this.shadowRoot);
+        /* --- */
     }
 
     set title(value) {
@@ -72,7 +74,7 @@ export default class LogScreen extends HTMLElement {
         switch (name) {
             case 'title':
                 if (oldValue != newValue) {
-                    let title = this.shadowRoot.getElementById("title");
+                    const title = this.shadowRoot.getElementById("title");
                     title.innerText = newValue;
                 }
                 break;

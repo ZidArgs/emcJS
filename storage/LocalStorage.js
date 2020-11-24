@@ -5,7 +5,7 @@ class LocalStorage {
     }
 
     get(key, value) {
-        let res = localStorage.getItem(key);
+        const res = localStorage.getItem(key);
         if (res != null) {
             return JSON.parse(res);
         }
@@ -25,7 +25,7 @@ class LocalStorage {
     }
 
     keys(filter) {
-        let keys = Object.keys(localStorage);
+        const keys = Object.keys(localStorage);
         if (typeof filter == "string") {
             return keys.filter(key => key.startsWith(filter));
         }
@@ -33,9 +33,9 @@ class LocalStorage {
     }
 
     getAll(filter) {
-        let res = {};
-        let k = this.keys(filter);
-        for (let i of k) {
+        const res = {};
+        const k = this.keys(filter);
+        for (const i of k) {
             res[i] = JSON.parse(localStorage.getItem(i));
         }
         return res;

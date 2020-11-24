@@ -10,8 +10,8 @@ class Helper {
     }
 
     compareVersions(a = "", b = "", s = ".") {
-        let c = a.split(s);
-        let d = b.split(s);
+        const c = a.split(s);
+        const d = b.split(s);
         let e = parseInt(c.shift());
         let f = parseInt(d.shift());
         while (!!e && !!f) {
@@ -28,8 +28,8 @@ class Helper {
         if (!Array.isArray(a) || !Array.isArray(b)) {
             throw new TypeError("only arrays are comparable");
         }
-        let c = new Set(b);
-        return a.filter(d =>!c.has(d));
+        const c = new Set(b);
+        return a.filter(d => !c.has(d));
     }
       
     arraySymDiff(a, b) {
@@ -43,8 +43,8 @@ class Helper {
         if (!Array.isArray(a) || !Array.isArray(b)) {
             throw new TypeError("only arrays are comparable");
         }
-        let c = new Set(b);
-        return a.filter(d =>c.has(d));
+        const c = new Set(b);
+        return a.filter(d => c.has(d));
     }
     
     objectSort(a, b) {
@@ -54,9 +54,9 @@ class Helper {
         if (typeof b != "function") {
             b = undefined;
         }
-        let c = {};
-        let d = Object.keys(a).sort(b);
-        for (let e of d) {
+        const c = {};
+        const d = Object.keys(a).sort(b);
+        for (const e of d) {
             c[e] = a[e];
         }
         return c;
@@ -81,7 +81,7 @@ class Helper {
             if (Array.isArray(b)) {
                 return false;
             }
-            let c = Object.keys(a);
+            const c = Object.keys(a);
             if (c.length != Object.keys(b).length) {
                 return false;
             }
@@ -96,9 +96,9 @@ class Helper {
             }
             CANVAS.setAttribute("width", svg.getAttribute("width"));
             CANVAS.setAttribute("height", svg.getAttribute("height"));
-            let url = 'data:image/svg+xml;base64,' + btoa(SERIALIZER.serializeToString(svg));
-            let ctx = CANVAS.getContext("2d");
-            let img = new Image();
+            const url = 'data:image/svg+xml;base64,' + btoa(SERIALIZER.serializeToString(svg));
+            const ctx = CANVAS.getContext("2d");
+            const img = new Image();
             img.addEventListener("load", function() {
                 ctx.drawImage(img, 0, 0);
                 resolve(CANVAS.toDataURL("image/png"));

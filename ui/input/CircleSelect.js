@@ -1,72 +1,74 @@
 import Template from "../../util/Template.js";
+import GlobalStyle from "../../util/GlobalStyle.js";
 import "./Option.js";
 
 const TPL = new Template(`
-    <style>
-        * {
-            position: relative;
-            box-sizing: border-box;
-        }
-        :host {
-            display: inline-flex;
-            width: 80px;
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            user-select: none;
-        }
-        :host(:not([readonly])),
-        :host([readonly="false"]) {
-            cursor: pointer;
-        }
-        button {
-            display: block;
-            width: 40px;
-            margin: 0;
-            padding: 10px;
-            flex-shrink: 0;
-            border: none;
-            background: none;
-            color: inherit;
-            cursor: pointer;
-            opacity: 0.5;
-            -webkit-appearance: none;
-        }
-        button:hover {
-            opacity: 1;
-        }
-        button::after {
-            display: block;
-            border-top: solid 10px transparent;
-            border-bottom: solid 10px transparent;
-            content: "";
-        }
-        button#prev::after {
-            border-right: solid 20px white;
-        }
-        button#next::after {
-            border-left: solid 20px white;
-        }
-        slot {
-            flex: 1;
-            height: 100%;
-        }
-        ::slotted(:not([value])),
-        ::slotted([value]:not(.active)) {
-            display: none !important;
-        }
-        ::slotted([value]) {
-            width: 100%;
-            height: 100%;
-            min-height: auto;
-            background-repeat: no-repeat;
-            background-size: contain;
-            background-position: center;
-            background-origin: content-box;
-        }
-    </style>
-    <button id="prev">◀</button>
-    <slot></slot>
-    <button id="next">▶</button>
+<button id="prev">◀</button>
+<slot></slot>
+<button id="next">▶</button>
+`);
+
+const STYLE = new GlobalStyle(`
+* {
+    position: relative;
+    box-sizing: border-box;
+}
+:host {
+    display: inline-flex;
+    width: 80px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+}
+:host(:not([readonly])),
+:host([readonly="false"]) {
+    cursor: pointer;
+}
+button {
+    display: block;
+    width: 40px;
+    margin: 0;
+    padding: 10px;
+    flex-shrink: 0;
+    border: none;
+    background: none;
+    color: inherit;
+    cursor: pointer;
+    opacity: 0.5;
+    -webkit-appearance: none;
+}
+button:hover {
+    opacity: 1;
+}
+button::after {
+    display: block;
+    border-top: solid 10px transparent;
+    border-bottom: solid 10px transparent;
+    content: "";
+}
+button#prev::after {
+    border-right: solid 20px white;
+}
+button#next::after {
+    border-left: solid 20px white;
+}
+slot {
+    flex: 1;
+    height: 100%;
+}
+::slotted(:not([value])),
+::slotted([value]:not(.active)) {
+    display: none !important;
+}
+::slotted([value]) {
+    width: 100%;
+    height: 100%;
+    min-height: auto;
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+    background-origin: content-box;
+}
 `);
 
 export default class CircleSelect extends HTMLElement {
@@ -75,6 +77,8 @@ export default class CircleSelect extends HTMLElement {
         super();
         this.attachShadow({mode: 'open'});
         this.shadowRoot.append(TPL.generate());
+        STYLE.apply(this.shadowRoot);
+        /* --- */
         // button events
         this.shadowRoot.getElementById("next").addEventListener("click", event => {
             this.next(event);

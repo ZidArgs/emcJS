@@ -1,20 +1,21 @@
 import DragDropMemory from "../../util/DragDropMemory.js";
 import UniqueGenerator from "../../util/UniqueGenerator.js";
 import Template from "../../util/Template.js";
+import GlobalStyle from "../../util/GlobalStyle.js";
 
 const TPL = new Template(`
-    <style>
-        * {
-            position: relative;
-            box-sizing: border-box;
-        }
-        :host {
-            display: inline-block;
-            cursor: grab;
-        }
-    </style>
-    <slot>
-    </slot>
+<slot></slot>
+`);
+
+const STYLE = new GlobalStyle(`
+* {
+    position: relative;
+    box-sizing: border-box;
+}
+:host {
+    display: inline-block;
+    cursor: grab;
+}
 `);
 
 function dragElement(event) {
@@ -27,10 +28,11 @@ export default class DragElement extends HTMLElement {
 
     constructor() {
         super();
-        /* host */
-        this.id = UniqueGenerator.appUID("draggable");
         this.attachShadow({mode: 'open'});
         this.shadowRoot.append(TPL.generate());
+        STYLE.apply(this.shadowRoot);
+        /* --- */
+        this.id = UniqueGenerator.appUID("draggable");
         this.setAttribute("draggable", true);
         this.addEventListener("dragstart", dragElement);
     }

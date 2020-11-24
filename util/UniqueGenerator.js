@@ -10,20 +10,21 @@ class UniqueGenerator {
 
     uniqueKey(len = 32) {
         let res = "";
-        let rnd = crypto.getRandomValues(new Uint8Array(len));
-        rnd.forEach(function (v) { res += v.toString(36).slice(-1) });
+        const rnd = crypto.getRandomValues(new Uint8Array(len));
+        rnd.forEach(v => {res += v.toString(36).slice(-1)});
         return res;
     }
 
     appUID(prefix = "unique-id", len = 10) {
+        const fill = new Array(len).join("0");
         if (APP_ID_CNT.has(prefix)) {
-            let c = APP_ID_CNT.get(prefix)+1;
-            APP_ID_CNT.set(prefix, c);
-            c = `${new Array(len).join("0")}${c}`.slice(-len);
-            return `${prefix}-${c}`;
+            const cnt = APP_ID_CNT.get(prefix)+1;
+            APP_ID_CNT.set(prefix, cnt);
+            const str = `${fill}${cnt}`.slice(-len);
+            return `${prefix}-${str}`;
         } else {
             APP_ID_CNT.set(prefix, 0);
-            return `${prefix}-${new Array(len).join("0")}0`;
+            return `${prefix}-${fill}0`;
         }
     }
 

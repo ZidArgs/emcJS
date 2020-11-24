@@ -1,5 +1,5 @@
 async function sendRequest(url, config) {
-    let r = await fetch(url, config);
+    const r = await fetch(url, config);
     if (r.status < 200 || r.status >= 300) {
         throw new Error(`error on ${config.method} for url "${url}" - status: ${r.status}`);
     }
