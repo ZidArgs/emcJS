@@ -17,7 +17,7 @@ export default class GlobalStyle {
 
     apply(target) {
         if (target instanceof Document || target instanceof ShadowRoot) {
-            target.adoptedStyleSheets = [STYLESHEETS.get(this), ...target.adoptedStyleSheets];
+            target.adoptedStyleSheets = [...target.adoptedStyleSheets, STYLESHEETS.get(this)];
         }
     }
 
