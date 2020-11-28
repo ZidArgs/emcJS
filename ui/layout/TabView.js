@@ -1,6 +1,7 @@
 import Template from "../../util/Template.js";
 import GlobalStyle from "../../util/GlobalStyle.js";
 import Panel from "./Panel.js";
+import "../input/Option.js";
 
 const TPL = new Template(`
 <slot id="container"></slot>
@@ -31,9 +32,6 @@ const STYLE = new GlobalStyle(`
 ::slotted(*) {
     display: block;
     flex: 1;
-}
-::slotted(:not(.active)) {
-    display: none;
 }
 emc-choiceselect {
     padding: 4px;
@@ -68,31 +66,23 @@ export default class TabView extends Panel {
         this.shadowRoot.append(TPL.generate());
         STYLE.apply(this.shadowRoot);
         /* --- */
-
-        let choice = this.shadowRoot.getElementById("view-choice");
+        const container = this.shadowRoot.getElementById("container");
+        const choice = this.shadowRoot.getElementById("view-choice");
         choice.addEventListener("change", (event) => {
-            let oe = this.querySelector(`.active`);
-            if (!!oe) {
-                oe.classList.remove("active");
-            }
-            let ne = this.querySelector(`[ref="${event.newValue}"]`);
-            if (!!ne) {
-                ne.classList.add("active");
-            }
+            this.active = event.newValue;
         });
-
-        this.shadowRoot.getElementById("container").addEventListener("slotchange", event => {
+        container.addEventListener("slotchange", event => {
             this.connectedCallback();
         });
     }
 
     connectedCallback() {
-        let choice = this.shadowRoot.getElementById("view-choice");
+        const choice = this.shadowRoot.getElementById("view-choice");
         choice.innerHTML = "";
-        let all = this.querySelectorAll(`[ref]`);
+        const all = this.querySelectorAll(`[slot]`);
         all.forEach((el) => {
-            let opt = document.createElement("emc-option");
-            let ref = el.getAttribute("ref");
+            const opt = document.createElement("emc-option");
+            const ref = el.getAttribute("slot");
             opt.value = ref;
             if (el.dataset.title != null) {
                 opt.title = el.dataset.title;
