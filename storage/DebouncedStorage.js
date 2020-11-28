@@ -8,7 +8,7 @@ const DEBOUNCE_TIMER = new WeakMap();
 
 let DEBOUNCE_TIME = 500;
 
-export default class DebouncedState extends EventTarget {
+export default class DebouncedStorage extends EventTarget {
 
     static get debounceTime() {
         return DEBOUNCE_TIME;
@@ -202,59 +202,66 @@ export default class DebouncedState extends EventTarget {
     setImmediate(key, value) {
         const state = STATE.get(this);
         const changes = CHANGES.get(this);
-        const changed = {};
-        if (!Helper.isEqual(state.get(key), value)) {
-            changed[key] = {
-                oldValue: state.get(key),
-                newValue: value
-            };
-            state.set(key, value);
-        }
         if (DEBOUNCE_TIMER.has(this)) {
-            if (changes.has(key) && Helper.isEqual(changes.get(key), value)) {
+            if (!state.has(key) || !Helper.isEqual(state.get(key), value)) {
+                changes.set(key, value);
+            } else {
                 changes.delete(key);
+                if (!changes.size) {
+                    clearTimeout(DEBOUNCE_TIMER.get(this));
+                    DEBOUNCE_TIMER.delete(this);
+                }
             }
-            if (!changes.size) {
-                clearTimeout(DEBOUNCE_TIMER.get(this));
-                DEBOUNCE_TIMER.delete(this);
+        } else {
+            if (!state.has(key) || !Helper.isEqual(state.get(key), value)) {
+                const changed = {};
+                changed[key] = {
+                    oldValue: state.get(key),
+                    newValue: value
+                };
+                state.set(key, value);
+                const event = new Event("change");
+                event.category = CATEGORY.get(this);
+                event.data = changed;
+                this.dispatchEvent(event);
             }
-        }
-        if (Object.keys(changed).length) {
-            const event = new Event("change");
-            event.category = CATEGORY.get(this);
-            event.data = changed;
-            this.dispatchEvent(event);
         }
     }
 
     setImmediateAll(data) {
         const state = STATE.get(this);
         const changes = CHANGES.get(this);
-        const changed = {};
-        for (const key in data) {
-            const value = data[key];
-            if (!Helper.isEqual(state.get(key), value)) {
-                changed[key] = {
-                    oldValue: state.get(key),
-                    newValue: value
-                };
-                state.set(key, value);
-            }
-            if (changes.has(key)) {
-                if (Helper.isEqual(changes.get(key), value)) {
+        if (DEBOUNCE_TIMER.has(this)) {
+            for (const key in data) {
+                const value = data[key];
+                if (!state.has(key) || !Helper.isEqual(state.get(key), value)) {
+                    changes.set(key, value);
+                } else {
                     changes.delete(key);
                 }
             }
-        }
-        if (DEBOUNCE_TIMER.has(this) &&!changes.size) {
-            clearTimeout(DEBOUNCE_TIMER.get(this));
-            DEBOUNCE_TIMER.delete(this);
-        }
-        if (Object.keys(changed).length) {
-            const event = new Event("change");
-            event.category = CATEGORY.get(this);
-            event.data = changed;
-            this.dispatchEvent(event);
+            if (!changes.size) {
+                clearTimeout(DEBOUNCE_TIMER.get(this));
+                DEBOUNCE_TIMER.delete(this);
+            }
+        } else {
+            const changed = {};
+            for (const key in data) {
+                const value = data[key];
+                if (!state.has(key) || !Helper.isEqual(state.get(key), value)) {
+                    changed[key] = {
+                        oldValue: state.get(key),
+                        newValue: value
+                    };
+                    state.set(key, value);
+                }
+            }
+            if (!Helper.isEqual(state.get(key), value)) {
+                const event = new Event("change");
+                event.category = CATEGORY.get(this);
+                event.data = changed;
+                this.dispatchEvent(event);
+            }
         }
     }
 
