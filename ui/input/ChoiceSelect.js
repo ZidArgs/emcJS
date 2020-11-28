@@ -41,10 +41,10 @@ slot {
 
 function clickOption(event) {
     if (!this.readonly) {
-        let value = event.currentTarget.getAttribute("value");
+        const value = event.currentTarget.value;
         if (this.multimode) {
-            let arr = this.value;
-            let set = new Set(arr);
+            const arr = this.value;
+            const set = new Set(arr);
             if (set.has(value)) {
                 set.delete(value);
             } else {

@@ -256,7 +256,7 @@ export default class DebouncedStorage extends EventTarget {
                     state.set(key, value);
                 }
             }
-            if (!Helper.isEqual(state.get(key), value)) {
+            if (Object.keys(changed).length) {
                 const event = new Event("change");
                 event.category = CATEGORY.get(this);
                 event.data = changed;
