@@ -76,7 +76,7 @@ class Helper {
             if (!Array.isArray(b) || a.length != b.length) {
                 return false;
             }
-            return a.every((i, j) => this.isEqual(i, b[j]))
+            return a.every((i, j) => this.isEqual(i, b[j]));
         } else {
             if (Array.isArray(b)) {
                 return false;
