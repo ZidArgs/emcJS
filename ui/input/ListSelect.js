@@ -1,6 +1,7 @@
 import Template from "../../util/Template.js";
 import GlobalStyle from "../../util/GlobalStyle.js";
-import "../ListHeader.js";
+import SearchAnd from "../../util/search/SearchAnd.js";
+import "./ListHeader.js";
 import "./Option.js";
 
 const TPL = new Template(`
@@ -153,7 +154,7 @@ export default class ListSelect extends HTMLElement {
             let checked = false;
             let unchecked = false;
             if (!!event.value) {
-                const regEx = new RegExp(`.*${event.value.split(" ").join(".*")}.*`, "i");
+                const regEx = new SearchAnd(event.value);
                 all.forEach(el => {
                     if (el.innerText.match(regEx)) {
                         el.style.display = "";

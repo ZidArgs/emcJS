@@ -1,6 +1,7 @@
 import Template from "../util/Template.js";
 import GlobalStyle from "../util/GlobalStyle.js";
-import "./ListHeader.js";
+import SearchAnd from "../util/search/SearchAnd.js";
+import "./input/ListHeader.js";
 
 const TPL = new Template(`
 <emc-listheader id="header" multimode="false">
@@ -75,7 +76,7 @@ export default class FilteredList extends HTMLElement {
             let all = this.querySelectorAll(`[data-filtervalue]`);
             let panels = this.querySelectorAll(`emc-collapsepanel`);
             if (!!event.value) {
-                let regEx = new RegExp(`.*${event.value.split(" ").join(".*")}.*`, "i");
+                const regEx = new SearchAnd(event.value);
                 all.forEach(el => {
                     if (el.dataset.filtervalue.match(regEx)) {
                         el.style.display = "";

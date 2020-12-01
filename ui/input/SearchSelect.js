@@ -1,5 +1,6 @@
 import Template from "../../util/Template.js";
 import GlobalStyle from "../../util/GlobalStyle.js";
+import SearchAnd from "../../util/search/SearchAnd.js";
 import "./Option.js";
 
 /* TODO
@@ -110,8 +111,8 @@ export default class SearchSelect extends HTMLElement {
                 }
             });
         });
-        let input = this.shadowRoot.getElementById("view");
-        let container = this.shadowRoot.getElementById("scroll-container");
+        const input = this.shadowRoot.getElementById("view");
+        const container = this.shadowRoot.getElementById("scroll-container");
         this.addEventListener("focus", event => {
             if (!this.readonly) {
                 input.focus();
@@ -120,10 +121,10 @@ export default class SearchSelect extends HTMLElement {
         input.addEventListener("focus", event => {
             if (!this.readonly) {
                 input.value = "";
-                let thisRect = this.getBoundingClientRect();
+                const thisRect = this.getBoundingClientRect();
                 container.style.display = "block";
                 container.style.width = `${thisRect.width}px`;
-                let containerRect = container.getBoundingClientRect();
+                const containerRect = container.getBoundingClientRect();
                 if (thisRect.bottom + containerRect.height > window.innerHeight - 25) {
                     container.style.bottom = `${window.innerHeight - thisRect.top}px`;
                 } else {
@@ -139,9 +140,9 @@ export default class SearchSelect extends HTMLElement {
             return false;
         });
         this.addEventListener("blur", cancelSelection.bind(this));
-        input.addEventListener("keyup", event => {
-            let all = this.querySelectorAll(`[value]`);
-            let regEx = new RegExp(`.*${input.value.split(" ").join(".*")}.*`, "i");
+        input.addEventListener("input", event => {
+            const all = this.querySelectorAll(`[value]`);
+            const regEx = new SearchAnd(input.value);
             all.forEach(el => {
                 if (el.innerText.match(regEx)) {
                     el.style.display = "";
@@ -154,7 +155,7 @@ export default class SearchSelect extends HTMLElement {
 
     connectedCallback() {
         this.setAttribute('tabindex', 0);
-        let all = this.querySelectorAll(`[value]`);
+        const all = this.querySelectorAll(`[value]`);
         if (!this.value && !!all.length) {
             this.value = all[0].value;
         }
@@ -174,7 +175,7 @@ export default class SearchSelect extends HTMLElement {
     }
 
     get readonly() {
-        let val = this.getAttribute('readonly');
+        const val = this.getAttribute('readonly');
         return !!val && val != "false";
     }
 
@@ -190,13 +191,13 @@ export default class SearchSelect extends HTMLElement {
         switch (name) {
             case 'value':
                 if (oldValue != newValue) {
-                    let el = this.querySelector(`[value="${newValue}"]`);
+                    const el = this.querySelector(`[value="${newValue}"]`);
                     if (el != null) {
                         this.shadowRoot.getElementById("view").value = el.innerHTML;
                     } else {
                         this.shadowRoot.getElementById("view").value = newValue;
                     }
-                    let event = new Event('change');
+                    const event = new Event('change');
                     event.oldValue = oldValue;
                     event.newValue = newValue;
                     event.value = newValue;
@@ -223,11 +224,11 @@ customElements.define('emc-searchselect', SearchSelect);
 function clickOption(event) {
     if (!this.readonly) {
         this.value = event.currentTarget.getAttribute("value");
-        let container = this.shadowRoot.getElementById("scroll-container");
+        const container = this.shadowRoot.getElementById("scroll-container");
         container.style.display = "";
         container.style.bottom = "";
         container.style.top = "";
-        let all = this.querySelectorAll(`[value]`);
+        const all = this.querySelectorAll(`[value]`);
         all.forEach(el => {
             el.style.display = "";
         });
@@ -235,10 +236,10 @@ function clickOption(event) {
 }
 
 function cancelSelection(event) {
-    let container = this.shadowRoot.getElementById("scroll-container");
+    const container = this.shadowRoot.getElementById("scroll-container");
     if (container.style.display != "") {
-        let input = this.shadowRoot.getElementById("view");
-        let selected = this.querySelector(`[value="${this.value}"]`);
+        const input = this.shadowRoot.getElementById("view");
+        const selected = this.querySelector(`[value="${this.value}"]`);
         if (selected != null) {
             input.value = selected.innerHTML;
         } else {
@@ -247,7 +248,7 @@ function cancelSelection(event) {
         container.style.display = "";
         container.style.bottom = "";
         container.style.top = "";
-        let all = this.querySelectorAll(`[value]`);
+        const all = this.querySelectorAll(`[value]`);
         all.forEach(el => {
             el.style.display = "";
         });
