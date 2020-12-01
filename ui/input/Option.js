@@ -20,6 +20,11 @@ const STYLE = new GlobalStyle(`
     white-space: normal;
     padding: 0;
     user-select: none;
+    cursor: pointer;
+}
+:host(:not([value])),
+:host([value][disabled]) {
+    display: none;
 }
 `);
 

@@ -1,11 +1,12 @@
 import Template from "../../util/Template.js";
 import GlobalStyle from "../../util/GlobalStyle.js";
+import ElementManager from "../../util/ElementManager.js";
 import Panel from "./Panel.js";
 import "../input/Option.js";
 
 const TPL = new Template(`
 <slot id="container"></slot>
-<emc-choiceselect id="view-choice"></emc-choiceselect>
+<div id="view-choice"></div>
 `);
 
 const STYLE = new GlobalStyle(`
@@ -22,6 +23,9 @@ const STYLE = new GlobalStyle(`
     margin: 0px;
     background-color: var(--page-background-color, #000000);
     color: var(--page-text-color, #ffffff);
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
 }
 #container {
     display: flex;
@@ -33,11 +37,11 @@ const STYLE = new GlobalStyle(`
     display: block;
     flex: 1;
 }
-emc-choiceselect {
+#view-choice {
     padding: 4px;
     background-color: var(--navigation-background-color, #ffffff);
 }
-emc-choiceselect emc-option {
+#view-choice emc-option {
     display: inline-block;
     width: 40px;
     height: 40px;
@@ -51,12 +55,37 @@ emc-choiceselect emc-option {
     margin: 0 2px;
     filter: drop-shadow(black 1px 1px 1px);
 }
-emc-choiceselect emc-option emc-icon {
+#view-choice emc-option emc-icon {
     width: 100%;
     height: 100%;
     pointer-events: none;
 }
+#view-choice emc-option.active {
+    cursor: default;
+}
+#view-choice emc-option:not(.active) {
+    opacity: 0.5;
+}
 `);
+
+const EL_MANAGER = new WeakMap();
+const ON_CLICK = new WeakMap();
+
+function onOptionClick(event) {
+    const el = event.currentTarget;
+    if (!el.classList.contains("active")) {
+        this.active = el.value;
+    }
+}
+
+function composer(key, params) {
+    const el = document.createElement("emc-option");
+    el.value = key;
+    el.style.backgroundImage = `url('${params.icon}')`;
+    el.title = params.title || key;
+    el.addEventListener("click", params.onClick);
+    return el;
+}
 
 export default class TabView extends Panel {
 
@@ -66,34 +95,44 @@ export default class TabView extends Panel {
         this.shadowRoot.append(TPL.generate());
         STYLE.apply(this.shadowRoot);
         /* --- */
-        const container = this.shadowRoot.getElementById("container");
+        ON_CLICK.set(this, onOptionClick.bind(this));
         const choice = this.shadowRoot.getElementById("view-choice");
-        choice.addEventListener("change", (event) => {
-            this.active = event.newValue;
-        });
-        container.addEventListener("slotchange", event => {
+        EL_MANAGER.set(this, new ElementManager(choice, composer));
+        const observer = new MutationObserver(() => {
             this.connectedCallback();
         });
+        observer.observe(this, {childList: true});
     }
 
     connectedCallback() {
-        const choice = this.shadowRoot.getElementById("view-choice");
-        choice.innerHTML = "";
-        const all = this.querySelectorAll(`[slot]`);
+        const all = this.querySelectorAll("[slot]");
+        const elManager = EL_MANAGER.get(this);
+        const onClick = ON_CLICK.get(this);
+        const data = [];
         all.forEach((el) => {
-            const opt = document.createElement("emc-option");
-            const ref = el.getAttribute("slot");
-            opt.value = ref;
-            if (el.dataset.title != null) {
-                opt.title = el.dataset.title;
-            } else {
-                opt.title = ref;
-            }
-            if (el.dataset.icon != null) {
-                opt.style.backgroundImage = `url('${el.dataset.icon}')`;
-            }
-            choice.append(opt);
+            data.push({
+                key: el.getAttribute("slot"),
+                title: el.dataset.title,
+                icon: el.dataset.icon,
+                onClick
+            });
         });
+        elManager.manage(data);
+        // apply value
+        const choice = this.shadowRoot.getElementById("view-choice");
+        const el = choice.querySelector(`[value="${this.active}"]`);
+        if (!!el) {
+            el.classList.add("active");
+        }
+    }
+
+    disconnectedCallback() {
+        // revoke value
+        const choice = this.shadowRoot.getElementById("view-choice");
+        const current = choice.querySelector(`[value="${this.active}"]`);
+        if (!!current) {
+            current.classList.remove("active");
+        }
     }
 
     get active() {
@@ -112,11 +151,19 @@ export default class TabView extends Panel {
         switch (name) {
             case 'active':
                 if (oldValue != newValue) {
-                    const choice = this.shadowRoot.getElementById("view-choice");
                     const container = this.shadowRoot.getElementById("container");
                     if (typeof newValue == "string") {
                         container.name = newValue;
-                        choice.value = newValue;
+                        // update choice
+                        const choice = this.shadowRoot.getElementById("view-choice");
+                        const current = choice.querySelector(`[value="${oldValue}"]`);
+                        if (!!current) {
+                            current.classList.remove("active");
+                        }
+                        const el = choice.querySelector(`[value="${newValue}"]`);
+                        if (!!el) {
+                            el.classList.add("active");
+                        }
                     }
                 }
                 break;

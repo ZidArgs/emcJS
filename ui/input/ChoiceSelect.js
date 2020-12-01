@@ -31,10 +31,11 @@ slot {
 ::slotted([value]:not(.active)) {
     opacity: 0.5;
 }
-:host(:not([readonly])) ::slotted([value]:not(.active)),
-:host([readonly="false"]) ::slotted([value]:not(.active)),
-:host([multimode]:not([multimode="false"]):not([readonly])) ::slotted([value].active),
-:host([readonly="false"][multimode]:not([multimode="false"])) ::slotted([value].active) {
+#view-choice[readonly]:not([readonly="false"]) emc-option,
+#view-choice emc-option:not(.active) {
+    cursor: default;
+}
+#view-choice[multimode]:not([multimode="false"]) emc-option {
     cursor: pointer;
 }
 `);
@@ -70,7 +71,7 @@ export default class ChoiceSelect extends HTMLElement {
         const onClickOption = clickOption.bind(this);
         CLICK_HANDLER.set(this, onClickOption);
         this.shadowRoot.getElementById("container").addEventListener("slotchange", event => {
-            const all = this.querySelectorAll(`[value]`);
+            const all = this.querySelectorAll("[value]");
             all.forEach(el => {
                 if (!!el) {
                     el.onclick = onClickOption;
@@ -86,7 +87,7 @@ export default class ChoiceSelect extends HTMLElement {
 
     connectedCallback() {
         const onClickOption = CLICK_HANDLER.get(this);
-        const all = this.querySelectorAll(`[value]`);
+        const all = this.querySelectorAll("[value]");
         if (!this.value && !!all.length) {
             this.value = all[0].value;
         }
